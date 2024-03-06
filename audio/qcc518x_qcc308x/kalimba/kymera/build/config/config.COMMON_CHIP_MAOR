@@ -1,0 +1,200 @@
+############################################################################
+# Copyright (c) 2019 - 2020 Qualcomm Technologies International, Ltd.
+############################################################################
+# Chip-specific definitions for Maor
+
+%cpp
+
+# Symbol name as required by Hydra common code
+# <http://wiki/Hydra_Common_Firmware/Build_Definitions>
+CHIP_MAOR
+# TBD
+NUMBER_OF_PIOS=64
+NUMBER_HW_PATCHES=64
+
+#Max clock in Mhz
+CHIP_MAX_CLOCK = 240
+
+NUMBER_DM_BANKS=44
+DM_BANKS_CAN_BE_POWERED_OFF
+
+# Size of PM RAM in 32-bit words
+PM_RAM_SIZE_WORDS=0x18000
+# First address of PM RAM
+PM_RAM_START_ADDRESS=0x04000000
+# Start of direct-mapped P1 cache
+PM_RAM_P1_CACHE_START_ADDRESS=0x0405F800
+# The last address of PM RAM
+PM_RAM_END_ADDRESS=0x04060000
+# Location of PM RAM windows in DM space
+# KALARCH 4 does not have special regions for LS/MS
+PM_RAM_WINDOW=0x400000
+NUMBER_PM_BANKS=48
+PM_BANKS_CAN_BE_POWERED_OFF
+DM2_RAM_BASE=$(DM2_RAM_BASE_ADDR_FROM_BUILD)u
+DM2_RAM_BASE_ASM=$(DM2_RAM_BASE_ADDR_FROM_BUILD)
+
+# Size of Audio Log buffer in words
+# TBD
+AUDIO_LOG_BUF_SIZE=512
+
+# Half of PM
+PATCH_ADDR_MAX=0x0402ffff
+
+# Area of Program Memory for Downloadable Capabilities
+PM_DOWNLOAD_START_VIRTUAL_ADDR=0x4200000UL
+PM_DOWNLOAD_VIRTUAL_ADDR_MASK=0x7FFFFFFUL
+DM_AS_PM_DOWNLOAD_START_VIRTUAL_ADDR=0x0200000UL
+
+# PM RAM used by cache in words. This changes with cache configuration, default is for direct mapped cache.
+PM_RAM_CACHE_BANK_SIZE_WORDS=0x200
+
+#Number of PCM instances
+NUMBER_PCM_INSTANCES=3
+
+#Number of I2S instances
+NUMBER_I2S_INSTANCES=3
+
+# 1 stereo codecs (Channels A/B)
+# TBD
+NUMBER_ADC_INSTANCES=2
+NUMBER_DAC_INSTANCES=1
+CHIP_HAS_HIFI_ADC_ON_KCODEC_CHANNELS34
+#this will define number of ADC/DigMic inputs which can be routed to used as sidetone
+NUMBER_SIDETONES=8
+
+# Maor will support quiet mode
+INSTALL_DAC_QUIET_MODE
+
+# Maor Analog requires DAC to be started with mux slot muted
+CHIP_NEEDS_MUX_SLOT_MUTED_AT_DAC_START
+
+# Maor DAC has IDAC based DC offset correction
+CHIP_HAS_IDAC_DC_OFFSET_CORRECTION
+
+# Maor has 3 analog gain steps - 0, -6dB and -12dB
+CHIP_HAS_DAC_ANALOG_GAIN_STEPS
+
+CHIP_HAS_HIFI_ADC_ON_KCODEC_CHANNELS12=1
+NUMBER_SPDIF_INSTANCES=2
+NUMBER_DIGITAL_MICS=10
+INSTALL_ADC
+INSTALL_DAC
+HAVE_MIC_BIAS_CONTROL
+
+# TBD
+NUMBER_BAC_STREAM_MONITORS=8
+NUMBER_INPUT_VOICE_SLOTS=10
+NUMBER_OUTPUT_VOICE_SLOTS=8
+
+# PCM hardware supports 24 bits in 32 bit slots while running in multi slot mode.
+INSTALL_32BIT_SLOT
+
+# DDS clock does not derive from root clock but derives from PLL and XTAL. The following define enables that part of code
+CHIP_HAS_SEPARATE_DDS_DOMAIN
+
+#Streplus DMIC clock freq range support ~600KHz which is considered as low power mode for most
+#of the external digi mic available in market
+HAVE_DMIC_LOWPOWER_MODE_CLK
+
+# Clock frequency for S/PDIF Rx is always same as DDS clock frequency
+CHIP_SPDIF_RX_CLK_DIV_RATIO=1
+
+#A new facility is added to Streplus where the data from DMIC A,B,C,D,E,F can be
+#routed to 6th and 7th decimation chains.
+HAVE_ADAPTIVE_ROUTING
+
+# Chips after Crescendo D01 has new registers controlling what PCM_INTERNAL_CLK_MODE does
+CHIP_HAS_PCM_INTERNAL_CLK_MODE_CONFIG
+PCM_INTERNAL_CLK_CNT_LIMIT=1250
+PCM_INTERNAL_CLK_HIGH_LIMIT=20
+
+# Chip requires audio endpoint sample rate change on kcodec clk change
+CHIP_NEEDS_RATE_CHANGE_ON_KCODEC_CLK
+
+# Which PIO pin the MCLK_IN signal comes in on.
+# This is hardwired into the chip design. (Mostly only Curator needs to know
+# which actual pin it is, but unfortunately we need to know in order to
+# ask Curator to measure the frequency on it.)
+# From CS-00415056-DD
+EXTERNAL_MCLK_IN_PIO=24
+
+# Newer AUX PLL compared to Crescendo, some differences are exposed in CCP messages
+CHIP_HAS_AUX_PLL_V3
+
+# Metadata tag allocation count
+# This isn't really a chip property, but it's a function of pool sizes
+# and supported use cases, so it's definitely chip-specific
+DEFAULT_TAG_ALLOC_COUNT = 218
+
+# To avoid direct access contention when using DIRECT_FLASH Streplus includes
+# hardware to avoid the contention between audio accessing Apps Flash and hostio (USB etc).
+# See EC-914, and B-261597 for the hardware implementation.
+CHIP_HAS_DEDICATED_APPS_QSPI_TRB_QUEUE=1
+
+# The clock manager asks the curator regularly for the chip temperature.
+INSTALL_TEMPERATURE_MONITORING
+#clock manager should request for change of voltage for ADPLL freq > 120MHz
+INSTALL_DYNAMIC_VOLTAGE_CTRL
+# Install the audio loopback enhancements
+INSTALL_AUDIO_LOOPBACK_ENHANCEMENTS
+
+# The subsystem has an ADPLL that need to be put in a safe state before
+# going into deep sleep. So the clock manager wants to be notified about
+# transitions to and from deep sleep.
+CLK_MGR_CARES_ABOUT_DEEP_SLEEP
+
+# The subsystem has an ADPLL that allows fine grained control over
+# the DSP clock frequency.
+CLK_MGR_CLK_CAN_BE_MAPPED
+
+# Chip has QCA-heritage BTSS, not CSR-heritage BTSS. Usages:
+# - With Zeagle IP we cannot detect if SCO is master or Slave.
+CHIP_HAS_CSR_BT=0
+
+# Maor can use the circular SUBMSG MMU feature
+# B-284857, B-294323
+CHIP_HAS_SUBMSG_CIRCULAR_MMU=1
+
+# Stack size (in words) determined empirically.
+FORCE_STACK_SIZE_WORDS=0x3C0
+
+# Chip has DMIC enable threshold in ANC hardware
+CHIP_HAS_DMIC_ENABLE_THRESHOLD_HARDWARE
+
+%list ALL_SRCDIRS
+# TBD
+components/hal/maor_audio
+
+%build
+DM2_RAM_BASE_ADDR_FROM_BUILD = 0xFF000000
+
+# This is used for generating a local MIB .sdb file for convenience
+# (see hydra_modules/mib/makefile).
+# For that purpose it needs to match CHIP_VERSION_MAJOR in
+# (SUB_SYS_)CHIP_VERSION in the hardware (don't include any minor/
+# variant IDs). See <http://wiki/ChipVersionIDs>.
+# It's not critical that it be correct, but it makes configcmd
+# outputs filenames that are more likely to be what you want.
+# This definition is also used by cap_download_mgr (via DSP_ID),
+# which means it shouldn't change once it's been assigned.
+CHIPVER_FOR_MIB=0x50
+
+# Used by kcc
+CHIP_NAME = maor_audio
+
+# The clock manager asks the curator regularly for the chip temperature.
+BUILD_TEMPERATURE_MONITORING = TRUE
+# Build the audio loopback enhancements
+BUILD_AUDIO_LOOPBACK_ENHANCEMENTS=True
+# Clock manager will ask curator to change voltage for freq > 120MHz
+BUILD_DYNAMIC_VOLTAGE_CHANGE = TRUE
+
+%options
+# A new hardware is added to Streplus which is attached to Analog/Digital mics where
+# it is possible to route mic data to internal hardware buffer.
+SUPPORTS_CONTINUOUS_BUFFERING = not UNIT_TEST_BUILD
+AOV_EOD_ENABLED = not UNIT_TEST_BUILD
+
+# P0 and P1 share a common heap and do not have their own separate shared heaps.
+COMMON_SHARED_HEAP = True

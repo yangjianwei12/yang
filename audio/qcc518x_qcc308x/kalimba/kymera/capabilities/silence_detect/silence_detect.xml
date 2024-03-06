@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Copyright (c) 2016 - 2021 Qualcomm Technologies International, Ltd. -->
+<ns1:UnifiedParameterSchema xmlns:ns1="com.csr.cps.4">
+	<Version>
+		<Revision>$Id: //depot/dspsw/dev/sd/kalimba/kymera/capabilities/silence_detect/silence_detect.xml#1 $</Revision>
+		<ChangeList>$Change: 3627443 $</ChangeList>
+		<ChangeDate>$DateTime: 2021/03/17 16:07:08 $</ChangeDate>
+		<UserID>$Author: at26 $</UserID>
+	</Version>
+	<CodeBase>
+		<BaseName>silence_detect</BaseName>
+		<CompileConfig></CompileConfig>
+	</CodeBase>
+	<Capability>
+		<CapabilityID>0x00D3</CapabilityID>
+        <AlternativeCapabilityID>0x40B5</AlternativeCapabilityID>
+		<VariantID>SD</VariantID>
+		<InstallOperator>INSTALL_OPERATOR_SILENCE_DETECT</InstallOperator>
+		<CapabilityName>Silence Detection Capability</CapabilityName>
+		<ProductName>SD-1.0</ProductName>
+		<SampleRate>48000</SampleRate>
+		<VersionMajor>1</VersionMajor>
+	</Capability>
+    
+<!--
+ 	***************** STATUS BIT Enumerations ******************
+-->
+	<StatusBitField>
+		<Comment/>
+		<Symbol>SYSMODE.STATIC</Symbol>
+		<Value>0</Value>
+		<VariantID/>
+		<StatRef>CUR_MODE</StatRef>
+		<Indicator>N</Indicator>
+		<Display>Mode: Static</Display>
+		<BitmapID/>
+		<Point/>
+	</StatusBitField>
+	<StatusBitField>
+		<Comment/>
+		<Symbol>SYSMODE.FULL</Symbol>
+		<Value>1</Value>
+		<VariantID/>
+		<StatRef>CUR_MODE</StatRef>
+		<Indicator>F</Indicator>
+		<Display>Mode: Full processing</Display>
+		<BitmapID/>
+		<Point/>
+	</StatusBitField>
+	<StatusBitField>
+		<Comment/>
+		<Symbol>SYSMODE.PASSTHRU</Symbol>
+		<Value>2</Value>
+		<VariantID/>
+		<StatRef>CUR_MODE</StatRef>
+		<Indicator>P</Indicator>
+		<Display>Mode: Pass Thru</Display>
+		<BitmapID/>
+		<Point/>
+	</StatusBitField>
+	<StatusBitField>
+		<Comment/>
+		<Symbol>CONTROL.MODE_OVERRIDE</Symbol>
+		<Value>0x2000</Value>
+		<VariantID/>
+		<StatRef>OVR_CONTROL</StatRef>
+		<Indicator>M</Indicator>
+		<Display>MODE,</Display>
+		<BitmapID>-1</BitmapID>
+		<Point>0 0</Point>
+	</StatusBitField>
+<!--
+	***************** PARAMETERS ******************
+-->
+	<Parameter>
+		<VariantID/>
+		<Comment/>
+		<Symbol>SMOOTHING_FACTOR</Symbol>
+		<Display>Smoothing Time Constant</Display>
+		<Default>0.1</Default>
+		<Precision>3</Precision>
+		<Q>7.N</Q>
+		<Conversion>FORMAT_DOUBLE</Conversion>
+		<Mult/>
+		<Units>sec</Units>
+		<Min>0.01</Min>
+		<Max>10</Max>
+		<Description>Controls the rate of smoothing applied to the internally computed signal power for every channel</Description>
+	</Parameter>
+	<Parameter>
+		<VariantID/>
+		<Comment/>
+		<Symbol>SD_THRESH_POWER</Symbol>
+		<Display>Threshold Power</Display>
+		<Default>-13.287712379549459</Default>
+		<Precision>7</Precision>
+		<Q>8.N</Q>
+		<Conversion>FORMAT_DOUBLE_MULT</Conversion>
+		<Mult>3.01029995663981</Mult>
+		<Units>dB</Units>
+		<Min>-120</Min>
+		<Max>-1</Max>
+		<Description>Power used to compute the level below which we detect Silence. Lower values reduce false detection. Setting this to maximum effectively disables this functionality.</Description>
+	</Parameter>
+	<Parameter>
+		<VariantID/>
+		<Comment/>
+		<Symbol>HYST_BAND_PERC</Symbol>
+		<Display>Hysteresis Band</Display>
+		<Default>0.10</Default>
+		<Precision>3</Precision>
+		<Q>1.N</Q>
+		<Conversion>FORMAT_PERCENT</Conversion>
+		<Mult/>
+		<Units>%</Units>
+		<Min>0</Min>
+		<Max>100</Max>
+		<Description>Percentage of threshold power by which the threshold signal must be crossed before we change the reported state</Description>
+	</Parameter>
+    
+ <!--
+	 ***************** STATISTICS ******************
+-->	
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CUR_MODE</Symbol>
+		<SysMode/>
+		<ShortName>SysMode</ShortName>
+		<LongName>System Mode</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>SYS_INDICATOR</Conversion>
+		<Mult/>
+		<Link/>
+		<Limit>-1</Limit>
+		<Rect>46 113 57 190</Rect> 
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>ALL_CHANNELS_SILENT_FLAG</Symbol>
+		<SysMode/>
+		<ShortName>ACSF</ShortName>
+		<LongName>All Channels Are Silent Flag</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>130 5 145 90</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL1_COMPUTED_POWER_LEVEL</Symbol>
+		<SysMode/>
+		<ShortName>C1PL</ShortName>
+		<LongName>Channel 1 Computed Power Level</LongName>
+		<Precision>0</Precision>
+		<Q>8.N</Q>
+		<Conversion>FORMAT_DOUBLE_MULT</Conversion>
+		<Mult>3.01029995663981</Mult>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>98 207 109 297</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL1_SILENT_FLAG</Symbol>
+		<SysMode/>
+		<ShortName>C1SF</ShortName>
+		<LongName>Channel 1 Silent Flag</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>130 5 145 90</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL2_COMPUTED_POWER_LEVEL</Symbol>
+		<SysMode/>
+		<ShortName>C2PL</ShortName>
+		<LongName>Channel 2 Computed Power Level</LongName>
+		<Precision>0</Precision>
+		<Q>8.N</Q>
+		<Conversion>FORMAT_DOUBLE_MULT</Conversion>
+		<Mult>3.01029995663981</Mult>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>98 207 109 297</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL2_SILENT_FLAG</Symbol>
+		<SysMode/>
+		<ShortName>C2SF</ShortName>
+		<LongName>Channel 2 Silent Flag</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>130 5 145 90</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL3_COMPUTED_POWER_LEVEL</Symbol>
+		<SysMode/>
+		<ShortName>C3PL</ShortName>
+		<LongName>Channel 3 Computed Power Level</LongName>
+		<Precision>0</Precision>
+		<Q>8.N</Q>
+		<Conversion>FORMAT_DOUBLE_MULT</Conversion>
+		<Mult>3.01029995663981</Mult>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>98 207 109 297</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL3_SILENT_FLAG</Symbol>
+		<SysMode/>
+		<ShortName>C3SF</ShortName>
+		<LongName>Channel 3 Silent Flag</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>130 5 145 90</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL4_COMPUTED_POWER_LEVEL</Symbol>
+		<SysMode/>
+		<ShortName>C4PL</ShortName>
+		<LongName>Channel 4 Computed Power Level</LongName>
+		<Precision>0</Precision>
+		<Q>8.N</Q>
+		<Conversion>FORMAT_DOUBLE_MULT</Conversion>
+		<Mult>3.01029995663981</Mult>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>98 207 109 297</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL4_SILENT_FLAG</Symbol>
+		<SysMode/>
+		<ShortName>C4SF</ShortName>
+		<LongName>Channel 4 Silent Flag</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>130 5 145 90</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL5_COMPUTED_POWER_LEVEL</Symbol>
+		<SysMode/>
+		<ShortName>C5PL</ShortName>
+		<LongName>Channel 5 Computed Power Level</LongName>
+		<Precision>0</Precision>
+		<Q>8.N</Q>
+		<Conversion>FORMAT_DOUBLE_MULT</Conversion>
+		<Mult>3.01029995663981</Mult>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>98 207 109 297</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL5_SILENT_FLAG</Symbol>
+		<SysMode/>
+		<ShortName>C5SF</ShortName>
+		<LongName>Channel 5 Silent Flag</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>130 5 145 90</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL6_COMPUTED_POWER_LEVEL</Symbol>
+		<SysMode/>
+		<ShortName>C6PL</ShortName>
+		<LongName>Channel 6 Computed Power Level</LongName>
+		<Precision>0</Precision>
+		<Q>8.N</Q>
+		<Conversion>FORMAT_DOUBLE_MULT</Conversion>
+		<Mult>3.01029995663981</Mult>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>98 207 109 297</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL6_SILENT_FLAG</Symbol>
+		<SysMode/>
+		<ShortName>C6SF</ShortName>
+		<LongName>Channel 6 Silent Flag</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>130 5 145 90</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL7_COMPUTED_POWER_LEVEL</Symbol>
+		<SysMode/>
+		<ShortName>C7PL</ShortName>
+		<LongName>Channel 7 Computed Power Level</LongName>
+		<Precision>0</Precision>
+		<Q>8.N</Q>
+		<Conversion>FORMAT_DOUBLE_MULT</Conversion>
+		<Mult>3.01029995663981</Mult>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>98 207 109 297</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL7_SILENT_FLAG</Symbol>
+		<SysMode/>
+		<ShortName>C7SF</ShortName>
+		<LongName>Channel 7 Silent Flag</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>130 5 145 90</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL8_COMPUTED_POWER_LEVEL</Symbol>
+		<SysMode/>
+		<ShortName>C8PL</ShortName>
+		<LongName>Channel 8 Computed Power Level</LongName>
+		<Precision>0</Precision>
+		<Q>8.N</Q>
+		<Conversion>FORMAT_DOUBLE_MULT</Conversion>
+		<Mult>3.01029995663981</Mult>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>98 207 109 297</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CHANNEL8_SILENT_FLAG</Symbol>
+		<SysMode/>
+		<ShortName>C8SF</ShortName>
+		<LongName>Channel 8 Silent Flag</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>130 5 145 90</Rect>
+		<Description/>
+	</Statistic>
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>OVR_CONTROL</Symbol>
+		<SysMode/>
+		<ShortName>SysCtrl</ShortName>
+		<LongName>System Control</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_BIT_INDICATOR</Conversion>
+		<Mult/>
+		<Link/>
+		<Limit>-1</Limit>
+		<Rect>19 48 29 90</Rect>
+		<Description/>
+	</Statistic>
+</ns1:UnifiedParameterSchema>
+

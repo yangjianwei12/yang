@@ -1,0 +1,28 @@
+############################################################################
+#  Copyright (c) 2015 Qualcomm Technologies International, Ltd.
+#  All Rights Reserved.
+#  Qualcomm Technologies International, Ltd. Confidential and Proprietary.
+#  Notifications and licenses are retained for attribution purposes only
+############################################################################
+
+#
+# Capabilities to include in the build
+#
+%list CFG_CAPABILITIES
+AAH_16K
+
+# List of global include paths
+%list ALL_INCDIRS
+../lib_private/aah
+capabilities/base_aud_cur_op
+capabilities/anc_hw_manager
+
+
+# List of libraries to build
+%list CFG_LIBS
+../lib_private/aah/aah
+capabilities/base_aud_cur_op/base_aud_cur_op
+capabilities/aah/aah
+
+%build
+RELEASE_BUILD=FALSE

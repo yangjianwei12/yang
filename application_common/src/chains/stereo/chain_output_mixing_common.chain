@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2023 Qualcomm Technologies International, Ltd.-->
+
+<chain name="CHAIN_OUTPUT_MIXING_COMMON" id="0" generate_operator_roles_enum="False" generate_endpoint_roles_enum="False">
+
+    <include_header name="app_chain_config.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+
+    <operator name="OPR_SOURCE_SYNC" id="CAP_ID_SOURCE_SYNC" priority="medium">
+        <sink name="PRI_IN_L" terminal="0"/>
+        <sink name="PRI_IN_R" terminal="1"/>
+        <sink name="SEC_IN_L" terminal="2"/>
+        <sink name="SEC_IN_R" terminal="3"/>
+        <source name="PRI_OUT_L" terminal="0"/>
+        <source name="PRI_OUT_R" terminal="1"/>
+        <source name="SEC_OUT_L" terminal="2"/>
+        <source name="SEC_OUT_R" terminal="3"/>
+    </operator>
+
+    <operator name="OPR_VOLUME_CONTROL" id="CAP_ID_OUTPUT_VOL_CTRL" priority="medium">
+        <sink name="MAIN_IN_L" terminal="0"/>
+        <sink name="AUX_IN" terminal="1"/>
+        <sink name="MAIN_IN_R" terminal="2"/>		
+        <source name="OUT_L" terminal="0"/>
+        <source name="OUT_R" terminal="1"/>
+    </operator>
+
+    <operator name="OPR_MIXER" id="CAP_ID_MIXER" priority="medium">
+        <sink name="PRI_IN_L" terminal="0"/>
+        <sink name="PRI_IN_R" terminal="1"/>
+        <sink name="SEC_IN_L" terminal="2"/>
+        <sink name="SEC_IN_R" terminal="3"/>
+        <source name="OUT_L" terminal="0"/>
+        <source name="OUT_R" terminal="1"/>
+    </operator>
+
+    <input sink="OPR_SOURCE_SYNC.PRI_IN_L" role="EPR_SINK_STEREO_MIXER_BACKGROUND_L"/>
+    <input sink="OPR_SOURCE_SYNC.PRI_IN_R" role="EPR_SINK_STEREO_MIXER_BACKGROUND_R"/>
+    <input sink="OPR_SOURCE_SYNC.SEC_IN_L" role="EPR_SINK_STEREO_MIXER_L"/>
+    <input sink="OPR_SOURCE_SYNC.SEC_IN_R" role="EPR_SINK_STEREO_MIXER_R"/>
+    <input sink="OPR_VOLUME_CONTROL.AUX_IN" role="EPR_VOLUME_AUX"/>
+    <connection source="OPR_SOURCE_SYNC.PRI_OUT_L" sink="OPR_MIXER.PRI_IN_L"/>
+    <connection source="OPR_SOURCE_SYNC.PRI_OUT_R" sink="OPR_MIXER.PRI_IN_R"/>
+    <connection source="OPR_SOURCE_SYNC.SEC_OUT_L" sink="OPR_VOLUME_CONTROL.MAIN_IN_L"/>
+    <connection source="OPR_SOURCE_SYNC.SEC_OUT_R" sink="OPR_VOLUME_CONTROL.MAIN_IN_R"/>
+    <connection source="OPR_VOLUME_CONTROL.OUT_L" sink="OPR_MIXER.SEC_IN_L"/>
+    <connection source="OPR_VOLUME_CONTROL.OUT_R" sink="OPR_MIXER.SEC_IN_R"/>
+    <output source="OPR_MIXER.OUT_L" role="EPR_SOURCE_STEREO_OUTPUT_L"/>
+    <output source="OPR_MIXER.OUT_R" role="EPR_SOURCE_STEREO_OUTPUT_R"/>
+</chain>

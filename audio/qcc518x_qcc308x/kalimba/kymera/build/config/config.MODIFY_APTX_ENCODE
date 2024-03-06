@@ -1,0 +1,41 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright (c) 2016 - 2017 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# definitions for a2d9 builds
+
+%cpp
+
+#
+# Capabilities we want to include on the chip
+# This list gets turned into a set of defines of the form INSTALL_OPERATOR_XXXX
+#
+
+
+%list CFG_CAPABILITIES
+APTX_LOW_LATENCY_ENCODE
+APTX_CLASSIC_ENCODE
+APTX_CLASSIC_MONO_ENCODER
+APTX_CLASSIC_MONO_ENCODER_NO_AUTOSYNC
+APTXHD_ENCODE
+APTXHD_MONO_ENCODER
+APTXHD_MONO_ENCODER_NO_AUTOSYNC
+
+# List of global include paths
+%list ALL_INCDIRS
+../lib/codec
+../lib_private/aptx
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/aptx_encode/aptx_encode
+
+# Libraries needed by aptx capabilities
+../lib_private/aptx/aptx
+../lib_private/aptx_processing/aptx_processing
+capabilities/encoder/encoder
+
+%list MAXIM_LIBS
+../lib_private/aptx/aptx

@@ -1,0 +1,25 @@
+var group__voice__audio__manager =
+[
+    [ "voice_audio_manager.c", "voice__audio__manager_8c.html", null ],
+    [ "voice_audio_manager_capture.c", "voice__audio__manager__capture_8c.html", null ],
+    [ "voice_audio_manager_sm.c", "voice__audio__manager__sm_8c.html", null ],
+    [ "voice_audio_manager_wuw_detection.c", "voice__audio__manager__wuw__detection_8c.html", null ],
+    [ "va_audio_wuw_detected_response_t", "structva__audio__wuw__detected__response__t.html", null ],
+    [ "VaAudioCaptureDataReceived", "group__voice__audio__manager.html#gab4495d4433dfbf9ec9bcfea5b89b38c0", null ],
+    [ "VaAudioWakeUpWordDetected", "group__voice__audio__manager.html#gad8a0f7702524b690ce22826c2abb8347", null ],
+    [ "VoiceAudioManager_CaptureStarted", "group__voice__audio__manager.html#gacc1acc478a155ae94ecd74d3047512dd", null ],
+    [ "VoiceAudioManager_CaptureStarting", "group__voice__audio__manager.html#ga87ef899c349a783235ae28b354a7a249", null ],
+    [ "VoiceAudioManager_CaptureStopping", "group__voice__audio__manager.html#ga1d931411e4e4ada99a92224f49a0ae57", null ],
+    [ "VoiceAudioManager_CaptureTestReset", "group__voice__audio__manager.html#ga06b0a44a67337bc1856fc8dfc90aef5e", null ],
+    [ "VoiceAudioManager_IsMicDataExpected", "group__voice__audio__manager.html#ga54aa660ac28869f5266366d951b516ab", null ],
+    [ "VoiceAudioManager_IsWuwDetectionExpected", "group__voice__audio__manager.html#ga8c7473e9b5c1ad6bb89c37c1d093b3f9", null ],
+    [ "VoiceAudioManager_SetWuwDetectedCallback", "group__voice__audio__manager.html#ga19e7fc54e9553ee56956386844ff7823", null ],
+    [ "VoiceAudioManager_SmTestReset", "group__voice__audio__manager.html#ga653a91cd7c22513d59b0686b8b31f0ec", null ],
+    [ "VoiceAudioManager_StartCapture", "group__voice__audio__manager.html#ga268722cc061b5f42ae2faee84903e1b5", null ],
+    [ "VoiceAudioManager_StartDetection", "group__voice__audio__manager.html#gae51a67e3d39547737efb57f6675ad18e", null ],
+    [ "VoiceAudioManager_StopCapture", "group__voice__audio__manager.html#gac868752d8ff71756ef80f0d04efc4a1e", null ],
+    [ "VoiceAudioManager_StopDetection", "group__voice__audio__manager.html#ga66cb87a57d60132df9af232072f5a1c8", null ],
+    [ "VoiceAudioManager_UpdateState", "group__voice__audio__manager.html#ga03d9ca76d8387313465790c0390e5a20", null ],
+    [ "VoiceAudioManager_WuwDetected", "group__voice__audio__manager.html#gae9d340b693574b6edc23c9edd986c0d1", null ],
+    [ "VoiceAudioManager_WuwTestReset", "group__voice__audio__manager.html#gaed2102498aa9a88fca7ea6529a6df711", null ]
+];

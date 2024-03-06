@@ -1,0 +1,91 @@
+
+/******************************************************************************
+ *  Copyright (c) 2019 - 2020 Qualcomm Technologies International, Ltd.
+ *  %%version
+ *  %%appversion
+ *
+ *  FILE
+ *      gatt_csis_server_db.dbi
+ *
+ *  DESCRIPTION
+ *      This file defines the Coordinated Set Identification Service in JSON format, which is 
+ *      fairly human readable.  This file is included in the main 
+ *      application data base file which is used to produce ATT flat data 
+ *      base. 
+ *
+ *****************************************************************************/
+#ifndef __GATT_CSIS_SERVER_DB_DBI__
+#define __GATT_CSIS_SERVER_DB_DBI__
+
+
+ #include "gatt_csis_server_uuids.h"
+ 
+/* Primary service declaration of Coordinates Set Identification Service */
+
+primary_service {
+    uuid : UUID_COORDINATED_SET_IDENTIFICATION_SERVICE,
+    name : "COORDINATED_SET_IDENTIFICATION_SERVICE",
+
+    /* SIRK characteristic - fixed size 16+1 octets*/
+
+    characteristic {
+        uuid        : UUID_SET_IDENTITY_RESOLVING_KEY,
+        name        : "SIRK",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, notify],
+
+        value       : 0x00,
+
+        client_config {
+            name : "SIRK_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ ]
+            }	
+
+    },
+    /* Coordinated Set Size characteristic - 1 -octet. */
+
+    characteristic {
+        uuid        : UUID_COORDINATED_SET_SIZE,
+        name        : "SIZE",
+        flags       : [FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x01],
+
+        client_config {
+            name : "SIZE_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ ]
+            }	
+    },
+
+
+    /* Coordinated Set Lock characteristic - 1 octet . */
+
+    characteristic {
+        uuid        : UUID_COORDINATED_SET_LOCK,
+        name        : "LOCK",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_w ],
+        properties  : [ write, read, notify ],
+
+        value       : 0x01, 
+		
+        client_config {
+            name : "LOCK_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ ]
+            }		
+
+    },
+	
+	/* Coordinated Set Rank characteristic - 1 octet . */
+
+    characteristic {
+        uuid        : UUID_COORDINATED_SET_RANK,
+        name        : "RANK",
+        flags       : [FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [read ],
+
+        value       : 0x01
+    }
+},
+
+#endif /* __GATT_CSIS_SERVER_DB_DBI__ */

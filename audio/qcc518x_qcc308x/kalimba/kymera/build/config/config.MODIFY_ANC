@@ -1,0 +1,26 @@
+#########################################################################
+# Copyright (c) 2017 Qualcomm Technologies International, Ltd.
+# All Rights Reserved.
+# Qualcomm Technologies International, Ltd. Confidential and Proprietary.
+#########################################################################
+
+%cpp
+
+# Indicate that Stre has ANC hardware (from "Tasha")
+HAVE_ANC_HARDWARE
+
+#Enable or Disable ANC RAMPING Related changes
+INSTALL_ANC_RAMPING_CODE
+# Allow uninterruptable ANC operation (needs HAVE_ANC_HARDWARE and HAVE_SIDE_TONE_HARDWARE)
+INSTALL_UNINTERRUPTABLE_ANC
+
+# Fake successful closure of endpoints and defer closure until ANC releases
+INSTALL_ANC_STICKY_ENDPOINTS
+
+# Enable ANC licensing
+USE_ANC_LICENSING
+
+HAVE_ANC_CONFIG
+
+%build
+BUILD_UNINTERRUPTABLE_ANC=True

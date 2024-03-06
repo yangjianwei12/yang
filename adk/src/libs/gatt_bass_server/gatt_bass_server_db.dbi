@@ -1,0 +1,48 @@
+#ifndef __GATT_BASS_SERVER_DB_DBI__
+#define __GATT_BASS_SERVER_DB_DBI__
+
+#include "gatt_bass_server_uuids.h"
+
+primary_service {
+    uuid : UUID_BASS_SERVICE,
+    name : "BASS_SERVICE",
+    characteristic {
+        uuid       : UUID_BASS_BROADCAST_AUDIO_SCAN_CONTROL_POINT,
+        name       : "BROADCAST_AUDIO_SCAN_CONTROL_POINT",
+        flags       : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_W ],
+        properties  : [ write, write_cmd ],
+
+        size_value  : 0x00
+    },
+
+    characteristic {
+        uuid        : UUID_BASS_BROADCAST_RECEIVE_STATE,
+        name        : "BASS_BROADCAST_RECEIVE_STATE_1",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00 ],
+
+        client_config {
+            name : "BROADCAST_RECEIVE_STATE_CLIENT_CONFIG_1",
+            flags : [ FLAG_IRQ ]
+        }
+    },
+
+    characteristic {
+        uuid        : UUID_BASS_BROADCAST_RECEIVE_STATE,
+        name        : "BASS_BROADCAST_RECEIVE_STATE_2",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00 ],
+
+        client_config {
+            name : "BROADCAST_RECEIVE_STATE_CLIENT_CONFIG_2",
+            flags : [ FLAG_IRQ ]
+        }
+    }
+},
+
+#endif /* __GATT_BASS_SERVER_DB_DBI__ */
+

@@ -1,0 +1,21 @@
+############################################################################
+#  Copyright (c) 2021 Qualcomm Technologies International, Ltd.
+#  All Rights Reserved.
+#  Qualcomm Technologies International, Ltd. Confidential and Proprietary.
+#  Notifications and licenses are retained for attribution purposes only
+############################################################################
+
+#
+# Capabilities to include in the build
+#
+%list CFG_CAPABILITIES
+ANC_HW_MANAGER
+
+# List of global include paths
+%list ALL_INCDIRS
+capabilities/base_aud_cur_op
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/base_aud_cur_op/base_aud_cur_op
+capabilities/anc_hw_manager/anc_hw_manager

@@ -1,0 +1,2295 @@
+
+/home/svc-audio-dspsw/kymera_builds/builds/2023/kymera_2312060823/kalimba/kymera/tools/KCSMaker/out/14612/maor_rom_release/download/debugbin/download_peq.elf:     file format elf32-littlekalimba
+
+Disassembly of section .text_minim:
+
+84200000 <$_peq_wrapper_create>:
+PEQ_OP_DATA* peq_cap_extra_op_data = NULL;
+unsigned peq_cap_extra_op_data_len = 0;
+#endif
+
+bool peq_wrapper_create(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+84200000:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200002:	17 00       	r5 = r0 + Null;
+84200004:	28 09       	r6 = r3 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+84200006:	ff fd 04 f0 	call (m) 0x8ea;
+8420000a:	25 e7 
+8420000c:	16 00       	r4 = r0 + Null;
+{
+    PEQ_OP_DATA *p_ext_data = get_instance_data(op_data);
+    PEQ_OP_DATA_EXT *p_ext_data_ext = (PEQ_OP_DATA_EXT *) p_ext_data;
+    unsigned config_flags = MULTI_INPLACE_FLAG|MULTI_METADATA_FLAG;
+    /* call base_op create, which also allocates and fills response message */
+    if (!base_op_create_lite(op_data, response_data))
+8420000e:	43 08       	r1 = r6 + Null;
+84200010:	3a 00       	r0 = r5 + Null;
+84200012:	ff fd 04 f0 	call (m) 0x850;
+84200016:	3f e1 
+84200018:	10 04       	Null = r0 - Null;
+8420001a:	03 62       	if NE jump (m) Lc_peq_wrapper_create_3;
+
+8420001c <Lc_peq_wrapper_create_2>:
+    {
+        return FALSE;
+8420001c:	02 00       	r0 = Null + Null;
+8420001e:	4c 6e       	jump (m) Lc_peq_wrapper_create_10;
+
+84200020 <Lc_peq_wrapper_create_3>:
+        L2_DBG_MSG("PEQ wrapper create, Offload is enabled");
+    }
+#endif
+
+    /* Allocate channels, in-place, no hot connect */
+    if( !multi_channel_create(op_data, config_flags, sizeof(peq_channels)) )
+84200020:	04 28       	r2 = Null + 16;
+84200022:	43 22       	r1 = Null + 9;
+84200024:	3a 00       	r0 = r5 + Null;
+84200026:	ff fd f4 f1 	call (m) 0x3e99a;
+8420002a:	35 eb 
+8420002c:	10 04       	Null = r0 - Null;
+8420002e:	0b 62       	if NE jump (m) Lc_peq_wrapper_create_6;
+
+84200030 <Lc_peq_wrapper_create_4>:
+ * \param  response_data Pointer to the pointer to message that is allocated in the function.
+ * \param  new_status  A status ID that is to be sent in the message.
+ */
+inline static void base_op_change_response_status(void **response_data, STATUS_KYMERA new_status)
+{
+    (((OP_STD_RSP *)(*response_data))->status = new_status);
+84200030:	01 f0 00 60 	rMAC = Null + 4096;
+84200034:	82 f0 00 e8 	r0 = M[r6 + Null];
+84200038:	51 8e       	M[r0 + 4] = rMAC;
+    {
+        base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+        PEQ_CAP_Destroy(op_data);
+8420003a:	3a 00       	r0 = r5 + Null;
+8420003c:	02 f0 39 e6 	call (m) $_PEQ_CAP_Destroy;
+
+84200040 <Lc_peq_wrapper_create_5>:
+        return TRUE;
+84200040:	42 20       	r0 = Null + 1;
+84200042:	3a 6e       	jump (m) Lc_peq_wrapper_create_10;
+
+84200044 <Lc_peq_wrapper_create_6>:
+    }
+    multi_channel_set_callbacks(op_data,peq_channel_create,peq_channel_destroy);
+84200044:	42 f0 04 f0 	r2 = Null + 69207471;
+84200048:	af 49 
+8420004a:	42 f0 03 f0 	r1 = Null + 69207415;
+8420004e:	77 49 
+84200050:	3a 00       	r0 = r5 + Null;
+84200052:	ff fd f7 f1 	call (m) 0x3ee94;
+84200056:	23 e2 
+
+    /* allocate memory for coefficients */
+    /* create the "parameters" object (note, these is not same as the OBPM parameters) */
+    p_ext_data->peq_coeff_params = xzppmalloc(PEQ_PARAMS_OBJECT_SIZE(PEQ_MAX_STAGES), MALLOC_PREFERENCE_DM1);
+84200058:	43 20       	r1 = Null + 1;
+8420005a:	02 f0 fc 40 	r0 = Null + 252;
+8420005e:	ff fd 37 f0 	call (m) 0x6f8e;
+84200062:	31 e9 
+    if(p_ext_data->peq_coeff_params == NULL)
+84200064:	62 f0 3a 8e 	M[r4 + 232] = r0;
+84200068:	e4 61       	if EQ jump (m) Lc_peq_wrapper_create_4;
+
+8420006a <Lc_peq_wrapper_create_7>:
+    peq_cap_extra_op_data_len = sizeof(PEQ_OP_DATA);
+#endif
+
+
+    /* Initialize extended data for operator.  Assume intialized to zero*/
+    p_ext_data->Host_mode = PEQ_SYSMODE_FULL;
+8420006a:	81 20       	rMAC = Null + 2;
+8420006c:	61 f0 31 8e 	M[r4 + 196] = rMAC;
+    p_ext_data->Cur_mode  = PEQ_SYSMODE_FULL;
+84200070:	61 f0 30 8e 	M[r4 + 192] = rMAC;
+    p_ext_data->coeff_override_flag = 0;
+84200074:	60 f0 2e 8e 	M[r4 + 184] = Null;
+    p_ext_data->sample_rate = 8000;
+84200078:	01 f0 40 7b 	rMAC = Null + 8000;
+8420007c:	61 f0 2c 8e 	M[r4 + 176] = rMAC;
+    p_ext_data->peq_proc_func = 0;
+84200080:	60 f0 39 8e 	M[r4 + 228] = Null;
+    /* By default, compute one stage of coefficients per frame*/
+    p_ext_data_ext->num_stages_per_frame = 1;
+84200084:	41 20       	rMAC = Null + 1;
+84200086:	61 f0 3c 8e 	M[r4 + 240] = rMAC;
+
+    if(!cpsInitParameters(&p_ext_data->parms_def,(unsigned*)PEQ_GetDefaults(PEQ_CAP_ID),(unsigned*)&p_ext_data->peq_cap_params,sizeof(PEQ_PARAMETERS)))
+8420008a:	22 f0 5c 40 	r0 = Null + 16476;
+8420008e:	02 f0 37 ee 	call (m) $_PEQ_GetDefaults;
+84200092:	13 00       	r1 = r0 + Null;
+84200094:	05 f0 b0 40 	r3 = Null + 176;
+84200098:	62 f0 d0 20 	r0 = r4 + 208;
+8420009c:	34 00       	r2 = r4 + Null;
+8420009e:	ff fd 05 f0 	call (m) 0xb2a;
+842000a2:	2d e4 
+842000a4:	10 04       	Null = r0 - Null;
+842000a6:	c5 61       	if EQ jump (m) Lc_peq_wrapper_create_4;
+
+842000a8 <Lc_peq_wrapper_create_8>:
+/* ******************************* Helper functions ************************************ */
+
+inline static void peq_recompute_coeffs(PEQ_OP_DATA *p_ext_data)
+{
+   /* If not overriding, signal coefficient reset */
+   if(p_ext_data->coeff_override_flag==0)
+842000a8:	60 f0 2e 88 	Null = M[r4 + 184];
+842000ac:	ca 63       	if NE jump (m) Lc_peq_wrapper_create_5;
+
+842000ae <Lc_peq_wrapper_create_9>:
+   {
+       p_ext_data->ParameterLoadStatus = -1;
+842000ae:	41 24       	rMAC = Null - 1;
+842000b0:	61 f0 2f 8e 	M[r4 + 188] = rMAC;
+842000b4:	c6 6f       	jump (m) Lc_peq_wrapper_create_5;
+
+842000b6 <Lc_peq_wrapper_create_10>:
+    }
+
+    peq_recompute_coeffs(p_ext_data);
+
+    return TRUE;
+}
+842000b6:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842000b8:	d8 4c       	rts;
+
+842000ba <$_peq_wrapper_destroy>:
+
+bool peq_wrapper_destroy(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+842000ba:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+842000bc:	16 00       	r4 = r0 + Null;
+842000be:	2f 00       	r5 = r3 + Null;
+    /* check that we are not trying to destroy a running operator */
+    if (opmgr_op_is_running(op_data))
+842000c0:	ff fd 2d f0 	call (m) 0x5ca4;
+842000c4:	25 ef 
+842000c6:	10 04       	Null = r0 - Null;
+842000c8:	09 60       	if EQ jump (m) Lc_peq_wrapper_destroy_3;
+
+842000ca <Lc_peq_wrapper_destroy_2>:
+    {
+        /* We can't destroy a running operator. */
+        return base_op_build_std_response_ex(op_data, STATUS_CMD_FAILED, response_data);
+842000ca:	03 f0 00 60 	r1 = Null + 4096;
+842000ce:	3c 00       	r2 = r5 + Null;
+842000d0:	32 00       	r0 = r4 + Null;
+842000d2:	ff fd 03 f0 	call (m) 0x8c0;
+842000d6:	2f ef 
+842000d8:	09 6e       	jump (m) Lc_peq_wrapper_destroy_4;
+
+842000da <Lc_peq_wrapper_destroy_3>:
+    }
+    else
+    {
+        PEQ_CAP_Destroy(op_data);
+842000da:	32 00       	r0 = r4 + Null;
+842000dc:	02 f0 39 e1 	call (m) $_PEQ_CAP_Destroy;
+        /* call base_op destroy that creates and fills response message, too */
+        return base_op_destroy_lite(op_data, response_data);
+842000e0:	3b 00       	r1 = r5 + Null;
+842000e2:	32 00       	r0 = r4 + Null;
+842000e4:	ff fd 03 f0 	call (m) 0x834;
+842000e8:	31 ea 
+
+842000ea <Lc_peq_wrapper_destroy_4>:
+    }
+}
+842000ea:	f2 48       	popm <FP, r4, r5, rLink>;
+842000ec:	d8 4c       	rts;
+
+842000ee <$_peq_wrapper_start>:
+
+bool peq_wrapper_start(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+842000ee:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+842000f0:	10 09       	r6 = r0 + Null;
+842000f2:	1a 09       	r8 = r1 + Null;
+842000f4:	27 00       	r5 = r2 + Null;
+842000f6:	29 09       	r7 = r3 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+842000f8:	ff fd 03 f0 	call (m) 0x8ea;
+842000fc:	33 ef 
+842000fe:	16 00       	r4 = r0 + Null;
+
+bool peq_wrapper_start(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+    PEQ_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    if (!multi_channel_start(op_data, message_data, response_id, response_data))
+84200100:	4d 08       	r3 = r7 + Null;
+84200102:	3c 00       	r2 = r5 + Null;
+84200104:	53 08       	r1 = r8 + Null;
+84200106:	42 08       	r0 = r6 + Null;
+84200108:	ff fd f6 f1 	call (m) 0x3ed14;
+8420010c:	2d e0 
+8420010e:	10 04       	Null = r0 - Null;
+84200110:	03 62       	if NE jump (m) Lc_peq_wrapper_start_3;
+
+84200112 <Lc_peq_wrapper_start_2>:
+    {
+        return FALSE;
+84200112:	02 00       	r0 = Null + Null;
+84200114:	08 6e       	jump (m) Lc_peq_wrapper_start_6;
+
+84200116 <Lc_peq_wrapper_start_3>:
+    }
+
+    /* Initiate coefficient update */
+    if(p_ext_data->ParameterLoadStatus!=0)
+84200116:	60 f0 2f 88 	Null = M[r4 + 188];
+8420011a:	04 60       	if EQ jump (m) Lc_peq_wrapper_start_5;
+
+8420011c <Lc_peq_wrapper_start_4>:
+    {
+         peq_coeff_change(p_ext_data);
+8420011c:	32 00       	r0 = r4 + Null;
+8420011e:	02 f0 23 e5 	call (m) $_peq_coeff_change;
+
+84200122 <Lc_peq_wrapper_start_5>:
+    }
+    return TRUE;
+84200122:	42 20       	r0 = Null + 1;
+
+84200124 <Lc_peq_wrapper_start_6>:
+}
+84200124:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200126:	d8 4c       	rts;
+
+84200128 <$_peq_wrapper_opmsg_obpm_set_control>:
+
+
+/* **************************** Operator message handlers ******************************** */
+
+bool peq_wrapper_opmsg_obpm_set_control(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200128:	f5 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>, SP = SP + 0x10;
+8420012a:	18 09       	r6 = r1 + Null;
+8420012c:	27 00       	r5 = r2 + Null;
+8420012e:	2a 09       	r8 = r3 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+84200130:	ff fd 03 f0 	call (m) 0x8ea;
+84200134:	3b ed 
+84200136:	16 00       	r4 = r0 + Null;
+bool peq_wrapper_opmsg_obpm_set_control(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    PEQ_OP_DATA        *op_extra_data = get_instance_data(op_data);
+    unsigned            i,num_controls,cntrl_value;
+    CPS_CONTROL_SOURCE  cntrl_src;
+    OPMSG_RESULT_STATES result = OPMSG_RESULT_STATES_NORMAL_STATE;
+84200138:	01 09       	r7 = Null + Null;
+
+    if(!cps_control_setup(message_data, resp_length, resp_data,&num_controls))
+8420013a:	c5 11       	r3 = FP + 28;
+8420013c:	54 08       	r2 = r8 + Null;
+8420013e:	3b 00       	r1 = r5 + Null;
+84200140:	42 08       	r0 = r6 + Null;
+84200142:	ff fd 06 f0 	call (m) 0xe9e;
+84200146:	3d ea 
+84200148:	10 04       	Null = r0 - Null;
+8420014a:	03 62       	if NE jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_3;
+
+8420014c <Lc_peq_wrapper_opmsg_obpm_set_control_2>:
+    {
+       return FALSE;
+8420014c:	02 00       	r0 = Null + Null;
+8420014e:	4e 6e       	jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_21;
+
+84200150 <Lc_peq_wrapper_opmsg_obpm_set_control_3>:
+    }
+
+    for(i=0;i<num_controls;i++)
+84200150:	07 00       	r5 = Null + Null;
+84200152:	06 6e       	jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_7;
+
+84200154 <Lc_peq_wrapper_opmsg_obpm_set_control_4>:
+        {
+            result = OPMSG_RESULT_STATES_INVALID_CONTROL_VALUE;
+            break;
+        }
+        /* Control is Mode */
+        if(cntrl_src == CPS_SOURCE_HOST)
+84200154:	22 d1       	r0 = MBS[FP + 36];
+84200156:	23 62       	if NE jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_14;
+
+84200158 <Lc_peq_wrapper_opmsg_obpm_set_control_5>:
+        {
+            op_extra_data->Host_mode = cntrl_value;
+84200158:	61 f0 31 8e 	M[r4 + 196] = rMAC;
+
+8420015c <Lc_peq_wrapper_opmsg_obpm_set_control_6>:
+    if(!cps_control_setup(message_data, resp_length, resp_data,&num_controls))
+    {
+       return FALSE;
+    }
+
+    for(i=0;i<num_controls;i++)
+8420015c:	7f 20       	r5 = r5 + 1;
+
+8420015e <Lc_peq_wrapper_opmsg_obpm_set_control_7>:
+8420015e:	39 d8       	rMAC = M[FP + 28];
+84200160:	78 04       	Null = r5 - rMAC;
+84200162:	02 f0 99 e0 	if C jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_10;
+
+84200166 <Lc_peq_wrapper_opmsg_obpm_set_control_8>:
+    {
+        unsigned  cntrl_id=cps_control_get(message_data,i,&cntrl_value,&cntrl_src);
+84200166:	45 12       	r3 = FP + 36;
+84200168:	04 12       	r2 = FP + 32;
+8420016a:	3b 00       	r1 = r5 + Null;
+8420016c:	42 08       	r0 = r6 + Null;
+8420016e:	ff fd 06 f0 	call (m) 0xee2;
+84200172:	35 eb 
+
+        if(cntrl_id != OPMSG_CONTROL_MODE_ID)
+84200174:	50 24       	Null = r0 - 1;
+84200176:	0c 60       	if EQ jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_12;
+
+84200178 <Lc_peq_wrapper_opmsg_obpm_set_control_9>:
+        {
+            result = OPMSG_RESULT_STATES_UNSUPPORTED_CONTROL;
+84200178:	21 71       	r7 = Null + 4;
+
+8420017a <Lc_peq_wrapper_opmsg_obpm_set_control_10>:
+            op_extra_data->Ovr_Control = (cntrl_src == CPS_SOURCE_OBPM_DISABLE) ?  0 : PEQ_CONTROL_MODE_OVERRIDE;
+            op_extra_data->Obpm_mode = cntrl_value;
+        }
+    }
+
+    if(op_extra_data->Ovr_Control & PEQ_CONTROL_MODE_OVERRIDE)
+8420017a:	61 f0 33 88 	rMAC = M[r4 + 204];
+8420017e:	11 f1 00 00 	rMAC = rMAC AND 0x2000;
+84200182:	18 60       	if EQ jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_15;
+
+84200184 <Lc_peq_wrapper_opmsg_obpm_set_control_11>:
+    {
+       op_extra_data->Cur_mode = op_extra_data->Obpm_mode;
+84200184:	61 f0 32 88 	rMAC = M[r4 + 200];
+84200188:	61 f0 30 8e 	M[r4 + 192] = rMAC;
+8420018c:	17 6e       	jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_16;
+
+8420018e <Lc_peq_wrapper_opmsg_obpm_set_control_12>:
+        {
+            result = OPMSG_RESULT_STATES_UNSUPPORTED_CONTROL;
+            break;
+        }
+        /* Only interested in lower 8-bits of value */
+        cntrl_value &= 0xFF;
+8420018e:	41 d8       	rMAC = M[FP + 32];
+84200190:	89 c3       	rMAC = rMAC AND 0xff;
+84200192:	41 de       	M[FP + 32] = rMAC;
+        if (cntrl_value >= PEQ_SYSMODE_MAX_MODES)
+84200194:	08 25       	Null = rMAC - 4;
+84200196:	df 65       	if NC jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_4;
+
+84200198 <Lc_peq_wrapper_opmsg_obpm_set_control_13>:
+        {
+            result = OPMSG_RESULT_STATES_INVALID_CONTROL_VALUE;
+84200198:	29 71       	r7 = Null + 5;
+            break;
+8420019a:	f0 6f       	jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_10;
+
+8420019c <Lc_peq_wrapper_opmsg_obpm_set_control_14>:
+        {
+            op_extra_data->Host_mode = cntrl_value;
+        }
+        else
+        {
+            op_extra_data->Ovr_Control = (cntrl_src == CPS_SOURCE_OBPM_DISABLE) ?  0 : PEQ_CONTROL_MODE_OVERRIDE;
+8420019c:	11 f0 00 40 	rMAC = Null + 8192;
+842001a0:	d0 24       	Null = r0 - 3;
+842001a2:	00 f0 01 c0 	if EQ rMAC = Null + Null;
+842001a6:	61 f0 33 8e 	M[r4 + 204] = rMAC;
+            op_extra_data->Obpm_mode = cntrl_value;
+842001aa:	41 d8       	rMAC = M[FP + 32];
+842001ac:	61 f0 32 8e 	M[r4 + 200] = rMAC;
+842001b0:	d6 6f       	jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_6;
+
+842001b2 <Lc_peq_wrapper_opmsg_obpm_set_control_15>:
+    {
+       op_extra_data->Cur_mode = op_extra_data->Obpm_mode;
+    }
+    else
+    {
+      op_extra_data->Cur_mode = op_extra_data->Host_mode;
+842001b2:	61 f0 31 88 	rMAC = M[r4 + 196];
+842001b6:	61 f0 30 8e 	M[r4 + 192] = rMAC;
+
+842001ba <Lc_peq_wrapper_opmsg_obpm_set_control_16>:
+    }
+
+    L2_DBG_MSG1("PEQ Cur_mode = %d", op_extra_data->Cur_mode);
+842001ba:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842001be:	88 24       	Null = rMAC - 2;
+842001c0:	09 68       	if LT jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_18;
+
+842001c2 <Lc_peq_wrapper_opmsg_obpm_set_control_17>:
+842001c2:	63 f0 30 88 	r1 = M[r4 + 192];
+842001c6:	55 f1 02 f0 	r0 = Null + 357564416;
+842001ca:	00 40 
+842001cc:	ff fd 07 f0 	call (m) 0x10c2;
+842001d0:	37 e7 
+
+842001d2 <Lc_peq_wrapper_opmsg_obpm_set_control_18>:
+
+    cps_response_set_result(resp_data,result);
+842001d2:	4b 08       	r1 = r7 + Null;
+842001d4:	52 08       	r0 = r8 + Null;
+842001d6:	ff fd 06 f0 	call (m) 0xf30;
+842001da:	3b ea 
+
+    /* Set the Reinit flag after setting the paramters */
+    if (result == OPMSG_RESULT_STATES_NORMAL_STATE)
+842001dc:	0f f9 00 c2 	Null = r7 - Null;
+842001e0:	04 62       	if NE jump (m) Lc_peq_wrapper_opmsg_obpm_set_control_20;
+
+842001e2 <Lc_peq_wrapper_opmsg_obpm_set_control_19>:
+    {
+        op_extra_data->ReInitFlag = 1;
+842001e2:	41 20       	rMAC = Null + 1;
+842001e4:	61 f0 2d 8e 	M[r4 + 180] = rMAC;
+
+842001e8 <Lc_peq_wrapper_opmsg_obpm_set_control_20>:
+    }
+    return TRUE;
+842001e8:	42 20       	r0 = Null + 1;
+
+842001ea <Lc_peq_wrapper_opmsg_obpm_set_control_21>:
+}
+842001ea:	f5 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, rLink>;
+842001ec:	d8 4c       	rts;
+
+842001ee <$_peq_wrapper_opmsg_obpm_get_params>:
+
+bool peq_wrapper_opmsg_obpm_get_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842001ee:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842001f0:	1f 00       	r5 = r1 + Null;
+842001f2:	26 00       	r4 = r2 + Null;
+842001f4:	28 09       	r6 = r3 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+842001f6:	ff fd 03 f0 	call (m) 0x8ea;
+842001fa:	35 e7 
+
+bool peq_wrapper_opmsg_obpm_get_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    PEQ_OP_DATA *op_extra_data = get_instance_data(op_data);
+
+    return cpsGetParameterMsgHandler(&op_extra_data->parms_def ,message_data, resp_length,resp_data);
+842001fc:	02 f0 d0 44 	r0 = r0 + 208;
+84200200:	45 08       	r3 = r6 + Null;
+84200202:	34 00       	r2 = r4 + Null;
+84200204:	3b 00       	r1 = r5 + Null;
+84200206:	ff fd 04 f0 	call (m) 0xb7c;
+8420020a:	37 eb 
+
+8420020c <Lc_peq_wrapper_opmsg_obpm_get_params_2>:
+}
+8420020c:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+8420020e:	d8 4c       	rts;
+
+84200210 <$_peq_wrapper_opmsg_obpm_get_defaults>:
+
+bool peq_wrapper_opmsg_obpm_get_defaults(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200210:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200212:	1f 00       	r5 = r1 + Null;
+84200214:	26 00       	r4 = r2 + Null;
+84200216:	28 09       	r6 = r3 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+84200218:	ff fd 03 f0 	call (m) 0x8ea;
+8420021c:	33 e6 
+
+bool peq_wrapper_opmsg_obpm_get_defaults(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    PEQ_OP_DATA *op_extra_data = get_instance_data(op_data);
+
+    return cpsGetDefaultsMsgHandler(&op_extra_data->parms_def ,message_data, resp_length,resp_data);
+8420021e:	02 f0 d0 44 	r0 = r0 + 208;
+84200222:	45 08       	r3 = r6 + Null;
+84200224:	34 00       	r2 = r4 + Null;
+84200226:	3b 00       	r1 = r5 + Null;
+84200228:	ff fd 05 f0 	call (m) 0xc2c;
+8420022c:	25 e0 
+
+8420022e <Lc_peq_wrapper_opmsg_obpm_get_defaults_2>:
+}
+8420022e:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200230:	d8 4c       	rts;
+
+84200232 <$_peq_wrapper_opmsg_obpm_set_params>:
+
+bool peq_wrapper_opmsg_obpm_set_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200232:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+84200234:	19 09       	r7 = r1 + Null;
+84200236:	27 00       	r5 = r2 + Null;
+84200238:	28 09       	r6 = r3 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+8420023a:	ff fd 03 f0 	call (m) 0x8ea;
+8420023e:	31 e5 
+84200240:	16 00       	r4 = r0 + Null;
+bool peq_wrapper_opmsg_obpm_set_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    PEQ_OP_DATA *op_extra_data = get_instance_data(op_data);
+    bool retval;
+
+    retval = cpsSetParameterMsgHandler(&op_extra_data->parms_def ,message_data, resp_length,resp_data);
+84200242:	62 f0 d0 20 	r0 = r4 + 208;
+84200246:	45 08       	r3 = r6 + Null;
+84200248:	3c 00       	r2 = r5 + Null;
+8420024a:	4b 08       	r1 = r7 + Null;
+8420024c:	ff fd 05 f0 	call (m) 0xd00;
+84200250:	35 e5 
+/* ******************************* Helper functions ************************************ */
+
+inline static void peq_recompute_coeffs(PEQ_OP_DATA *p_ext_data)
+{
+   /* If not overriding, signal coefficient reset */
+   if(p_ext_data->coeff_override_flag==0)
+84200252:	60 f0 2e 88 	Null = M[r4 + 184];
+84200256:	04 62       	if NE jump (m) Lc_peq_wrapper_opmsg_obpm_set_params_3;
+
+84200258 <Lc_peq_wrapper_opmsg_obpm_set_params_2>:
+   {
+       p_ext_data->ParameterLoadStatus = -1;
+84200258:	41 24       	rMAC = Null - 1;
+8420025a:	61 f0 2f 8e 	M[r4 + 188] = rMAC;
+
+8420025e <Lc_peq_wrapper_opmsg_obpm_set_params_3>:
+    retval = cpsSetParameterMsgHandler(&op_extra_data->parms_def ,message_data, resp_length,resp_data);
+
+    /* If not overriding, signal coefficient reset */
+    peq_recompute_coeffs(op_extra_data);
+
+    return retval;
+8420025e:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+84200260:	d8 4c       	rts;
+
+84200262 <$_peq_wrapper_opmsg_obpm_get_status>:
+}
+
+bool peq_wrapper_opmsg_obpm_get_status(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200262:	f5 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>, SP = SP + 0x10;
+84200264:	16 00       	r4 = r0 + Null;
+84200266:	1a 09       	r8 = r1 + Null;
+84200268:	27 00       	r5 = r2 + Null;
+8420026a:	28 09       	r6 = r3 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+8420026c:	ff fd 03 f0 	call (m) 0x8ea;
+84200270:	3f e3 
+84200272:	11 09       	r7 = r0 + Null;
+bool peq_wrapper_opmsg_obpm_get_status(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    PEQ_OP_DATA *op_extra_data = get_instance_data(op_data);
+    unsigned *resp;
+
+    if (!common_obpm_status_helper(message_data, resp_length, resp_data, sizeof(PEQ_STATISTICS), &resp))
+84200274:	c1 11       	rMAC = FP + 28;
+84200276:	09 1c       	pushm <rMAC>;
+84200278:	05 2a       	r3 = Null + 24;
+8420027a:	44 08       	r2 = r6 + Null;
+8420027c:	3b 00       	r1 = r5 + Null;
+8420027e:	52 08       	r0 = r8 + Null;
+84200280:	ff fd 06 f0 	call (m) 0xf46;
+84200284:	27 e6 
+84200286:	7f 4c       	SP = SP + -4;
+84200288:	10 04       	Null = r0 - Null;
+8420028a:	03 62       	if NE jump (m) Lc_peq_wrapper_opmsg_obpm_get_status_3;
+
+8420028c <Lc_peq_wrapper_opmsg_obpm_get_status_2>:
+    {
+        return FALSE;
+8420028c:	02 00       	r0 = Null + Null;
+8420028e:	2b 6e       	jump (m) Lc_peq_wrapper_opmsg_obpm_get_status_6;
+
+84200290 <Lc_peq_wrapper_opmsg_obpm_get_status_3>:
+    }
+
+    if (resp)
+84200290:	39 d8       	rMAC = M[FP + 28];
+84200292:	28 60       	if EQ jump (m) Lc_peq_wrapper_opmsg_obpm_get_status_5;
+
+84200294 <Lc_peq_wrapper_opmsg_obpm_get_status_4>:
+ *
+ * \return - bitwise flag of active channel
+ */
+static inline unsigned multi_channel_active_channels(OPERATOR_DATA *op_data)
+{
+   MULTI_CHANNEL_DEF *chan_def = multi_channel_get_channel_def(op_data);
+84200294:	32 00       	r0 = r4 + Null;
+84200296:	ff fd f6 f1 	call (m) 0x3eec2;
+8420029a:	2d e1 
+        OPSTATE_INTERNAL op_state_stat;
+        unsigned comp_config = 0;
+        unsigned state;
+
+        chan_mask = multi_channel_active_channels(op_data);
+        op_state_stat = chan_mask ? OPSTATE_INTERNAL_CONNECTED : OPSTATE_INTERNAL_READY;
+8420029c:	87 20       	r5 = Null + 2;
+8420029e:	11 89       	rMAC = M[r0 + 16];
+842002a0:	21 f0 47 ce 	if NE r5 = Null + 1;
+        state = opmgr_op_is_running(op_data) ? 0 : 1;
+842002a4:	32 00       	r0 = r4 + Null;
+842002a6:	ff fd 2c f0 	call (m) 0x5ca4;
+842002aa:	3f ef 
+842002ac:	06 00       	r4 = Null + Null;
+842002ae:	10 04       	Null = r0 - Null;
+842002b0:	20 f0 46 ce 	if EQ r4 = Null + 1;
+
+        resp = cpsPack2Words(op_extra_data->Cur_mode, op_extra_data->Ovr_Control, resp);
+842002b4:	3c d8       	r2 = M[FP + 28];
+842002b6:	93 f0 33 88 	r1 = M[r7 + 204];
+842002ba:	92 f0 30 88 	r0 = M[r7 + 192];
+842002be:	ff fd 6b f2 	call (m) 0x4da2c;
+842002c2:	2f eb 
+842002c4:	3a de       	M[FP + 28] = r0;
+        resp = cpsPack2Words(op_extra_data->coeff_override_flag, comp_config, resp);
+842002c6:	3c d8       	r2 = M[FP + 28];
+842002c8:	92 f0 2e 88 	r0 = M[r7 + 184];
+842002cc:	03 00       	r1 = Null + Null;
+842002ce:	ff fd 6b f2 	call (m) 0x4da2c;
+842002d2:	3f ea 
+842002d4:	3a de       	M[FP + 28] = r0;
+        cpsPack2Words(state, op_state_stat, resp);
+842002d6:	3c d8       	r2 = M[FP + 28];
+842002d8:	3b 00       	r1 = r5 + Null;
+842002da:	32 00       	r0 = r4 + Null;
+842002dc:	ff fd 6b f2 	call (m) 0x4da2c;
+842002e0:	31 ea 
+
+842002e2 <Lc_peq_wrapper_opmsg_obpm_get_status_5>:
+    }
+    return TRUE;
+842002e2:	42 20       	r0 = Null + 1;
+
+842002e4 <Lc_peq_wrapper_opmsg_obpm_get_status_6>:
+}
+842002e4:	f5 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, rLink>;
+842002e6:	d8 4c       	rts;
+
+842002e8 <$_peq_wrapper_opmsg_set_ucid>:
+
+bool peq_wrapper_opmsg_set_ucid(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842002e8:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+842002ea:	12 09       	r8 = r0 + Null;
+842002ec:	19 09       	r7 = r1 + Null;
+842002ee:	27 00       	r5 = r2 + Null;
+842002f0:	28 09       	r6 = r3 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+842002f2:	ff fd 02 f0 	call (m) 0x8ea;
+842002f6:	39 ef 
+842002f8:	16 00       	r4 = r0 + Null;
+{
+    PEQ_OP_DATA *op_extra_data = get_instance_data(op_data);
+    PS_KEY_TYPE key;
+    bool retval;
+
+    retval = cpsSetUcidMsgHandler(&op_extra_data->parms_def,message_data,resp_length,resp_data);
+842002fa:	62 f0 d0 20 	r0 = r4 + 208;
+842002fe:	45 08       	r3 = r6 + Null;
+84200300:	3c 00       	r2 = r5 + Null;
+84200302:	4b 08       	r1 = r7 + Null;
+84200304:	ff fd 05 f0 	call (m) 0xd92;
+84200308:	2f e4 
+8420030a:	17 00       	r5 = r0 + Null;
+
+    key = MAP_CAPID_UCID_SBID_TO_PSKEYID(PEQ_CAP_ID,op_extra_data->parms_def.ucid,OPMSG_P_STORE_PARAMETER_SUB_ID);
+8420030c:	61 f0 38 88 	rMAC = M[r4 + 224];
+84200310:	8a c2       	r0 = rMAC AND 0x3f;
+84200312:	12 54       	r0 = r0 LSHIFT 1;
+84200314:	02 f0 2e f0 	r1 = r0 OR 0x202e00;
+84200318:	00 f2 53 c8 
+    ps_entry_read((void*)op_data,key,PERSIST_ANY,ups_params_peq);
+8420031c:	42 f0 05 f0 	r3 = Null + 69207369;
+84200320:	49 49 
+84200322:	04 00       	r2 = Null + Null;
+84200324:	52 08       	r0 = r8 + Null;
+84200326:	ff fd 40 f0 	call (m) 0x8370;
+8420032a:	2b e2 
+
+    return retval;;
+8420032c:	3a 00       	r0 = r5 + Null;
+
+8420032e <Lc_peq_wrapper_opmsg_set_ucid_2>:
+}
+8420032e:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200330:	d8 4c       	rts;
+
+84200332 <$_peq_wrapper_opmsg_get_ps_id>:
+
+bool peq_wrapper_opmsg_get_ps_id(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200332:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200334:	1f 00       	r5 = r1 + Null;
+84200336:	26 00       	r4 = r2 + Null;
+84200338:	28 09       	r6 = r3 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+8420033a:	ff fd 02 f0 	call (m) 0x8ea;
+8420033e:	31 ed 
+
+bool peq_wrapper_opmsg_get_ps_id(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    PEQ_OP_DATA *op_extra_data = get_instance_data(op_data);
+
+    return cpsGetUcidMsgHandler(&op_extra_data->parms_def,PEQ_CAP_ID,message_data,resp_length,resp_data);
+84200340:	10 1c       	pushm <r6>;
+84200342:	23 f0 5c 40 	r1 = Null + 16476;
+84200346:	02 f0 d0 44 	r0 = r0 + 208;
+8420034a:	35 00       	r3 = r4 + Null;
+8420034c:	3c 00       	r2 = r5 + Null;
+8420034e:	ff fd 05 f0 	call (m) 0xdb4;
+84200352:	27 e3 
+84200354:	7f 4c       	SP = SP + -4;
+
+84200356 <Lc_peq_wrapper_opmsg_get_ps_id_2>:
+}
+84200356:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200358:	d8 4c       	rts;
+
+8420035a <$_peq_wrapper_opmsg_override_coeffs>:
+    return (((msb & PEQ_OVR_COEF_MSW_MASK) << PEQ_OVR_COEF_MSW_SHIFT) |
+            ((lsb & PEQ_OVR_COEF_LSW_MASK) >> PEQ_OVR_COEF_LSW_SHIFT));
+}
+
+bool peq_wrapper_opmsg_override_coeffs(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+8420035a:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+8420035c:	1e 00       	r4 = r1 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+8420035e:	ff fd 02 f0 	call (m) 0x8ea;
+84200362:	2d ec 
+}
+
+bool peq_wrapper_opmsg_override_coeffs(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    PEQ_OP_DATA *p_ext_data = get_instance_data(op_data);
+    unsigned payload_n_stages = OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, NUM_STAGES);
+84200364:	f1 88       	rMAC = M[r4 + 12];
+84200366:	89 c6       	rMAC = rMAC AND 0xffff;
+
+    /* Cannot exceed PEQ_MAX_STAGES (10) stages used for allocating coeffs_scales[] in peq_wrapper_create() */
+    if (payload_n_stages > PEQ_MAX_STAGES)
+84200368:	88 26       	Null = rMAC - 10;
+8420036a:	09 f0 89 e0 	if LS jump (m) Lc_peq_wrapper_opmsg_override_coeffs_3;
+
+8420036e <Lc_peq_wrapper_opmsg_override_coeffs_2>:
+    {
+        return FALSE;
+8420036e:	02 00       	r0 = Null + Null;
+84200370:	83 6e       	jump (m) Lc_peq_wrapper_opmsg_override_coeffs_10;
+
+84200372 <Lc_peq_wrapper_opmsg_override_coeffs_3>:
+    }
+
+    /* We received client ID, length and then opmsgID and OBPM params */
+    if (payload_n_stages == 0)
+84200372:	08 04       	Null = rMAC - Null;
+84200374:	0a 62       	if NE jump (m) Lc_peq_wrapper_opmsg_override_coeffs_6;
+
+84200376 <Lc_peq_wrapper_opmsg_override_coeffs_4>:
+    {
+        /* If we were overriding, then signal reset of coefficents */
+        if (p_ext_data->coeff_override_flag != 0)
+84200376:	20 f0 2e 88 	Null = M[r0 + 184];
+8420037a:	7d 60       	if EQ jump (m) Lc_peq_wrapper_opmsg_override_coeffs_9;
+
+8420037c <Lc_peq_wrapper_opmsg_override_coeffs_5>:
+        {
+            p_ext_data->coeff_override_flag = 0;
+8420037c:	20 f0 2e 8e 	M[r0 + 184] = Null;
+inline static void peq_recompute_coeffs(PEQ_OP_DATA *p_ext_data)
+{
+   /* If not overriding, signal coefficient reset */
+   if(p_ext_data->coeff_override_flag==0)
+   {
+       p_ext_data->ParameterLoadStatus = -1;
+84200380:	41 24       	rMAC = Null - 1;
+84200382:	21 f0 2f 8e 	M[r0 + 188] = rMAC;
+84200386:	77 6e       	jump (m) Lc_peq_wrapper_opmsg_override_coeffs_9;
+
+84200388 <Lc_peq_wrapper_opmsg_override_coeffs_6>:
+    else
+    {
+        int base_stage;
+        int i;
+        unsigned *payload, *stage_data;
+        t_peq_params *p_coeff_params = p_ext_data->peq_coeff_params;
+84200388:	27 f0 3a 88 	r5 = M[r0 + 232];
+        t_coeffs_scales *p_coeffs_scales;
+
+        p_coeff_params->num_stages = payload_n_stages;
+8420038c:	39 ee       	M[r5 + Null] = rMAC;
+        p_coeff_params->gain_exponent = peq_ovr_coef_get_word(OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_EXPONENT_MSB),
+                                                              OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_EXPONENT_LSB));
+8420038e:	73 89       	r1 = M[r4 + 20];
+84200390:	9c c6       	r2 = r1 AND 0xffff;
+84200392:	33 89       	r1 = M[r4 + 16];
+#endif /* K32 */
+
+static inline int peq_ovr_coef_get_word(unsigned int msb, unsigned int lsb)
+{
+    return (((msb & PEQ_OVR_COEF_MSW_MASK) << PEQ_OVR_COEF_MSW_SHIFT) |
+            ((lsb & PEQ_OVR_COEF_LSW_MASK) >> PEQ_OVR_COEF_LSW_SHIFT));
+84200394:	9b c6       	r1 = r1 AND 0xffff;
+84200396:	9b 56       	r1 = r1 LSHIFT 16;
+84200398:	1b 13       	r1 = r1 OR r2;
+        t_peq_params *p_coeff_params = p_ext_data->peq_coeff_params;
+        t_coeffs_scales *p_coeffs_scales;
+
+        p_coeff_params->num_stages = payload_n_stages;
+        p_coeff_params->gain_exponent = peq_ovr_coef_get_word(OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_EXPONENT_MSB),
+                                                              OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_EXPONENT_LSB));
+8420039a:	7b 8e       	M[r5 + 4] = r1;
+        p_coeff_params->gain_mantisa = peq_ovr_coef_get_word(OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_MANTISA_MSB),
+                                                             OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_MANTISA_LSB));
+8420039c:	f3 89       	r1 = M[r4 + 28];
+8420039e:	9c c6       	r2 = r1 AND 0xffff;
+842003a0:	b3 89       	r1 = M[r4 + 24];
+#endif /* K32 */
+
+static inline int peq_ovr_coef_get_word(unsigned int msb, unsigned int lsb)
+{
+    return (((msb & PEQ_OVR_COEF_MSW_MASK) << PEQ_OVR_COEF_MSW_SHIFT) |
+            ((lsb & PEQ_OVR_COEF_LSW_MASK) >> PEQ_OVR_COEF_LSW_SHIFT));
+842003a2:	9b c6       	r1 = r1 AND 0xffff;
+842003a4:	9b 56       	r1 = r1 LSHIFT 16;
+842003a6:	1b 13       	r1 = r1 OR r2;
+
+        p_coeff_params->num_stages = payload_n_stages;
+        p_coeff_params->gain_exponent = peq_ovr_coef_get_word(OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_EXPONENT_MSB),
+                                                              OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_EXPONENT_LSB));
+        p_coeff_params->gain_mantisa = peq_ovr_coef_get_word(OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_MANTISA_MSB),
+                                                             OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_MANTISA_LSB));
+842003a8:	bb 8e       	M[r5 + 8] = r1;
+
+        payload = OPMSG_FIELD_POINTER_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, NUM_STAGES);
+842003aa:	34 23       	r2 = r4 + 12;
+        for (i = 0; i < payload_n_stages; i++)
+842003ac:	03 00       	r1 = Null + Null;
+
+842003ae <Lc_peq_wrapper_opmsg_override_coeffs_7>:
+        {
+            base_stage = 5 + 12 * i;
+842003ae:	1d 43       	r3 = r1 * 12 (int);
+842003b0:	6d 21       	r3 = r3 + 5;
+            stage_data = &payload[base_stage];
+842003b2:	6e 54       	r4 = r3 LSHIFT 2;
+842003b4:	25 00       	r3 = r2 + Null;
+842003b6:	75 01       	r3 = r4 + r3;
+            p_coeffs_scales = &p_coeff_params->coeffs_scales[i];
+842003b8:	3e 23       	r4 = r5 + 12;
+842003ba:	0c f3 98 c9 	r6 = r1 * 24 (int);
+842003be:	46 0c       	r4 = r6 + r4;
+
+            p_coeffs_scales->b2 = peq_ovr_coef_get_word(stage_data[0], stage_data[1]);
+842003c0:	59 f0 01 88 	r7 = M[r3 + 4];
+842003c4:	58 f0 00 e8 	r6 = M[r3 + Null];
+#endif /* K32 */
+
+static inline int peq_ovr_coef_get_word(unsigned int msb, unsigned int lsb)
+{
+    return (((msb & PEQ_OVR_COEF_MSW_MASK) << PEQ_OVR_COEF_MSW_SHIFT) |
+            ((lsb & PEQ_OVR_COEF_LSW_MASK) >> PEQ_OVR_COEF_LSW_SHIFT));
+842003c8:	99 f7 ff 1f 	r7 = r7 AND 0xffff;
+842003cc:	88 f7 ff 1f 	r6 = r6 AND 0xffff;
+842003d0:	08 f8 d8 c8 	r6 = r6 LSHIFT 16;
+842003d4:	00 f9 78 c8 	r6 = r6 OR r7;
+        {
+            base_stage = 5 + 12 * i;
+            stage_data = &payload[base_stage];
+            p_coeffs_scales = &p_coeff_params->coeffs_scales[i];
+
+            p_coeffs_scales->b2 = peq_ovr_coef_get_word(stage_data[0], stage_data[1]);
+842003d8:	68 f0 00 ee 	M[r4 + Null] = r6;
+            p_coeffs_scales->b1 = peq_ovr_coef_get_word(stage_data[2], stage_data[3]);
+842003dc:	59 f0 03 88 	r7 = M[r3 + 12];
+842003e0:	58 f0 02 88 	r6 = M[r3 + 8];
+#endif /* K32 */
+
+static inline int peq_ovr_coef_get_word(unsigned int msb, unsigned int lsb)
+{
+    return (((msb & PEQ_OVR_COEF_MSW_MASK) << PEQ_OVR_COEF_MSW_SHIFT) |
+            ((lsb & PEQ_OVR_COEF_LSW_MASK) >> PEQ_OVR_COEF_LSW_SHIFT));
+842003e4:	99 f7 ff 1f 	r7 = r7 AND 0xffff;
+842003e8:	88 f7 ff 1f 	r6 = r6 AND 0xffff;
+842003ec:	08 f8 d8 c8 	r6 = r6 LSHIFT 16;
+842003f0:	00 f9 78 c8 	r6 = r6 OR r7;
+            base_stage = 5 + 12 * i;
+            stage_data = &payload[base_stage];
+            p_coeffs_scales = &p_coeff_params->coeffs_scales[i];
+
+            p_coeffs_scales->b2 = peq_ovr_coef_get_word(stage_data[0], stage_data[1]);
+            p_coeffs_scales->b1 = peq_ovr_coef_get_word(stage_data[2], stage_data[3]);
+842003f4:	68 f0 01 8e 	M[r4 + 4] = r6;
+            p_coeffs_scales->b0 = peq_ovr_coef_get_word(stage_data[4], stage_data[5]);
+842003f8:	59 f0 05 88 	r7 = M[r3 + 20];
+842003fc:	58 f0 04 88 	r6 = M[r3 + 16];
+#endif /* K32 */
+
+static inline int peq_ovr_coef_get_word(unsigned int msb, unsigned int lsb)
+{
+    return (((msb & PEQ_OVR_COEF_MSW_MASK) << PEQ_OVR_COEF_MSW_SHIFT) |
+            ((lsb & PEQ_OVR_COEF_LSW_MASK) >> PEQ_OVR_COEF_LSW_SHIFT));
+84200400:	99 f7 ff 1f 	r7 = r7 AND 0xffff;
+84200404:	88 f7 ff 1f 	r6 = r6 AND 0xffff;
+84200408:	08 f8 d8 c8 	r6 = r6 LSHIFT 16;
+8420040c:	00 f9 78 c8 	r6 = r6 OR r7;
+            stage_data = &payload[base_stage];
+            p_coeffs_scales = &p_coeff_params->coeffs_scales[i];
+
+            p_coeffs_scales->b2 = peq_ovr_coef_get_word(stage_data[0], stage_data[1]);
+            p_coeffs_scales->b1 = peq_ovr_coef_get_word(stage_data[2], stage_data[3]);
+            p_coeffs_scales->b0 = peq_ovr_coef_get_word(stage_data[4], stage_data[5]);
+84200410:	68 f0 02 8e 	M[r4 + 8] = r6;
+            p_coeffs_scales->a2 = peq_ovr_coef_get_word(stage_data[6], stage_data[7]);
+84200414:	59 f0 07 88 	r7 = M[r3 + 28];
+84200418:	58 f0 06 88 	r6 = M[r3 + 24];
+#endif /* K32 */
+
+static inline int peq_ovr_coef_get_word(unsigned int msb, unsigned int lsb)
+{
+    return (((msb & PEQ_OVR_COEF_MSW_MASK) << PEQ_OVR_COEF_MSW_SHIFT) |
+            ((lsb & PEQ_OVR_COEF_LSW_MASK) >> PEQ_OVR_COEF_LSW_SHIFT));
+8420041c:	99 f7 ff 1f 	r7 = r7 AND 0xffff;
+84200420:	88 f7 ff 1f 	r6 = r6 AND 0xffff;
+84200424:	08 f8 d8 c8 	r6 = r6 LSHIFT 16;
+84200428:	00 f9 78 c8 	r6 = r6 OR r7;
+            p_coeffs_scales = &p_coeff_params->coeffs_scales[i];
+
+            p_coeffs_scales->b2 = peq_ovr_coef_get_word(stage_data[0], stage_data[1]);
+            p_coeffs_scales->b1 = peq_ovr_coef_get_word(stage_data[2], stage_data[3]);
+            p_coeffs_scales->b0 = peq_ovr_coef_get_word(stage_data[4], stage_data[5]);
+            p_coeffs_scales->a2 = peq_ovr_coef_get_word(stage_data[6], stage_data[7]);
+8420042c:	68 f0 03 8e 	M[r4 + 12] = r6;
+            p_coeffs_scales->a1 = peq_ovr_coef_get_word(stage_data[8], stage_data[9]);
+84200430:	59 f0 09 88 	r7 = M[r3 + 36];
+84200434:	58 f0 08 88 	r6 = M[r3 + 32];
+#endif /* K32 */
+
+static inline int peq_ovr_coef_get_word(unsigned int msb, unsigned int lsb)
+{
+    return (((msb & PEQ_OVR_COEF_MSW_MASK) << PEQ_OVR_COEF_MSW_SHIFT) |
+            ((lsb & PEQ_OVR_COEF_LSW_MASK) >> PEQ_OVR_COEF_LSW_SHIFT));
+84200438:	99 f7 ff 1f 	r7 = r7 AND 0xffff;
+8420043c:	88 f7 ff 1f 	r6 = r6 AND 0xffff;
+84200440:	08 f8 d8 c8 	r6 = r6 LSHIFT 16;
+84200444:	00 f9 78 c8 	r6 = r6 OR r7;
+
+            p_coeffs_scales->b2 = peq_ovr_coef_get_word(stage_data[0], stage_data[1]);
+            p_coeffs_scales->b1 = peq_ovr_coef_get_word(stage_data[2], stage_data[3]);
+            p_coeffs_scales->b0 = peq_ovr_coef_get_word(stage_data[4], stage_data[5]);
+            p_coeffs_scales->a2 = peq_ovr_coef_get_word(stage_data[6], stage_data[7]);
+            p_coeffs_scales->a1 = peq_ovr_coef_get_word(stage_data[8], stage_data[9]);
+84200448:	68 f0 04 8e 	M[r4 + 16] = r6;
+            p_coeffs_scales->scale = peq_ovr_coef_get_word(stage_data[10], stage_data[11]);
+8420044c:	58 f0 0b 88 	r6 = M[r3 + 44];
+84200450:	ad 98       	r3 = M[r3 + 40];
+#endif /* K32 */
+
+static inline int peq_ovr_coef_get_word(unsigned int msb, unsigned int lsb)
+{
+    return (((msb & PEQ_OVR_COEF_MSW_MASK) << PEQ_OVR_COEF_MSW_SHIFT) |
+            ((lsb & PEQ_OVR_COEF_LSW_MASK) >> PEQ_OVR_COEF_LSW_SHIFT));
+84200452:	88 f7 ff 1f 	r6 = r6 AND 0xffff;
+84200456:	ad c6       	r3 = r3 AND 0xffff;
+84200458:	ad 56       	r3 = r3 LSHIFT 16;
+8420045a:	00 f8 75 c8 	r3 = r3 OR r6;
+            p_coeffs_scales->b2 = peq_ovr_coef_get_word(stage_data[0], stage_data[1]);
+            p_coeffs_scales->b1 = peq_ovr_coef_get_word(stage_data[2], stage_data[3]);
+            p_coeffs_scales->b0 = peq_ovr_coef_get_word(stage_data[4], stage_data[5]);
+            p_coeffs_scales->a2 = peq_ovr_coef_get_word(stage_data[6], stage_data[7]);
+            p_coeffs_scales->a1 = peq_ovr_coef_get_word(stage_data[8], stage_data[9]);
+            p_coeffs_scales->scale = peq_ovr_coef_get_word(stage_data[10], stage_data[11]);
+8420045e:	75 8f       	M[r4 + 20] = r3;
+                                                              OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_EXPONENT_LSB));
+        p_coeff_params->gain_mantisa = peq_ovr_coef_get_word(OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_MANTISA_MSB),
+                                                             OPMSG_FIELD_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, GAIN_MANTISA_LSB));
+
+        payload = OPMSG_FIELD_POINTER_GET(message_data, OPMSG_PEQ_OVERRIDE_COEFFS, NUM_STAGES);
+        for (i = 0; i < payload_n_stages; i++)
+84200460:	5b 20       	r1 = r1 + 1;
+84200462:	58 04       	Null = r1 - rMAC;
+84200464:	a5 65       	if NC jump (m) Lc_peq_wrapper_opmsg_override_coeffs_7;
+
+84200466 <Lc_peq_wrapper_opmsg_override_coeffs_8>:
+            p_coeffs_scales->a1 = peq_ovr_coef_get_word(stage_data[8], stage_data[9]);
+            p_coeffs_scales->scale = peq_ovr_coef_get_word(stage_data[10], stage_data[11]);
+        }
+
+        /* set a flag to indicate that coefficients are now overridden abd abort coefficient update */
+        p_ext_data->coeff_override_flag = 1;
+84200466:	41 20       	rMAC = Null + 1;
+84200468:	21 f0 2e 8e 	M[r0 + 184] = rMAC;
+        p_ext_data->ParameterLoadStatus = 0;
+8420046c:	20 f0 2f 8e 	M[r0 + 188] = Null;
+        p_ext_data->ReInitFlag = 1;
+84200470:	21 f0 2d 8e 	M[r0 + 180] = rMAC;
+
+84200474 <Lc_peq_wrapper_opmsg_override_coeffs_9>:
+    }
+
+    return(TRUE);
+84200474:	42 20       	r0 = Null + 1;
+
+84200476 <Lc_peq_wrapper_opmsg_override_coeffs_10>:
+}
+84200476:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+84200478:	d8 4c       	rts;
+
+8420047a <$_peq_wrapper_opmsg_set_sample_rate>:
+
+    return cpsGetUcidMsgHandler(&op_extra_data->parms_def,PEQ_CAP_ID,message_data,resp_length,resp_data);
+}
+
+bool peq_wrapper_opmsg_set_sample_rate(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+8420047a:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+8420047c:	1e 00       	r4 = r1 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+8420047e:	ff fd 02 f0 	call (m) 0x8ea;
+84200482:	2d e3 
+bool peq_wrapper_opmsg_set_sample_rate(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    PEQ_OP_DATA *p_ext_data = get_instance_data(op_data);
+    unsigned    sample_rate;
+
+    sample_rate = SAMPLE_RATE_FROM_COMMON_OPMSG(message_data);
+84200484:	f1 88       	rMAC = M[r4 + 12];
+84200486:	89 c6       	rMAC = rMAC AND 0xffff;
+84200488:	49 46       	rMAC = rMAC * 25 (int);
+
+    if(p_ext_data->sample_rate != sample_rate)
+8420048a:	23 f0 2c 88 	r1 = M[r0 + 176];
+8420048e:	58 04       	Null = r1 - rMAC;
+84200490:	09 60       	if EQ jump (m) Lc_peq_wrapper_opmsg_set_sample_rate_4;
+
+84200492 <Lc_peq_wrapper_opmsg_set_sample_rate_2>:
+    {
+         p_ext_data->sample_rate = sample_rate;
+84200492:	21 f0 2c 8e 	M[r0 + 176] = rMAC;
+/* ******************************* Helper functions ************************************ */
+
+inline static void peq_recompute_coeffs(PEQ_OP_DATA *p_ext_data)
+{
+   /* If not overriding, signal coefficient reset */
+   if(p_ext_data->coeff_override_flag==0)
+84200496:	20 f0 2e 88 	Null = M[r0 + 184];
+8420049a:	04 62       	if NE jump (m) Lc_peq_wrapper_opmsg_set_sample_rate_4;
+
+8420049c <Lc_peq_wrapper_opmsg_set_sample_rate_3>:
+   {
+       p_ext_data->ParameterLoadStatus = -1;
+8420049c:	41 24       	rMAC = Null - 1;
+8420049e:	21 f0 2f 8e 	M[r0 + 188] = rMAC;
+
+842004a2 <Lc_peq_wrapper_opmsg_set_sample_rate_4>:
+    {
+         p_ext_data->sample_rate = sample_rate;
+         peq_recompute_coeffs(p_ext_data);
+    }
+
+    return(TRUE);
+842004a2:	42 20       	r0 = Null + 1;
+
+842004a4 <Lc_peq_wrapper_opmsg_set_sample_rate_5>:
+}
+842004a4:	f1 48       	popm <FP, r4, rLink>;
+842004a6:	d8 4c       	rts;
+
+842004a8 <$_peq_wrapper_opmsg_set_stages_per_frame>:
+
+    return(TRUE);
+}
+
+bool peq_wrapper_opmsg_set_stages_per_frame(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842004a8:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+842004aa:	1e 00       	r4 = r1 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+842004ac:	ff fd 02 f0 	call (m) 0x8ea;
+842004b0:	3f e1 
+
+bool peq_wrapper_opmsg_set_stages_per_frame(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    PEQ_OP_DATA *p_ext_data = get_instance_data(op_data);
+    PEQ_OP_DATA_EXT *p_ext_data_ext = (PEQ_OP_DATA_EXT *) p_ext_data;
+    unsigned payload_n_stages = OPMSG_FIELD_GET(message_data, OPMSG_PEQ_SET_STAGES_PER_FRAME, NUM_STAGES);
+842004b2:	f1 88       	rMAC = M[r4 + 12];
+842004b4:	89 c6       	rMAC = rMAC AND 0xffff;
+
+    /* Check for valid number of stages */
+    if (payload_n_stages > PEQ_MAX_STAGES || payload_n_stages <= 0)
+842004b6:	88 26       	Null = rMAC - 10;
+842004b8:	08 f0 89 e0 	if HI jump (m) Lc_peq_wrapper_opmsg_set_stages_per_frame_3;
+
+842004bc <Lc_peq_wrapper_opmsg_set_stages_per_frame_2>:
+842004bc:	08 04       	Null = rMAC - Null;
+842004be:	03 62       	if NE jump (m) Lc_peq_wrapper_opmsg_set_stages_per_frame_4;
+
+842004c0 <Lc_peq_wrapper_opmsg_set_stages_per_frame_3>:
+    {
+        return FALSE;
+842004c0:	02 00       	r0 = Null + Null;
+842004c2:	04 6e       	jump (m) Lc_peq_wrapper_opmsg_set_stages_per_frame_5;
+
+842004c4 <Lc_peq_wrapper_opmsg_set_stages_per_frame_4>:
+    }
+
+    p_ext_data_ext->num_stages_per_frame = payload_n_stages;
+842004c4:	21 f0 3c 8e 	M[r0 + 240] = rMAC;
+
+    return (TRUE);
+842004c8:	42 20       	r0 = Null + 1;
+
+842004ca <Lc_peq_wrapper_opmsg_set_stages_per_frame_5>:
+}
+842004ca:	f1 48       	popm <FP, r4, rLink>;
+842004cc:	d8 4c       	rts;
+
+842004ce <$_peq_wrapper_process_data>:
+        peq_initialize(p_ext_data,channels);
+    }
+}
+
+void peq_wrapper_process_data(OPERATOR_DATA *op_data, TOUCHED_TERMINALS *touched)
+{
+842004ce:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+842004d0:	16 00       	r4 = r0 + Null;
+842004d2:	19 09       	r7 = r1 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+842004d4:	ff fd 02 f0 	call (m) 0x8ea;
+842004d8:	37 e0 
+842004da:	10 09       	r6 = r0 + Null;
+ *
+ * \return - Pointer to active channel
+ */
+static inline MULTI_CHANNEL_CHANNEL_STRUC* multi_channel_first_active_channel(OPERATOR_DATA *op_data)
+{
+   MULTI_CHANNEL_DEF *chan_def = multi_channel_get_channel_def(op_data);
+842004dc:	32 00       	r0 = r4 + Null;
+842004de:	ff fd f4 f1 	call (m) 0x3eec2;
+842004e2:	25 ef 
+   return chan_def->first_active;
+842004e4:	97 98       	r5 = M[r0 + 40];
+        }
+    }
+    else
+#endif /* PEQ_OFFLOAD */
+    {
+        peq_wrapper_check_for_updates(p_ext_data, channels);
+842004e6:	3b 00       	r1 = r5 + Null;
+842004e8:	42 08       	r0 = r6 + Null;
+842004ea:	ae 4e       	call (m) Lc_peq_wrapper_check_for_updates_1;
+ * \return - result samples to process
+ */
+static inline unsigned multi_channel_check_buffers(OPERATOR_DATA *op_data,TOUCHED_TERMINALS *touched)
+{
+     /* Return amount of data to process */
+    return multi_channel_check_buffers_adjusted(op_data,touched,NULL,NULL); /* use generic function to minimize duplicate code */
+842004ec:	05 00       	r3 = Null + Null;
+842004ee:	04 00       	r2 = Null + Null;
+842004f0:	4b 08       	r1 = r7 + Null;
+842004f2:	32 00       	r0 = r4 + Null;
+842004f4:	ff fd f4 f1 	call (m) 0x3ede8;
+842004f8:	35 e7 
+842004fa:	11 09       	r7 = r0 + Null;
+
+        /* Check status of terminals */
+        samples_to_process = multi_channel_check_buffers(op_data,touched);
+
+        /* Perform peq filtering */
+        if(samples_to_process>0)
+842004fc:	0a 60       	if EQ jump (m) Lc_peq_wrapper_process_data_3;
+
+842004fe <Lc_peq_wrapper_process_data_2>:
+        {
+             multi_channel_metadata_propagate(op_data,samples_to_process);
+842004fe:	4b 08       	r1 = r7 + Null;
+84200500:	32 00       	r0 = r4 + Null;
+84200502:	ff fd f4 f1 	call (m) 0x3eecc;
+84200506:	2b ee 
+             peq_processing(p_ext_data,channels,samples_to_process);
+84200508:	4c 08       	r2 = r7 + Null;
+8420050a:	3b 00       	r1 = r5 + Null;
+8420050c:	42 08       	r0 = r6 + Null;
+8420050e:	bd 4e       	call (m) $_peq_processing;
+
+84200510 <Lc_peq_wrapper_process_data_3>:
+        }
+    }
+}
+84200510:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+84200512:	d8 4c       	rts;
+
+84200514 <$_PEQ_CAP_Destroy>:
+ * \brief Free memory which is be used for the entire lifespan of the operator
+ *
+ * \param p_ext_data : pointer to the extra op data structure
+ */
+void PEQ_CAP_Destroy(OPERATOR_DATA *op_data)
+{
+84200514:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200516:	16 00       	r4 = r0 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+84200518:	ff fd 01 f0 	call (m) 0x8ea;
+8420051c:	33 ee 
+8420051e:	17 00       	r5 = r0 + Null;
+ */
+void PEQ_CAP_Destroy(OPERATOR_DATA *op_data)
+{
+    PEQ_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    multi_channel_detroy(op_data);
+84200520:	32 00       	r0 = r4 + Null;
+84200522:	ff fd f2 f1 	call (m) 0x3ea04;
+84200526:	23 e7 
+
+    /* free the coefficient params object */
+    pfree(p_ext_data->peq_coeff_params);
+84200528:	72 f0 3a 88 	r0 = M[r5 + 232];
+8420052c:	ff fd 35 f0 	call (m) 0x6fbe;
+84200530:	33 e4 
+    p_ext_data->peq_coeff_params = NULL;
+84200532:	70 f0 3a 8e 	M[r5 + 232] = Null;
+
+    /* Free background coefficients */
+    pfree(p_ext_data->peq_coeff_background);
+84200536:	72 f0 3b 88 	r0 = M[r5 + 236];
+8420053a:	ff fd 35 f0 	call (m) 0x6fbe;
+8420053e:	25 e4 
+    p_ext_data->peq_coeff_background = NULL;
+84200540:	70 f0 3b 8e 	M[r5 + 236] = Null;
+
+84200544 <Lc_PEQ_CAP_Destroy_2>:
+}
+84200544:	f2 48       	popm <FP, r4, r5, rLink>;
+84200546:	d8 4c       	rts;
+
+84200548 <$_ups_params_peq>:
+    return(TRUE);
+}
+
+bool ups_params_peq(void* instance_data,PS_KEY_TYPE key,PERSISTENCE_RANK rank,
+                 uint16 length, unsigned* data, STATUS_KYMERA status,uint16 extra_status_info)
+{
+84200548:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+8420054a:	2f 00       	r5 = r3 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+8420054c:	ff fd 01 f0 	call (m) 0x8ea;
+84200550:	3f ec 
+84200552:	16 00       	r4 = r0 + Null;
+                 uint16 length, unsigned* data, STATUS_KYMERA status,uint16 extra_status_info)
+{
+    /* returns true if succesful, false if failed */
+    PEQ_OP_DATA *op_extra_data = get_instance_data((OPERATOR_DATA*)instance_data);
+
+    cpsSetParameterFromPsStore(&op_extra_data->parms_def,length,data,status);
+84200554:	e5 d5       	r3 = MHS[FP + -8];
+84200556:	fc d9       	r2 = M[FP + -4];
+84200558:	62 f0 d0 20 	r0 = r4 + 208;
+8420055c:	3b 00       	r1 = r5 + Null;
+8420055e:	ff fd 04 f0 	call (m) 0xdf6;
+84200562:	39 e4 
+/* ******************************* Helper functions ************************************ */
+
+inline static void peq_recompute_coeffs(PEQ_OP_DATA *p_ext_data)
+{
+   /* If not overriding, signal coefficient reset */
+   if(p_ext_data->coeff_override_flag==0)
+84200564:	60 f0 2e 88 	Null = M[r4 + 184];
+84200568:	04 62       	if NE jump (m) Lc_ups_params_peq_3;
+
+8420056a <Lc_ups_params_peq_2>:
+   {
+       p_ext_data->ParameterLoadStatus = -1;
+8420056a:	41 24       	rMAC = Null - 1;
+8420056c:	61 f0 2f 8e 	M[r4 + 188] = rMAC;
+
+84200570 <Lc_ups_params_peq_3>:
+    cpsSetParameterFromPsStore(&op_extra_data->parms_def,length,data,status);
+
+    /* Set the Reinit flag after setting the paramters */
+    peq_recompute_coeffs(op_extra_data);
+
+    return(TRUE);
+84200570:	42 20       	r0 = Null + 1;
+
+84200572 <Lc_ups_params_peq_4>:
+}
+84200572:	f2 48       	popm <FP, r4, r5, rLink>;
+84200574:	d8 4c       	rts;
+
+84200576 <$_peq_channel_create>:
+ *
+ * \param terminal_num : (input) Channel which will be associated with the PEQ object
+ * \param p_ext_data : pointer to the extra op data structure
+ */
+bool peq_channel_create(OPERATOR_DATA *op_data,MULTI_CHANNEL_CHANNEL_STRUC *chan_ptr,unsigned chan_idx)
+{
+84200576:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200578:	1e 00       	r4 = r1 + Null;
+   }
+}
+
+static inline PEQ_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (PEQ_OP_DATA *) base_op_get_instance_data(op_data);
+8420057a:	ff fd 01 f0 	call (m) 0x8ea;
+8420057e:	31 eb 
+84200580:	17 00       	r5 = r0 + Null;
+   PEQ_OP_DATA *p_ext_data = get_instance_data(op_data);
+   peq_channels *peq_chan = (peq_channels*)chan_ptr;
+   t_peq_object *p_dobject;
+
+   /* allocate_peq_object */
+   p_dobject = xzppmalloc(DH_PEQ_OBJECT_SIZE(PEQ_MAX_STAGES), MALLOC_PREFERENCE_DM2);
+84200582:	83 20       	r1 = Null + 2;
+84200584:	02 f0 dc 40 	r0 = Null + 220;
+84200588:	ff fd 35 f0 	call (m) 0x6f8e;
+8420058c:	27 e0 
+   if(p_dobject==NULL)
+8420058e:	10 04       	Null = r0 - Null;
+84200590:	03 62       	if NE jump (m) Lc_peq_channel_create_3;
+
+84200592 <Lc_peq_channel_create_2>:
+   {
+      return FALSE;
+84200592:	02 00       	r0 = Null + Null;
+84200594:	0b 6e       	jump (m) Lc_peq_channel_create_4;
+
+84200596 <Lc_peq_channel_create_3>:
+   }
+
+   p_dobject->max_stages = PEQ_MAX_STAGES;
+84200596:	81 22       	rMAC = Null + 10;
+84200598:	91 8e       	M[r0 + 8] = rMAC;
+   p_dobject->params_ptr = p_ext_data->peq_coeff_params;
+8420059a:	71 f0 3a 88 	rMAC = M[r5 + 232];
+8420059e:	d1 8e       	M[r0 + 12] = rMAC;
+   peq_chan->peq_object  = p_dobject;
+842005a0:	f2 8e       	M[r4 + 12] = r0;
+
+   p_ext_data->ReInitFlag = 1;
+842005a2:	41 20       	rMAC = Null + 1;
+842005a4:	71 f0 2d 8e 	M[r5 + 180] = rMAC;
+
+   return TRUE;
+842005a8:	0a 00       	r0 = rMAC + Null;
+
+842005aa <Lc_peq_channel_create_4>:
+}
+842005aa:	f2 48       	popm <FP, r4, r5, rLink>;
+842005ac:	d8 4c       	rts;
+
+842005ae <$_peq_channel_destroy>:
+ * \param terminal_num : channel to free
+ * \param p_ext_data : pointer to the extra op data structure
+ */
+void peq_channel_destroy(OPERATOR_DATA *op_data,
+                         MULTI_CHANNEL_CHANNEL_STRUC *chan_ptr)
+{
+842005ae:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+842005b0:	1e 00       	r4 = r1 + Null;
+    peq_channels *peq_chan = (peq_channels *) chan_ptr;
+
+    pfree(peq_chan->peq_object);
+842005b2:	f2 88       	r0 = M[r4 + 12];
+842005b4:	ff fd 35 f0 	call (m) 0x6fbe;
+842005b8:	2b e0 
+    peq_chan->peq_object = NULL;
+842005ba:	f0 8e       	M[r4 + 12] = Null;
+
+842005bc <Lc_peq_channel_destroy_2>:
+}
+842005bc:	f1 48       	popm <FP, r4, rLink>;
+842005be:	d8 4c       	rts;
+
+842005c0 <$_peq_coeff_change>:
+
+    return (TRUE);
+}
+
+void peq_coeff_change(PEQ_OP_DATA  *p_ext_data)
+{
+842005c0:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+842005c2:	16 00       	r4 = r0 + Null;
+   PEQ_OP_DATA_EXT *p_ext_data_ext = (PEQ_OP_DATA_EXT *) p_ext_data;
+
+   if(p_ext_data->ParameterLoadStatus < 0)
+842005c4:	61 f0 2f 88 	rMAC = M[r4 + 188];
+842005c8:	05 f0 9d e0 	if POS jump (m) Lc_peq_coeff_change_4;
+
+842005cc <Lc_peq_coeff_change_2>:
+   {
+       /* Start coefficient load */
+       if(p_ext_data->peq_coeff_background == NULL)
+842005cc:	61 f0 3b 88 	rMAC = M[r4 + 236];
+842005d0:	0a 62       	if NE jump (m) Lc_peq_coeff_change_4;
+
+842005d2 <Lc_peq_coeff_change_3>:
+       {
+           /* Try to allocate background buffer */
+           p_ext_data->peq_coeff_background = xzppmalloc(PEQ_PARAMS_OBJECT_SIZE(PEQ_MAX_STAGES), MALLOC_PREFERENCE_DM1);
+842005d2:	43 20       	r1 = Null + 1;
+842005d4:	02 f0 fc 40 	r0 = Null + 252;
+842005d8:	ff fd 34 f0 	call (m) 0x6f8e;
+842005dc:	37 ed 
+
+           /* Failed to allocate.  Just build coefficients in current coefficient buffer */
+           if(p_ext_data->peq_coeff_background == NULL)
+842005de:	62 f0 3b 8e 	M[r4 + 236] = r0;
+842005e2:	03 60       	if EQ jump (m) Lc_peq_coeff_change_5;
+
+842005e4 <Lc_peq_coeff_change_4>:
+           }
+       }
+   }
+
+   /* Compute coefficients in stages */
+   for (int i = 0; i < p_ext_data_ext->num_stages_per_frame; i++)
+842005e4:	07 00       	r5 = Null + Null;
+842005e6:	0e 6e       	jump (m) Lc_peq_coeff_change_8;
+
+842005e8 <Lc_peq_coeff_change_5>:
+           p_ext_data->peq_coeff_background = xzppmalloc(PEQ_PARAMS_OBJECT_SIZE(PEQ_MAX_STAGES), MALLOC_PREFERENCE_DM1);
+
+           /* Failed to allocate.  Just build coefficients in current coefficient buffer */
+           if(p_ext_data->peq_coeff_background == NULL)
+           {
+               while(p_ext_data->ParameterLoadStatus!=0)
+842005e8:	60 f0 2f 88 	Null = M[r4 + 188];
+842005ec:	07 60       	if EQ jump (m) Lc_peq_coeff_change_7;
+
+842005ee <Lc_peq_coeff_change_6>:
+               {
+                  peq_compute_coefficients(p_ext_data,p_ext_data->peq_coeff_params);
+842005ee:	63 f0 3a 88 	r1 = M[r4 + 232];
+842005f2:	32 00       	r0 = r4 + Null;
+842005f4:	01 f0 37 e5 	call (m) $_peq_compute_coefficients;
+842005f8:	f8 6f       	jump (m) Lc_peq_coeff_change_5;
+
+842005fa <Lc_peq_coeff_change_7>:
+               }
+               /* Signal Reset */
+               p_ext_data->ReInitFlag = 1;
+842005fa:	41 20       	rMAC = Null + 1;
+842005fc:	61 f0 2d 8e 	M[r4 + 180] = rMAC;
+               return;
+84200600:	21 6e       	jump (m) Lc_peq_coeff_change_14;
+
+84200602 <Lc_peq_coeff_change_8>:
+           }
+       }
+   }
+
+   /* Compute coefficients in stages */
+   for (int i = 0; i < p_ext_data_ext->num_stages_per_frame; i++)
+84200602:	61 f0 3c 88 	rMAC = M[r4 + 240];
+84200606:	78 04       	Null = r5 - rMAC;
+84200608:	02 f0 99 e0 	if C jump (m) Lc_peq_coeff_change_12;
+
+8420060c <Lc_peq_coeff_change_9>:
+   {
+       if (p_ext_data->ParameterLoadStatus != 0)
+8420060c:	60 f0 2f 88 	Null = M[r4 + 188];
+84200610:	06 60       	if EQ jump (m) Lc_peq_coeff_change_11;
+
+84200612 <Lc_peq_coeff_change_10>:
+       {
+           peq_compute_coefficients(p_ext_data,p_ext_data->peq_coeff_background);
+84200612:	63 f0 3b 88 	r1 = M[r4 + 236];
+84200616:	32 00       	r0 = r4 + Null;
+84200618:	01 f0 33 e4 	call (m) $_peq_compute_coefficients;
+
+8420061c <Lc_peq_coeff_change_11>:
+           }
+       }
+   }
+
+   /* Compute coefficients in stages */
+   for (int i = 0; i < p_ext_data_ext->num_stages_per_frame; i++)
+8420061c:	7f 20       	r5 = r5 + 1;
+8420061e:	f2 6f       	jump (m) Lc_peq_coeff_change_8;
+
+84200620 <Lc_peq_coeff_change_12>:
+           peq_compute_coefficients(p_ext_data,p_ext_data->peq_coeff_background);
+       }
+   }
+
+   /* When done, signal reset of filters */
+   if(p_ext_data->ParameterLoadStatus==0)
+84200620:	60 f0 2f 88 	Null = M[r4 + 188];
+84200624:	0f 62       	if NE jump (m) Lc_peq_coeff_change_14;
+
+84200626 <Lc_peq_coeff_change_13>:
+   {
+      /* Switch coefficients */
+      pfree(p_ext_data->peq_coeff_params);
+84200626:	62 f0 3a 88 	r0 = M[r4 + 232];
+8420062a:	ff fd 34 f0 	call (m) 0x6fbe;
+8420062e:	35 ec 
+      p_ext_data->peq_coeff_params     = p_ext_data->peq_coeff_background;
+84200630:	61 f0 3b 88 	rMAC = M[r4 + 236];
+84200634:	61 f0 3a 8e 	M[r4 + 232] = rMAC;
+      p_ext_data->peq_coeff_background = NULL;
+84200638:	60 f0 3b 8e 	M[r4 + 236] = Null;
+
+      /* Signal Reset */
+      p_ext_data->ReInitFlag = 1;
+8420063c:	41 20       	rMAC = Null + 1;
+8420063e:	61 f0 2d 8e 	M[r4 + 180] = rMAC;
+
+84200642 <Lc_peq_coeff_change_14>:
+   }
+}
+84200642:	f2 48       	popm <FP, r4, r5, rLink>;
+84200644:	d8 4c       	rts;
+
+84200646 <Lc_peq_wrapper_check_for_updates_1>:
+
+/* ************************************* Data processing-related functions and wrappers **********************************/
+
+/* Check whether any of the filter coefficients need updating */
+static void peq_wrapper_check_for_updates(PEQ_OP_DATA *p_ext_data, peq_channels *channels)
+{
+84200646:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200648:	16 00       	r4 = r0 + Null;
+8420064a:	1f 00       	r5 = r1 + Null;
+    /* Update coefficients */
+    if(p_ext_data->ParameterLoadStatus!=0)
+8420064c:	60 f0 2f 88 	Null = M[r4 + 188];
+84200650:	02 60       	if EQ jump (m) Lc_peq_wrapper_check_for_updates_3;
+
+84200652 <Lc_peq_wrapper_check_for_updates_2>:
+    {
+        peq_coeff_change(p_ext_data);
+84200652:	b7 4f       	call (m) $_peq_coeff_change;
+
+84200654 <Lc_peq_wrapper_check_for_updates_3>:
+    }
+
+    /* Check for re-initialization */
+    if(p_ext_data->ReInitFlag)
+84200654:	60 f0 2d 88 	Null = M[r4 + 180];
+84200658:	04 60       	if EQ jump (m) Lc_peq_wrapper_check_for_updates_5;
+
+8420065a <Lc_peq_wrapper_check_for_updates_4>:
+    {
+        peq_initialize(p_ext_data,channels);
+8420065a:	3b 00       	r1 = r5 + Null;
+8420065c:	32 00       	r0 = r4 + Null;
+8420065e:	7a 4e       	call (m) $_peq_initialize;
+
+84200660 <Lc_peq_wrapper_check_for_updates_5>:
+    }
+}
+84200660:	f2 48       	popm <FP, r4, r5, rLink>;
+84200662:	d8 4c       	rts;
+
+84200664 <$_PEQ_GetDefaults>:
+84200664:	20 f0 49 24 	Null = r0 - 73;
+   0x00000000u,			// STAGE10_GAIN
+   0x00B504F3u			// STAGE10_Q
+};
+
+unsigned *PEQ_GetDefaults(unsigned capid){
+	switch(capid){
+84200668:	05 60       	if EQ jump (m) Lc_PEQ_GetDefaults_3;
+
+8420066a <Lc_PEQ_GetDefaults_2>:
+8420066a:	01 f0 20 f0 	Null = r0 - 16476;
+8420066e:	5c 24 
+84200670:	05 62       	if NE jump (m) Lc_PEQ_GetDefaults_4;
+
+84200672 <Lc_PEQ_GetDefaults_3>:
+		case 0x0049: return defaults_peqPEQ;
+84200672:	f1 ff 02 f3 	r0 = Null + -15335424;
+84200676:	00 40 
+84200678:	02 6e       	jump (m) Lc_PEQ_GetDefaults_5;
+
+8420067a <Lc_PEQ_GetDefaults_4>:
+		case 0x405C: return defaults_peqPEQ;
+	}
+	return((unsigned *)0);
+8420067a:	02 00       	r0 = Null + Null;
+
+8420067c <Lc_PEQ_GetDefaults_5>:
+8420067c:	d8 4c       	rts;
+
+8420067e <$kdc_start>:
+.MODULE $M.kdc_start;
+.CODESEGMENT PM;
+.DATASEGMENT DM;
+
+$kdc_start:
+r0 = $_peq_cap_data;
+8420067e:	01 f0 02 f3 	r0 = Null + 1441944;
+84200682:	98 40 
+    /* Force this symbol to be exported in ELF */
+    Null = $___kymera_debug_map_addr;
+84200684:	00 f0 4c 5a 	Null = Null + 3660;
+
+84200688 <$_peq_processing>:
+84200688:	fc fa 40 e0 	pushm <r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+.MODULE $M.peq_proc;
+    .CODESEGMENT PM;
+$_peq_processing:
+
+   // for now, we assume we get to the buffer parameters directly with some offset constants
+   PUSH_ALL_C
+8420068c:	07 f0 47 e4 	pushm <I0, I1, I2, I4, I5, I6>;
+84200690:	70 ff 40 e4 	pushm <M0, M1, M2, L0, L1, L4, L5>;
+   
+   LIBS_PUSH_R0_SLOW_SW_ROM_PATCH_POINT($peq_cap.PEQ_PROCESSING_ASM.PEQ_PROC.PEQ_PROCESSING.PATCH_ID_0, r4)     // cap_peq_patchers
+
+   // set r9 to extra_op_data
+   r9 = r0;
+84200694:	13 09       	r9 = r0 + Null;
+   // number of samples to process, we don't check validity, caller responsible
+   r4 = r2;
+84200696:	26 00       	r4 = r2 + Null;
+   // Pointer to first channel
+   r6 = r1;
+84200698:	18 09       	r6 = r1 + Null;
+
+8420069a <$M.peq_proc.peq_channel_loop>:
+
+
+   // for(ptr=first_active;ptr;ptr=ptr->next_active)
+   peq_channel_loop:
+         // get read pointer, size and start addresses of input buffer
+         r0 = M[r6 + $peq_wrapper.multi_chan_channel_struc_struct.SINK_BUFFER_PTR_FIELD];
+8420069a:	82 f0 01 88 	r0 = M[r6 + 4];
+         call $cbuffer.get_read_address_and_size_and_start_address;
+8420069e:	ff fd 6c f2 	call (m) 0x4df66;
+842006a2:	29 e6 
+         push r2;
+842006a4:	00 f0 34 cf 	push r2;
+         pop B4;
+842006a8:	00 f6 3c cf 	pop B4;
+         I4 = r0;
+842006ac:	14 0a       	I4 = r0 + Null;
+         L4 = r1;
+842006ae:	1e 0b       	L4 = r1 + Null;
+   
+         // get write pointer, size and start addresses of Output buffer
+         r0 = M[r6 + $peq_wrapper.multi_chan_channel_struc_struct.SOURCE_BUFFER_PTR_FIELD];
+842006b0:	82 f0 02 88 	r0 = M[r6 + 8];
+         call $cbuffer.get_write_address_and_size_and_start_address;
+842006b4:	ff fd 6c f2 	call (m) 0x4df98;
+842006b8:	25 e7 
+         push r2;
+842006ba:	00 f0 34 cf 	push r2;
+         pop B0;
+842006be:	00 f6 3a cf 	pop B0;
+         I0 = r0;
+842006c2:	10 0a       	I0 = r0 + Null;
+         L0 = r1;
+842006c4:	1c 0b       	L0 = r1 + Null;
+   
+         // call PEQ stream-based processing entry point
+         pushm <r4,r6,r9>;
+842006c6:	94 f0 40 e0 	pushm <r4, r6, r9>;
+         pushm <I0,I4,L0,L4>;
+842006ca:	01 f5 41 e4 	pushm <I0, I4, L0, L4>;
+         pushm <B0,B4>;
+842006ce:	40 f1 40 e8 	pushm <B0, B4>;
+
+
+         // call the approriate process function
+         r5 = M[r9 + $peq_wrapper.peq_exop_struct.PEQ_PROC_FUNC_FIELD];
+842006d2:	b7 f0 39 88 	r5 = M[r9 + 228];
+         // check bypass flag - force passthrough if set
+         r3 = M[r9 + ($peq_wrapper.peq_exop_struct.PEQ_CAP_PARAMS_FIELD + $M.PEQ.PARAMETERS.OFFSET_PEQ_CONFIG)];
+842006d6:	b5 f0 00 88 	r3 = M[r9 + 0];
+         r7 = $M.peq_proc.peq_pass_through;
+842006da:	42 f0 09 f0 	r7 = Null + 69207877;
+842006de:	45 4b 
+         Null = $M.PEQ.CONFIG.BYPASS AND r3; 
+842006e0:	28 c0       	Null = r3 AND 0x1;
+         if NZ r5 = r7;
+842006e2:	01 f9 07 c0 	if NE r5 = r7 + Null;
+         // apply the PEQ to the current channel
+#if defined(PEQ_OFFLOAD) && defined(CAPABILITY_DOWNLOAD_BUILD)
+         r7 = M[r6 + $peq_wrapper.offload_peq_channels_struct.PEQ_OBJECT_FIELD];
+#else
+         r7 = M[r6 + $peq_wrapper.peq_channels_struct.PEQ_OBJECT_FIELD];
+842006e6:	89 f0 03 88 	r7 = M[r6 + 12];
+#endif
+
+         call r5;
+842006ea:	d7 4c       	call r5;
+
+         popm <B0,B4>;
+842006ec:	40 f1 60 e8 	popm <B0, B4>;
+         popm <I0,I4,L0,L4>;
+842006f0:	01 f5 61 e4 	popm <I0, I4, L0, L4>;
+         popm <r4,r6,r9>;
+842006f4:	94 f0 60 e0 	popm <r4, r6, r9>;
+
+         // Compute amount to advance read/write pointer
+         r0  = r4 * MK1 (int);
+842006f8:	32 41       	r0 = r4 * 4 (int);
+         M3  = r0;
+842006fa:	13 0b       	M3 = r0 + Null;
+         r0 = M[I0,M3], r1 = M[I4,M3];
+842006fc:	33 f3 22 d0 	Null = Null + Null, r0 = M[I0,M3], r1 = M[I4,M3];
+                 
+         // update read address in input buffer
+         r0  = M[r6 + $peq_wrapper.multi_chan_channel_struc_struct.SINK_BUFFER_PTR_FIELD];
+84200700:	82 f0 01 88 	r0 = M[r6 + 4];
+         r1 = I4;
+84200704:	a3 08       	r1 = I4 + Null;
+         call $cbuffer.set_read_address;
+84200706:	ff fd 6c f2 	call (m) 0x4dfca;
+8420070a:	25 e6 
+         // update write address in output buffer
+         r0 = M[r6 + $peq_wrapper.multi_chan_channel_struc_struct.SOURCE_BUFFER_PTR_FIELD];
+8420070c:	82 f0 02 88 	r0 = M[r6 + 8];
+         r1 = I0;
+84200710:	83 08       	r1 = I0 + Null;
+         call $cbuffer.set_write_address;
+84200712:	ff fd 6c f2 	call (m) 0x4e002;
+84200716:	31 e7 
+ 
+   // next chan
+   r6 = M[r6 + $peq_wrapper.multi_chan_channel_struc_struct.NEXT_ACTIVE_FIELD];
+84200718:	88 f0 00 88 	r6 = M[r6 + 0];
+   if NZ jump peq_channel_loop;
+8420071c:	bf 63       	if NE jump (m) $M.peq_proc.peq_channel_loop;
+
+   // Clear B0,B4
+   push NULL;
+8420071e:	00 f0 30 cf 	push Null;
+   B0 = M[SP-MK1];
+84200722:	fe fa 1a cf 	B0 = M[SP + -0x4];
+   pop B4;
+84200726:	00 f6 3c cf 	pop B4;
+   // L0 and L4 reset in POP_ALL_C
+
+   POP_ALL_C
+8420072a:	70 ff 60 e4 	popm <M0, M1, M2, L0, L1, L4, L5>;
+8420072e:	07 f0 67 e4 	popm <I0, I1, I2, I4, I5, I6>;
+84200732:	fc fa 60 e0 	popm <r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+   rts;
+84200736:	d8 4c       	rts;
+
+84200738 <$M.peq_proc.peq_mute>:
+
+peq_mute:
+   r10 = r4;
+84200738:	34 09       	r10 = r4 + Null;
+   r0 = 0;
+8420073a:	02 00       	r0 = Null + Null;
+   do mute_loop;
+8420073c:	03 4c       	do (m) $M.peq_proc.mute_loop;
+         M[I0, MK1] = r0;
+8420073e:	a1 f0 30 c0 	Null = Null + Null, M[I0,4] = r0;
+
+84200742 <$M.peq_proc.mute_loop>:
+   mute_loop:
+   rts;
+84200742:	d8 4c       	rts;
+
+84200744 <$M.peq_proc.peq_pass_through>:
+peq_pass_through:
+   r10 = r4;
+84200744:	34 09       	r10 = r4 + Null;
+   r0 = M[I4, MK1];
+84200746:	21 f0 30 d0 	Null = Null + Null, r0 = M[I4,4];
+   do bypass_loop;
+8420074a:	03 4c       	do (m) $M.peq_proc.bypass_loop;
+      r0 = M[I4, MK1], M[I0, MK1] = r0;
+8420074c:	21 f1 3a d0 	Null = Null + Null, M[I0,4] = r0, r0 = M[I4,4];
+
+84200750 <$M.peq_proc.bypass_loop>:
+   bypass_loop:
+   rts;
+84200750:	d8 4c       	rts;
+
+84200752 <$_peq_initialize>:
+// *****************************************************************************
+.MODULE $M.peq_initialize;
+    .CODESEGMENT PM;
+$_peq_initialize:
+
+   PUSH_ALL_C
+84200752:	fc fa 40 e0 	pushm <r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+84200756:	07 f0 47 e4 	pushm <I0, I1, I2, I4, I5, I6>;
+8420075a:	70 ff 40 e4 	pushm <M0, M1, M2, L0, L1, L4, L5>;
+   
+   r9 = r0;
+8420075e:	13 09       	r9 = r0 + Null;
+
+   LIBS_SLOW_SW_ROM_PATCH_POINT($peq_cap.PEQ_PROCESSING_ASM.PEQ_INITIALIZE.PEQ_INITIALIZE.PATCH_ID_0, r4)     // cap_peq_patchers
+
+   // If it is the first time to initialize, do FULL initialization
+   r3 = PEQ_REINIT_MODE_FULL;
+84200760:	45 20       	r3 = Null + 1;
+   r4 = PEQ_REINIT_MODE_PARTIAL;
+84200762:	86 20       	r4 = Null + 2;
+   #if defined(PEQ_OFFLOAD) && defined(CAPABILITY_DOWNLOAD_BUILD)
+      r7 = M[r1 + $peq_wrapper.offload_peq_channels_struct.PEQ_OBJECT_FIELD];
+   #else
+      r7 = M[r1 + $peq_wrapper.peq_channels_struct.PEQ_OBJECT_FIELD];
+84200764:	39 f0 03 88 	r7 = M[r1 + 12];
+   #endif
+   Null = M[r7 + $audio_proc.peq.DELAYLINE_START_ADDR_FIELD];
+84200768:	90 f0 04 88 	Null = M[r7 + 16];
+   if NZ r3 = r4;
+8420076c:	01 f6 05 c0 	if NE r3 = r4 + Null;
+   M[r9 + $peq_wrapper.peq_exop_struct.REINITFLAG_FIELD] = r3;
+84200770:	b5 f0 2d 8e 	M[r9 + 180] = r3;
+
+   r4 = M[r9 + $peq_wrapper.peq_exop_struct.CUR_MODE_FIELD];
+84200774:	b6 f0 30 88 	r4 = M[r9 + 192];
+
+   // pass-thru mode
+   r3 = $M.peq_proc.peq_pass_through;
+84200778:	42 f0 05 f0 	r3 = Null + 69207877;
+8420077c:	45 4b 
+   Null = r4 - $M.PEQ.SYSMODE.PASS_THRU;
+8420077e:	f0 24       	Null = r4 - 3;
+   if Z jump jp_channels_done;
+84200780:	49 60       	if EQ jump (m) $M.peq_initialize.jp_channels_done;
+
+   // Mute
+   r3 = $M.peq_proc.peq_mute;
+84200782:	42 f0 05 f0 	r3 = Null + 69207865;
+84200786:	39 4b 
+   Null = r4 - $M.PEQ.SYSMODE.FULL;
+84200788:	b0 24       	Null = r4 - 2;
+   if NZ jump jp_channels_done;
+8420078a:	44 62       	if NE jump (m) $M.peq_initialize.jp_channels_done;
+
+   // First active channel
+   r5 = r1;
+8420078c:	1f 00       	r5 = r1 + Null;
+   if Z jump jp_channels_done;
+8420078e:	42 60       	if EQ jump (m) $M.peq_initialize.jp_channels_done;
+
+84200790 <$M.peq_initialize.peq_channel_loop>:
+
+   peq_channel_loop:
+      pushm <r5,r9>;
+84200790:	88 f0 40 e0 	pushm <r5, r9>;
+      // initilize all of the peq data objects
+#if defined(PEQ_OFFLOAD) && defined(CAPABILITY_DOWNLOAD_BUILD)
+      r7 = M[r5 + $peq_wrapper.offload_peq_channels_struct.PEQ_OBJECT_FIELD];
+#else
+      r7 = M[r5 + $peq_wrapper.peq_channels_struct.PEQ_OBJECT_FIELD];
+84200794:	79 f0 03 88 	r7 = M[r5 + 12];
+#endif
+
+      // Associate coefficients */
+      r0 = M[r9 + $peq_wrapper.peq_exop_struct.PEQ_COEFF_PARAMS_FIELD];   
+84200798:	b2 f0 3a 88 	r0 = M[r9 + 232];
+      M[r7 + $audio_proc.peq.PARAM_PTR_FIELD]=r0;
+8420079c:	92 f0 03 8e 	M[r7 + 12] = r0;
+
+      
+      r0 = M[r9 + ($peq_wrapper.peq_exop_struct.PEQ_CAP_PARAMS_FIELD + $peq_wrapper._tag_PEQ_PARAMETERS_struct.OFFSET_CORE_TYPE_FIELD)];
+842007a0:	b2 f0 01 88 	r0 = M[r9 + 4];
+      Null = r0 - PEQ_CORE_MODE_DH;
+842007a4:	90 24       	Null = r0 - 2;
+      if Z jump dh_option;
+842007a6:	23 60       	if EQ jump (m) $M.peq_initialize.dh_option;
+      Null = r0 - PEQ_CORE_MODE_HQ;
+842007a8:	50 24       	Null = r0 - 1;
+      if Z jump hq_option; 
+842007aa:	11 60       	if EQ jump (m) $M.peq_initialize.hq_option;
+         // sh_option
+         r1 = $audio_proc.sh_peq.initialize;
+842007ac:	00 f0 a3 f4 	r1 = Null + 610096;
+842007b0:	30 5b 
+         r3 = $sh_peq.partial_initialize;
+842007b2:	42 f0 05 f0 	r3 = Null + 69208105;
+842007b6:	29 50 
+         r0 = M[r9 + $peq_wrapper.peq_exop_struct.REINITFLAG_FIELD];
+842007b8:	b2 f0 2d 88 	r0 = M[r9 + 180];
+         Null = r0 - PEQ_REINIT_MODE_FULL;
+842007bc:	50 24       	Null = r0 - 1;
+         if Z r3 = r1;
+842007be:	00 f3 05 c0 	if EQ r3 = r1 + Null;
+         call r3;
+842007c2:	d5 4c       	call r3;
+         r3 = $audio_proc.sh_peq.process_op;
+842007c4:	00 f0 a5 f4 	r3 = Null + 610240;
+842007c8:	c0 5b 
+         jump done_init_filter;
+842007ca:	20 6e       	jump (m) $M.peq_initialize.done_init_filter;
+
+842007cc <$M.peq_initialize.hq_option>:
+      hq_option:
+         r1 = $audio_proc.hq_peq.initialize;
+842007cc:	00 f0 a3 f4 	r1 = Null + 610876;
+842007d0:	3c 62 
+         r3 = $hq_peq.partial_initialize;
+842007d2:	42 f0 05 f0 	r3 = Null + 69208147;
+842007d6:	53 50 
+         r0 = M[r9 + $peq_wrapper.peq_exop_struct.REINITFLAG_FIELD];
+842007d8:	b2 f0 2d 88 	r0 = M[r9 + 180];
+         Null = r0 - PEQ_REINIT_MODE_FULL;
+842007dc:	50 24       	Null = r0 - 1;
+         if Z r3 = r1;
+842007de:	00 f3 05 c0 	if EQ r3 = r1 + Null;
+         call r3;
+842007e2:	d5 4c       	call r3;
+         r3 = $audio_proc.hq_peq.process_op;
+842007e4:	00 f0 a5 f4 	r3 = Null + 611068;
+842007e8:	fc 62 
+         jump done_init_filter;
+842007ea:	10 6e       	jump (m) $M.peq_initialize.done_init_filter;
+
+842007ec <$M.peq_initialize.dh_option>:
+      dh_option:
+         r1 = $audio_proc.dh_peq.initialize;
+842007ec:	00 f0 a3 f4 	r1 = Null + 611292;
+842007f0:	dc 63 
+         r3 = $dh_peq.partial_initialize;
+842007f2:	42 f0 05 f0 	r3 = Null + 69208193;
+842007f6:	81 50 
+         r0 = M[r9 + $peq_wrapper.peq_exop_struct.REINITFLAG_FIELD];
+842007f8:	b2 f0 2d 88 	r0 = M[r9 + 180];
+         Null = r0 - PEQ_REINIT_MODE_FULL;
+842007fc:	50 24       	Null = r0 - 1;
+         if Z r3 = r1;
+842007fe:	00 f3 05 c0 	if EQ r3 = r1 + Null;
+         call r3;
+84200802:	d5 4c       	call r3;
+         r3 = $audio_proc.dh_peq.process_op;  
+84200804:	00 f0 a5 f4 	r3 = Null + 611480;
+84200808:	98 68 
+
+8420080a <$M.peq_initialize.done_init_filter>:
+      done_init_filter:
+
+      popm <r5,r9>;
+8420080a:	88 f0 60 e0 	popm <r5, r9>;
+      // next chan
+      r5 = M[r5 + $peq_wrapper.multi_chan_channel_struc_struct.NEXT_ACTIVE_FIELD];
+8420080e:	3f 88       	r5 = M[r5 + 0];
+   if NZ jump peq_channel_loop;
+84200810:	c0 63       	if NE jump (m) $M.peq_initialize.peq_channel_loop;
+
+84200812 <$M.peq_initialize.jp_channels_done>:
+
+jp_channels_done:
+   // Save PEQ function 
+   M[r9 + $peq_wrapper.peq_exop_struct.PEQ_PROC_FUNC_FIELD] = r3;
+84200812:	b5 f0 39 8e 	M[r9 + 228] = r3;
+   // clear reinit flag
+   M[r9 + $peq_wrapper.peq_exop_struct.REINITFLAG_FIELD] = Null;
+84200816:	b0 f0 2d 8e 	M[r9 + 180] = Null;
+
+   POP_ALL_C
+8420081a:	70 ff 60 e4 	popm <M0, M1, M2, L0, L1, L4, L5>;
+8420081e:	07 f0 67 e4 	popm <I0, I1, I2, I4, I5, I6>;
+84200822:	fc fa 60 e0 	popm <r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+   rts;
+84200826:	d8 4c       	rts;
+
+84200828 <$sh_peq.partial_initialize>:
+   .CODESEGMENT   PM;
+
+$sh_peq.partial_initialize:
+
+   // Pointer to PEQ parameters
+   r8 = M[r7 + $audio_proc.peq.PARAM_PTR_FIELD];
+84200828:	9a f0 03 88 	r8 = M[r7 + 12];
+   // number of stages (lower LSBs)
+   r0 = M[r8 + $audio_proc.peq.parameter.NUM_STAGES_FIELD];
+8420082c:	a2 f0 00 88 	r0 = M[r8 + 0];
+   r0 = r0 AND $audio_proc.peq.const.NUM_STAGES_MASK;
+84200830:	92 c3       	r0 = r0 AND 0xff;
+   M[r7 + $audio_proc.peq.NUM_STAGES_FIELD] = r0;
+84200832:	92 f0 07 8e 	M[r7 + 28] = r0;
+
+   // size of delay buffer = (num_stage+1)*2
+   r1 = r0 + 1;
+84200836:	53 20       	r1 = r0 + 1;
+   r10 = r1 ASHIFT (1 + LOG2_ADDR_PER_WORD);
+84200838:	01 f3 1c d9 	r10 = r1 ASHIFT 3;
+   M[r7 + $audio_proc.peq.DELAYLINE_SIZE_FIELD] = r10;
+8420083c:	9c f0 08 8e 	M[r7 + 32] = r10;
+
+
+   // size of coef buffer = (num_stage) * 6
+   r10 = r0 * (6 * ADDR_PER_WORD) (int);
+84200840:	0c f2 9c c9 	r10 = r0 * 24 (int);
+   M[r7 + $audio_proc.peq.COEFS_SIZE_FIELD] = r10;
+84200844:	9c f0 09 8e 	M[r7 + 36] = r10;
+   // Set Pointer to coefficients in parameters
+   r0 = r8 + $audio_proc.peq.parameter.STAGES_SCALES;
+84200848:	a2 f0 0c 20 	r0 = r8 + 12;
+   M[r7 + $audio_proc.peq.COEFS_ADDR_FIELD] = r0;
+8420084c:	92 f0 06 8e 	M[r7 + 24] = r0;
+
+   rts;
+84200850:	d8 4c       	rts;
+
+84200852 <$hq_peq.partial_initialize>:
+   .CODESEGMENT   PM;
+
+$hq_peq.partial_initialize:
+
+   // Pointer to PEQ parameters
+   r8 = M[r7 + $audio_proc.peq.PARAM_PTR_FIELD];
+84200852:	9a f0 03 88 	r8 = M[r7 + 12];
+   // number of stages (lower LSBs)
+   r0 = M[r8 + $audio_proc.peq.parameter.NUM_STAGES_FIELD];
+84200856:	a2 f0 00 88 	r0 = M[r8 + 0];
+   r0 = r0 AND $audio_proc.peq.const.NUM_STAGES_MASK;
+8420085a:	92 c3       	r0 = r0 AND 0xff;
+   M[r7 + $audio_proc.peq.NUM_STAGES_FIELD] = r0;
+8420085c:	92 f0 07 8e 	M[r7 + 28] = r0;
+
+   // size of delay buffer = 2+(num_stage*3)
+   r10 = r0 * 3 (int);
+84200860:	01 f2 9c d9 	r10 = r0 * 3 (int);
+   r10 = r10 + 2;
+84200864:	14 75       	r10 = r10 + 2;
+   r10 = r10 * ADDR_PER_WORD (int);
+84200866:	02 fc 9c c9 	r10 = r10 * 4 (int);
+   M[r7 + $audio_proc.peq.DELAYLINE_SIZE_FIELD] = r10;
+8420086a:	9c f0 08 8e 	M[r7 + 32] = r10;
+
+
+   // size of coef buffer = (num_stage) * 6
+   r10 = r0 * (6 * ADDR_PER_WORD) (int);
+8420086e:	0c f2 9c c9 	r10 = r0 * 24 (int);
+   M[r7 + $audio_proc.peq.COEFS_SIZE_FIELD] = r10;
+84200872:	9c f0 09 8e 	M[r7 + 36] = r10;
+
+   // Set Pointer to coefficients in parameters
+   r0 = r8 + $audio_proc.peq.parameter.STAGES_SCALES;
+84200876:	a2 f0 0c 20 	r0 = r8 + 12;
+   M[r7 + $audio_proc.peq.COEFS_ADDR_FIELD] = r0;
+8420087a:	92 f0 06 8e 	M[r7 + 24] = r0;
+   
+   rts;
+8420087e:	d8 4c       	rts;
+
+84200880 <$dh_peq.partial_initialize>:
+
+
+$dh_peq.partial_initialize:
+
+   // Pointer to PEQ parameters
+   r8 = M[r7 + $audio_proc.peq.PARAM_PTR_FIELD];
+84200880:	9a f0 03 88 	r8 = M[r7 + 12];
+   // number of stages (lower LSBs)
+   r0 = M[r8 + $audio_proc.peq.parameter.NUM_STAGES_FIELD];
+84200884:	a2 f0 00 88 	r0 = M[r8 + 0];
+   r0 = r0 AND $audio_proc.peq.const.NUM_STAGES_MASK;
+84200888:	92 c3       	r0 = r0 AND 0xff;
+   M[r7 + $audio_proc.peq.NUM_STAGES_FIELD] = r0;
+8420088a:	92 f0 07 8e 	M[r7 + 28] = r0;
+
+   // size of delay buffer = (num_stage+1)*2
+   r1 = r0 + 1;
+8420088e:	53 20       	r1 = r0 + 1;
+   r10 = r1 ASHIFT (2 + LOG2_ADDR_PER_WORD);
+84200890:	02 f3 1c c9 	r10 = r1 ASHIFT 4;
+   M[r7 + $audio_proc.peq.DELAYLINE_SIZE_FIELD] = r10;
+84200894:	9c f0 08 8e 	M[r7 + 32] = r10;
+
+   // size of coef buffer = (num_stage) * 6
+   r10 = r0 * (6 * ADDR_PER_WORD) (int);
+84200898:	0c f2 9c c9 	r10 = r0 * 24 (int);
+   M[r7 + $audio_proc.peq.COEFS_SIZE_FIELD] = r10;
+8420089c:	9c f0 09 8e 	M[r7 + 36] = r10;
+
+   // Set Pointer to coefficients in parameters
+   r0 = r8 + $audio_proc.peq.parameter.STAGES_SCALES;
+842008a0:	a2 f0 0c 20 	r0 = r8 + 12;
+   M[r7 + $audio_proc.peq.COEFS_ADDR_FIELD] = r0;
+842008a4:	92 f0 06 8e 	M[r7 + 24] = r0;
+   
+   rts;
+842008a8:	d8 4c       	rts;
+
+842008aa <$_peq_compute_coefficients>:
+
+.MODULE $M.peq_compute_coefficients;
+    .CODESEGMENT PM;
+$_peq_compute_coefficients:
+
+   PUSH_ALL_C  
+842008aa:	fc fa 40 e0 	pushm <r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+842008ae:	07 f0 47 e4 	pushm <I0, I1, I2, I4, I5, I6>;
+842008b2:	70 ff 40 e4 	pushm <M0, M1, M2, L0, L1, L4, L5>;
+
+   LIBS_PUSH_R0_SLOW_SW_ROM_PATCH_POINT($peq_cap.PEQ_PROCESSING_ASM.PEQ_COMPUTE_COEFF.PEQ_COMPUTE_COEFF.PATCH_ID_0, r4)     // cap_peq_patchers
+
+   r9 = r0;
+842008b6:	13 09       	r9 = r0 + Null;
+   r7 = r1;
+842008b8:	19 09       	r7 = r1 + Null;
+
+   r0 = M[r9 + $peq_wrapper.peq_exop_struct.PARAMETERLOADSTATUS_FIELD];
+842008ba:	b2 f0 2f 88 	r0 = M[r9 + 188];
+   if POS jump jp_gain_calc_done;     
+842008be:	05 f0 a3 e0 	if POS jump (m) $M.peq_compute_coefficients.jp_gain_calc_done;
+       // i0 = &Cur_params+num_bands
+       I0 = r9 + ($peq_wrapper.peq_exop_struct.PEQ_CAP_PARAMS_FIELD + $peq_wrapper._tag_PEQ_PARAMETERS_struct.OFFSET_NUM_BANDS_FIELD);
+842008c2:	b0 f8 08 20 	I0 = r9 + 8;
+       // i1 = address of "coefficient params" object
+       I1 = r7;            
+842008c6:	49 0a       	I1 = r7 + Null;
+
+       // first copy number of EQ bands to coefficient storage.
+       r0 = m[I0,MK1];
+842008c8:	21 f0 30 c0 	Null = Null + Null, r0 = M[I0,4];
+       m[I1,MK1] = r0;
+842008cc:	a5 f0 30 c0 	Null = Null + Null, M[I1,4] = r0;
+
+       // Set Up Gains
+       pushm <r7,r9>;
+842008d0:	a0 f0 40 e0 	pushm <r7, r9>;
+       call $M.peq_gen_coeffs.calcPreGain.call_entry;
+842008d4:	ff fd a6 f4 	call 0x9560c;
+842008d8:	38 e9 
+       popm <r7,r9>;
+842008da:	a0 f0 60 e0 	popm <r7, r9>;
+
+       // Do 1st stage
+       r0 = 0;
+842008de:	02 00       	r0 = Null + Null;
+
+842008e0 <$M.peq_compute_coefficients.jp_gain_calc_done>:
+   jp_gain_calc_done:
+
+   // r0 is param_status, r1=num_stages
+   r1 = M[r7];
+842008e0:	93 f0 00 e8 	r1 = M[r7 + Null];
+   if Z jump jp_done;
+842008e4:	12 60       	if EQ jump (m) $M.peq_compute_coefficients.jp_done;
+
+       // Pointer to stage in coefficients
+       r7 = r7 + $peq_wrapper.t_peq_params_struct.COEFFS_SCALES_FIELD;
+842008e6:	61 75       	r7 = r7 + 12;
+       r2 = r0 * ($peq_wrapper.t_coeffs_scales_struct.STRUC_SIZE * ADDR_PER_WORD) (int);
+842008e8:	14 46       	r2 = r0 * 24 (int);
+       I1 = r7 + r2;
+842008ea:	4f f9 01 c5 	I1 = r7 + r2;
+    
+       // Pointer to stage in parameters
+       I0 = r9 + ($peq_wrapper.peq_exop_struct.PEQ_CAP_PARAMS_FIELD + $M.PEQ.PARAMETERS.OFFSET_STAGE1_TYPE); 
+842008ee:	b0 f8 10 20 	I0 = r9 + 16;
+       r2 = r0 * $peq_wrapper.PARAMETERS_STAGE_SIZE (int);  
+842008f2:	14 44       	r2 = r0 * 16 (int);
+       I0 = I0 + r2;
+842008f4:	20 0e       	I0 = r2 + I0;
+    
+       // generate filter coefficients for stage from OBPM parameters
+       pushm <r0,r1,r9>;
+842008f6:	80 f0 4c e0 	pushm <r0, r1, r9>;
+       r6 = M[r9 + $peq_wrapper.peq_exop_struct.SAMPLE_RATE_FIELD];
+842008fa:	b8 f0 2c 88 	r6 = M[r9 + 176];
+       call $M.peq_gen_coeffs.coefCalcBiquadBand.call_entry;
+842008fe:	ff fd a6 f4 	call 0x95654;
+84200902:	36 ea 
+       popm <r0,r1,r9>;
+84200904:	80 f0 6c e0 	popm <r0, r1, r9>;
+
+84200908 <$M.peq_compute_coefficients.jp_done>:
+
+jp_done:
+   // Update parameter load status
+   r0 = r0 + 1;         // stage++;
+84200908:	52 20       	r0 = r0 + 1;
+   NULL = r1 - r0;      // if (num_stages <= stage)stage=0;
+8420090a:	98 04       	Null = r1 - r0;
+   if LE r0 = NULL;
+8420090c:	0d f0 02 c0 	if LE r0 = Null + Null;
+   M[r9 + $peq_wrapper.peq_exop_struct.PARAMETERLOADSTATUS_FIELD]=r0;
+84200910:	b2 f0 2f 8e 	M[r9 + 188] = r0;
+
+   POP_ALL_C
+84200914:	70 ff 60 e4 	popm <M0, M1, M2, L0, L1, L4, L5>;
+84200918:	07 f0 67 e4 	popm <I0, I1, I2, I4, I5, I6>;
+8420091c:	fc fa 60 e0 	popm <r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+   rts;
+84200920:	d8 4c       	rts;

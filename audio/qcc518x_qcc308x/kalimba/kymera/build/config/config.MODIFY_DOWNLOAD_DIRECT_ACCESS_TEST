@@ -1,0 +1,15 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright (c) 2018 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# Definitions required to build the direct_access_test
+
+# List of global include paths
+%list ALL_INCDIRS
+capabilities/direct_access_test
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/direct_access_test/direct_access_test

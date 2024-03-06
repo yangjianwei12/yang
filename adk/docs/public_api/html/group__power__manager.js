@@ -1,0 +1,48 @@
+var group__power__manager =
+[
+    [ "power_manager_action.h", "power__manager__action_8h.html", null ],
+    [ "power_manager_conditions.h", "power__manager__conditions_8h.html", null ],
+    [ "power_manager_flags.h", "power__manager__flags_8h.html", null ],
+    [ "power_manager_monitors.h", "power__manager__monitors_8h.html", null ],
+    [ "power_manager_performance.h", "power__manager__performance_8h.html", null ],
+    [ "power_manager_sm.h", "power__manager__sm_8h.html", null ],
+    [ "power_manager_ui.h", "power__manager__ui_8h.html", null ],
+    [ "powerTaskData", "structpower_task_data.html", [
+      [ "allow_dormant", "structpower_task_data.html#ae8c4375057072f733d12e51d33427a3a", null ],
+      [ "clients", "structpower_task_data.html#a1ef21cf83fff2e6835b22909810ada5d", null ],
+      [ "init_complete", "structpower_task_data.html#a7dd42c912a0afd8bb4f008f23078534c", null ],
+      [ "panic_on_sleep", "structpower_task_data.html#aac5deb3caaa7dc407d6f813d2a8798ed", null ],
+      [ "performance_req_count", "structpower_task_data.html#a4d76af15126df3b76f5ee11c6e4fefe0", null ],
+      [ "powered_off", "structpower_task_data.html#aa9d21780d842a69b99925227c7a2f055", null ],
+      [ "state", "structpower_task_data.html#a6743c7aa9c57bdaafa40c93bf159f68c", null ],
+      [ "task", "structpower_task_data.html#aba8d7e5c1906844fdb6e47953d3518fc", null ],
+      [ "user_initiated_shutdown", "structpower_task_data.html#a589d89bf68611cf371a0100031788862", null ],
+      [ "went_to_sleep", "structpower_task_data.html#a1892019776363deabba602bcf4e14ea2", null ]
+    ] ],
+    [ "power_provider_context_t", "group__power__manager.html#ga57d2dc5e64431257443a03663be817a2", null ],
+    [ "powerClientMessages", "group__power__manager.html#ga1eba9e18bfeade6277b9967455475ba3", [
+      [ "APP_POWER_INIT_CFM", "group__power__manager.html#gga1eba9e18bfeade6277b9967455475ba3a94d7f4420b614acdd59a6321db4a256d", null ],
+      [ "APP_POWER_SLEEP_PREPARE_IND", "group__power__manager.html#gga1eba9e18bfeade6277b9967455475ba3ab94f5b4d96399c1ca092170c5be05e9f", null ],
+      [ "APP_POWER_SLEEP_CANCELLED_IND", "group__power__manager.html#gga1eba9e18bfeade6277b9967455475ba3a44aa204d7da5c0f616813cacf12b3f83", null ],
+      [ "APP_POWER_SHUTDOWN_PREPARE_IND", "group__power__manager.html#gga1eba9e18bfeade6277b9967455475ba3ad36b90050f91049943a7daa5ec293514", null ],
+      [ "APP_POWER_SHUTDOWN_CANCELLED_IND", "group__power__manager.html#gga1eba9e18bfeade6277b9967455475ba3aed8975eb5a7807e3fa4353d01be6a78a", null ],
+      [ "POWER_ON", "group__power__manager.html#gga1eba9e18bfeade6277b9967455475ba3a96d7f5efa52f2ef85f65ec540233b69d", null ],
+      [ "POWER_OFF", "group__power__manager.html#gga1eba9e18bfeade6277b9967455475ba3a4a0682c6762857d83fd5d8cb36f9c94e", null ],
+      [ "POWER_APP_MESSAGE_END", "group__power__manager.html#gga1eba9e18bfeade6277b9967455475ba3af38e62c90d9e6f32be7cc492eb2c0bea", null ]
+    ] ],
+    [ "appPowerClientAllowSleep", "group__power__manager.html#gaa528a448015ed519b8a7df5da10bd68a", null ],
+    [ "appPowerClientProhibitSleep", "group__power__manager.html#ga0964abed417b64a6c721bf226d8b5010", null ],
+    [ "appPowerClientRegister", "group__power__manager.html#ga736ad928ca6a6b66a2399b65fa08de7e", null ],
+    [ "appPowerClientUnregister", "group__power__manager.html#ga526efba4e5fae20ac52f874698a91a31", null ],
+    [ "appPowerInit", "group__power__manager.html#ga6410c60caf3225851e08bdb75f4d140c", null ],
+    [ "appPowerInitComplete", "group__power__manager.html#gaf053634a102c39880985c1d69f569cfd", null ],
+    [ "appPowerIsShuttingDown", "group__power__manager.html#ga997d17eaf75e958ab19b7977f7271a5a", null ],
+    [ "appPowerOffRequest", "group__power__manager.html#gadc818cb083dad49421a44e8e24ceb079", null ],
+    [ "appPowerOn", "group__power__manager.html#ga44f7cc9b82fe6b741fdf3e835b4988d9", null ],
+    [ "appPowerPerformanceProfileRelinquish", "group__power__manager.html#ga8a987a58629da19f8d44ff26acf46190", null ],
+    [ "appPowerPerformanceProfileRequest", "group__power__manager.html#ga45a7b4e10ab5c37f1fb7a0e685a2a6bc", null ],
+    [ "appPowerPerformanceProfileRequestDuration", "group__power__manager.html#ga6758085281988a3a8c2572aa566f98cb", null ],
+    [ "appPowerShutdownPrepareResponse", "group__power__manager.html#gaf91f4e6cb830d9d3609ac1ac0da287ef", null ],
+    [ "appPowerSleepPrepareResponse", "group__power__manager.html#gac99fbd6fdf1227d34aaa870055eeaafc", null ],
+    [ "PowerGetTask", "group__power__manager.html#ga40053c2f1410eead107e3897df31c1ac", null ]
+];

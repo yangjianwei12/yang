@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['gaia_5fdebug_5fl2cap_5fpeer_5flink_5ffunctions_5ft_9252',['gaia_debug_l2cap_peer_link_functions_t',['../structgaia__debug__l2cap__peer__link__functions__t.html',1,'']]],
+  ['gaia_5fget_5fuser_5ffeature_5freading_5fstatus_5ft_9253',['gaia_get_user_feature_reading_status_t',['../structgaia__get__user__feature__reading__status__t.html',1,'']]],
+  ['gaiadisconnectdata_9254',['gaiaDisconnectData',['../structgaia_disconnect_data.html',1,'']]],
+  ['gaiataskdata_9255',['gaiaTaskData',['../structgaia_task_data.html',1,'']]],
+  ['gatt_5fclient_5fservice_5ft_9256',['gatt_client_service_t',['../structgatt__client__service__t.html',1,'']]],
+  ['gatt_5fconnect_5fobserver_5fcallback_5ft_9257',['gatt_connect_observer_callback_t',['../structgatt__connect__observer__callback__t.html',1,'']]],
+  ['gatt_5fqss_5fserver_5fconfig_5fupdated_5ft_9258',['GATT_QSS_SERVER_CONFIG_UPDATED_T',['../struct_g_a_t_t___q_s_s___s_e_r_v_e_r___c_o_n_f_i_g___u_p_d_a_t_e_d___t.html',1,'']]],
+  ['gatt_5fserver_5fqss_5fdata_5ft_9259',['gatt_server_qss_data_t',['../structgatt__server__qss__data__t.html',1,'']]],
+  ['gatt_5fservice_5fdiscovery_5fcomplete_5ft_9260',['GATT_SERVICE_DISCOVERY_COMPLETE_T',['../struct_g_a_t_t___s_e_r_v_i_c_e___d_i_s_c_o_v_e_r_y___c_o_m_p_l_e_t_e___t.html',1,'']]],
+  ['gatt_5fservice_5fdiscovery_5flegacy_5fstate_5ft_9261',['gatt_service_discovery_legacy_state_t',['../structgatt__service__discovery__legacy__state__t.html',1,'']]],
+  ['gatt_5fservice_5fdiscovery_5ftask_5fdata_5ft_9262',['gatt_service_discovery_task_data_t',['../structgatt__service__discovery__task__data__t.html',1,'']]],
+  ['gattserverbatteryclientdata_9263',['gattServerBatteryClientData',['../structgatt_server_battery_client_data.html',1,'']]],
+  ['gattserverbatterydata_9264',['gattServerBatteryData',['../structgatt_server_battery_data.html',1,'']]],
+  ['gattserverbatteryinstanceinfo_9265',['gattServerBatteryInstanceInfo',['../structgatt_server_battery_instance_info.html',1,'']]],
+  ['gattserverdeviceinfodata_9266',['gattServerDeviceInfoData',['../structgatt_server_device_info_data.html',1,'']]],
+  ['gattservergattclientdata_9267',['gattServerGattClientData',['../structgatt_server_gatt_client_data.html',1,'']]],
+  ['gattservergattdata_9268',['gattServerGattData',['../structgatt_server_gatt_data.html',1,'']]],
+  ['gatttaskdata_9269',['gattTaskData',['../structgatt_task_data.html',1,'']]],
+  ['gbss_5fscan_5freport_5ft_9270',['gbss_scan_report_t',['../structgbss__scan__report__t.html',1,'']]],
+  ['gbss_5fsrv_5fdata_5ft_9271',['gbss_srv_data_t',['../structgbss__srv__data__t.html',1,'']]],
+  ['goal_5fentry_5ft_9272',['goal_entry_t',['../structgoal__entry__t.html',1,'']]],
+  ['goal_5fset_5finit_5fparams_5ft_9273',['goal_set_init_params_t',['../structgoal__set__init__params__t.html',1,'']]],
+  ['gtbs_5fstatus_5ffeature_5finfo_5ft_9274',['gtbs_status_feature_info_t',['../structgtbs__status__feature__info__t.html',1,'']]]
+];

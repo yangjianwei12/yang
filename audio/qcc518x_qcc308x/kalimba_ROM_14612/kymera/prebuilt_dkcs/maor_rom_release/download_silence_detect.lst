@@ -1,0 +1,1676 @@
+
+/home/svc-audio-dspsw/kymera_builds/builds/2023/kymera_2312060823/kalimba/kymera/tools/KCSMaker/out/14612/maor_rom_release/download/debugbin/download_silence_detect.elf:     file format elf32-littlekalimba
+
+Disassembly of section .text_minim:
+
+84200000 <Lc_silence_detect_process_data_1>:
+    return;
+}
+
+/* Data processing function */
+static void silence_detect_process_data(OPERATOR_DATA *op_data, TOUCHED_TERMINALS *touched)
+{
+84200000:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200002:	10 09       	r6 = r0 + Null;
+84200004:	19 09       	r7 = r1 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+84200006:	ff fd 04 f0 	call (m) 0x8ea;
+8420000a:	25 e7 
+8420000c:	17 00       	r5 = r0 + Null;
+ *
+ * \return - Pointer to active channel
+ */
+static inline MULTI_CHANNEL_CHANNEL_STRUC* multi_channel_first_active_channel(OPERATOR_DATA *op_data)
+{
+   MULTI_CHANNEL_DEF *chan_def = multi_channel_get_channel_def(op_data);
+8420000e:	42 08       	r0 = r6 + Null;
+84200010:	ff fd f7 f1 	call (m) 0x3eec2;
+84200014:	33 e5 
+   return chan_def->first_active;
+84200016:	2a f0 0a 88 	r8 = M[r0 + 40];
+    unsigned samples_to_process;
+
+    patch_fn(silence_detect_process_data);
+
+    /* Make sure there are channels to process */
+    if(first_chan == NULL)
+8420001a:	56 08       	r4 = r8 + Null;
+8420001c:	4e 60       	if EQ jump (m) Lc_silence_detect_process_data_16;
+
+8420001e <Lc_silence_detect_process_data_2>:
+    {
+        return;
+    }
+
+    /* Handle initialization.*/
+    if(p_ext_data->ReInitFlag)
+8420001e:	78 89       	Null = M[r5 + 20];
+84200020:	20 60       	if EQ jump (m) Lc_silence_detect_process_data_9;
+
+84200022 <Lc_silence_detect_process_data_3>:
+    {
+        p_ext_data->frame_size = p_ext_data->sample_rate * SILENCE_DETECT_FRAME_PERIOD_MS / 1000;
+84200022:	f9 88       	rMAC = M[r5 + 12];
+84200024:	03 f0 e8 43 	r1 = Null + 1000;
+84200028:	8a 42       	r0 = rMAC * 10 (int);
+8420002a:	ff fd d0 f0 	call (m) 0x1a136;
+8420002e:	2d e8 
+84200030:	3a 8f       	M[r5 + 16] = r0;
+
+        chan = first_chan;
+84200032:	56 08       	r4 = r8 + Null;
+
+84200034 <Lc_silence_detect_process_data_4>:
+        // Initailize all available channels
+        while(chan)
+84200034:	30 04       	Null = r4 - Null;
+84200036:	08 60       	if EQ jump (m) Lc_silence_detect_process_data_6;
+
+84200038 <Lc_silence_detect_process_data_5>:
+        {
+            sd_chan  = (silence_detect_channel_object*) chan;
+            silence_detector_lib_initialize(sd_chan->silence_detect_algo_obj, p_ext_data->frame_size, p_ext_data->sample_rate);
+84200038:	fc 88       	r2 = M[r5 + 12];
+8420003a:	3b 89       	r1 = M[r5 + 16];
+8420003c:	32 89       	r0 = M[r4 + 16];
+8420003e:	02 f0 31 e7 	call (m) $_silence_detector_lib_initialize;
+            chan = chan->next_active;
+84200042:	36 e8       	r4 = M[r4 + Null];
+    {
+        p_ext_data->frame_size = p_ext_data->sample_rate * SILENCE_DETECT_FRAME_PERIOD_MS / 1000;
+
+        chan = first_chan;
+        // Initailize all available channels
+        while(chan)
+84200044:	f8 6f       	jump (m) Lc_silence_detect_process_data_4;
+
+84200046 <Lc_silence_detect_process_data_6>:
+            silence_detector_lib_initialize(sd_chan->silence_detect_algo_obj, p_ext_data->frame_size, p_ext_data->sample_rate);
+            chan = chan->next_active;
+        }
+
+        //reset channel iterator
+        chan  = first_chan;
+84200046:	56 08       	r4 = r8 + Null;
+        /* Set silence detect block size */
+        if(p_ext_data->frame_size > 1)
+84200048:	3b 89       	r1 = M[r5 + 16];
+8420004a:	58 24       	Null = r1 - 1;
+8420004c:	09 f0 8d e0 	if LS jump (m) Lc_silence_detect_process_data_8;
+
+84200050 <Lc_silence_detect_process_data_7>:
+        {
+            multi_channel_set_block_size(op_data, p_ext_data->frame_size);
+84200050:	42 08       	r0 = r6 + Null;
+84200052:	ff fd f7 f1 	call (m) 0x3eeb4;
+84200056:	23 e3 
+
+84200058 <Lc_silence_detect_process_data_8>:
+        }
+        p_ext_data->all_channels_silent = 2;    /* 2: UNKNOWN */
+84200058:	81 20       	rMAC = Null + 2;
+8420005a:	f9 9f       	M[r5 + 60] = rMAC;
+        p_ext_data->ReInitFlag = 0;
+8420005c:	78 8f       	M[r5 + 20] = Null;
+        p_ext_data->frame_count = 0;
+8420005e:	38 ae       	M[r5 + 64] = Null;
+
+84200060 <Lc_silence_detect_process_data_9>:
+ * \return - result samples to process
+ */
+static inline unsigned multi_channel_check_buffers(OPERATOR_DATA *op_data,TOUCHED_TERMINALS *touched)
+{
+     /* Return amount of data to process */
+    return multi_channel_check_buffers_adjusted(op_data,touched,NULL,NULL); /* use generic function to minimize duplicate code */
+84200060:	05 00       	r3 = Null + Null;
+84200062:	04 00       	r2 = Null + Null;
+84200064:	4b 08       	r1 = r7 + Null;
+84200066:	42 08       	r0 = r6 + Null;
+84200068:	ff fd f6 f1 	call (m) 0x3ede8;
+8420006c:	21 ec 
+    }
+
+    /* Check status of terminals */
+    samples_to_process = multi_channel_check_buffers(op_data,touched);
+
+    if(samples_to_process > 0)    
+8420006e:	10 04       	Null = r0 - Null;
+84200070:	24 60       	if EQ jump (m) Lc_silence_detect_process_data_16;
+
+84200072 <Lc_silence_detect_process_data_10>:
+    {
+        if(p_ext_data->cur_mode == SILENCE_DETECT_SYSMODE_FULL)
+84200072:	b9 89       	rMAC = M[r5 + 24];
+84200074:	48 24       	Null = rMAC - 1;
+84200076:	0d 60       	if EQ jump (m) Lc_silence_detect_process_data_12;
+
+84200078 <Lc_silence_detect_process_data_11>:
+                }
+                chan = chan->next_active;
+            }
+        }
+
+        multi_channel_advance_buffers(first_chan, p_ext_data->frame_size, p_ext_data->frame_size);
+84200078:	3b 89       	r1 = M[r5 + 16];
+8420007a:	1c 00       	r2 = r1 + Null;
+8420007c:	52 08       	r0 = r8 + Null;
+8420007e:	ff fd 97 f2 	call (m) 0x52ea6;
+84200082:	29 e1 
+        multi_channel_metadata_propagate(op_data, p_ext_data->frame_size);
+84200084:	3b 89       	r1 = M[r5 + 16];
+84200086:	42 08       	r0 = r6 + Null;
+84200088:	ff fd f7 f1 	call (m) 0x3eecc;
+8420008c:	25 e2 
+8420008e:	15 6e       	jump (m) Lc_silence_detect_process_data_16;
+
+84200090 <Lc_silence_detect_process_data_12>:
+    if(samples_to_process > 0)    
+    {
+        if(p_ext_data->cur_mode == SILENCE_DETECT_SYSMODE_FULL)
+        {
+            // Process data on all available channels
+            while(chan)
+84200090:	30 04       	Null = r4 - Null;
+84200092:	f3 61       	if EQ jump (m) Lc_silence_detect_process_data_11;
+
+84200094 <Lc_silence_detect_process_data_13>:
+            {
+                p_ext_data->frame_count ++;
+84200094:	39 a8       	rMAC = M[r5 + 64];
+84200096:	49 20       	rMAC = rMAC + 1;
+84200098:	39 ae       	M[r5 + 64] = rMAC;
+                sd_chan  = (silence_detect_channel_object*) chan;
+                unsigned previous_flag = sd_chan->silence_detect_algo_obj->silence_detection_event;
+8420009a:	32 89       	r0 = M[r4 + 16];
+8420009c:	29 f0 08 88 	r7 = M[r0 + 32];
+                silence_detector_lib_process(sd_chan->silence_detect_algo_obj, p_ext_data->frame_size);
+842000a0:	3b 89       	r1 = M[r5 + 16];
+842000a2:	02 f0 3d e6 	call (m) $_silence_detector_lib_process;
+                if( sd_chan->silence_detect_algo_obj->silence_detection_event != previous_flag)
+842000a6:	31 89       	rMAC = M[r4 + 16];
+842000a8:	0b 98       	r1 = M[rMAC + 32];
+842000aa:	9f f3 00 c2 	Null = r1 - r7;
+842000ae:	03 60       	if EQ jump (m) Lc_silence_detect_process_data_15;
+
+842000b0 <Lc_silence_detect_process_data_14>:
+                {
+                    send_event_detection_message(op_data, sd_chan->silence_detect_algo_obj->silence_detection_event);
+842000b0:	42 08       	r0 = r6 + Null;
+842000b2:	a1 4e       	call (m) $_send_event_detection_message;
+
+842000b4 <Lc_silence_detect_process_data_15>:
+                }
+                chan = chan->next_active;
+842000b4:	36 e8       	r4 = M[r4 + Null];
+    if(samples_to_process > 0)    
+    {
+        if(p_ext_data->cur_mode == SILENCE_DETECT_SYSMODE_FULL)
+        {
+            // Process data on all available channels
+            while(chan)
+842000b6:	ed 6f       	jump (m) Lc_silence_detect_process_data_12;
+
+842000b8 <Lc_silence_detect_process_data_16>:
+        multi_channel_advance_buffers(first_chan, p_ext_data->frame_size, p_ext_data->frame_size);
+        multi_channel_metadata_propagate(op_data, p_ext_data->frame_size);
+
+    }
+    return;
+}
+842000b8:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+842000ba:	d8 4c       	rts;
+
+842000bc <Lc_silence_detect_create_1>:
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+}
+
+
+static bool silence_detect_create(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+842000bc:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842000be:	17 00       	r5 = r0 + Null;
+842000c0:	28 09       	r6 = r3 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+842000c2:	ff fd 04 f0 	call (m) 0x8ea;
+842000c6:	29 e1 
+842000c8:	16 00       	r4 = r0 + Null;
+
+    SILENCE_DETECT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    
+    patch_fn_shared(silence_detect_cap);
+
+    L3_DBG_MSG1("Silence detect operator create: p_ext_data at 0x%08X", p_ext_data);
+842000ca:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842000ce:	c8 24       	Null = rMAC - 3;
+842000d0:	08 68       	if LT jump (m) Lc_silence_detect_create_3;
+
+842000d2 <Lc_silence_detect_create_2>:
+842000d2:	55 f1 02 f0 	r0 = Null + 357564416;
+842000d6:	00 40 
+842000d8:	33 00       	r1 = r4 + Null;
+842000da:	ff fd 07 f0 	call (m) 0x10c2;
+842000de:	29 ef 
+
+842000e0 <Lc_silence_detect_create_3>:
+
+    /* call base_op create, which also allocates and fills response message */
+    if (!base_op_create_lite(op_data, response_data))
+842000e0:	43 08       	r1 = r6 + Null;
+842000e2:	3a 00       	r0 = r5 + Null;
+842000e4:	ff fd 03 f0 	call (m) 0x850;
+842000e8:	2d eb 
+842000ea:	10 04       	Null = r0 - Null;
+842000ec:	0d 62       	if NE jump (m) Lc_silence_detect_create_7;
+
+842000ee <Lc_silence_detect_create_4>:
+    {
+        L2_DBG_MSG("Silence detect operator create: base_op_create failed");
+842000ee:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842000f2:	88 24       	Null = rMAC - 2;
+842000f4:	07 68       	if LT jump (m) Lc_silence_detect_create_6;
+
+842000f6 <Lc_silence_detect_create_5>:
+842000f6:	55 f1 02 f0 	r0 = Null + 357564469;
+842000fa:	35 40 
+842000fc:	ff fd 07 f0 	call (m) 0x10b0;
+84200100:	35 ed 
+
+84200102 <Lc_silence_detect_create_6>:
+        return FALSE;
+84200102:	02 00       	r0 = Null + Null;
+84200104:	3f 6e       	jump (m) Lc_silence_detect_create_12;
+
+84200106 <Lc_silence_detect_create_7>:
+    }
+
+    /* Allocate channels, in-place, allow hot connect  */
+    if( !multi_channel_create(op_data, (MULTI_INPLACE_FLAG | MULTI_METADATA_FLAG | MULTI_HOT_CONN_FLAG), sizeof(silence_detect_channel_object)) )
+84200106:	04 29       	r2 = Null + 20;
+84200108:	c3 22       	r1 = Null + 11;
+8420010a:	3a 00       	r0 = r5 + Null;
+8420010c:	ff fd f4 f1 	call (m) 0x3e99a;
+84200110:	2f e4 
+84200112:	10 04       	Null = r0 - Null;
+84200114:	07 62       	if NE jump (m) Lc_silence_detect_create_9;
+
+84200116 <Lc_silence_detect_create_8>:
+ * \param  response_data Pointer to the pointer to message that is allocated in the function.
+ * \param  new_status  A status ID that is to be sent in the message.
+ */
+inline static void base_op_change_response_status(void **response_data, STATUS_KYMERA new_status)
+{
+    (((OP_STD_RSP *)(*response_data))->status = new_status);
+84200116:	01 f0 00 60 	rMAC = Null + 4096;
+8420011a:	82 f0 00 e8 	r0 = M[r6 + Null];
+8420011e:	51 8e       	M[r0 + 4] = rMAC;
+84200120:	30 6e       	jump (m) Lc_silence_detect_create_11;
+
+84200122 <Lc_silence_detect_create_9>:
+    {
+        base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+        return TRUE;
+    }
+
+    multi_channel_set_callbacks(op_data, silence_detect_channel_create, silence_detect_channel_destroy);
+84200122:	42 f0 04 f0 	r2 = Null + 69206501;
+84200126:	e5 41 
+84200128:	42 f0 03 f0 	r1 = Null + 69206407;
+8420012c:	87 41 
+8420012e:	3a 00       	r0 = r5 + Null;
+84200130:	ff fd f6 f1 	call (m) 0x3ee94;
+84200134:	25 eb 
+
+    multi_channel_set_buffer_size(op_data, 2*SILENCE_DETECT_DEFAULT_FRAME_SIZE);
+84200136:	03 f0 c0 43 	r1 = Null + 960;
+8420013a:	3a 00       	r0 = r5 + Null;
+8420013c:	ff fd f6 f1 	call (m) 0x3eea6;
+84200140:	2b eb 
+
+    p_ext_data->host_mode = SILENCE_DETECT_SYSMODE_FULL;
+84200142:	41 20       	rMAC = Null + 1;
+84200144:	f1 8f       	M[r4 + 28] = rMAC;
+    p_ext_data->cur_mode  = SILENCE_DETECT_SYSMODE_FULL;
+84200146:	b1 8f       	M[r4 + 24] = rMAC;
+    p_ext_data->sample_rate = SILENCE_DETECT_SD_SAMPLE_RATE;
+84200148:	51 f0 80 73 	rMAC = Null + 48000;
+8420014c:	f1 8e       	M[r4 + 12] = rMAC;
+    p_ext_data->frame_size = SILENCE_DETECT_DEFAULT_FRAME_SIZE;
+8420014e:	01 f0 e0 41 	rMAC = Null + 480;
+84200152:	31 8f       	M[r4 + 16] = rMAC;
+
+    if(!cpsInitParameters(&p_ext_data->parms_def, (unsigned*) SILENCE_DETECT_GetDefaults(SILENCE_DETECT_CAP_ID), (unsigned*) &p_ext_data->silence_detector_cap_params, sizeof(SILENCE_DETECT_PARAMETERS)))
+84200154:	22 f0 b5 40 	r0 = Null + 16565;
+84200158:	01 f0 33 ed 	call (m) $_SILENCE_DETECT_GetDefaults;
+8420015c:	13 00       	r1 = r0 + Null;
+8420015e:	05 23       	r3 = Null + 12;
+84200160:	32 32       	r0 = r4 + 40;
+84200162:	34 00       	r2 = r4 + Null;
+84200164:	ff fd 04 f0 	call (m) 0xb2a;
+84200168:	27 ee 
+8420016a:	10 04       	Null = r0 - Null;
+8420016c:	0a 62       	if NE jump (m) Lc_silence_detect_create_11;
+
+8420016e <Lc_silence_detect_create_10>:
+8420016e:	01 f0 00 60 	rMAC = Null + 4096;
+84200172:	82 f0 00 e8 	r0 = M[r6 + Null];
+84200176:	51 8e       	M[r0 + 4] = rMAC;
+    {
+       base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+       multi_channel_detroy(op_data);
+84200178:	3a 00       	r0 = r5 + Null;
+8420017a:	ff fd f4 f1 	call (m) 0x3ea04;
+8420017e:	2b e4 
+
+84200180 <Lc_silence_detect_create_11>:
+
+    /* Allocate channels, in-place, allow hot connect  */
+    if( !multi_channel_create(op_data, (MULTI_INPLACE_FLAG | MULTI_METADATA_FLAG | MULTI_HOT_CONN_FLAG), sizeof(silence_detect_channel_object)) )
+    {
+        base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+        return TRUE;
+84200180:	42 20       	r0 = Null + 1;
+
+84200182 <Lc_silence_detect_create_12>:
+       return TRUE;
+    }
+
+
+    return TRUE;
+}
+84200182:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200184:	d8 4c       	rts;
+
+84200186 <$_silence_detect_channel_create>:
+
+bool silence_detect_channel_create(OPERATOR_DATA *op_data,MULTI_CHANNEL_CHANNEL_STRUC *chan_ptr,unsigned chan_idx)
+{
+84200186:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200188:	1e 00       	r4 = r1 + Null;
+8420018a:	27 00       	r5 = r2 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+8420018c:	ff fd 03 f0 	call (m) 0x8ea;
+84200190:	3f ea 
+84200192:	10 09       	r6 = r0 + Null;
+    silence_detect_channel_object *sd_chan  = (silence_detect_channel_object*)chan_ptr;
+    silence_detect_algo_object *p_sd_dobj;
+    
+    patch_fn_shared(silence_detect_cap);
+
+    p_sd_dobj = xzppmalloc(sizeof(silence_detect_algo_object) , MALLOC_PREFERENCE_NONE);
+84200194:	c3 20       	r1 = Null + 3;
+84200196:	02 31       	r0 = Null + 36;
+84200198:	ff fd 36 f0 	call (m) 0x6f8e;
+8420019c:	37 ef 
+    if (p_sd_dobj == NULL)
+8420019e:	10 04       	Null = r0 - Null;
+842001a0:	03 62       	if NE jump (m) Lc_silence_detect_channel_create_3;
+
+842001a2 <Lc_silence_detect_channel_create_2>:
+    {
+        /* failed to allocate */
+        return FALSE;
+842001a2:	02 00       	r0 = Null + Null;
+842001a4:	0d 6e       	jump (m) Lc_silence_detect_channel_create_4;
+
+842001a6 <Lc_silence_detect_channel_create_3>:
+    }
+    sd_chan->silence_detect_algo_obj = p_sd_dobj;
+842001a6:	32 8f       	M[r4 + 16] = r0;
+    sd_chan->chan_mask = 1<<chan_idx;
+842001a8:	00 f7 93 de 	r1 = 0x1 LSHIFT r5;
+842001ac:	f3 8e       	M[r4 + 12] = r1;
+
+    p_sd_dobj->params_ptr = (unsigned*) &p_ext_data->silence_detector_cap_params;
+842001ae:	28 f0 01 8e 	M[r0 + 4] = r6;
+    // *************************************************************************
+    // Set the input cbuffer pointer for all data objects
+    // *************************************************************************
+    p_sd_dobj->input_buffer_ptr  = (void*)sd_chan->common.sink_buffer_ptr;
+842001b2:	71 88       	rMAC = M[r4 + 4];
+842001b4:	11 ee       	M[r0 + Null] = rMAC;
+
+    p_ext_data->ReInitFlag = 1;
+842001b6:	41 20       	rMAC = Null + 1;
+842001b8:	81 f0 05 8e 	M[r6 + 20] = rMAC;
+
+    return TRUE;
+842001bc:	0a 00       	r0 = rMAC + Null;
+
+842001be <Lc_silence_detect_channel_create_4>:
+}
+842001be:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842001c0:	d8 4c       	rts;
+
+842001c2 <$_silence_detect_destroy>:
+
+bool silence_detect_destroy(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+842001c2:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+842001c4:	16 00       	r4 = r0 + Null;
+842001c6:	2b 00       	r1 = r3 + Null;
+    /* call base_op destroy that creates and fills response message, too */
+    if(!base_op_destroy_lite(op_data, response_data))
+842001c8:	ff fd 03 f0 	call (m) 0x834;
+842001cc:	2d e3 
+842001ce:	10 04       	Null = r0 - Null;
+842001d0:	03 62       	if NE jump (m) Lc_silence_detect_destroy_3;
+
+842001d2 <Lc_silence_detect_destroy_2>:
+    {
+        return(FALSE);
+842001d2:	02 00       	r0 = Null + Null;
+842001d4:	06 6e       	jump (m) Lc_silence_detect_destroy_4;
+
+842001d6 <Lc_silence_detect_destroy_3>:
+    }
+    multi_channel_detroy(op_data);
+842001d6:	32 00       	r0 = r4 + Null;
+842001d8:	ff fd f4 f1 	call (m) 0x3ea04;
+842001dc:	2d e1 
+
+    return TRUE;
+842001de:	42 20       	r0 = Null + 1;
+
+842001e0 <Lc_silence_detect_destroy_4>:
+}
+842001e0:	f1 48       	popm <FP, r4, rLink>;
+842001e2:	d8 4c       	rts;
+
+842001e4 <$_silence_detect_channel_destroy>:
+
+void silence_detect_channel_destroy(OPERATOR_DATA *op_data, MULTI_CHANNEL_CHANNEL_STRUC *chan_ptr)
+{
+842001e4:	c8 1c       	pushm <FP(=SP), rLink>;
+    patch_fn_shared(silence_detect_cap);
+    
+    silence_detect_channel_object *sd_chan  = (silence_detect_channel_object*)chan_ptr;
+    silence_detect_algo_object *p_sd_dobj;
+
+    p_sd_dobj = sd_chan->silence_detect_algo_obj;
+842001e6:	1a 89       	r0 = M[r1 + 16];
+    sd_chan->silence_detect_algo_obj = NULL;
+842001e8:	18 8f       	M[r1 + 16] = Null;
+
+    /* free silence detect algorithm object */
+    pfree(p_sd_dobj);
+842001ea:	ff fd 36 f0 	call (m) 0x6fbe;
+842001ee:	35 ee 
+
+842001f0 <Lc_silence_detect_channel_destroy_2>:
+
+    return;
+842001f0:	c8 48       	popm <FP, rLink>;
+842001f2:	d8 4c       	rts;
+
+842001f4 <$_send_event_detection_message>:
+    }
+    return;
+}
+
+void send_event_detection_message(OPERATOR_DATA *op_data, unsigned silence_detection_event)
+{
+842001f4:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+842001f6:	10 09       	r6 = r0 + Null;
+842001f8:	19 09       	r7 = r1 + Null;
+    unsigned msg_size = OPMSG_UNSOLICITED_SILENCE_DETECT_EVENT_TRIGGER_WORD_SIZE;
+    OPMSG_REPLY_ID message_id = OPMSG_REPLY_ID_SILENCE_DETECT_EVENT_TRIGGER;
+
+    patch_fn_shared(silence_detect_cap);
+
+    unsigned *trigger_message = xzpnewn(msg_size, unsigned);
+842001fa:	c3 20       	r1 = Null + 3;
+842001fc:	02 22       	r0 = Null + 8;
+842001fe:	ff fd 36 f0 	call (m) 0x6f8e;
+84200202:	31 ec 
+84200204:	16 00       	r4 = r0 + Null;
+    if (trigger_message == NULL)
+84200206:	11 62       	if NE jump (m) Lc_send_event_detection_message_5;
+
+84200208 <Lc_send_event_detection_message_2>:
+    {
+        L2_DBG_MSG("SILENCE DETECT: NO MEMORY FOR TRIGGER MESSAGE");
+84200208:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420020c:	88 24       	Null = rMAC - 2;
+8420020e:	07 68       	if LT jump (m) Lc_send_event_detection_message_4;
+
+84200210 <Lc_send_event_detection_message_3>:
+84200210:	55 f1 02 f0 	r0 = Null + 357564523;
+84200214:	6b 40 
+84200216:	ff fd 07 f0 	call (m) 0x10b0;
+8420021a:	3b e4 
+
+8420021c <Lc_send_event_detection_message_4>:
+        fault_diatribe(FAULT_AUDIO_INSUFFICIENT_MEMORY, msg_size);
+8420021c:	83 20       	r1 = Null + 2;
+8420021e:	82 38       	r0 = Null + 50;
+84200220:	ff fd b3 f0 	call (m) 0x16870;
+84200224:	31 e2 
+84200226:	49 6e       	jump (m) Lc_send_event_detection_message_16;
+
+84200228 <Lc_send_event_detection_message_5>:
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+84200228:	42 08       	r0 = r6 + Null;
+8420022a:	ff fd 03 f0 	call (m) 0x8ea;
+8420022e:	21 e6 
+84200230:	17 00       	r5 = r0 + Null;
+        return;
+    }
+
+    SILENCE_DETECT_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    if (silence_detection_event == 0 && p_ext_data->all_channels_silent)
+84200232:	0f f9 00 c2 	Null = r7 - Null;
+84200236:	19 62       	if NE jump (m) Lc_send_event_detection_message_8;
+
+84200238 <Lc_send_event_detection_message_6>:
+84200238:	f8 99       	Null = M[r5 + 60];
+8420023a:	17 60       	if EQ jump (m) Lc_send_event_detection_message_8;
+
+8420023c <Lc_send_event_detection_message_7>:
+    {
+        p_ext_data->all_channels_silent = 0;
+8420023c:	f8 9f       	M[r5 + 60] = Null;
+        OPMSG_CREATION_FIELD_SET(trigger_message, OPMSG_UNSOLICITED_SILENCE_DETECT_EVENT_TRIGGER, DETECTED_EVENT, SD_AUDIO_DETECTED);
+8420023e:	41 20       	rMAC = Null + 1;
+84200240:	71 8e       	M[r4 + 4] = rMAC;
+        common_send_unsolicited_message(op_data, (unsigned)message_id, msg_size, trigger_message);
+84200242:	84 20       	r2 = Null + 2;
+84200244:	03 23       	r1 = Null + 12;
+84200246:	35 00       	r3 = r4 + Null;
+84200248:	42 08       	r0 = r6 + Null;
+8420024a:	ff fd 03 f0 	call (m) 0x970;
+8420024e:	27 e9 
+        pdelete(trigger_message);
+84200250:	32 00       	r0 = r4 + Null;
+84200252:	ff fd 36 f0 	call (m) 0x6fbe;
+84200256:	2d eb 
+        L0_DBG_MSG1("Frame %d: SILENCE DETECT MSG: ATLEAST ONE CHANNEL IS NO LONGER SILENT", p_ext_data->frame_count);
+84200258:	3b a8       	r1 = M[r5 + 64];
+8420025a:	55 f1 02 f0 	r0 = Null + 357564569;
+8420025e:	99 40 
+84200260:	ff fd 07 f0 	call (m) 0x10c2;
+84200264:	23 e3 
+84200266:	29 6e       	jump (m) Lc_send_event_detection_message_16;
+
+84200268 <Lc_send_event_detection_message_8>:
+        return;
+    }
+
+    unsigned all_channels_silent = 1;
+84200268:	09 71       	r7 = Null + 1;
+ *
+ * \return - Pointer to active channel
+ */
+static inline MULTI_CHANNEL_CHANNEL_STRUC* multi_channel_first_active_channel(OPERATOR_DATA *op_data)
+{
+   MULTI_CHANNEL_DEF *chan_def = multi_channel_get_channel_def(op_data);
+8420026a:	42 08       	r0 = r6 + Null;
+8420026c:	ff fd f6 f1 	call (m) 0x3eec2;
+84200270:	37 e2 
+   return chan_def->first_active;
+84200272:	91 98       	rMAC = M[r0 + 40];
+
+84200274 <Lc_send_event_detection_message_9>:
+    MULTI_CHANNEL_CHANNEL_STRUC *chan_iterator = multi_channel_first_active_channel(op_data);
+    silence_detect_channel_object *sd_chan;
+
+    while(chan_iterator)
+84200274:	08 04       	Null = rMAC - Null;
+84200276:	08 60       	if EQ jump (m) Lc_send_event_detection_message_13;
+
+84200278 <Lc_send_event_detection_message_10>:
+    {
+        sd_chan  = (silence_detect_channel_object*) chan_iterator;
+        if (sd_chan->silence_detect_algo_obj->silence_detection_event != 1)
+84200278:	0a 89       	r0 = M[rMAC + 16];
+8420027a:	12 98       	r0 = M[r0 + 32];
+8420027c:	50 24       	Null = r0 - 1;
+8420027e:	02 60       	if EQ jump (m) Lc_send_event_detection_message_12;
+
+84200280 <Lc_send_event_detection_message_11>:
+        {
+            all_channels_silent = 0;
+84200280:	01 09       	r7 = Null + Null;
+
+84200282 <Lc_send_event_detection_message_12>:
+        }
+        chan_iterator = chan_iterator->next_active;
+84200282:	09 e8       	rMAC = M[rMAC + Null];
+
+    unsigned all_channels_silent = 1;
+    MULTI_CHANNEL_CHANNEL_STRUC *chan_iterator = multi_channel_first_active_channel(op_data);
+    silence_detect_channel_object *sd_chan;
+
+    while(chan_iterator)
+84200284:	f8 6f       	jump (m) Lc_send_event_detection_message_9;
+
+84200286 <Lc_send_event_detection_message_13>:
+            all_channels_silent = 0;
+        }
+        chan_iterator = chan_iterator->next_active;
+    }
+
+    p_ext_data->all_channels_silent =  all_channels_silent;
+84200286:	79 f0 0f 8e 	M[r5 + 60] = r7;
+
+    if(all_channels_silent == 1)
+8420028a:	90 f0 01 24 	Null = r7 - 1;
+8420028e:	11 62       	if NE jump (m) Lc_send_event_detection_message_15;
+
+84200290 <Lc_send_event_detection_message_14>:
+    {
+        OPMSG_CREATION_FIELD_SET(trigger_message, OPMSG_UNSOLICITED_SILENCE_DETECT_EVENT_TRIGGER, DETECTED_EVENT, SD_ALL_CHANNELS_SILENT);
+84200290:	81 20       	rMAC = Null + 2;
+84200292:	71 8e       	M[r4 + 4] = rMAC;
+        common_send_unsolicited_message(op_data, (unsigned)message_id, msg_size, trigger_message);
+84200294:	03 23       	r1 = Null + 12;
+84200296:	35 00       	r3 = r4 + Null;
+84200298:	0c 00       	r2 = rMAC + Null;
+8420029a:	42 08       	r0 = r6 + Null;
+8420029c:	ff fd 03 f0 	call (m) 0x970;
+842002a0:	35 e6 
+        L0_DBG_MSG1("Frame %d: SILENCE DETECT MSG: ALL CHANNELS ARE SILENT", p_ext_data->frame_count);
+842002a2:	3b a8       	r1 = M[r5 + 64];
+842002a4:	55 f1 02 f0 	r0 = Null + 357564639;
+842002a8:	df 40 
+842002aa:	ff fd 07 f0 	call (m) 0x10c2;
+842002ae:	39 e0 
+
+842002b0 <Lc_send_event_detection_message_15>:
+    }
+
+    pdelete(trigger_message);
+842002b0:	32 00       	r0 = r4 + Null;
+842002b2:	ff fd 36 f0 	call (m) 0x6fbe;
+842002b6:	2d e8 
+
+842002b8 <Lc_send_event_detection_message_16>:
+    return;
+}
+842002b8:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+842002ba:	d8 4c       	rts;
+
+842002bc <$_sd_opmsg_set_sample_rate>:
+    return cpsGetUcidMsgHandler(&p_ext_data->parms_def, base_op_get_cap_id(op_data),
+                                message_data, resp_length, resp_data);
+}
+
+bool sd_opmsg_set_sample_rate(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842002bc:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+842002be:	1e 00       	r4 = r1 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+842002c0:	ff fd 03 f0 	call (m) 0x8ea;
+842002c4:	2b e1 
+
+bool sd_opmsg_set_sample_rate(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    SILENCE_DETECT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    
+    p_ext_data->sample_rate = SAMPLE_RATE_FROM_COMMON_OPMSG(message_data);
+842002c6:	f1 88       	rMAC = M[r4 + 12];
+842002c8:	89 c6       	rMAC = rMAC AND 0xffff;
+842002ca:	49 46       	rMAC = rMAC * 25 (int);
+842002cc:	d1 8e       	M[r0 + 12] = rMAC;
+    p_ext_data->ReInitFlag = 1;
+842002ce:	41 20       	rMAC = Null + 1;
+842002d0:	51 8f       	M[r0 + 20] = rMAC;
+
+    return TRUE;
+842002d2:	0a 00       	r0 = rMAC + Null;
+
+842002d4 <Lc_sd_opmsg_set_sample_rate_2>:
+}
+842002d4:	f1 48       	popm <FP, r4, rLink>;
+842002d6:	d8 4c       	rts;
+
+842002d8 <$_sd_opmsg_obpm_set_control>:
+}
+
+/* ********************* Operator Message Handle functions ****************** */
+
+bool sd_opmsg_obpm_set_control(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842002d8:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+842002da:	19 09       	r7 = r1 + Null;
+842002dc:	27 00       	r5 = r2 + Null;
+842002de:	2b 09       	r9 = r3 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+842002e0:	ff fd 03 f0 	call (m) 0x8ea;
+842002e4:	2b e0 
+842002e6:	16 00       	r4 = r0 + Null;
+{
+    SILENCE_DETECT_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    unsigned            i, num_controls, cntrl_value;
+    CPS_CONTROL_SOURCE  cntrl_src;
+    OPMSG_RESULT_STATES result = OPMSG_RESULT_STATES_NORMAL_STATE;
+842002e8:	02 09       	r8 = Null + Null;
+    
+    patch_fn_shared(silence_detect_cap);
+
+    if(!cps_control_setup(message_data, resp_length, resp_data, &num_controls))
+842002ea:	05 12       	r3 = FP + 32;
+842002ec:	5c 08       	r2 = r9 + Null;
+842002ee:	3b 00       	r1 = r5 + Null;
+842002f0:	4a 08       	r0 = r7 + Null;
+842002f2:	ff fd 05 f0 	call (m) 0xe9e;
+842002f6:	2d ed 
+842002f8:	10 04       	Null = r0 - Null;
+842002fa:	03 62       	if NE jump (m) Lc_sd_opmsg_obpm_set_control_3;
+
+842002fc <Lc_sd_opmsg_obpm_set_control_2>:
+842002fc:	02 00       	r0 = Null + Null;
+842002fe:	3b 6e       	jump (m) Lc_sd_opmsg_obpm_set_control_22;
+
+84200300 <Lc_sd_opmsg_obpm_set_control_3>:
+84200300:	18 f0 00 40 	r6 = Null + 8192;
+    {
+       return FALSE;
+    }
+
+    for(i=0; i<num_controls; i++)
+84200304:	07 00       	r5 = Null + Null;
+84200306:	06 6e       	jump (m) Lc_sd_opmsg_obpm_set_control_7;
+
+84200308 <Lc_sd_opmsg_obpm_set_control_4>:
+            {
+                p_ext_data->ovr_control = 0;
+            }
+            else
+            {
+                p_ext_data->ovr_control = SILENCE_DETECT_CONTROL_MODE_OVERRIDE;
+84200308:	68 f0 09 8e 	M[r4 + 36] = r6;
+
+8420030c <Lc_sd_opmsg_obpm_set_control_5>:
+            }
+            p_ext_data->obpm_mode = cntrl_value;
+8420030c:	49 d8       	rMAC = M[FP + 36];
+8420030e:	31 9e       	M[r4 + 32] = rMAC;
+
+84200310 <Lc_sd_opmsg_obpm_set_control_6>:
+    if(!cps_control_setup(message_data, resp_length, resp_data, &num_controls))
+    {
+       return FALSE;
+    }
+
+    for(i=0; i<num_controls; i++)
+84200310:	7f 20       	r5 = r5 + 1;
+
+84200312 <Lc_sd_opmsg_obpm_set_control_7>:
+84200312:	41 d8       	rMAC = M[FP + 32];
+84200314:	78 04       	Null = r5 - rMAC;
+84200316:	02 f0 99 e0 	if C jump (m) Lc_sd_opmsg_obpm_set_control_10;
+
+8420031a <Lc_sd_opmsg_obpm_set_control_8>:
+    {
+        unsigned cntrl_id = cps_control_get(message_data, i, &cntrl_value,
+                                            &cntrl_src);
+8420031a:	85 12       	r3 = FP + 40;
+8420031c:	44 12       	r2 = FP + 36;
+8420031e:	3b 00       	r1 = r5 + Null;
+84200320:	4a 08       	r0 = r7 + Null;
+84200322:	ff fd 05 f0 	call (m) 0xee2;
+84200326:	21 ee 
+
+        if (cntrl_id != OPMSG_CONTROL_MODE_ID)
+84200328:	50 24       	Null = r0 - 1;
+8420032a:	09 60       	if EQ jump (m) Lc_sd_opmsg_obpm_set_control_12;
+
+8420032c <Lc_sd_opmsg_obpm_set_control_9>:
+        {
+            result = OPMSG_RESULT_STATES_UNSUPPORTED_CONTROL;
+8420032c:	22 71       	r8 = Null + 4;
+
+8420032e <Lc_sd_opmsg_obpm_set_control_10>:
+            }
+            p_ext_data->obpm_mode = cntrl_value;
+        }
+    }
+
+    if(p_ext_data->ovr_control & SILENCE_DETECT_CONTROL_MODE_OVERRIDE)
+8420032e:	71 98       	rMAC = M[r4 + 36];
+84200330:	11 f1 00 00 	rMAC = rMAC AND 0x2000;
+84200334:	13 60       	if EQ jump (m) Lc_sd_opmsg_obpm_set_control_18;
+
+84200336 <Lc_sd_opmsg_obpm_set_control_11>:
+    {
+        p_ext_data->cur_mode = p_ext_data->obpm_mode;
+84200336:	31 98       	rMAC = M[r4 + 32];
+84200338:	b1 8f       	M[r4 + 24] = rMAC;
+8420033a:	12 6e       	jump (m) Lc_sd_opmsg_obpm_set_control_19;
+
+8420033c <Lc_sd_opmsg_obpm_set_control_12>:
+        {
+            result = OPMSG_RESULT_STATES_UNSUPPORTED_CONTROL;
+            break;
+        }
+        /* Only interested in lower 8-bits of value */
+        cntrl_value &= 0xFF;
+8420033c:	49 d8       	rMAC = M[FP + 36];
+8420033e:	89 c3       	rMAC = rMAC AND 0xff;
+84200340:	49 de       	M[FP + 36] = rMAC;
+        if (cntrl_value >= SILENCE_DETECT_SYSMODE_MAX_MODES)
+84200342:	c8 24       	Null = rMAC - 3;
+84200344:	03 64       	if NC jump (m) Lc_sd_opmsg_obpm_set_control_14;
+
+84200346 <Lc_sd_opmsg_obpm_set_control_13>:
+        {
+            result = OPMSG_RESULT_STATES_INVALID_CONTROL_VALUE;
+84200346:	2a 71       	r8 = Null + 5;
+            break;
+84200348:	f3 6f       	jump (m) Lc_sd_opmsg_obpm_set_control_10;
+
+8420034a <Lc_sd_opmsg_obpm_set_control_14>:
+        }
+        /* Control is Mode */
+        if (cntrl_src == CPS_SOURCE_HOST)
+8420034a:	42 d1       	r0 = MBS[FP + 40];
+8420034c:	03 62       	if NE jump (m) Lc_sd_opmsg_obpm_set_control_16;
+
+8420034e <Lc_sd_opmsg_obpm_set_control_15>:
+        {
+            p_ext_data->host_mode = cntrl_value;
+8420034e:	f1 8f       	M[r4 + 28] = rMAC;
+84200350:	e0 6f       	jump (m) Lc_sd_opmsg_obpm_set_control_6;
+
+84200352 <Lc_sd_opmsg_obpm_set_control_16>:
+        }
+        else
+        {
+            if (cntrl_src == CPS_SOURCE_OBPM_DISABLE)
+84200352:	d0 24       	Null = r0 - 3;
+84200354:	da 63       	if NE jump (m) Lc_sd_opmsg_obpm_set_control_4;
+
+84200356 <Lc_sd_opmsg_obpm_set_control_17>:
+            {
+                p_ext_data->ovr_control = 0;
+84200356:	70 9e       	M[r4 + 36] = Null;
+84200358:	da 6f       	jump (m) Lc_sd_opmsg_obpm_set_control_5;
+
+8420035a <Lc_sd_opmsg_obpm_set_control_18>:
+    {
+        p_ext_data->cur_mode = p_ext_data->obpm_mode;
+    }
+    else
+    {
+        p_ext_data->cur_mode = p_ext_data->host_mode;
+8420035a:	f1 89       	rMAC = M[r4 + 28];
+8420035c:	b1 8f       	M[r4 + 24] = rMAC;
+
+8420035e <Lc_sd_opmsg_obpm_set_control_19>:
+    }
+
+    cps_response_set_result(resp_data, result);
+8420035e:	53 08       	r1 = r8 + Null;
+84200360:	5a 08       	r0 = r9 + Null;
+84200362:	ff fd 05 f0 	call (m) 0xf30;
+84200366:	2f ee 
+
+    /* Set the Reinit flag after setting the parameters */
+    if (result == OPMSG_RESULT_STATES_NORMAL_STATE)
+84200368:	0f fa 00 c2 	Null = r8 - Null;
+8420036c:	03 62       	if NE jump (m) Lc_sd_opmsg_obpm_set_control_21;
+
+8420036e <Lc_sd_opmsg_obpm_set_control_20>:
+    {
+        p_ext_data->ReInitFlag = 1;
+8420036e:	41 20       	rMAC = Null + 1;
+84200370:	71 8f       	M[r4 + 20] = rMAC;
+
+84200372 <Lc_sd_opmsg_obpm_set_control_21>:
+    }
+    return TRUE;
+84200372:	42 20       	r0 = Null + 1;
+
+84200374 <Lc_sd_opmsg_obpm_set_control_22>:
+}
+84200374:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200376:	d8 4c       	rts;
+
+84200378 <$_sd_opmsg_obpm_get_status>:
+
+    return TRUE;
+}
+
+bool sd_opmsg_obpm_get_status(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200378:	f5 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>, SP = SP + 0x10;
+8420037a:	17 00       	r5 = r0 + Null;
+8420037c:	1a 09       	r8 = r1 + Null;
+8420037e:	20 09       	r6 = r2 + Null;
+84200380:	2e 00       	r4 = r3 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+84200382:	ff fd 02 f0 	call (m) 0x8ea;
+84200386:	29 eb 
+84200388:	11 09       	r7 = r0 + Null;
+ *
+ * \return - Pointer to active channel
+ */
+static inline MULTI_CHANNEL_CHANNEL_STRUC* multi_channel_first_active_channel(OPERATOR_DATA *op_data)
+{
+   MULTI_CHANNEL_DEF *chan_def = multi_channel_get_channel_def(op_data);
+8420038a:	3a 00       	r0 = r5 + Null;
+8420038c:	ff fd f5 f1 	call (m) 0x3eec2;
+84200390:	37 e9 
+   return chan_def->first_active;
+84200392:	97 98       	r5 = M[r0 + 40];
+    unsigned *resp;
+    int i;
+
+    patch_fn_shared(silence_detect_cap);
+
+    if (!common_obpm_status_helper(message_data, resp_length,resp_data, sizeof(SILENCE_DETECT_STATISTICS), &resp))
+84200394:	c1 11       	rMAC = FP + 28;
+84200396:	09 1c       	pushm <rMAC>;
+84200398:	05 f0 4c 40 	r3 = Null + 76;
+8420039c:	34 00       	r2 = r4 + Null;
+8420039e:	43 08       	r1 = r6 + Null;
+842003a0:	52 08       	r0 = r8 + Null;
+842003a2:	ff fd 05 f0 	call (m) 0xf46;
+842003a6:	25 ed 
+842003a8:	7f 4c       	SP = SP + -4;
+842003aa:	10 04       	Null = r0 - Null;
+842003ac:	03 62       	if NE jump (m) Lc_sd_opmsg_obpm_get_status_3;
+
+842003ae <Lc_sd_opmsg_obpm_get_status_2>:
+    {
+        return FALSE;
+842003ae:	02 00       	r0 = Null + Null;
+842003b0:	2a 6e       	jump (m) Lc_sd_opmsg_obpm_get_status_11;
+
+842003b2 <Lc_sd_opmsg_obpm_get_status_3>:
+    }
+
+    if (resp)
+842003b2:	3c d8       	r2 = M[FP + 28];
+842003b4:	27 60       	if EQ jump (m) Lc_sd_opmsg_obpm_get_status_10;
+
+842003b6 <Lc_sd_opmsg_obpm_get_status_4>:
+    {
+
+        resp = cpsPack2Words(p_ext_data->cur_mode, p_ext_data->all_channels_silent, resp);
+842003b6:	93 f0 0f 88 	r1 = M[r7 + 60];
+842003ba:	92 f0 06 88 	r0 = M[r7 + 24];
+842003be:	ff fd 6b f2 	call (m) 0x4da2c;
+842003c2:	2f e3 
+842003c4:	3a de       	M[FP + 28] = r0;
+
+        for (i=1;i<=SILENCE_DETECTOR_MAX_CHANNELS;i++)
+842003c6:	46 20       	r4 = Null + 1;
+
+842003c8 <Lc_sd_opmsg_obpm_get_status_5>:
+        {
+            if (chan == NULL)
+842003c8:	38 04       	Null = r5 - Null;
+842003ca:	09 62       	if NE jump (m) Lc_sd_opmsg_obpm_get_status_7;
+
+842003cc <Lc_sd_opmsg_obpm_get_status_6>:
+            {
+                resp = cpsPack2Words(0, 0, resp);
+842003cc:	3c d8       	r2 = M[FP + 28];
+842003ce:	03 00       	r1 = Null + Null;
+842003d0:	02 00       	r0 = Null + Null;
+842003d2:	ff fd 6b f2 	call (m) 0x4da2c;
+842003d6:	3b e2 
+842003d8:	3a de       	M[FP + 28] = r0;
+                continue;
+842003da:	0a 6e       	jump (m) Lc_sd_opmsg_obpm_get_status_8;
+
+842003dc <Lc_sd_opmsg_obpm_get_status_7>:
+            }
+            sd_chan = (silence_detect_channel_object*) chan;
+            resp = cpsPack2Words(sd_chan->silence_detect_algo_obj->computed_power_log2, sd_chan->silence_detect_algo_obj->silence_detection_event, resp);
+842003dc:	39 89       	rMAC = M[r5 + 16];
+842003de:	3c d8       	r2 = M[FP + 28];
+842003e0:	0b 98       	r1 = M[rMAC + 32];
+842003e2:	0a 89       	r0 = M[rMAC + 16];
+842003e4:	ff fd 6b f2 	call (m) 0x4da2c;
+842003e8:	29 e2 
+842003ea:	3a de       	M[FP + 28] = r0;
+            chan = chan->next_active;
+842003ec:	3f e8       	r5 = M[r5 + Null];
+
+842003ee <Lc_sd_opmsg_obpm_get_status_8>:
+    if (resp)
+    {
+
+        resp = cpsPack2Words(p_ext_data->cur_mode, p_ext_data->all_channels_silent, resp);
+
+        for (i=1;i<=SILENCE_DETECTOR_MAX_CHANNELS;i++)
+842003ee:	76 20       	r4 = r4 + 1;
+842003f0:	30 26       	Null = r4 - 8;
+842003f2:	eb 6d       	if LE jump (m) Lc_sd_opmsg_obpm_get_status_5;
+
+842003f4 <Lc_sd_opmsg_obpm_get_status_9>:
+            sd_chan = (silence_detect_channel_object*) chan;
+            resp = cpsPack2Words(sd_chan->silence_detect_algo_obj->computed_power_log2, sd_chan->silence_detect_algo_obj->silence_detection_event, resp);
+            chan = chan->next_active;
+        }
+
+        resp = cpsPack1Word(p_ext_data->ovr_control, resp);
+842003f4:	3b d8       	r1 = M[FP + 28];
+842003f6:	92 f0 09 88 	r0 = M[r7 + 36];
+842003fa:	ff fd 6b f2 	call (m) 0x4da5e;
+842003fe:	25 e3 
+84200400:	3a de       	M[FP + 28] = r0;
+
+84200402 <Lc_sd_opmsg_obpm_get_status_10>:
+    }
+
+    return TRUE;
+84200402:	42 20       	r0 = Null + 1;
+
+84200404 <Lc_sd_opmsg_obpm_get_status_11>:
+}
+84200404:	f5 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200406:	d8 4c       	rts;
+
+84200408 <$_sd_opmsg_get_ps_id>:
+
+    return retval;
+}
+
+bool sd_opmsg_get_ps_id(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200408:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+8420040a:	16 00       	r4 = r0 + Null;
+8420040c:	1a 09       	r8 = r1 + Null;
+8420040e:	20 09       	r6 = r2 + Null;
+84200410:	2f 00       	r5 = r3 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+84200412:	ff fd 02 f0 	call (m) 0x8ea;
+84200416:	39 e6 
+84200418:	11 09       	r7 = r0 + Null;
+bool sd_opmsg_get_ps_id(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    SILENCE_DETECT_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    return cpsGetUcidMsgHandler(&p_ext_data->parms_def, base_op_get_cap_id(op_data),
+                                message_data, resp_length, resp_data);
+8420041a:	32 00       	r0 = r4 + Null;
+8420041c:	ff fd 02 f0 	call (m) 0x8ee;
+84200420:	33 e6 
+84200422:	13 00       	r1 = r0 + Null;
+84200424:	39 1c       	pushm <r5>;
+84200426:	92 f0 28 20 	r0 = r7 + 40;
+8420042a:	45 08       	r3 = r6 + Null;
+8420042c:	54 08       	r2 = r8 + Null;
+8420042e:	ff fd 04 f0 	call (m) 0xdb4;
+84200432:	27 ec 
+84200434:	7f 4c       	SP = SP + -4;
+
+84200436 <Lc_sd_opmsg_get_ps_id_2>:
+}
+84200436:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200438:	d8 4c       	rts;
+
+8420043a <$_sd_opmsg_set_ucid>:
+
+    return TRUE;
+}
+
+bool sd_opmsg_set_ucid(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+8420043a:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+8420043c:	11 09       	r7 = r0 + Null;
+8420043e:	1a 09       	r8 = r1 + Null;
+84200440:	27 00       	r5 = r2 + Null;
+84200442:	28 09       	r6 = r3 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+84200444:	ff fd 02 f0 	call (m) 0x8ea;
+84200448:	27 e5 
+8420044a:	16 00       	r4 = r0 + Null;
+bool sd_opmsg_set_ucid(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    SILENCE_DETECT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    PS_KEY_TYPE key;
+
+    bool retval = cpsSetUcidMsgHandler(&p_ext_data->parms_def, message_data, resp_length, resp_data);
+8420044c:	32 32       	r0 = r4 + 40;
+8420044e:	45 08       	r3 = r6 + Null;
+84200450:	3c 00       	r2 = r5 + Null;
+84200452:	53 08       	r1 = r8 + Null;
+84200454:	ff fd 04 f0 	call (m) 0xd92;
+84200458:	3f e9 
+8420045a:	17 00       	r5 = r0 + Null;
+
+    key = MAP_CAPID_UCID_SBID_TO_PSKEYID(base_op_get_cap_id(op_data), p_ext_data->parms_def.ucid, OPMSG_P_STORE_PARAMETER_SUB_ID);
+8420045c:	4a 08       	r0 = r7 + Null;
+8420045e:	ff fd 02 f0 	call (m) 0x8ee;
+84200462:	31 e4 
+84200464:	92 c6       	r0 = r0 AND 0xffff;
+84200466:	b1 99       	rMAC = M[r4 + 56];
+84200468:	92 55       	r0 = r0 LSHIFT 7;
+8420046a:	8b c2       	r1 = rMAC AND 0x3f;
+8420046c:	1b 54       	r1 = r1 LSHIFT 1;
+8420046e:	9b 12       	r1 = r1 OR r0;
+    ps_entry_read((void*)op_data, key, PERSIST_ANY, sd_ups_params);
+84200470:	42 f0 05 f0 	r3 = Null + 69207175;
+84200474:	87 48 
+84200476:	04 00       	r2 = Null + Null;
+84200478:	4a 08       	r0 = r7 + Null;
+8420047a:	ff fd 3f f0 	call (m) 0x8370;
+8420047e:	37 e7 
+
+    return retval;
+84200480:	3a 00       	r0 = r5 + Null;
+
+84200482 <Lc_sd_opmsg_set_ucid_2>:
+}
+84200482:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200484:	d8 4c       	rts;
+
+84200486 <Lc_sd_ups_params_1>:
+    p_ext_data->ReInitFlag = TRUE;
+    return retval;
+}
+
+static bool sd_ups_params(void* instance_data, PS_KEY_TYPE key, PERSISTENCE_RANK rank, uint16 length, unsigned* data, STATUS_KYMERA status, uint16 extra_status_info)
+{
+84200486:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200488:	2e 00       	r4 = r3 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+8420048a:	ff fd 02 f0 	call (m) 0x8ea;
+8420048e:	21 e3 
+
+static bool sd_ups_params(void* instance_data, PS_KEY_TYPE key, PERSISTENCE_RANK rank, uint16 length, unsigned* data, STATUS_KYMERA status, uint16 extra_status_info)
+{
+    SILENCE_DETECT_OP_DATA *p_ext_data = get_instance_data(instance_data);
+
+    cpsSetParameterFromPsStore(&p_ext_data->parms_def, length, data, status);
+84200490:	e5 d5       	r3 = MHS[FP + -8];
+84200492:	fc d9       	r2 = M[FP + -4];
+84200494:	12 32       	r0 = r0 + 40;
+84200496:	33 00       	r1 = r4 + Null;
+84200498:	ff fd 04 f0 	call (m) 0xdf6;
+8420049c:	3f ea 
+
+    return TRUE;
+8420049e:	42 20       	r0 = Null + 1;
+
+842004a0 <Lc_sd_ups_params_2>:
+}
+842004a0:	f1 48       	popm <FP, r4, rLink>;
+842004a2:	d8 4c       	rts;
+
+842004a4 <$_sd_opmsg_obpm_set_params>:
+
+    return cpsGetDefaultsMsgHandler(&p_ext_data->parms_def, message_data, resp_length, resp_data);
+}
+
+bool sd_opmsg_obpm_set_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842004a4:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+842004a6:	19 09       	r7 = r1 + Null;
+842004a8:	27 00       	r5 = r2 + Null;
+842004aa:	28 09       	r6 = r3 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+842004ac:	ff fd 02 f0 	call (m) 0x8ea;
+842004b0:	3f e1 
+842004b2:	16 00       	r4 = r0 + Null;
+
+bool sd_opmsg_obpm_set_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    SILENCE_DETECT_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    bool retval = cpsSetParameterMsgHandler(&p_ext_data->parms_def, message_data, resp_length, resp_data);
+842004b4:	32 32       	r0 = r4 + 40;
+842004b6:	45 08       	r3 = r6 + Null;
+842004b8:	3c 00       	r2 = r5 + Null;
+842004ba:	4b 08       	r1 = r7 + Null;
+842004bc:	ff fd 04 f0 	call (m) 0xd00;
+842004c0:	25 e2 
+
+    p_ext_data->ReInitFlag = TRUE;
+842004c2:	41 20       	rMAC = Null + 1;
+842004c4:	71 8f       	M[r4 + 20] = rMAC;
+
+842004c6 <Lc_sd_opmsg_obpm_set_params_2>:
+    return retval;
+842004c6:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+842004c8:	d8 4c       	rts;
+
+842004ca <$_sd_opmsg_obpm_get_defaults>:
+
+    return cpsGetParameterMsgHandler(&p_ext_data->parms_def, message_data, resp_length, resp_data);
+}
+
+bool sd_opmsg_obpm_get_defaults(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842004ca:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842004cc:	1f 00       	r5 = r1 + Null;
+842004ce:	26 00       	r4 = r2 + Null;
+842004d0:	28 09       	r6 = r3 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+842004d2:	ff fd 02 f0 	call (m) 0x8ea;
+842004d6:	39 e0 
+
+bool sd_opmsg_obpm_get_defaults(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    SILENCE_DETECT_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    return cpsGetDefaultsMsgHandler(&p_ext_data->parms_def, message_data, resp_length, resp_data);
+842004d8:	12 32       	r0 = r0 + 40;
+842004da:	45 08       	r3 = r6 + Null;
+842004dc:	34 00       	r2 = r4 + Null;
+842004de:	3b 00       	r1 = r5 + Null;
+842004e0:	ff fd 03 f0 	call (m) 0xc2c;
+842004e4:	2d ea 
+
+842004e6 <Lc_sd_opmsg_obpm_get_defaults_2>:
+}
+842004e6:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842004e8:	d8 4c       	rts;
+
+842004ea <$_sd_opmsg_obpm_get_params>:
+    }
+    return TRUE;
+}
+
+bool sd_opmsg_obpm_get_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842004ea:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842004ec:	1f 00       	r5 = r1 + Null;
+842004ee:	26 00       	r4 = r2 + Null;
+842004f0:	28 09       	r6 = r3 + Null;
+MAP_INSTANCE_DATA(SILENCE_DETECT_CAP_ID, SILENCE_DETECT_OP_DATA)
+
+/* Accessing the capability-specific per-instance data function */
+static inline SILENCE_DETECT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (SILENCE_DETECT_OP_DATA *) base_op_get_instance_data(op_data);
+842004f2:	ff fd 01 f0 	call (m) 0x8ea;
+842004f6:	39 ef 
+
+bool sd_opmsg_obpm_get_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    SILENCE_DETECT_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    return cpsGetParameterMsgHandler(&p_ext_data->parms_def, message_data, resp_length, resp_data);
+842004f8:	12 32       	r0 = r0 + 40;
+842004fa:	45 08       	r3 = r6 + Null;
+842004fc:	34 00       	r2 = r4 + Null;
+842004fe:	3b 00       	r1 = r5 + Null;
+84200500:	ff fd 03 f0 	call (m) 0xb7c;
+84200504:	3d e3 
+
+84200506 <Lc_sd_opmsg_obpm_get_params_2>:
+}
+84200506:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200508:	d8 4c       	rts;
+
+8420050a <$_SILENCE_DETECT_GetDefaults>:
+8420050a:	20 f0 d3 24 	Null = r0 - 211;
+#endif
+
+
+
+unsigned *SILENCE_DETECT_GetDefaults(unsigned capid){
+	switch(capid){
+8420050e:	05 60       	if EQ jump (m) Lc_SILENCE_DETECT_GetDefaults_3;
+
+84200510 <Lc_SILENCE_DETECT_GetDefaults_2>:
+84200510:	01 f0 20 f0 	Null = r0 - 16565;
+84200514:	b5 24 
+84200516:	05 62       	if NE jump (m) Lc_SILENCE_DETECT_GetDefaults_4;
+
+84200518 <Lc_SILENCE_DETECT_GetDefaults_3>:
+#if defined (INSTALL_OPERATOR_SILENCE_DETECT)
+		case 0x00D3: return defaults_silence_detectSD;
+84200518:	f1 ff 02 f3 	r0 = Null + -15335424;
+8420051c:	00 40 
+8420051e:	02 6e       	jump (m) Lc_SILENCE_DETECT_GetDefaults_5;
+
+84200520 <Lc_SILENCE_DETECT_GetDefaults_4>:
+		case 0x40B5: return defaults_silence_detectSD;
+#endif
+	}
+	return((unsigned *)0);
+84200520:	02 00       	r0 = Null + Null;
+
+84200522 <Lc_SILENCE_DETECT_GetDefaults_5>:
+84200522:	d8 4c       	rts;
+
+84200524 <$kdc_start>:
+.MODULE $M.kdc_start;
+.CODESEGMENT PM;
+.DATASEGMENT DM;
+
+$kdc_start:
+r0 = $_silence_detect_cap_data;
+84200524:	01 f0 02 f3 	r0 = Null + 1441792;
+84200528:	00 40 
+    /* Force this symbol to be exported in ELF */
+    Null = $___kymera_debug_map_addr;
+8420052a:	00 f0 4c 5a 	Null = Null + 3660;
+
+8420052e <$_silence_detector_lib_initialize>:
+8420052e:	fc fa 40 e0 	pushm <r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+.MODULE $M.silence_detector.initialize;
+
+   .CODESEGMENT PM;
+
+$_silence_detector_lib_initialize:
+   PUSH_ALL_C
+84200532:	07 f0 47 e4 	pushm <I0, I1, I2, I4, I5, I6>;
+84200536:	70 ff 40 e4 	pushm <M0, M1, M2, L0, L1, L4, L5>;
+#if defined(PATCH_LIBS)
+   LIBS_PUSH_R0_SLOW_SW_ROM_PATCH_POINT($silence_detector.SILENCE_DETECTOR_ASM.INITIALIZE.PATCH_ID_0,r10)
+#endif
+
+   // 1/length(N)
+   rMAC = 1;
+8420053a:	41 20       	rMAC = Null + 1;
+   r3 = r1 ASHIFT 1;
+8420053c:	1d 5c       	r3 = r1 ASHIFT 1;
+   div = rMAC/r3;
+8420053e:	a9 4c       	Div = rMAC / r3;
+   r3 = DivResult;
+84200540:	c5 4c       	r3 = DivResult;
+   M[r0 + $M.SILENCE_DETECTOR.ONE_OVER_FRAME_SIZE] = r3;
+84200542:	d5 8f       	M[r0 + 28] = r3;
+
+   r3 = M[r0 + $M.SILENCE_DETECTOR.PARAMS_OBJ_PTR];
+84200544:	55 88       	r3 = M[r0 + 4];
+   r3 = M[r3 + $M.SILENCE_DETECTOR.PARAMS.TIME_CONSTANT];
+84200546:	2d 88       	r3 = M[r3 + 0];
+
+   //alpha = 1 - exp(-1/(tau*(FS/FRAME_SIZE)));
+   call $calc.tc_alfa;
+84200548:	5b 4e       	call (m) $calc.tc_alfa;
+   M[r0 + $M.SILENCE_DETECTOR.ALPHA] = r1;
+8420054a:	93 8e       	M[r0 + 8] = r1;
+
+
+   // set upper and lower thresholds for silence detector
+   r3 = M[r0 + $M.SILENCE_DETECTOR.PARAMS_OBJ_PTR];
+8420054c:	55 88       	r3 = M[r0 + 4];
+   r1 = M[r3 + $M.SILENCE_DETECTOR.PARAMS.HYSTERESIS_LEVEL];
+8420054e:	ab 88       	r1 = M[r3 + 8];
+   r10 = M[r3 + $M.SILENCE_DETECTOR.PARAMS.SILENCE_THRESHOLD_POWER];
+84200550:	5c f0 01 88 	r10 = M[r3 + 4];
+   r2 = r10 * r1;
+84200554:	3f fc c4 cc 	r2 = r10 * r1 (SS);
+   r2 = ABS r2;
+84200558:	4f f4 44 ce 	r2 = ABS r2;
+
+   r1 = r10 - r2;
+8420055c:	4f fc 03 c2 	r1 = r10 - r2;
+   M[r0 + $M.SILENCE_DETECTOR.LOWER_THRESHOLD_POWER] = r1;
+84200560:	53 8f       	M[r0 + 20] = r1;
+
+   r1 = r10 + r2;
+84200562:	4f fc 03 c0 	r1 = r10 + r2;
+   M[r0 + $M.SILENCE_DETECTOR.UPPER_THRESHOLD_POWER] = r1;
+84200566:	93 8f       	M[r0 + 24] = r1;
+
+   // Intialize non-scratch fields to zero
+   M[r0 + $M.SILENCE_DETECTOR.SMOOTHED_POWER_LINEAR] = Null;
+84200568:	d0 8e       	M[r0 + 12] = Null;
+   M[r0 + $M.SILENCE_DETECTOR.COMPUTED_POWER_LOG2] = Null;
+8420056a:	10 8f       	M[r0 + 16] = Null;
+   // Unknown silence detection event (2)
+   r1 = 2;
+8420056c:	83 20       	r1 = Null + 2;
+   M[r0 + $M.SILENCE_DETECTOR.SILENCE_DETECTION_EVENT] = r1;
+8420056e:	13 9e       	M[r0 + 32] = r1;
+
+   POP_ALL_C
+84200570:	70 ff 60 e4 	popm <M0, M1, M2, L0, L1, L4, L5>;
+84200574:	07 f0 67 e4 	popm <I0, I1, I2, I4, I5, I6>;
+84200578:	fc fa 60 e0 	popm <r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+   rts;
+8420057c:	d8 4c       	rts;
+
+8420057e <$_silence_detector_lib_process>:
+
+   .CODESEGMENT PM;
+
+$_silence_detector_lib_process:
+   
+   PUSH_ALL_C
+8420057e:	fc fa 40 e0 	pushm <r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+84200582:	07 f0 47 e4 	pushm <I0, I1, I2, I4, I5, I6>;
+84200586:	70 ff 40 e4 	pushm <M0, M1, M2, L0, L1, L4, L5>;
+
+   #if defined(PATCH_LIBS)
+      LIBS_PUSH_R0_SLOW_SW_ROM_PATCH_POINT($silence_detector.SILENCE_DETECTOR_ASM.PROCESS.PATCH_ID_0,r10)
+   #endif
+
+   r4 = r0;
+8420058a:	16 00       	r4 = r0 + Null;
+   // r10 -> frame_size
+   r10 = r1;
+8420058c:	1c 09       	r10 = r1 + Null;
+
+   // get read pointer, size and start addresses of input buffer
+   r0 = M[r4 +$M.SILENCE_DETECTOR.INPUT_BUFFER_PTR];
+8420058e:	32 88       	r0 = M[r4 + 0];
+   call $cbuffer.get_read_address_and_size_and_start_address;
+84200590:	ff fd 6c f2 	call (m) 0x4df66;
+84200594:	37 ee 
+   push r2;
+84200596:	00 f0 34 cf 	push r2;
+   pop B0;
+8420059a:	00 f6 3a cf 	pop B0;
+   I0 = r0;
+8420059e:	10 0a       	I0 = r0 + Null;
+   L0 = r1;
+842005a0:	1c 0b       	L0 = r1 + Null;
+
+   // sum(input_buffer.^2)
+   rMAC = 0, r3 = M[I0,MK1];
+842005a2:	51 f1 31 c2 	rMAC = rMAC - rMAC, r3 = M[I0,4];
+   do sum_loop;
+842005a6:	03 4c       	do (m) $M.silence_detector.process.sum_loop;
+      rMAC = rMAC + r3*r3, r3 = M[I0,MK1];
+842005a8:	51 f5 f5 ca 	rMAC = rMAC + r3 * r3 (SS), r3 = M[I0,4];
+
+842005ac <$M.silence_detector.process.sum_loop>:
+   sum_loop:
+
+   //power_linear = sum(input_buffer.^2)/frame_size;
+   r1 = M[r4 + $M.SILENCE_DETECTOR.ONE_OVER_FRAME_SIZE];
+842005ac:	f3 89       	r1 = M[r4 + 28];
+   r3 = SIGNDET rMAC;
+842005ae:	0f f1 85 cd 	r3 = SIGNDET rMAC;
+   rMAC = rMAC ASHIFT r3 (56bit);
+842005b2:	49 19       	rMAC = rMAC ASHIFT r3 (56bit);
+   rMAC = rMAC * r1;
+842005b4:	3f f1 c1 cc 	rMAC = rMAC * r1 (SS);
+   r3 = -1 * r3 (int);
+842005b8:	ff f5 95 d9 	r3 = r3 * -1 (int);
+   r5 = rMAC ASHIFT r3;
+842005bc:	4f 19       	r5 = rMAC ASHIFT r3;
+
+   //**********************************************************************************
+   // smoothed_power_linear = (1-alpha)*smoothed_power_linear + alpha*power_linear
+   //**********************************************************************************
+   r2 = M[r4 + $M.SILENCE_DETECTOR.ALPHA];                               // load alpha
+842005be:	b4 88       	r2 = M[r4 + 8];
+   r3 = 1.0 - r2;                                                        // r3:(1-alpha)
+842005c0:	ff f7 ff ff 	r3 = 2147483647 - r2;
+842005c4:	ff f4 55 c6 
+   rMAC = M[r4 + $M.SILENCE_DETECTOR.SMOOTHED_POWER_LINEAR];             // load smoothed power
+842005c8:	f1 88       	rMAC = M[r4 + 12];
+   rMAC = rMAC * r3 ;                                                    // (1-alpha) * smoothed_power_linear
+842005ca:	5f f1 c1 cc 	rMAC = rMAC * r3 (SS);
+   rMAC = rMAC + r2 * r5;                                                // smoothed_power_linear = (1-alpha)*smoothed_power_linear + alpha*power_linear
+842005ce:	7f f4 c1 ca 	rMAC = rMAC + r2 * r5 (SS);
+   M[r4 +$M.SILENCE_DETECTOR.SMOOTHED_POWER_LINEAR] = rMAC;              // save smoothed_power_linear
+842005d2:	f1 8e       	M[r4 + 12] = rMAC;
+
+   call $math.log2_table;
+842005d4:	ff fd 80 f4 	call 0x9064c;
+842005d8:	38 e3 
+   M[r4 + $M.SILENCE_DETECTOR.COMPUTED_POWER_LOG2] = r0;
+842005da:	32 8f       	M[r4 + 16] = r0;
+
+   // if ( power < lower_threshold) we have silence
+   r2 = M[r4 + $M.SILENCE_DETECTOR.SILENCE_DETECTION_EVENT];
+842005dc:	34 98       	r2 = M[r4 + 32];
+   r1 = M[r4 + $M.SILENCE_DETECTOR.LOWER_THRESHOLD_POWER];
+842005de:	73 89       	r1 = M[r4 + 20];
+   Null = r0 - r1;
+842005e0:	d0 04       	Null = r0 - r1;
+   if LT r2 = 1;
+842005e2:	2b f0 44 ce 	if LT r2 = Null + 1;
+
+   // if ( power > upper_threshold) we have audio
+   r1 = M[r4 + $M.SILENCE_DETECTOR.UPPER_THRESHOLD_POWER];
+842005e6:	b3 89       	r1 = M[r4 + 24];
+   Null = r0 - r1;
+842005e8:	d0 04       	Null = r0 - r1;
+   if GT r2 = 0;
+842005ea:	0c f0 04 c0 	if GT r2 = Null + Null;
+
+   M[r4 + $M.SILENCE_DETECTOR.SILENCE_DETECTION_EVENT] = r2;
+842005ee:	34 9e       	M[r4 + 32] = r2;
+
+   POP_ALL_C
+842005f0:	70 ff 60 e4 	popm <M0, M1, M2, L0, L1, L4, L5>;
+842005f4:	07 f0 67 e4 	popm <I0, I1, I2, I4, I5, I6>;
+842005f8:	fc fa 60 e0 	popm <r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+   rts;
+842005fc:	d8 4c       	rts;
+
+842005fe <$calc.tc_alfa>:
+
+   .CODESEGMENT PM;
+
+$calc.tc_alfa:
+   
+   pushm <r0, rLink>;  
+842005fe:	91 1c       	pushm <r0, rLink>;
+#if defined(PATCH_LIBS)
+   LIBS_PUSH_R0_SLOW_SW_ROM_PATCH_POINT($silence_detector.SILENCE_DETECTOR_ASM.CALC.TC_ALPHA.PATCH_ID_0,r10)
+#endif
+
+   // 1/t
+   r6 = SIGNDET r3;
+84200600:	0f f5 88 cd 	r6 = SIGNDET r3;
+   r3 = r3 ASHIFT r6;
+84200604:	00 f8 35 c9 	r3 = r3 ASHIFT r6;
+   rMAC = 0.25;
+84200608:	00 f2 01 f0 	rMAC = Null + 536870912;
+8420060c:	00 40 
+   div = rMAC/r3;
+8420060e:	a9 4c       	Div = rMAC / r3;
+
+   // t in Q7.17
+   r6 = r6 - 6;
+84200610:	88 f0 06 24 	r6 = r6 - 6;
+   // div guard bit
+   r6 = r6 + 1;
+84200614:	08 75       	r6 = r6 + 1;
+   // Q8.16 pow2 input
+   r6 = r6 - 7;
+84200616:	88 f0 07 24 	r6 = r6 - 7;
+
+   // 1/t result
+   r3 = divResult;
+8420061a:	c5 4c       	r3 = DivResult;
+
+   //r2 = fs
+   //r1 = L
+   r0 = -r1;
+8420061c:	c2 04       	r0 = Null - r1;
+   rMAC = r0 ASHIFT -1;
+8420061e:	7f f2 1e d9 	rMAC = r0 ASHIFT -1 (MI);
+   Div = rMAC/r2;
+84200622:	a1 4c       	Div = rMAC / r2;
+   //r0 = (-L/fs);
+   r0 = divResult;  
+84200624:	c2 4c       	r0 = DivResult;
+
+   // -log2(e)/(fs/L)
+   r2 = Qfmt_(1.442695040888963, 8);
+84200626:	17 f0 a4 f0 	r2 = Null + 24204406;
+8420062a:	76 68 
+   r0 = r2 *r0;
+8420062c:	2f f4 c2 cc 	r0 = r2 * r0 (SS);
+   r0 = r0 ASHIFT 7;
+84200630:	92 5d       	r0 = r0 ASHIFT 7;
+
+   // -log2(e)/(fs/L)*(1/t)
+   rMAC = r0 * r3;
+84200632:	5f f2 c1 cc 	rMAC = r0 * r3 (SS);
+   r0 = rMAC ASHIFT r6;
+84200636:	8f f1 02 c9 	r0 = rMAC ASHIFT r6;
+
+   // exp(-1/(t*(fs/L)))
+   call $math.pow2_taylor;
+8420063a:	ff fd 7f f4 	call 0x90558;
+8420063e:	3e e8 
+
+   // r0 = alfa_c = exp(-1/(t*(fs/L)))
+   // alfa = 1 - exp(-1/(t*(fs/L)))
+   r1 = 1.0 - r0;
+84200640:	ff f7 ff ff 	r1 = 2147483647 - r0;
+84200644:	ff f2 53 c6 
+
+   popm <r0, rLink>;
+84200648:	91 48       	popm <r0, rLink>;
+   rts;
+8420064a:	d8 4c       	rts;

@@ -1,0 +1,21 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright 2017 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# definitions required to build LC3 Encode
+
+%include config.MODIFY_LC3_COMMON
+
+%list CFG_CAPABILITIES
+LC3_ENCODE_SCO_ISO
+
+%list ALL_SRCDIRS
+capabilities/lc3_encode
+
+%list ALL_INCDIRS
+capabilities/lc3_encode
+
+%list CFG_LIBS
+capabilities/lc3_encode/lc3_encode

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Copyright (c) 2016 - 2020 Qualcomm Technologies International, Ltd. -->
+<ns1:UnifiedParameterSchema xmlns:ns1="com.csr.cps.4">
+	<Version>
+		<Revision>$Id: //depot/dspsw/maor_rom_v20/kalimba/kymera/capabilities/svad/svad.xml#1 $</Revision>
+		<ChangeList>$Change: 3572284 $</ChangeList>
+		<ChangeDate>$DateTime: 2020/12/11 19:12:21 $</ChangeDate>
+		<UserID>$Author: pm33 $</UserID>
+	</Version>
+	<CodeBase>
+		<BaseName>svad</BaseName>
+		<CompileConfig>COMPILED_CONFIG</CompileConfig>
+	</CodeBase>
+	<Capability>
+		<CapabilityID>0x00CD</CapabilityID>
+        <AlternativeCapabilityID>0x40A6</AlternativeCapabilityID>
+		<VariantID>SVAD</VariantID>
+		<CapabilityName>Self Voice Activity Detector</CapabilityName>
+		<ProductName>SVAD-100.1</ProductName>
+		<SampleRate>16000</SampleRate>
+		<VersionMajor>1</VersionMajor>
+	</Capability>
+    
+<!--
+ 	***************** STATUS BIT Enumerations ******************
+-->
+	<StatusBitField>
+		<Comment/>
+		<Symbol>SYSMODE.STATIC</Symbol>
+		<Value>0</Value>
+		<VariantID/>
+		<StatRef>CUR_MODE</StatRef>
+		<Indicator>N</Indicator>
+		<Display>Mode: Static</Display>
+		<BitmapID/>
+		<Point/>
+	</StatusBitField>
+	<StatusBitField>
+		<Comment/>
+		<Symbol>SYSMODE.FULL</Symbol>
+		<Value>1</Value>
+		<VariantID/>
+		<StatRef>CUR_MODE</StatRef>
+		<Indicator>F</Indicator>
+		<Display>Mode: Full</Display>
+		<BitmapID/>
+		<Point/>
+	</StatusBitField>
+	<StatusBitField>
+		<Comment/>
+		<Symbol>SYSMODE.PASSTHRU</Symbol>
+		<Value>2</Value>
+		<VariantID/>
+		<StatRef>CUR_MODE</StatRef>
+		<Indicator>P</Indicator>
+		<Display>Mode: Pass Thru</Display>
+		<BitmapID/>
+		<Point/>
+	</StatusBitField>
+	<StatusBitField>
+		<Comment/>
+		<Symbol/>
+		<Value>0</Value>
+		<VariantID/>
+		<StatRef>VOICE_DETECTED</StatRef>
+		<Indicator>01</Indicator>
+		<Display>Voice Detected:No,Voice Detected:Yes</Display> 
+		<BitmapID/>
+		<Point/>
+	</StatusBitField>    
+    
+<!--
+	***************** PARAMETERS ******************
+-->	
+	<Parameter>
+		<VariantID/>
+		<Comment>2_Channel_SVAD_PUBLIC_PARAMETERS</Comment>
+		<Symbol/>
+		<Display/>
+		<Default/>
+		<Precision/>
+		<Q/>
+		<Conversion/>
+		<Mult/>
+		<Units/>
+		<Min/>
+		<Max/>
+		<Description/>
+	</Parameter>
+    <Parameter>
+		<VariantID></VariantID>
+		<Comment/>
+		<Symbol group="SELF_VAD" subgroup="SELF_VAD" hide="false" inBasicView="true" >SELF_VAD_HOLD_TIME</Symbol>
+		<Display>Hold time for self voice</Display>
+		<Default>0.60</Default>
+		<Precision>3</Precision>
+		<Q>7.N</Q>
+		<Conversion>FORMAT_DOUBLE</Conversion>
+		<Mult/>
+		<Units>sec</Units>
+		<Min>0</Min>
+		<Max>1</Max>
+		<Description>Amount of time to hold self voice decisions if set</Description>
+	</Parameter>
+
+	<Parameter>
+		<VariantID></VariantID>
+		<Comment/>
+		<Symbol group="SELF_VAD" subgroup="SELF_VAD" hide="false" inBasicView="true" >SELF_VAD_IPD_LOWER</Symbol>
+		<Display>Lower Frequency Threshold</Display>
+		<Default>250</Default>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>FORMAT_UINT</Conversion>
+		<Mult/>
+		<Units>Hz</Units>
+		<Min>0</Min>
+		<Max>4000</Max>
+		<Description>Lower frequency limit for Self VAD analysis</Description>
+	</Parameter>
+
+	<Parameter>
+		<VariantID></VariantID>
+		<Comment/>
+		<Symbol group="SELF_VAD" subgroup="SELF_VAD" hide="false" inBasicView="true" >SELF_VAD_IPD_UPPER</Symbol>
+		<Display>Upper frequency threshold</Display>
+		<Default>1000</Default>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>FORMAT_UINT</Conversion>
+		<Mult/>
+		<Units>Hz</Units>
+		<Min>0</Min>
+		<Max>4000</Max>
+		<Description>Upper frequency limit for Self VAD analysis</Description>
+	</Parameter>
+	<Parameter>
+		<VariantID></VariantID>
+		<Comment/>
+		<Symbol group="SELF_VAD" subgroup="SELF_VAD" hide="false" inBasicView="true" >SELF_VAD_BETA</Symbol>
+		<Display>Adapatation rate</Display>
+		<Default>0.98</Default>
+		<Precision>2</Precision>
+		<Q>1.N</Q>
+		<Conversion>FORMAT_DOUBLE</Conversion>
+		<Mult/>
+		<Units/>
+		<Min>0</Min>
+		<Max>1</Max>
+		<Description>Learning rate for short-term IPDs</Description>
+	</Parameter>
+
+	<Parameter>
+		<VariantID></VariantID>
+		<Comment/>
+		<Symbol group="SELF_VAD" subgroup="SELF_VAD" hide="false" inBasicView="true" >SELF_VAD_INTMIC_NOISE_FLOOR</Symbol>
+		<Display>Internal mic Noise Floor</Display>
+		<Default>-14.9486764073372</Default>
+		<Precision>0</Precision>
+		<Q>8.N</Q>
+		<Conversion>FORMAT_DOUBLE_MULT</Conversion>
+		<Mult>3.01029995663981</Mult>
+		<Units>dB</Units>
+		<Min>-100</Min>
+		<Max>-30</Max>
+		<Description>Internal mic noise floor in dB</Description>
+	</Parameter>
+
+	<Parameter>
+		<VariantID></VariantID>
+		<Comment/>
+		<Symbol group="SELF_VAD" subgroup="SELF_VAD" hide="false" inBasicView="true" >SELF_VAD_CONFIDENCE_THRESH</Symbol>
+		<Display>SelfVAD Confidence threshold</Display>
+		<Default>0.45</Default>
+		<Precision>2</Precision>
+		<Q>1.N</Q>
+		<Conversion>FORMAT_DOUBLE</Conversion>
+		<Mult/>
+		<Units/>
+		<Min>0</Min>
+		<Max>0.5</Max>
+		<Description>Confidence threshold: Lower values favor self-speech </Description>
+	</Parameter>
+ <!--
+	 ***************** STATISTICS ******************
+-->	
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>CUR_MODE</Symbol>
+		<SysMode/>
+		<ShortName>SysMode</ShortName>
+		<LongName>System Mode</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>SYS_INDICATOR</Conversion>
+		<Mult/>
+		<Link/>
+		<Limit>-1</Limit>
+		<Rect>46 113 57 190</Rect> 
+		<Description/>
+	</Statistic> 
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>VOICE_DETECTED</Symbol>
+		<SysMode/>
+		<ShortName>VDET</ShortName>
+		<LongName>VAD Speech Detected</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+		<Rect>130 5 145 90</Rect>
+		<Description/>
+	</Statistic>
+</ns1:UnifiedParameterSchema>

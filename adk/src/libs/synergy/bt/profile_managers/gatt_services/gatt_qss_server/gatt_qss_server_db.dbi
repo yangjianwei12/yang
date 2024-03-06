@@ -1,0 +1,59 @@
+/******************************************************************************
+ *  Copyright (c) 2023 Qualcomm Technologies International, Ltd.
+ *  %%versioncl
+ *  %%appversion
+ *
+ *  FILE
+ *      gatt_qss_server_db.dbi
+ *
+ *  DESCRIPTION
+ *
+ *      This file defines the Qualcomm Snapdragon Sound a propriety service in JSON format.
+ *      This file is included in the main application data base file which
+ *      is used to produce ATT flat data base.
+ *
+ *****************************************************************************/
+
+#ifndef __GATT_QSS_SERVER_DB_DBI__
+#define __GATT_QSS_SERVER_DB_DBI__
+
+#include "gatt_qss_server_uuids.h"
+
+primary_service {
+    uuid : UUID_QUALCOMM_SNAPDRAGON_SOUND_SERVICE,
+    name : "QUALCOMM_SNAPDRAGON_SOUND_SERVICE",
+
+    /* Support Charateristic of 1 octate */
+    characteristic {
+        uuid        : UUID_QUALCOMM_SNAPDRAGON_SOUND_SUPPORT,
+        name        : "QUALCOMM_SNAPDRAGON_SOUND_SUPPORT",
+        flags       : [ FLAG_IRQ ],
+        properties  : [ read ],
+        value       : 0x0
+    },
+
+    /* User Description of String type with variable length */
+    characteristic {
+        uuid        : UUID_USER_DESCRIPTION,
+        name        : "USER_DESCRIPTION",
+        flags       : [ FLAG_IRQ, FLAG_DYNLEN ],
+        properties  : [ read ],
+        value       : 0x0
+    },
+
+    /* Lossless audio characteristic of 4 octate */
+    characteristic {
+        uuid        : UUID_LOSSLESS_AUDIO,
+        name        : "LOSSLESS_AUDIO",
+        flags       : [ FLAG_IRQ ],
+        properties  : [ read , notify ],
+        value       : 0x0,
+        client_config
+        {
+            name    : "LOSSLESS_AUDIO_CLIENT_CONFIG",
+            flags   : [ FLAG_IRQ ]
+        }
+    }
+}
+
+#endif /* __GATT_QSS_SERVER_DB_DBI__ */

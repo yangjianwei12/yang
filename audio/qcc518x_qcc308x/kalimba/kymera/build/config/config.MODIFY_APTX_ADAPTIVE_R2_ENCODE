@@ -1,0 +1,46 @@
+############################################################################
+# CONFIDENTIAL
+#
+# %%fullcopyright(2016)
+#
+############################################################################
+# definitions for a2d9 builds
+
+%cpp
+APTXA_DYNAMIC_MEMORY
+FIRMWARE_BUILD_SHARE_TABLES_APTX_APTXHD
+USE_PACKER_CFG0
+USE_PACKER_ESCO
+ENABLE_SPEECH
+ADAPTIVE_R2_BUILD
+USE_APTXAD_INBAND_HEADER
+ENCODER_CFG
+
+#
+# Capabilities we want to include on the chip
+# This list gets turned into a set of defines of the form INSTALL_OPERATOR_XXXX
+#
+
+
+%list CFG_CAPABILITIES
+APTX_ADAPTIVE_ENCODE
+
+
+# List of global include paths
+%list ALL_INCDIRS
+../lib_private/aptx_adaptive_r2_common
+../lib_private/aptx_adaptive_r2_common/packer
+../lib_private/aptx_adaptive_r2_encode
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/aptx_adaptive_encode/aptx_adaptive_encode
+
+# Libraries needed by aptx capabilities
+../lib_private/aptx_adaptive_r2_common/aptx_adaptive_r2_common
+../lib_private/aptx_adaptive_r2_encode/aptx_adaptive_r2_encode
+
+
+%list MAXIM_LIBS
+../lib_private/aptx_adaptive_r2_common/aptx_adaptive_r2_common
+../lib_private/aptx_adaptive_r2_encode/aptx_adaptive_r2_encode

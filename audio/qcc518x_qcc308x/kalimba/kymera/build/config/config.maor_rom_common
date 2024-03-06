@@ -1,0 +1,150 @@
+############################################################################
+# Copyright (c) 2019 - 2020 Qualcomm Technologies International, Ltd.
+############################################################################
+# Maor common for both cores with no dual core enabled.
+
+%include config.COMMON_CHIP_BASE_CRESCENDO
+%include config.COMMON_CHIP_MAOR
+%include config.COMMON_CAPABILITIES
+%include config.MODIFY_MAOR_ROM
+
+# Uses external heap
+%include config.MODIFY_EXTERNAL_MEMORY
+
+# Install DM Profiling for DM heaps and pools
+%include config.MODIFY_DM_MEMORY_PROFILING
+
+# Include timestamped endpoints
+%include config.MODIFY_TIMESTAMPED
+
+# Include Mixer, Splitter, Compander capabilities
+%include config.MODIFY_MIXER
+%include config.MODIFY_SPLITTER
+%include config.MODIFY_COMPANDER
+
+#Install the source sync capability
+%include config.MODIFY_SOURCE_SYNC
+
+#Install the ringtone generator
+%include config.MODIFY_RINGTONE_GENERATOR
+
+#Install the IIR_RESAMPLER capability
+%include config.MODIFY_IIR_RESAMPLER
+
+# Install Resampler
+%include config.MODIFY_RESAMPLER
+
+#Install the Programmable EQ capability
+%include config.MODIFY_PEQ
+
+#Install the Bass Enhancement capability
+%include config.MODIFY_DBE
+
+#Install the VSE capability
+%include config.MODIFY_VSE
+
+#Install the crossover capability
+%include config.MODIFY_XOVER
+
+#Install the 3 band crossover capability
+%include config.MODIFY_XOVER_3BAND
+
+# Install CVC-related capabilities everywhere.
+# (Licensing is enabled, so that's OK.)
+%include config.MODIFY_INSTALL_CVC_MODULES
+%include config.MODIFY_INSTALL_CVC_CAPABILITIES_MAOR
+%include config.MODIFY_INSTALL_VOLUME
+
+#Install support for Persistent Storage
+%include config.MODIFY_PS_FOR_ACCMD
+
+#Install support for Direct Flash Access
+%include config.MODIFY_DIRECT_FLASH_ACCESS
+
+#Install the Switched Passthrough Consumer capability
+%include config.MODIFY_SWITCHED_PASSTHROUGH_CONSUMER
+
+# Include A2DP - Currently only on P0
+%include config.MODIFY_A2DP_MAOR
+
+# Include sco
+%include config.MODIFY_SCO_MAOR
+
+#install cvsd
+%include config.MODIFY_CVSD
+
+# Install ISO channels (ISO needs SCO to be included as well)
+%include config.MODIFY_ISO_COMMON
+
+# Install LC3 Decoder capability
+%include config.MODIFY_LC3_DECODE
+
+# Install LC3 Encoder capability
+%include config.MODIFY_LC3_ENCODE
+
+# Install LC3Q Decoder capability
+%include config.MODIFY_LC3Q_DECODE
+
+# Install LC3Q Encoder capability
+%include config.MODIFY_LC3Q_ENCODE
+
+#Install the asynchronous wbs capability
+%include config.MODIFY_ASYNC_WBS
+
+#Install the SBC encoder capability
+%include config.MODIFY_SBC_ENCODE
+
+#Install the aptX encoder capability
+%include config.MODIFY_APTX_ENCODE
+
+#Install the OPUS encoder capability
+%include config.MODIFY_OPUS_CELT_ENCODE
+
+# Add capability download feature
+%include config.MODIFY_CAP_DOWNLOAD_MGR_CRESCENDO
+
+#Install always on voice component
+%include config.MODIFY_CLK_MGR
+
+#Install clock manager finite state machine
+#clk_mgr_fsm depends on clk_mgr(config.MODIFY_CLK_MGR)
+%include config.MODIFY_CLK_MGR_FSM
+
+# Include FILE
+%include config.MODIFY_FILE_HYDRA
+
+#Install the OP_CLIENT adaptor
+%include config.MODIFY_OP_CLIENT_ADAPTOR
+
+#Install aov interface
+%include config.MODIFY_AOV_INTERFACE
+
+#Install the VAD operator
+%include config.MODIFY_VAD
+
+#Install the SVAD operator
+%include config.MODIFY_SVAD
+
+#Install the QVA phrase recognition operator
+%include config.MODIFY_QVA
+
+# Install spdif capability
+%include config.MODIFY_SPDIF_CAP
+
+# Install USB audio capability
+%include config.MODIFY_USB_AUDIO_CAP
+
+# Install the CELT Decode capability
+%include config.MODIFY_CELT_DECODE
+
+# Install the CELT Encode capability
+%include config.MODIFY_CELT_ENCODE
+
+#Provide settings to control amplifier behaviour
+%include config.MODIFY_AMP_SETTINGS
+
+%build
+BUILD_TOOLS_DM2_OVERLAP_WORK_AROUND=True
+DOWNLOAD_CELT_LIBS=
+# Since celt lib is built in, indicate we can use table in ROM.
+DOWNLOAD_CELT_TABLE=

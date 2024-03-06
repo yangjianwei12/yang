@@ -1,0 +1,4236 @@
+
+/home/svc-audio-dspsw/kymera_builds/builds/2023/kymera_2312060823/kalimba/kymera/tools/KCSMaker/out/14612/maor_rom_release/download/debugbin/download_atr_vad_external.elf:     file format elf32-littlekalimba
+
+Disassembly of section .text_minim:
+
+84200000 <$_atr_vad_create>:
+Capability API Handlers
+*/
+
+bool atr_vad_create(OPERATOR_DATA *op_data, void *message_data,
+                    unsigned *response_id, void **resp_data)
+{
+84200000:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200002:	16 00       	r4 = r0 + Null;
+84200004:	2a 09       	r8 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data ATR_VAD_OP_DATA.
+ */
+static inline ATR_VAD_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ATR_VAD_OP_DATA *) base_op_get_instance_data(op_data);
+84200006:	ff fd 04 f0 	call (m) 0x8ea;
+8420000a:	25 e7 
+8420000c:	17 00       	r5 = r0 + Null;
+
+    /* NB: create is passed a zero-initialized structure so any fields not
+     * explicitly initialized are 0.
+     */
+
+    if (!base_op_create_lite(op_data, resp_data))
+8420000e:	53 08       	r1 = r8 + Null;
+84200010:	32 00       	r0 = r4 + Null;
+84200012:	ff fd 04 f0 	call (m) 0x850;
+84200016:	3f e1 
+84200018:	10 04       	Null = r0 - Null;
+8420001a:	6c 60       	if EQ jump (m) Lc_atr_vad_create_6;
+
+8420001c <Lc_atr_vad_create_2>:
+ * \param  response_data Pointer to the pointer to message that is allocated in the function.
+ * \param  new_status  A status ID that is to be sent in the message.
+ */
+inline static void base_op_change_response_status(void **response_data, STATUS_KYMERA new_status)
+{
+    (((OP_STD_RSP *)(*response_data))->status = new_status);
+8420001c:	01 f0 00 60 	rMAC = Null + 4096;
+84200020:	a2 f0 00 e8 	r0 = M[r8 + Null];
+84200024:	51 8e       	M[r0 + 4] = rMAC;
+     * termination point in create then change it to STATUS_OK.
+     */
+    base_op_change_response_status(resp_data, STATUS_CMD_FAILED);
+
+    /* Multi-channel create */
+    aud_cur_create(op_data, ATR_VAD_MAX_TERMINALS, ATR_VAD_MAX_TERMINALS);
+84200026:	c4 20       	r2 = Null + 3;
+84200028:	23 00       	r1 = r2 + Null;
+8420002a:	32 00       	r0 = r4 + Null;
+8420002c:	03 f0 2f ef 	call (m) $_aud_cur_create;
+    aud_cur_set_callbacks(op_data,
+                          NULL,
+                          NULL,
+                          atr_vad_connect_hook,
+                          atr_vad_disconnect_hook,
+                          NULL);
+84200030:	00 f0 30 cf 	push Null;
+84200034:	42 f0 05 f0 	r3 = Null + 69207421;
+84200038:	7d 49 
+8420003a:	04 00       	r2 = Null + Null;
+8420003c:	03 00       	r1 = Null + Null;
+8420003e:	42 f0 05 f0 	push Null + 69207505;
+84200042:	51 ed 
+84200044:	32 00       	r0 = r4 + Null;
+84200046:	05 f0 3b e1 	call (m) $_aud_cur_set_callbacks;
+8420004a:	7e 4c       	SP = SP + -8;
+    aud_cur_set_flags(op_data,
+                      ATR_VAD_SUPPORTS_IN_PLACE,
+                      ATR_VAD_SUPPORTS_METADATA,
+                      ATR_VAD_DYNAMIC_BUFFERS);
+8420004c:	44 20       	r2 = Null + 1;
+8420004e:	05 00       	r3 = Null + Null;
+84200050:	23 00       	r1 = r2 + Null;
+84200052:	32 00       	r0 = r4 + Null;
+84200054:	05 f0 2f e2 	call (m) $_aud_cur_set_flags;
+    aud_cur_set_min_terminal_masks(op_data,
+                                   ATR_VAD_MIN_VALID_SOURCES,
+                                   ATR_VAD_MIN_VALID_SINKS);
+84200058:	84 20       	r2 = Null + 2;
+8420005a:	03 00       	r1 = Null + Null;
+8420005c:	32 00       	r0 = r4 + Null;
+8420005e:	05 f0 2f e3 	call (m) $_aud_cur_set_min_terminal_masks;
+
+    /* Initialize capid and sample rate fields */
+    p_ext_data->cap_id = ATR_VAD_CAP_ID;
+84200062:	21 f0 c9 40 	rMAC = Null + 16585;
+84200066:	79 8e       	M[r5 + 4] = rMAC;
+    p_ext_data->sample_rate = ATR_VAD_DEFAULT_SAMPLE_RATE;
+84200068:	11 f0 80 7a 	rMAC = Null + 16000;
+8420006c:	39 ee       	M[r5 + Null] = rMAC;
+
+    aud_cur_set_buffer_size(op_data, ATR_VAD_DEFAULT_BUFFER_SIZE);
+8420006e:	03 f0 f0 40 	r1 = Null + 240;
+84200072:	32 00       	r0 = r4 + Null;
+84200074:	05 f0 3b e3 	call (m) $_aud_cur_set_buffer_size;
+    aud_cur_set_block_size(op_data, ATR_VAD_DEFAULT_BLOCK_SIZE);
+84200078:	03 3b       	r1 = Null + 60;
+8420007a:	32 00       	r0 = r4 + Null;
+8420007c:	05 f0 23 e4 	call (m) $_aud_cur_set_block_size;
+    aud_cur_set_runtime_disconnect(op_data, TRUE);
+84200080:	43 20       	r1 = Null + 1;
+84200082:	32 00       	r0 = r4 + Null;
+84200084:	05 f0 39 e1 	call (m) $_aud_cur_set_runtime_disconnect;
+
+    /* Initialize parameters */
+    p_default_params = (unsigned*) ATR_VAD_GetDefaults(p_ext_data->cap_id);
+84200088:	7a 88       	r0 = M[r5 + 4];
+8420008a:	03 f0 37 eb 	call (m) $_ATR_VAD_GetDefaults;
+8420008e:	11 09       	r7 = r0 + Null;
+    p_cap_params = (unsigned*) &p_ext_data->atr_vad_params;
+84200090:	78 f0 08 20 	r6 = r5 + 8;
+    p_param_def = aud_cur_get_cps(op_data);
+84200094:	32 00       	r0 = r4 + Null;
+84200096:	05 f0 2b e2 	call (m) $_aud_cur_get_cps;
+    if (!cpsInitParameters(p_param_def,
+                          p_default_params,
+                          p_cap_params,
+                          sizeof(ATR_VAD_PARAMETERS)))
+8420009a:	05 f0 4c 40 	r3 = Null + 76;
+8420009e:	44 08       	r2 = r6 + Null;
+842000a0:	4b 08       	r1 = r7 + Null;
+842000a2:	ff fd 05 f0 	call (m) 0xb2a;
+842000a6:	29 e4 
+842000a8:	10 04       	Null = r0 - Null;
+842000aa:	36 60       	if EQ jump (m) Lc_atr_vad_create_9;
+
+842000ac <Lc_atr_vad_create_3>:
+    {
+       return TRUE;
+    }
+
+    /* Initialize system mode */
+    p_ext_data->cur_mode = ATR_VAD_SYSMODE_1MIC;
+842000ac:	81 20       	rMAC = Null + 2;
+842000ae:	79 af       	M[r5 + 84] = rMAC;
+    p_ext_data->host_mode = ATR_VAD_SYSMODE_1MIC;
+842000b0:	f9 af       	M[r5 + 92] = rMAC;
+    p_ext_data->qact_mode = ATR_VAD_SYSMODE_1MIC;
+842000b2:	39 be       	M[r5 + 96] = rMAC;
+
+    p_ext_data->detect_event.p_detect = &p_ext_data->detect;
+842000b4:	71 f0 64 20 	rMAC = r5 + 100;
+842000b8:	71 f0 23 8e 	M[r5 + 140] = rMAC;
+    p_ext_data->detect_event.p_mode = &p_ext_data->cur_mode;
+842000bc:	81 7c       	rMAC = rMAC + -16;
+842000be:	71 f0 24 8e 	M[r5 + 144] = rMAC;
+
+    atr_vad_bytes = aanc_atr_vad100_dmx_bytes(ATR_VAD100_DEFAULT_FRAME_SIZE);
+842000c2:	02 f0 78 40 	r0 = Null + 120;
+842000c6:	07 f0 2b e5 	call (m) .L0;
+    p_ext_data->p_atr_vad100 = \
+        (ATR_VAD100_DMX*) xzppmalloc(atr_vad_bytes, MALLOC_PREFERENCE_NONE);
+842000ca:	c3 20       	r1 = Null + 3;
+842000cc:	ff fd 37 f0 	call (m) 0x6f8e;
+842000d0:	23 e6 
+    if (p_ext_data->p_atr_vad100 == NULL)
+842000d2:	72 f0 2c 8e 	M[r5 + 176] = r0;
+842000d6:	22 62       	if NE jump (m) Lc_atr_vad_create_10;
+
+842000d8 <Lc_atr_vad_create_4>:
+    {
+        atr_vad_proc_destroy(p_ext_data);
+842000d8:	3a 00       	r0 = r5 + Null;
+842000da:	02 f0 3d e9 	call (m) Lc_atr_vad_proc_destroy_1;
+        L2_DBG_MSG("ATR_VAD failed to allocate atr_vad100 dmx");
+842000de:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842000e2:	88 24       	Null = rMAC - 2;
+842000e4:	07 68       	if LT jump (m) Lc_atr_vad_create_6;
+
+842000e6 <Lc_atr_vad_create_5>:
+842000e6:	55 f1 02 f0 	r0 = Null + 357564457;
+842000ea:	29 40 
+842000ec:	ff fd 07 f0 	call (m) 0x10b0;
+842000f0:	25 ee 
+
+842000f2 <Lc_atr_vad_create_6>:
+     * explicitly initialized are 0.
+     */
+
+    if (!base_op_create_lite(op_data, resp_data))
+    {
+        return FALSE;
+842000f2:	02 00       	r0 = Null + Null;
+842000f4:	57 6e       	jump (m) Lc_atr_vad_create_19;
+
+842000f6 <Lc_atr_vad_create_7>:
+        atr_vad_proc_destroy(p_ext_data);
+        L2_DBG_MSG("ATR_VAD failed to load feature handle");
+        return FALSE;
+    }
+
+    p_ext_data->release_select = ATR_VAD_RELEASE_NORMAL;
+842000f6:	81 20       	rMAC = Null + 2;
+842000f8:	71 f0 68 8a 	MB[r5 + 104] = rMAC;
+842000fc:	a1 f0 00 e8 	rMAC = M[r8 + Null];
+84200100:	48 8e       	M[rMAC + 4] = Null;
+
+    /* Operator creation was succesful, change respone to STATUS_OK*/
+    base_op_change_response_status(resp_data, STATUS_OK);
+
+    L4_DBG_MSG("ATR_VAD: Created");
+84200102:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200106:	08 25       	Null = rMAC - 4;
+84200108:	07 68       	if LT jump (m) Lc_atr_vad_create_9;
+
+8420010a <Lc_atr_vad_create_8>:
+8420010a:	55 f1 02 f0 	r0 = Null + 357564615;
+8420010e:	c7 40 
+84200110:	ff fd 07 f0 	call (m) 0x10b0;
+84200114:	21 ed 
+
+84200116 <Lc_atr_vad_create_9>:
+    if (!cpsInitParameters(p_param_def,
+                          p_default_params,
+                          p_cap_params,
+                          sizeof(ATR_VAD_PARAMETERS)))
+    {
+       return TRUE;
+84200116:	42 20       	r0 = Null + 1;
+84200118:	45 6e       	jump (m) Lc_atr_vad_create_19;
+
+8420011a <Lc_atr_vad_create_10>:
+        return FALSE;
+    }
+
+    p_ext_data->p_atr_vad100_dm1 = \
+        (uint8*) xzppmalloc(aanc_atr_vad100_dm1_bytes(),
+                            MALLOC_PREFERENCE_DM1);
+8420011a:	07 f0 2d e3 	call (m) $_aanc_atr_vad100_dm1_bytes;
+8420011e:	43 20       	r1 = Null + 1;
+84200120:	ff fd 37 f0 	call (m) 0x6f8e;
+84200124:	2f e3 
+84200126:	13 00       	r1 = r0 + Null;
+    if (p_ext_data->p_atr_vad100_dm1 == NULL)
+84200128:	73 f0 2d 8e 	M[r5 + 180] = r1;
+8420012c:	0f 62       	if NE jump (m) Lc_atr_vad_create_13;
+
+8420012e <Lc_atr_vad_create_11>:
+    {
+        atr_vad_proc_destroy(p_ext_data);
+8420012e:	3a 00       	r0 = r5 + Null;
+84200130:	02 f0 27 e7 	call (m) Lc_atr_vad_proc_destroy_1;
+        L2_DBG_MSG("ATR_VAD failed to allocate atr_vad100 dm1");
+84200134:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200138:	88 24       	Null = rMAC - 2;
+8420013a:	dc 69       	if LT jump (m) Lc_atr_vad_create_6;
+
+8420013c <Lc_atr_vad_create_12>:
+8420013c:	55 f1 02 f0 	r0 = Null + 357564499;
+84200140:	53 40 
+84200142:	ff fd 07 f0 	call (m) 0x10b0;
+84200146:	2f eb 
+84200148:	d5 6f       	jump (m) Lc_atr_vad_create_6;
+
+8420014a <Lc_atr_vad_create_13>:
+
+    /* Create ATR_VAD100 data structure */
+    if (!aanc_atr_vad100_create(p_ext_data->p_atr_vad100,
+                                p_ext_data->p_atr_vad100_dm1,
+                                p_ext_data->sample_rate,
+                                ATR_VAD100_DEFAULT_FRAME_SIZE))
+8420014a:	05 f0 78 40 	r3 = Null + 120;
+8420014e:	3c e8       	r2 = M[r5 + Null];
+84200150:	72 f0 2c 88 	r0 = M[r5 + 176];
+84200154:	07 f0 39 e1 	call (m) $_aanc_atr_vad100_create;
+84200158:	10 04       	Null = r0 - Null;
+8420015a:	0f 62       	if NE jump (m) Lc_atr_vad_create_16;
+
+8420015c <Lc_atr_vad_create_14>:
+    {
+        atr_vad_proc_destroy(p_ext_data);
+8420015c:	3a 00       	r0 = r5 + Null;
+8420015e:	02 f0 39 e5 	call (m) Lc_atr_vad_proc_destroy_1;
+        L2_DBG_MSG("ATR_VAD failed to create atr_vad100");
+84200162:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200166:	88 24       	Null = rMAC - 2;
+84200168:	c5 69       	if LT jump (m) Lc_atr_vad_create_6;
+
+8420016a <Lc_atr_vad_create_15>:
+8420016a:	55 f1 02 f0 	r0 = Null + 357564541;
+8420016e:	7d 40 
+84200170:	ff fd 07 f0 	call (m) 0x10b0;
+84200174:	21 ea 
+84200176:	be 6f       	jump (m) Lc_atr_vad_create_6;
+
+84200178 <Lc_atr_vad_create_16>:
+        return FALSE;
+    }
+
+    if (!load_vad_handle(&p_ext_data->f_handle))
+84200178:	72 f0 a4 20 	r0 = r5 + 164;
+8420017c:	ff fd 20 f4 	call (m) 0x84256;
+84200180:	3b e6 
+84200182:	10 04       	Null = r0 - Null;
+84200184:	b9 63       	if NE jump (m) Lc_atr_vad_create_7;
+
+84200186 <Lc_atr_vad_create_17>:
+    {
+        atr_vad_proc_destroy(p_ext_data);
+84200186:	3a 00       	r0 = r5 + Null;
+84200188:	02 f0 2f e4 	call (m) Lc_atr_vad_proc_destroy_1;
+        L2_DBG_MSG("ATR_VAD failed to load feature handle");
+8420018c:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200190:	88 24       	Null = rMAC - 2;
+84200192:	b0 69       	if LT jump (m) Lc_atr_vad_create_6;
+
+84200194 <Lc_atr_vad_create_18>:
+84200194:	55 f1 02 f0 	r0 = Null + 357564577;
+84200198:	a1 40 
+8420019a:	ff fd 07 f0 	call (m) 0x10b0;
+8420019e:	37 e8 
+842001a0:	a9 6f       	jump (m) Lc_atr_vad_create_6;
+
+842001a2 <Lc_atr_vad_create_19>:
+    /* Operator creation was succesful, change respone to STATUS_OK*/
+    base_op_change_response_status(resp_data, STATUS_OK);
+
+    L4_DBG_MSG("ATR_VAD: Created");
+    return TRUE;
+}
+842001a2:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+842001a4:	d8 4c       	rts;
+
+842001a6 <$_atr_vad_destroy>:
+
+bool atr_vad_destroy(OPERATOR_DATA *op_data, void *message_data,
+                     unsigned *response_id, void **resp_data)
+{
+842001a6:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842001a8:	16 00       	r4 = r0 + Null;
+842001aa:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data ATR_VAD_OP_DATA.
+ */
+static inline ATR_VAD_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ATR_VAD_OP_DATA *) base_op_get_instance_data(op_data);
+842001ac:	ff fd 03 f0 	call (m) 0x8ea;
+842001b0:	3f e9 
+842001b2:	17 00       	r5 = r0 + Null;
+                     unsigned *response_id, void **resp_data)
+{
+    ATR_VAD_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* call base_op destroy that creates and fills response message, too */
+    if (!base_op_destroy_lite(op_data, resp_data))
+842001b4:	43 08       	r1 = r6 + Null;
+842001b6:	32 00       	r0 = r4 + Null;
+842001b8:	ff fd 03 f0 	call (m) 0x834;
+842001bc:	3d e3 
+842001be:	10 04       	Null = r0 - Null;
+842001c0:	03 62       	if NE jump (m) Lc_atr_vad_destroy_3;
+
+842001c2 <Lc_atr_vad_destroy_2>:
+    {
+        return FALSE;
+842001c2:	02 00       	r0 = Null + Null;
+842001c4:	12 6e       	jump (m) Lc_atr_vad_destroy_6;
+
+842001c6 <Lc_atr_vad_destroy_3>:
+    }
+
+    atr_vad_proc_destroy(p_ext_data);
+842001c6:	3a 00       	r0 = r5 + Null;
+842001c8:	02 f0 2f e2 	call (m) Lc_atr_vad_proc_destroy_1;
+
+    /* Release class data */
+    aud_cur_destroy(op_data);
+842001cc:	32 00       	r0 = r4 + Null;
+842001ce:	03 f0 2b e6 	call (m) $_aud_cur_destroy;
+
+    L4_DBG_MSG("ATR_VAD: Destroyed");
+842001d2:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842001d6:	08 25       	Null = rMAC - 4;
+842001d8:	07 68       	if LT jump (m) Lc_atr_vad_destroy_5;
+
+842001da <Lc_atr_vad_destroy_4>:
+842001da:	55 f1 02 f0 	r0 = Null + 357564632;
+842001de:	d8 40 
+842001e0:	ff fd 07 f0 	call (m) 0x10b0;
+842001e4:	31 e6 
+
+842001e6 <Lc_atr_vad_destroy_5>:
+    return TRUE;
+842001e6:	42 20       	r0 = Null + 1;
+
+842001e8 <Lc_atr_vad_destroy_6>:
+}
+842001e8:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842001ea:	d8 4c       	rts;
+
+842001ec <$_atr_vad_opmsg_set_control>:
+*/
+bool atr_vad_opmsg_set_control(OPERATOR_DATA *op_data,
+                               void *message_data,
+                               unsigned *resp_length,
+                               OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842001ec:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+842001ee:	12 09       	r8 = r0 + Null;
+842001f0:	19 09       	r7 = r1 + Null;
+842001f2:	27 00       	r5 = r2 + Null;
+842001f4:	45 de       	M[FP + 32] = r3;
+ *
+ * \return  Pointer to extra operator data ATR_VAD_OP_DATA.
+ */
+static inline ATR_VAD_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ATR_VAD_OP_DATA *) base_op_get_instance_data(op_data);
+842001f6:	ff fd 03 f0 	call (m) 0x8ea;
+842001fa:	35 e7 
+842001fc:	16 00       	r4 = r0 + Null;
+    ATR_VAD_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    unsigned i;
+    unsigned num_controls;
+
+    OPMSG_RESULT_STATES result = OPMSG_RESULT_STATES_NORMAL_STATE;
+842001fe:	03 09       	r9 = Null + Null;
+
+    if (!cps_control_setup(message_data, resp_length, resp_data, &num_controls))
+84200200:	45 12       	r3 = FP + 36;
+84200202:	3b 00       	r1 = r5 + Null;
+84200204:	4a 08       	r0 = r7 + Null;
+84200206:	44 d8       	r2 = M[FP + 32];
+84200208:	ff fd 06 f0 	call (m) 0xe9e;
+8420020c:	37 e4 
+8420020e:	10 04       	Null = r0 - Null;
+84200210:	03 62       	if NE jump (m) Lc_atr_vad_opmsg_set_control_3;
+
+84200212 <Lc_atr_vad_opmsg_set_control_2>:
+84200212:	02 00       	r0 = Null + Null;
+84200214:	4e 6e       	jump (m) Lc_atr_vad_opmsg_set_control_22;
+
+84200216 <Lc_atr_vad_opmsg_set_control_3>:
+84200216:	08 71       	r6 = Null + 1;
+    {
+       return FALSE;
+    }
+
+    /* Iterate through control messages looking for mode override messages */
+    for (i = 0; i < num_controls; i++)
+84200218:	07 00       	r5 = Null + Null;
+8420021a:	06 6e       	jump (m) Lc_atr_vad_opmsg_set_control_6;
+
+8420021c <Lc_atr_vad_opmsg_set_control_4>:
+                {
+                    p_ext_data->ovr_control |= ATR_VAD_CONTROL_MODE_OVERRIDE;
+                }
+                else
+                {
+                    p_ext_data->ovr_control &= ATR_VAD_OVERRIDE_MODE_MASK;
+8420021c:	b1 a9       	rMAC = M[r4 + 88];
+8420021e:	11 f6 ff 1f 	rMAC = rMAC AND 0xdfff;
+84200222:	b1 af       	M[r4 + 88] = rMAC;
+
+84200224 <Lc_atr_vad_opmsg_set_control_5>:
+    {
+       return FALSE;
+    }
+
+    /* Iterate through control messages looking for mode override messages */
+    for (i = 0; i < num_controls; i++)
+84200224:	7f 20       	r5 = r5 + 1;
+
+84200226 <Lc_atr_vad_opmsg_set_control_6>:
+84200226:	49 d8       	rMAC = M[FP + 36];
+84200228:	78 04       	Null = r5 - rMAC;
+8420022a:	02 f0 e9 e0 	if C jump (m) Lc_atr_vad_opmsg_set_control_18;
+
+8420022e <Lc_atr_vad_opmsg_set_control_7>:
+    {
+        unsigned ctrl_value, ctrl_id;
+        CPS_CONTROL_SOURCE  ctrl_src;
+
+        ctrl_id = cps_control_get(message_data, i, &ctrl_value, &ctrl_src);
+8420022e:	c5 12       	r3 = FP + 44;
+84200230:	84 12       	r2 = FP + 40;
+84200232:	3b 00       	r1 = r5 + Null;
+84200234:	4a 08       	r0 = r7 + Null;
+84200236:	ff fd 06 f0 	call (m) 0xee2;
+8420023a:	2d e5 
+
+        /* Mode override */
+        if (ctrl_id == OPMSG_CONTROL_MODE_ID)
+8420023c:	50 24       	Null = r0 - 1;
+8420023e:	29 62       	if NE jump (m) Lc_atr_vad_opmsg_set_control_17;
+
+84200240 <Lc_atr_vad_opmsg_set_control_8>:
+        {
+            /* Check for valid mode */
+            ctrl_value &= ATR_VAD_SYSMODE_MASK;
+84200240:	51 d8       	rMAC = M[FP + 40];
+84200242:	09 c1       	rMAC = rMAC AND 0x7;
+84200244:	51 de       	M[FP + 40] = rMAC;
+            if (ctrl_value >= ATR_VAD_SYSMODE_MAX_MODES)
+84200246:	48 25       	Null = rMAC - 5;
+84200248:	03 64       	if NC jump (m) Lc_atr_vad_opmsg_set_control_10;
+
+8420024a <Lc_atr_vad_opmsg_set_control_9>:
+            {
+                result = OPMSG_RESULT_STATES_INVALID_CONTROL_VALUE;
+8420024a:	2b 71       	r9 = Null + 5;
+                break;
+8420024c:	23 6e       	jump (m) Lc_atr_vad_opmsg_set_control_18;
+
+8420024e <Lc_atr_vad_opmsg_set_control_10>:
+            }
+
+            /* Update current mode */
+            p_ext_data->cur_mode = ctrl_value;
+8420024e:	71 af       	M[r4 + 84] = rMAC;
+            /* Reset detection event */
+            p_ext_data->detect_event.state = ATR_VAD_EVENT_RELEASE;
+84200250:	60 f0 88 8a 	MB[r4 + 136] = Null;
+ * \return - Pointer to the class data
+ */
+
+static inline AUDIO_CURATION_DEF *get_class_data(OPERATOR_DATA *op_data)
+{
+    return (AUDIO_CURATION_DEF *) base_op_get_class_ext(op_data);
+84200254:	52 08       	r0 = r8 + Null;
+84200256:	ff fd 03 f0 	call (m) 0x934;
+8420025a:	3f e6 
+}
+
+inline void aud_cur_set_reinit(OPERATOR_DATA *op_data, bool state)
+{
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    p_class_data->re_init_flag = state;
+8420025c:	28 f0 00 ea 	MB[r0 + Null] = r6;
+            /* Reinitialize */
+            aud_cur_set_reinit(op_data, TRUE);
+
+            if (p_ext_data->cur_mode == ATR_VAD_SYSMODE_2MIC &&
+                (p_ext_data->atr_vad_params.OFFSET_ATR_VAD_CONFIG &
+                 ATR_VAD_CONFIG_ATR_VAD_CONFIG_2MIC_ONLY) == 0)
+84200260:	71 a9       	rMAC = M[r4 + 84];
+84200262:	08 25       	Null = rMAC - 4;
+84200264:	06 62       	if NE jump (m) Lc_atr_vad_opmsg_set_control_13;
+
+84200266 <Lc_atr_vad_opmsg_set_control_11>:
+84200266:	b1 88       	rMAC = M[r4 + 8];
+84200268:	09 c0       	rMAC = rMAC AND 0x1;
+8420026a:	03 62       	if NE jump (m) Lc_atr_vad_opmsg_set_control_13;
+
+8420026c <Lc_atr_vad_opmsg_set_control_12>:
+            {
+                p_ext_data->detect_event.confirm = TRUE;
+8420026c:	68 f0 a0 8a 	MB[r4 + 160] = r6;
+
+84200270 <Lc_atr_vad_opmsg_set_control_13>:
+            }
+
+            /* Determine control mode source and set override flags for mode */
+            if (ctrl_src == CPS_SOURCE_HOST)
+84200270:	61 d1       	rMAC = MBS[FP + 44];
+84200272:	04 62       	if NE jump (m) Lc_atr_vad_opmsg_set_control_15;
+
+84200274 <Lc_atr_vad_opmsg_set_control_14>:
+            {
+                p_ext_data->host_mode = ctrl_value;
+84200274:	51 d8       	rMAC = M[FP + 40];
+84200276:	f1 af       	M[r4 + 92] = rMAC;
+84200278:	d6 6f       	jump (m) Lc_atr_vad_opmsg_set_control_5;
+
+8420027a <Lc_atr_vad_opmsg_set_control_15>:
+            }
+            else
+            {
+                p_ext_data->qact_mode = ctrl_value;
+8420027a:	51 d8       	rMAC = M[FP + 40];
+8420027c:	31 be       	M[r4 + 96] = rMAC;
+                /* Set or clear the QACT override flag.
+                * &= is used to preserve the state of the
+                * override word.
+                */
+                if (ctrl_src == CPS_SOURCE_OBPM_ENABLE)
+8420027e:	61 d1       	rMAC = MBS[FP + 44];
+84200280:	88 24       	Null = rMAC - 2;
+84200282:	cd 63       	if NE jump (m) Lc_atr_vad_opmsg_set_control_4;
+
+84200284 <Lc_atr_vad_opmsg_set_control_16>:
+                {
+                    p_ext_data->ovr_control |= ATR_VAD_CONTROL_MODE_OVERRIDE;
+84200284:	b1 a9       	rMAC = M[r4 + 88];
+84200286:	20 f0 00 f1 	rMAC = rMAC OR 0x2000;
+8420028a:	51 d8 
+8420028c:	b1 af       	M[r4 + 88] = rMAC;
+8420028e:	cb 6f       	jump (m) Lc_atr_vad_opmsg_set_control_5;
+
+84200290 <Lc_atr_vad_opmsg_set_control_17>:
+            }
+
+        }
+        else
+        {
+            result = OPMSG_RESULT_STATES_UNSUPPORTED_CONTROL;
+84200290:	23 71       	r9 = Null + 4;
+
+84200292 <Lc_atr_vad_opmsg_set_control_18>:
+            break;
+        }
+    }
+
+    /* Set current operating mode based on override */
+    if ((p_ext_data->ovr_control & ATR_VAD_CONTROL_MODE_OVERRIDE) != 0)
+84200292:	b1 a9       	rMAC = M[r4 + 88];
+84200294:	11 f1 00 00 	rMAC = rMAC AND 0x2000;
+84200298:	04 60       	if EQ jump (m) Lc_atr_vad_opmsg_set_control_20;
+
+8420029a <Lc_atr_vad_opmsg_set_control_19>:
+    {
+        p_ext_data->cur_mode = p_ext_data->qact_mode;
+8420029a:	31 b8       	rMAC = M[r4 + 96];
+8420029c:	71 af       	M[r4 + 84] = rMAC;
+8420029e:	03 6e       	jump (m) Lc_atr_vad_opmsg_set_control_21;
+
+842002a0 <Lc_atr_vad_opmsg_set_control_20>:
+    }
+    else
+    {
+        p_ext_data->cur_mode = p_ext_data->host_mode;
+842002a0:	f1 a9       	rMAC = M[r4 + 92];
+842002a2:	71 af       	M[r4 + 84] = rMAC;
+
+842002a4 <Lc_atr_vad_opmsg_set_control_21>:
+    }
+
+    cps_response_set_result(resp_data, result);
+842002a4:	5b 08       	r1 = r9 + Null;
+842002a6:	42 d8       	r0 = M[FP + 32];
+842002a8:	ff fd 06 f0 	call (m) 0xf30;
+842002ac:	29 e4 
+
+    return TRUE;
+842002ae:	42 08       	r0 = r6 + Null;
+
+842002b0 <Lc_atr_vad_opmsg_set_control_22>:
+}
+842002b0:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+842002b2:	d8 4c       	rts;
+
+842002b4 <$_atr_vad_opmsg_get_status>:
+
+bool atr_vad_opmsg_get_status(OPERATOR_DATA *op_data,
+                              void *message_data,
+                              unsigned *resp_length,
+                              OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842002b4:	f4 1e       	pushm <FP(=SP), r4, r5, r6, r7, rLink>, SP = SP + 0x20;
+842002b6:	19 09       	r7 = r1 + Null;
+842002b8:	27 00       	r5 = r2 + Null;
+842002ba:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data ATR_VAD_OP_DATA.
+ */
+static inline ATR_VAD_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ATR_VAD_OP_DATA *) base_op_get_instance_data(op_data);
+842002bc:	ff fd 03 f0 	call (m) 0x8ea;
+842002c0:	2f e1 
+842002c2:	16 00       	r4 = r0 + Null;
+{
+    ATR_VAD_OP_DATA *p_ext_data = get_instance_data(op_data);
+    int i;
+
+    /* Build the response */
+    unsigned *resp = NULL;
+842002c4:	30 de       	M[FP + 24] = Null;
+    if (!common_obpm_status_helper(message_data, resp_length, resp_data,
+                                   sizeof(ATR_VAD_STATISTICS), &resp))
+842002c6:	81 11       	rMAC = FP + 24;
+842002c8:	09 1c       	pushm <rMAC>;
+842002ca:	05 29       	r3 = Null + 20;
+842002cc:	44 08       	r2 = r6 + Null;
+842002ce:	3b 00       	r1 = r5 + Null;
+842002d0:	4a 08       	r0 = r7 + Null;
+842002d2:	ff fd 06 f0 	call (m) 0xf46;
+842002d6:	35 e3 
+842002d8:	7f 4c       	SP = SP + -4;
+842002da:	10 04       	Null = r0 - Null;
+842002dc:	03 62       	if NE jump (m) Lc_atr_vad_opmsg_get_status_3;
+
+842002de <Lc_atr_vad_opmsg_get_status_2>:
+    {
+         return FALSE;
+842002de:	02 00       	r0 = Null + Null;
+842002e0:	23 6e       	jump (m) Lc_atr_vad_opmsg_get_status_8;
+
+842002e2 <Lc_atr_vad_opmsg_get_status_3>:
+    }
+
+    if (resp)
+842002e2:	31 d8       	rMAC = M[FP + 24];
+842002e4:	20 60       	if EQ jump (m) Lc_atr_vad_opmsg_get_status_7;
+
+842002e6 <Lc_atr_vad_opmsg_get_status_4>:
+    {
+        ATR_VAD_STATISTICS stats;
+        ATR_VAD_STATISTICS *pstats = &stats;
+        ParamType *pparam = (ParamType*)pstats;
+
+        pstats->OFFSET_CUR_MODE             = p_ext_data->cur_mode;
+842002e6:	71 a9       	rMAC = M[r4 + 84];
+842002e8:	39 de       	M[FP + 28] = rMAC;
+        pstats->OFFSET_OVR_CONTROL          = p_ext_data->ovr_control;
+842002ea:	b1 a9       	rMAC = M[r4 + 88];
+842002ec:	41 de       	M[FP + 32] = rMAC;
+        pstats->OFFSET_POWER                = p_ext_data->p_atr_vad100->pwr;
+842002ee:	61 f0 2c 88 	rMAC = M[r4 + 176];
+842002f2:	49 a8       	rMAC = M[rMAC + 68];
+842002f4:	49 de       	M[FP + 36] = rMAC;
+        pstats->OFFSET_DETECTION            = p_ext_data->detect;
+842002f6:	71 b8       	rMAC = M[r4 + 100];
+842002f8:	51 de       	M[FP + 40] = rMAC;
+        pstats->OFFSET_EVENT_STATE          = p_ext_data->detect_event.state;
+842002fa:	61 f0 88 80 	rMAC = MBS[r4 + 136];
+842002fe:	59 de       	M[FP + 44] = rMAC;
+
+        for (i = 0; i < ATR_VAD_N_STAT/2; i++)
+84200300:	06 00       	r4 = Null + Null;
+84200302:	c7 11       	r5 = FP + 28;
+
+84200304 <Lc_atr_vad_opmsg_get_status_5>:
+        {
+            resp = cpsPack2Words(pparam[2*i], pparam[2*i+1], resp);
+84200304:	34 d8       	r2 = M[FP + 24];
+84200306:	7b 88       	r1 = M[r5 + 4];
+84200308:	3a e8       	r0 = M[r5 + Null];
+8420030a:	ff fd 6b f2 	call (m) 0x4da2c;
+8420030e:	23 e9 
+84200310:	32 de       	M[FP + 24] = r0;
+        pstats->OFFSET_OVR_CONTROL          = p_ext_data->ovr_control;
+        pstats->OFFSET_POWER                = p_ext_data->p_atr_vad100->pwr;
+        pstats->OFFSET_DETECTION            = p_ext_data->detect;
+        pstats->OFFSET_EVENT_STATE          = p_ext_data->detect_event.state;
+
+        for (i = 0; i < ATR_VAD_N_STAT/2; i++)
+84200312:	76 20       	r4 = r4 + 1;
+84200314:	3f 22       	r5 = r5 + 8;
+84200316:	b0 24       	Null = r4 - 2;
+84200318:	f6 69       	if LT jump (m) Lc_atr_vad_opmsg_get_status_5;
+
+8420031a <Lc_atr_vad_opmsg_get_status_6>:
+        {
+            resp = cpsPack2Words(pparam[2*i], pparam[2*i+1], resp);
+        }
+        if ((ATR_VAD_N_STAT % 2) == 1) // last one
+        {
+            cpsPack1Word(pparam[ATR_VAD_N_STAT-1], resp);
+8420031a:	33 d8       	r1 = M[FP + 24];
+8420031c:	5a d8       	r0 = M[FP + 44];
+8420031e:	ff fd 6b f2 	call (m) 0x4da5e;
+84200322:	21 ea 
+
+84200324 <Lc_atr_vad_opmsg_get_status_7>:
+        }
+    }
+
+    return TRUE;
+84200324:	42 20       	r0 = Null + 1;
+
+84200326 <Lc_atr_vad_opmsg_get_status_8>:
+}
+84200326:	f4 4a       	SP = SP - 0x20, popm <FP, r4, r5, r6, r7, rLink>;
+84200328:	d8 4c       	rts;
+
+8420032a <$_atr_vad_opmsg_set_release_duration>:
+*/
+bool atr_vad_opmsg_set_release_duration(OPERATOR_DATA *op_data,
+                                        void *message_data,
+                                        unsigned *resp_length,
+                                        OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+8420032a:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+8420032c:	1e 00       	r4 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data ATR_VAD_OP_DATA.
+ */
+static inline ATR_VAD_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ATR_VAD_OP_DATA *) base_op_get_instance_data(op_data);
+8420032e:	ff fd 02 f0 	call (m) 0x8ea;
+84200332:	3d ed 
+                                        OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    ATR_VAD_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    p_ext_data->release_select = (ATR_VAD_RELEASE)OPMSG_FIELD_GET(
+        message_data, OPMSG_ATR_VAD_SET_RELEASE_DURATION, DURATION);
+84200334:	f1 88       	rMAC = M[r4 + 12];
+84200336:	89 c6       	rMAC = rMAC AND 0xffff;
+84200338:	0b 08       	r1 = SE8 rMAC;
+8420033a:	23 f0 68 8a 	MB[r0 + 104] = r1;
+
+    atr_vad_setup_event(&p_ext_data->detect_event,
+                        p_ext_data->release_select);
+8420033e:	02 f0 6c 44 	r0 = r0 + 108;
+84200342:	02 f0 39 e2 	call (m) $_atr_vad_setup_event;
+
+    return TRUE;
+84200346:	42 20       	r0 = Null + 1;
+
+84200348 <Lc_atr_vad_opmsg_set_release_duration_2>:
+}
+84200348:	f1 48       	popm <FP, r4, rLink>;
+8420034a:	d8 4c       	rts;
+
+8420034c <$_atr_vad_opmsg_get_release_duration>:
+
+bool atr_vad_opmsg_get_release_duration(OPERATOR_DATA *op_data,
+                                        void *message_data,
+                                        unsigned *resp_length,
+                                        OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+8420034c:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+8420034e:	1e 00       	r4 = r1 + Null;
+84200350:	27 00       	r5 = r2 + Null;
+ *
+ * \return  Pointer to extra operator data ATR_VAD_OP_DATA.
+ */
+static inline ATR_VAD_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ATR_VAD_OP_DATA *) base_op_get_instance_data(op_data);
+84200352:	ff fd 02 f0 	call (m) 0x8ea;
+84200356:	39 ec 
+84200358:	10 09       	r6 = r0 + Null;
+    ATR_VAD_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    unsigned *p_resp;
+    unsigned msg_id;
+
+    *resp_length = OPMSG_ATR_VAD_GET_RELEASE_DURATION_RESP_WORD_SIZE;
+8420035a:	81 20       	rMAC = Null + 2;
+8420035c:	39 ee       	M[r5 + Null] = rMAC;
+
+    p_resp = xzpnewn(OPMSG_ATR_VAD_GET_RELEASE_DURATION_RESP_WORD_SIZE,
+                     unsigned);
+8420035e:	c3 20       	r1 = Null + 3;
+84200360:	02 22       	r0 = Null + 8;
+84200362:	ff fd 36 f0 	call (m) 0x6f8e;
+84200366:	2d e1 
+    if (p_resp == NULL)
+84200368:	10 04       	Null = r0 - Null;
+8420036a:	03 62       	if NE jump (m) Lc_atr_vad_opmsg_get_release_duration_3;
+
+8420036c <Lc_atr_vad_opmsg_get_release_duration_2>:
+    {
+        return FALSE;
+8420036c:	02 00       	r0 = Null + Null;
+8420036e:	0a 6e       	jump (m) Lc_atr_vad_opmsg_get_release_duration_4;
+
+84200370 <Lc_atr_vad_opmsg_get_release_duration_3>:
+    }
+
+    msg_id = OPMGR_GET_OPCMD_MESSAGE_MSG_ID((OPMSG_HEADER*)message_data);
+84200370:	b3 88       	r1 = M[r4 + 8];
+
+    OPMSG_CREATION_FIELD_SET32(p_resp,
+                               OPMSG_ATR_VAD_GET_RELEASE_DURATION_RESP,
+                               MESSAGE_ID,
+                               msg_id);
+84200372:	99 c6       	rMAC = r1 AND 0xffff;
+84200374:	11 ee       	M[r0 + Null] = rMAC;
+84200376:	9b 52       	r1 = r1 LSHIFT -16;
+84200378:	53 8e       	M[r0 + 4] = r1;
+    OPMSG_CREATION_FIELD_SET(p_resp,
+                             OPMSG_ATR_VAD_GET_RELEASE_DURATION_RESP,
+                             DURATION,
+                             (unsigned)p_ext_data->release_select);
+8420037a:	81 f0 68 80 	rMAC = MBS[r6 + 104];
+8420037e:	51 8e       	M[r0 + 4] = rMAC;
+
+    return TRUE;
+84200380:	42 20       	r0 = Null + 1;
+
+84200382 <Lc_atr_vad_opmsg_get_release_duration_4>:
+}
+84200382:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200384:	d8 4c       	rts;
+
+84200386 <$_atr_vad_opmsg_set_sensitivity>:
+
+bool atr_vad_opmsg_set_sensitivity(OPERATOR_DATA *op_data,
+                                   void *message_data,
+                                   unsigned *resp_length,
+                                   OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200386:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200388:	1e 00       	r4 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data ATR_VAD_OP_DATA.
+ */
+static inline ATR_VAD_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ATR_VAD_OP_DATA *) base_op_get_instance_data(op_data);
+8420038a:	ff fd 02 f0 	call (m) 0x8ea;
+8420038e:	21 eb 
+                                   OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    ATR_VAD_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    p_ext_data->sensitivity_select = (uint8)OPMSG_FIELD_GET(
+        message_data, OPMSG_ATR_VAD_SET_SENSITIVITY, SENSITIVITY);
+84200390:	f1 88       	rMAC = M[r4 + 12];
+84200392:	21 f0 69 8a 	MB[r0 + 105] = rMAC;
+
+    return TRUE;
+84200396:	42 20       	r0 = Null + 1;
+
+84200398 <Lc_atr_vad_opmsg_set_sensitivity_2>:
+}
+84200398:	f1 48       	popm <FP, r4, rLink>;
+8420039a:	d8 4c       	rts;
+
+8420039c <$_atr_vad_opmsg_get_sensitivity>:
+
+bool atr_vad_opmsg_get_sensitivity(OPERATOR_DATA *op_data,
+                                   void *message_data,
+                                   unsigned *resp_length,
+                                   OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+8420039c:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+8420039e:	1e 00       	r4 = r1 + Null;
+842003a0:	27 00       	r5 = r2 + Null;
+ *
+ * \return  Pointer to extra operator data ATR_VAD_OP_DATA.
+ */
+static inline ATR_VAD_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ATR_VAD_OP_DATA *) base_op_get_instance_data(op_data);
+842003a2:	ff fd 02 f0 	call (m) 0x8ea;
+842003a6:	29 ea 
+842003a8:	10 09       	r6 = r0 + Null;
+    ATR_VAD_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    unsigned *p_resp;
+    unsigned msg_id;
+
+    *resp_length = OPMSG_ATR_VAD_GET_SENSITIVITY_RESP_WORD_SIZE;
+842003aa:	81 20       	rMAC = Null + 2;
+842003ac:	39 ee       	M[r5 + Null] = rMAC;
+
+    p_resp = xzpnewn(OPMSG_ATR_VAD_GET_SENSITIVITY_RESP_WORD_SIZE,
+                     unsigned);
+842003ae:	c3 20       	r1 = Null + 3;
+842003b0:	02 22       	r0 = Null + 8;
+842003b2:	ff fd 35 f0 	call (m) 0x6f8e;
+842003b6:	3d ee 
+    if (p_resp == NULL)
+842003b8:	10 04       	Null = r0 - Null;
+842003ba:	03 62       	if NE jump (m) Lc_atr_vad_opmsg_get_sensitivity_3;
+
+842003bc <Lc_atr_vad_opmsg_get_sensitivity_2>:
+    {
+        return FALSE;
+842003bc:	02 00       	r0 = Null + Null;
+842003be:	0a 6e       	jump (m) Lc_atr_vad_opmsg_get_sensitivity_4;
+
+842003c0 <Lc_atr_vad_opmsg_get_sensitivity_3>:
+    }
+
+    msg_id = OPMGR_GET_OPCMD_MESSAGE_MSG_ID((OPMSG_HEADER*)message_data);
+842003c0:	b3 88       	r1 = M[r4 + 8];
+
+    OPMSG_CREATION_FIELD_SET32(p_resp,
+                               OPMSG_ATR_VAD_GET_SENSITIVITY_RESP,
+                               MESSAGE_ID,
+                               msg_id);
+842003c2:	99 c6       	rMAC = r1 AND 0xffff;
+842003c4:	11 ee       	M[r0 + Null] = rMAC;
+842003c6:	9b 52       	r1 = r1 LSHIFT -16;
+842003c8:	53 8e       	M[r0 + 4] = r1;
+    OPMSG_CREATION_FIELD_SET(p_resp,
+                             OPMSG_ATR_VAD_GET_SENSITIVITY_RESP,
+                             SENSITIVITY,
+                             p_ext_data->sensitivity_select);
+842003ca:	81 f0 69 82 	rMAC = MBU[r6 + 105];
+842003ce:	51 8e       	M[r0 + 4] = rMAC;
+
+    return TRUE;
+842003d0:	42 20       	r0 = Null + 1;
+
+842003d2 <Lc_atr_vad_opmsg_get_sensitivity_4>:
+}
+842003d2:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842003d4:	d8 4c       	rts;
+
+842003d6 <$_atr_vad_process_data>:
+
+/****************************************************************************
+Data processing function
+*/
+void atr_vad_process_data(OPERATOR_DATA *op_data, TOUCHED_TERMINALS *touched)
+{
+842003d6:	f6 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>;
+842003d8:	11 09       	r7 = r0 + Null;
+842003da:	1b 09       	r9 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data ATR_VAD_OP_DATA.
+ */
+static inline ATR_VAD_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ATR_VAD_OP_DATA *) base_op_get_instance_data(op_data);
+842003dc:	ff fd 02 f0 	call (m) 0x8ea;
+842003e0:	2f e8 
+842003e2:	16 00       	r4 = r0 + Null;
+
+    /*********************
+     * Early exit testing
+     *********************/
+
+    samples_to_process = aud_cur_calc_samples(op_data, touched);
+842003e4:	5b 08       	r1 = r9 + Null;
+842003e6:	4a 08       	r0 = r7 + Null;
+842003e8:	04 f0 2b e2 	call (m) $_aud_cur_calc_samples;
+842003ec:	10 09       	r6 = r0 + Null;
+
+     /* Return early if not enough data to process */
+    if (samples_to_process < ATR_VAD_DEFAULT_FRAME_SIZE)
+842003ee:	80 f0 78 24 	Null = r6 - 120;
+842003f2:	c3 68       	if LT jump (m) Lc_atr_vad_process_data_27;
+
+842003f4 <Lc_atr_vad_process_data_2>:
+    {
+        return;
+    }
+
+    /* Don't do any processing in standby */
+    if (p_ext_data->cur_mode == ATR_VAD_SYSMODE_STANDBY)
+842003f4:	70 a9       	Null = M[r4 + 84];
+842003f6:	0b 62       	if NE jump (m) Lc_atr_vad_process_data_4;
+
+842003f8 <Lc_atr_vad_process_data_3>:
+    {
+        /* Copy or discard data on all terminals */
+        aud_cur_mic_data_transfer(op_data,
+                                  samples_to_process,
+                                  ATR_VAD_TERMINAL_SKIP_MASK);
+842003f8:	04 00       	r2 = Null + Null;
+842003fa:	43 08       	r1 = r6 + Null;
+842003fc:	4a 08       	r0 = r7 + Null;
+842003fe:	04 f0 21 e7 	call (m) $_aud_cur_mic_data_transfer;
+        /*  Metadata transfer */
+        aud_cur_mic_metadata_transfer(op_data, samples_to_process);
+84200402:	43 08       	r1 = r6 + Null;
+84200404:	4a 08       	r0 = r7 + Null;
+84200406:	04 f0 29 ea 	call (m) $_aud_cur_mic_metadata_transfer;
+8420040a:	b7 6e       	jump (m) Lc_atr_vad_process_data_27;
+
+8420040c <Lc_atr_vad_process_data_4>:
+
+        /* Exit early */
+        return;
+    }
+
+    p_atr = p_ext_data->p_atr_vad100;
+8420040c:	67 f0 2c 88 	r5 = M[r4 + 176];
+ * \return - Pointer to the class data
+ */
+
+static inline AUDIO_CURATION_DEF *get_class_data(OPERATOR_DATA *op_data)
+{
+    return (AUDIO_CURATION_DEF *) base_op_get_class_ext(op_data);
+84200410:	4a 08       	r0 = r7 + Null;
+84200412:	ff fd 02 f0 	call (m) 0x934;
+84200416:	23 e9 
+
+    if (aud_cur_get_reinit(op_data))
+84200418:	11 e2       	rMAC = MBU[r0 + Null];
+8420041a:	49 60       	if EQ jump (m) Lc_atr_vad_process_data_6;
+
+8420041c <Lc_atr_vad_process_data_5>:
+8420041c:	4a 08       	r0 = r7 + Null;
+8420041e:	ff fd 02 f0 	call (m) 0x934;
+84200422:	37 e8 
+}
+
+inline void aud_cur_set_reinit(OPERATOR_DATA *op_data, bool state)
+{
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    p_class_data->re_init_flag = state;
+84200424:	10 ea       	MB[r0 + Null] = Null;
+#endif
+        {
+            aud_cur_set_reinit(op_data, FALSE);
+        }
+
+        p_params = &p_ext_data->atr_vad_params;
+84200426:	68 f0 08 20 	r6 = r4 + 8;
+
+        p_atr->vad_attack_time = \
+            p_params->OFFSET_VAD_ATTACK_TIME;
+8420042a:	81 f0 01 88 	rMAC = M[r6 + 4];
+8420042e:	b9 8e       	M[r5 + 8] = rMAC;
+        p_atr->vad_decay_time = \
+            p_params->OFFSET_VAD_RELEASE_TIME;
+84200430:	81 f0 02 88 	rMAC = M[r6 + 8];
+84200434:	f9 8e       	M[r5 + 12] = rMAC;
+        p_atr->vad_envelope_time = \
+            p_params->OFFSET_VAD_ENVELOPE_TIME;
+84200436:	81 f0 03 88 	rMAC = M[r6 + 12];
+8420043a:	39 8f       	M[r5 + 16] = rMAC;
+        p_atr->vad_init_frame_time = \
+            p_params->OFFSET_VAD_INIT_TIME;
+8420043c:	81 f0 05 88 	rMAC = M[r6 + 20];
+84200440:	79 8f       	M[r5 + 20] = rMAC;
+        p_atr->vad_ratio = \
+            p_params->OFFSET_VAD_RATIO;
+84200442:	81 f0 04 88 	rMAC = M[r6 + 16];
+84200446:	b9 8f       	M[r5 + 24] = rMAC;
+        p_atr->vad_min_max_envelope = \
+            p_params->OFFSET_VAD_PWR_THRESHOLD;
+84200448:	81 f0 06 88 	rMAC = M[r6 + 24];
+8420044c:	39 9e       	M[r5 + 32] = rMAC;
+        p_atr->vad_min_signal = \
+            p_params->OFFSET_VAD_ENV_THRESHOLD;
+8420044e:	81 f0 07 88 	rMAC = M[r6 + 28];
+84200452:	f9 8f       	M[r5 + 28] = rMAC;
+        p_atr->vad_delta_th = \
+            p_params->OFFSET_VAD_DELTA_THRESHOLD;
+84200454:	81 f0 08 88 	rMAC = M[r6 + 32];
+84200458:	79 9e       	M[r5 + 36] = rMAC;
+        p_atr->vad_count_th = \
+            p_params->OFFSET_VAD_COUNT_TH_TIME;
+8420045a:	81 f0 09 88 	rMAC = M[r6 + 36];
+8420045e:	b9 9e       	M[r5 + 40] = rMAC;
+
+        p_atr->smooth_attack_time = \
+            p_params->OFFSET_SMOOTH_ATTACK_TIME;
+84200460:	81 f0 0a 88 	rMAC = M[r6 + 40];
+84200464:	f9 9e       	M[r5 + 44] = rMAC;
+        p_atr->smooth_release_time = \
+            p_params->OFFSET_SMOOTH_RELEASE_TIME;
+84200466:	81 f0 0b 88 	rMAC = M[r6 + 44];
+8420046a:	39 9f       	M[r5 + 48] = rMAC;
+        p_atr->hold_attack_time = \
+            p_params->OFFSET_HOLD_ATTACK_TIME;
+8420046c:	81 f0 0c 88 	rMAC = M[r6 + 48];
+84200470:	79 9f       	M[r5 + 52] = rMAC;
+        p_atr->hold_release_time = \
+            p_params->OFFSET_HOLD_RELEASE_TIME;
+84200472:	81 f0 0d 88 	rMAC = M[r6 + 52];
+84200476:	b9 9f       	M[r5 + 56] = rMAC;
+        p_atr->threshold = \
+            p_params->OFFSET_DET_THRESHOLD;
+84200478:	81 f0 0e 88 	rMAC = M[r6 + 56];
+8420047c:	79 8e       	M[r5 + 4] = rMAC;
+
+        aanc_atr_vad100_initialize(p_ext_data->f_handle, p_atr);
+8420047e:	62 f0 29 88 	r0 = M[r4 + 164];
+84200482:	3b 00       	r1 = r5 + Null;
+84200484:	05 f0 3d ea 	call (m) $_aanc_atr_vad100_initialize;
+
+        /* Update event configuration */
+        p_ext_data->detect_event.config.attack_time = \
+            p_params->OFFSET_MSG_ATTACK_TIME;
+84200488:	81 f0 12 88 	rMAC = M[r6 + 72];
+8420048c:	f1 be       	M[r4 + 108] = rMAC;
+        p_ext_data->detect_event.config.short_release_time = \
+            p_params->OFFSET_MSG_SHORT_RELEASE_TIME;
+8420048e:	81 f0 0f 88 	rMAC = M[r6 + 60];
+84200492:	31 bf       	M[r4 + 112] = rMAC;
+        p_ext_data->detect_event.config.normal_release_time = \
+            p_params->OFFSET_MSG_NORMAL_RELEASE_TIME;
+84200494:	81 f0 10 88 	rMAC = M[r6 + 64];
+84200498:	71 bf       	M[r4 + 116] = rMAC;
+        p_ext_data->detect_event.config.long_release_time = \
+            p_params->OFFSET_MSG_LONG_RELEASE_TIME;
+8420049a:	81 f0 11 88 	rMAC = M[r6 + 68];
+8420049e:	b1 bf       	M[r4 + 120] = rMAC;
+
+        atr_vad_setup_event(&p_ext_data->detect_event,
+                            p_ext_data->release_select);
+842004a0:	63 f0 68 80 	r1 = MBS[r4 + 104];
+842004a4:	62 f0 6c 20 	r0 = r4 + 108;
+842004a8:	01 f0 33 e7 	call (m) $_atr_vad_setup_event;
+
+842004ac <Lc_atr_vad_process_data_6>:
+    }
+
+    sample_count = 0;
+842004ac:	02 09       	r8 = Null + Null;
+
+842004ae <Lc_atr_vad_process_data_7>:
+    while (samples_to_process >= ATR_VAD_DEFAULT_FRAME_SIZE)
+    {
+        switch (p_ext_data->cur_mode)
+842004ae:	73 a9       	r1 = M[r4 + 84];
+842004b0:	98 24       	Null = r1 - 2;
+842004b2:	12 60       	if EQ jump (m) Lc_atr_vad_process_data_13;
+
+842004b4 <Lc_atr_vad_process_data_8>:
+842004b4:	d8 24       	Null = r1 - 3;
+842004b6:	21 60       	if EQ jump (m) Lc_atr_vad_process_data_16;
+
+842004b8 <Lc_atr_vad_process_data_9>:
+842004b8:	18 25       	Null = r1 - 4;
+842004ba:	38 62       	if NE jump (m) Lc_atr_vad_process_data_21;
+
+842004bc <Lc_atr_vad_process_data_10>:
+                                             p_ext_data->p_ff_mic);
+                p_ext_data->detect = p_atr->detection;
+                break;
+            case ATR_VAD_SYSMODE_2MIC:
+                if (p_ext_data->p_ff_mic == NULL ||
+                    p_ext_data->p_bcm_mic == NULL)
+842004bc:	65 f0 2b 88 	r3 = M[r4 + 172];
+842004c0:	04 60       	if EQ jump (m) Lc_atr_vad_process_data_12;
+
+842004c2 <Lc_atr_vad_process_data_11>:
+842004c2:	64 f0 2a 88 	r2 = M[r4 + 168];
+842004c6:	2a 62       	if NE jump (m) Lc_atr_vad_process_data_19;
+
+842004c8 <Lc_atr_vad_process_data_12>:
+                {
+                    L0_DBG_MSG("ATR_VAD: 2-mic mode no bcm/ff");
+842004c8:	55 f1 02 f0 	r0 = Null + 357564793;
+842004cc:	79 41 
+842004ce:	ff fd 05 f0 	call (m) 0x10b0;
+842004d2:	23 ef 
+842004d4:	35 6e       	jump (m) Lc_atr_vad_process_data_23;
+
+842004d6 <Lc_atr_vad_process_data_13>:
+    {
+        switch (p_ext_data->cur_mode)
+        {
+            /* 1-mic mode: operate on BCM microphone */
+            case ATR_VAD_SYSMODE_1MIC:
+                if (p_ext_data->p_bcm_mic == NULL)
+842004d6:	64 f0 2a 88 	r2 = M[r4 + 168];
+842004da:	08 62       	if NE jump (m) Lc_atr_vad_process_data_15;
+
+842004dc <Lc_atr_vad_process_data_14>:
+                {
+                    L0_DBG_MSG("ATR_VAD: 1-mic mode no bcm");
+842004dc:	55 f1 02 f0 	r0 = Null + 357564740;
+842004e0:	44 41 
+842004e2:	ff fd 05 f0 	call (m) 0x10b0;
+842004e6:	2f ee 
+842004e8:	2b 6e       	jump (m) Lc_atr_vad_process_data_23;
+
+842004ea <Lc_atr_vad_process_data_15>:
+                    break;
+                }
+                aanc_atr_vad100_process_data(p_ext_data->f_handle,
+                                             p_atr,
+                                             p_ext_data->p_bcm_mic,
+                                             NULL);
+842004ea:	62 f0 29 88 	r0 = M[r4 + 164];
+842004ee:	05 00       	r3 = Null + Null;
+842004f0:	3b 00       	r1 = r5 + Null;
+842004f2:	05 f0 2d eb 	call (m) $_aanc_atr_vad100_process_data;
+842004f6:	17 6e       	jump (m) Lc_atr_vad_process_data_20;
+
+842004f8 <Lc_atr_vad_process_data_16>:
+                p_ext_data->detect = p_atr->detection;
+                break;
+            case ATR_VAD_SYSMODE_1MIC_MS:
+                if (p_ext_data->p_ff_mic == NULL)
+842004f8:	65 f0 2b 88 	r3 = M[r4 + 172];
+842004fc:	08 62       	if NE jump (m) Lc_atr_vad_process_data_18;
+
+842004fe <Lc_atr_vad_process_data_17>:
+                {
+                    L0_DBG_MSG("ATR_VAD: 1-mic mode no ff");
+842004fe:	55 f1 02 f0 	r0 = Null + 357564767;
+84200502:	5f 41 
+84200504:	ff fd 05 f0 	call (m) 0x10b0;
+84200508:	2d ed 
+8420050a:	1a 6e       	jump (m) Lc_atr_vad_process_data_23;
+
+8420050c <Lc_atr_vad_process_data_18>:
+                    break;
+                }
+                aanc_atr_vad100_process_data(p_ext_data->f_handle,
+                                             p_atr,
+                                             NULL,
+                                             p_ext_data->p_ff_mic);
+8420050c:	62 f0 29 88 	r0 = M[r4 + 164];
+84200510:	04 00       	r2 = Null + Null;
+84200512:	3b 00       	r1 = r5 + Null;
+84200514:	05 f0 2b ea 	call (m) $_aanc_atr_vad100_process_data;
+84200518:	06 6e       	jump (m) Lc_atr_vad_process_data_20;
+
+8420051a <Lc_atr_vad_process_data_19>:
+                    break;
+                }
+                aanc_atr_vad100_process_data(p_ext_data->f_handle,
+                                             p_atr,
+                                             p_ext_data->p_bcm_mic,
+                                             p_ext_data->p_ff_mic);
+8420051a:	62 f0 29 88 	r0 = M[r4 + 164];
+8420051e:	3b 00       	r1 = r5 + Null;
+84200520:	05 f0 3f e9 	call (m) $_aanc_atr_vad100_process_data;
+
+84200524 <Lc_atr_vad_process_data_20>:
+                }
+                aanc_atr_vad100_process_data(p_ext_data->f_handle,
+                                             p_atr,
+                                             p_ext_data->p_bcm_mic,
+                                             NULL);
+                p_ext_data->detect = p_atr->detection;
+84200524:	39 a9       	rMAC = M[r5 + 80];
+84200526:	71 be       	M[r4 + 100] = rMAC;
+                break;
+84200528:	0b 6e       	jump (m) Lc_atr_vad_process_data_23;
+
+8420052a <Lc_atr_vad_process_data_21>:
+                                             p_ext_data->p_ff_mic);
+                p_ext_data->detect = p_atr->detection;
+                break;
+            default:
+                L2_DBG_MSG1("ATR_VAD: Unsupported sysmode %d",
+                            p_ext_data->cur_mode);
+8420052a:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420052e:	88 24       	Null = rMAC - 2;
+84200530:	07 68       	if LT jump (m) Lc_atr_vad_process_data_23;
+
+84200532 <Lc_atr_vad_process_data_22>:
+84200532:	55 f1 02 f0 	r0 = Null + 357564823;
+84200536:	97 41 
+84200538:	ff fd 05 f0 	call (m) 0x10c2;
+8420053c:	2b ec 
+
+8420053e <Lc_atr_vad_process_data_23>:
+        }
+
+        if (atr_vad_process_event(&p_ext_data->detect_event))
+8420053e:	62 f0 6c 20 	r0 = r4 + 108;
+84200542:	be 4e       	call (m) $_atr_vad_process_event;
+84200544:	10 04       	Null = r0 - Null;
+84200546:	05 60       	if EQ jump (m) Lc_atr_vad_process_data_25;
+
+84200548 <Lc_atr_vad_process_data_24>:
+        {
+            /* Send message */
+            atr_vad_send_event_message(op_data, &p_ext_data->detect_event.msg);
+84200548:	63 f0 94 20 	r1 = r4 + 148;
+8420054c:	4a 08       	r0 = r7 + Null;
+8420054e:	78 4e       	call (m) Lc_atr_vad_send_event_message_1;
+
+84200550 <Lc_atr_vad_process_data_25>:
+        }
+
+        /* Copy or discard data on all terminals */
+        aud_cur_mic_data_transfer(op_data,
+                                  ATR_VAD_DEFAULT_FRAME_SIZE,
+                                  ATR_VAD_TERMINAL_SKIP_MASK);
+84200550:	03 f0 78 40 	r1 = Null + 120;
+84200554:	04 00       	r2 = Null + Null;
+84200556:	4a 08       	r0 = r7 + Null;
+84200558:	03 f0 27 ec 	call (m) $_aud_cur_mic_data_transfer;
+
+        samples_to_process = aud_cur_calc_samples(op_data, touched);
+8420055c:	5b 08       	r1 = r9 + Null;
+8420055e:	4a 08       	r0 = r7 + Null;
+84200560:	03 f0 33 e6 	call (m) $_aud_cur_calc_samples;
+84200564:	10 09       	r6 = r0 + Null;
+        sample_count += ATR_VAD_DEFAULT_FRAME_SIZE;
+84200566:	0a f0 78 44 	r8 = r8 + 120;
+        atr_vad_setup_event(&p_ext_data->detect_event,
+                            p_ext_data->release_select);
+    }
+
+    sample_count = 0;
+    while (samples_to_process >= ATR_VAD_DEFAULT_FRAME_SIZE)
+8420056a:	80 f0 78 24 	Null = r6 - 120;
+8420056e:	a0 67       	if GE jump (m) Lc_atr_vad_process_data_7;
+
+84200570 <Lc_atr_vad_process_data_26>:
+        samples_to_process = aud_cur_calc_samples(op_data, touched);
+        sample_count += ATR_VAD_DEFAULT_FRAME_SIZE;
+    }
+
+    /*  Metadata transfer */
+    aud_cur_mic_metadata_transfer(op_data, sample_count);
+84200570:	53 08       	r1 = r8 + Null;
+84200572:	4a 08       	r0 = r7 + Null;
+84200574:	03 f0 3b ee 	call (m) $_aud_cur_mic_metadata_transfer;
+
+84200578 <Lc_atr_vad_process_data_27>:
+
+    return;
+}
+84200578:	f6 48       	popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+8420057a:	d8 4c       	rts;
+
+8420057c <$_atr_vad_connect_hook>:
+
+/****************************************************************************
+Hook functions
+*/
+bool atr_vad_connect_hook(OPERATOR_DATA *op_data, unsigned terminal_id)
+{
+8420057c:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+8420057e:	16 00       	r4 = r0 + Null;
+84200580:	1f 00       	r5 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data ATR_VAD_OP_DATA.
+ */
+static inline ATR_VAD_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ATR_VAD_OP_DATA *) base_op_get_instance_data(op_data);
+84200582:	ff fd 01 f0 	call (m) 0x8ea;
+84200586:	29 eb 
+84200588:	10 09       	r6 = r0 + Null;
+    uint16 terminal_num;
+    tCbuffer * p_buffer;
+    ATR_VAD_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* No caching of terminal pointers if it isn't an input terminal */
+    if((terminal_id & TERMINAL_SINK_MASK) == 0)
+8420058a:	40 f0 71 f0 	rMAC = r5 AND 0x800000;
+8420058e:	00 00 
+84200590:	10 60       	if EQ jump (m) Lc_atr_vad_connect_hook_6;
+
+84200592 <Lc_atr_vad_connect_hook_2>:
+    {
+        return TRUE;
+    }
+
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+84200592:	bf c2       	r5 = r5 AND 0x3f;
+    p_buffer = aud_cur_get_sink_terminal(op_data, terminal_num);
+84200594:	3b 00       	r1 = r5 + Null;
+84200596:	32 00       	r0 = r4 + Null;
+84200598:	02 f0 37 eb 	call (m) $_aud_cur_get_sink_terminal;
+    switch (terminal_num)
+8420059c:	39 00       	rMAC = r5 + Null;
+8420059e:	48 24       	Null = rMAC - 1;
+842005a0:	06 60       	if EQ jump (m) Lc_atr_vad_connect_hook_5;
+
+842005a2 <Lc_atr_vad_connect_hook_3>:
+842005a2:	88 24       	Null = rMAC - 2;
+842005a4:	08 62       	if NE jump (m) Lc_atr_vad_connect_hook_7;
+
+842005a6 <Lc_atr_vad_connect_hook_4>:
+    {
+        case ATR_VAD_BCM_TERMINAL:
+            p_ext_data->p_bcm_mic = p_buffer;
+            break;
+        case ATR_VAD_FF_TERMINAL:
+            p_ext_data->p_ff_mic = p_buffer;
+842005a6:	82 f0 2b 8e 	M[r6 + 172] = r0;
+            break;
+842005aa:	03 6e       	jump (m) Lc_atr_vad_connect_hook_6;
+
+842005ac <Lc_atr_vad_connect_hook_5>:
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+    p_buffer = aud_cur_get_sink_terminal(op_data, terminal_num);
+    switch (terminal_num)
+    {
+        case ATR_VAD_BCM_TERMINAL:
+            p_ext_data->p_bcm_mic = p_buffer;
+842005ac:	82 f0 2a 8e 	M[r6 + 168] = r0;
+
+842005b0 <Lc_atr_vad_connect_hook_6>:
+    ATR_VAD_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* No caching of terminal pointers if it isn't an input terminal */
+    if((terminal_id & TERMINAL_SINK_MASK) == 0)
+    {
+        return TRUE;
+842005b0:	42 20       	r0 = Null + 1;
+842005b2:	0d 6e       	jump (m) Lc_atr_vad_connect_hook_10;
+
+842005b4 <Lc_atr_vad_connect_hook_7>:
+        case ATR_VAD_FF_TERMINAL:
+            p_ext_data->p_ff_mic = p_buffer;
+            break;
+        default:
+            L2_DBG_MSG1("ATR_VAD: unhandled terminal at connect: %d",
+                        terminal_num);
+842005b4:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842005b8:	88 24       	Null = rMAC - 2;
+842005ba:	08 68       	if LT jump (m) Lc_atr_vad_connect_hook_9;
+
+842005bc <Lc_atr_vad_connect_hook_8>:
+842005bc:	55 f1 02 f0 	r0 = Null + 357564651;
+842005c0:	eb 40 
+842005c2:	3b 00       	r1 = r5 + Null;
+842005c4:	ff fd 05 f0 	call (m) 0x10c2;
+842005c8:	3f e7 
+
+842005ca <Lc_atr_vad_connect_hook_9>:
+            return FALSE;
+842005ca:	02 00       	r0 = Null + Null;
+
+842005cc <Lc_atr_vad_connect_hook_10>:
+    }
+
+    return TRUE;
+}
+842005cc:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842005ce:	d8 4c       	rts;
+
+842005d0 <$_atr_vad_disconnect_hook>:
+
+bool atr_vad_disconnect_hook(OPERATOR_DATA *op_data, unsigned terminal_id)
+{
+842005d0:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+842005d2:	1e 00       	r4 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data ATR_VAD_OP_DATA.
+ */
+static inline ATR_VAD_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ATR_VAD_OP_DATA *) base_op_get_instance_data(op_data);
+842005d4:	ff fd 01 f0 	call (m) 0x8ea;
+842005d8:	37 e8 
+{
+    uint16 terminal_num;
+    ATR_VAD_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* No caching of terminal pointers if it isn't an input terminal */
+    if((terminal_id & TERMINAL_SINK_MASK) == 0)
+842005da:	40 f0 61 f0 	rMAC = r4 AND 0x800000;
+842005de:	00 00 
+842005e0:	0c 60       	if EQ jump (m) Lc_atr_vad_disconnect_hook_6;
+
+842005e2 <Lc_atr_vad_disconnect_hook_2>:
+    {
+        return TRUE;
+    }
+
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+842005e2:	b3 c2       	r1 = r4 AND 0x3f;
+    switch (terminal_num)
+842005e4:	19 00       	rMAC = r1 + Null;
+842005e6:	48 24       	Null = rMAC - 1;
+842005e8:	06 60       	if EQ jump (m) Lc_atr_vad_disconnect_hook_5;
+
+842005ea <Lc_atr_vad_disconnect_hook_3>:
+842005ea:	88 24       	Null = rMAC - 2;
+842005ec:	08 62       	if NE jump (m) Lc_atr_vad_disconnect_hook_7;
+
+842005ee <Lc_atr_vad_disconnect_hook_4>:
+    {
+        case ATR_VAD_BCM_TERMINAL:
+            p_ext_data->p_bcm_mic = NULL;
+            break;
+        case ATR_VAD_FF_TERMINAL:
+            p_ext_data->p_ff_mic = NULL;
+842005ee:	20 f0 2b 8e 	M[r0 + 172] = Null;
+            break;
+842005f2:	03 6e       	jump (m) Lc_atr_vad_disconnect_hook_6;
+
+842005f4 <Lc_atr_vad_disconnect_hook_5>:
+
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+    switch (terminal_num)
+    {
+        case ATR_VAD_BCM_TERMINAL:
+            p_ext_data->p_bcm_mic = NULL;
+842005f4:	20 f0 2a 8e 	M[r0 + 168] = Null;
+
+842005f8 <Lc_atr_vad_disconnect_hook_6>:
+    ATR_VAD_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* No caching of terminal pointers if it isn't an input terminal */
+    if((terminal_id & TERMINAL_SINK_MASK) == 0)
+    {
+        return TRUE;
+842005f8:	42 20       	r0 = Null + 1;
+842005fa:	0c 6e       	jump (m) Lc_atr_vad_disconnect_hook_10;
+
+842005fc <Lc_atr_vad_disconnect_hook_7>:
+        case ATR_VAD_FF_TERMINAL:
+            p_ext_data->p_ff_mic = NULL;
+            break;
+        default:
+            L2_DBG_MSG1("ATR_VAD: unhandled terminal at disconnect: %d",
+                        terminal_num);
+842005fc:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200600:	88 24       	Null = rMAC - 2;
+84200602:	07 68       	if LT jump (m) Lc_atr_vad_disconnect_hook_9;
+
+84200604 <Lc_atr_vad_disconnect_hook_8>:
+84200604:	55 f1 02 f0 	r0 = Null + 357564694;
+84200608:	16 41 
+8420060a:	ff fd 05 f0 	call (m) 0x10c2;
+8420060e:	39 e5 
+
+84200610 <Lc_atr_vad_disconnect_hook_9>:
+            return FALSE;
+84200610:	02 00       	r0 = Null + Null;
+
+84200612 <Lc_atr_vad_disconnect_hook_10>:
+    }
+
+    return TRUE;
+}
+84200612:	f1 48       	popm <FP, r4, rLink>;
+84200614:	d8 4c       	rts;
+
+84200616 <Lc_atr_vad_proc_destroy_1>:
+ * \param  p_ext_data  Address of the ATR_VAD extra_op_data.
+ *
+ * \return  boolean indicating success or failure.
+ */
+static bool atr_vad_proc_destroy(ATR_VAD_OP_DATA *p_ext_data)
+{
+84200616:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200618:	16 00       	r4 = r0 + Null;
+    pdelete(p_ext_data->p_atr_vad100);
+8420061a:	62 f0 2c 88 	r0 = M[r4 + 176];
+8420061e:	ff fd 34 f0 	call (m) 0x6fbe;
+84200622:	21 ed 
+    pdelete(p_ext_data->p_atr_vad100_dm1);
+84200624:	62 f0 2d 88 	r0 = M[r4 + 180];
+84200628:	ff fd 34 f0 	call (m) 0x6fbe;
+8420062c:	37 ec 
+
+    unload_vad_handle(p_ext_data->f_handle);
+8420062e:	62 f0 29 88 	r0 = M[r4 + 164];
+84200632:	ff fd 1e f4 	call (m) 0x8426e;
+84200636:	3d e1 
+
+    return TRUE;
+84200638:	42 20       	r0 = Null + 1;
+
+8420063a <Lc_atr_vad_proc_destroy_2>:
+}
+8420063a:	f1 48       	popm <FP, r4, rLink>;
+8420063c:	d8 4c       	rts;
+
+8420063e <Lc_atr_vad_send_event_message_1>:
+ *
+ * \return - TRUE if successful
+ */
+static bool atr_vad_send_event_message(OPERATOR_DATA *op_data,
+                                       AHM_EVENT_MSG *p_evt_msg)
+{
+8420063e:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200640:	16 00       	r4 = r0 + Null;
+84200642:	18 09       	r6 = r1 + Null;
+    OPMSG_REPLY_ID msg_id;
+
+    msg_id = OPMSG_REPLY_ID_AHM_EVENT_TRIGGER;
+    msg_size = OPMSG_UNSOLICITED_AHM_EVENT_TRIGGER_WORD_SIZE;
+
+    p_msg = xzpnewn(msg_size, unsigned);
+84200644:	c3 20       	r1 = Null + 3;
+84200646:	02 2a       	r0 = Null + 24;
+84200648:	ff fd 34 f0 	call (m) 0x6f8e;
+8420064c:	27 ea 
+8420064e:	17 00       	r5 = r0 + Null;
+    if (p_msg == NULL)
+84200650:	0d 62       	if NE jump (m) Lc_atr_vad_send_event_message_5;
+
+84200652 <Lc_atr_vad_send_event_message_2>:
+    {
+        L2_DBG_MSG("Failed to create ATR VAD message payload");
+84200652:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200656:	88 24       	Null = rMAC - 2;
+84200658:	07 68       	if LT jump (m) Lc_atr_vad_send_event_message_4;
+
+8420065a <Lc_atr_vad_send_event_message_3>:
+8420065a:	55 f1 02 f0 	r0 = Null + 357564416;
+8420065e:	00 40 
+84200660:	ff fd 05 f0 	call (m) 0x10b0;
+84200664:	31 e2 
+
+84200666 <Lc_atr_vad_send_event_message_4>:
+        return FALSE;
+84200666:	02 00       	r0 = Null + Null;
+84200668:	29 6e       	jump (m) Lc_atr_vad_send_event_message_6;
+
+8420066a <Lc_atr_vad_send_event_message_5>:
+    }
+
+    OPMSG_CREATION_FIELD_SET(p_msg,
+                             OPMSG_UNSOLICITED_AHM_EVENT_TRIGGER,
+                             ID,
+                             p_evt_msg->id);
+8420066a:	81 f0 00 e6 	rMAC = MHU[r6 + Null];
+8420066e:	39 ee       	M[r5 + Null] = rMAC;
+    OPMSG_CREATION_FIELD_SET(p_msg,
+                             OPMSG_UNSOLICITED_AHM_EVENT_TRIGGER,
+                             TYPE,
+                             p_evt_msg->type);
+84200670:	81 f0 01 86 	rMAC = MHU[r6 + 2];
+84200674:	79 8e       	M[r5 + 4] = rMAC;
+    OPMSG_CREATION_FIELD_SET32(p_msg,
+                               OPMSG_UNSOLICITED_AHM_EVENT_TRIGGER,
+                               PAYLOAD,
+                               p_evt_msg->payload);
+84200676:	81 f0 01 88 	rMAC = M[r6 + 4];
+8420067a:	89 c6       	rMAC = rMAC AND 0xffff;
+8420067c:	b9 8e       	M[r5 + 8] = rMAC;
+8420067e:	82 f0 01 88 	r0 = M[r6 + 4];
+84200682:	92 52       	r0 = r0 LSHIFT -16;
+84200684:	fa 8e       	M[r5 + 12] = r0;
+    OPMSG_CREATION_FIELD_SET32(p_msg,
+                               OPMSG_UNSOLICITED_AHM_EVENT_TRIGGER,
+                               OPID,
+                               INT_TO_EXT_OPID(op_data->id));
+84200686:	72 88       	r0 = M[r4 + 4];
+84200688:	52 55       	r0 = r0 LSHIFT 6;
+8420068a:	40 f0 00 f2 	rMAC = r0 OR 0x4000;
+8420068e:	51 d8 
+84200690:	89 c6       	rMAC = rMAC AND 0xffff;
+84200692:	39 8f       	M[r5 + 16] = rMAC;
+84200694:	72 88       	r0 = M[r4 + 4];
+84200696:	52 55       	r0 = r0 LSHIFT 6;
+84200698:	40 f0 00 f2 	r0 = r0 OR 0x4000;
+8420069c:	52 d8 
+8420069e:	92 52       	r0 = r0 LSHIFT -16;
+842006a0:	7a 8f       	M[r5 + 20] = r0;
+    common_send_unsolicited_message(op_data, (unsigned)msg_id, msg_size,
+                                    p_msg);
+842006a2:	84 21       	r2 = Null + 6;
+842006a4:	43 23       	r1 = Null + 13;
+842006a6:	3d 00       	r3 = r5 + Null;
+842006a8:	32 00       	r0 = r4 + Null;
+842006aa:	ff fd 01 f0 	call (m) 0x970;
+842006ae:	27 e6 
+
+    pdelete(p_msg);
+842006b0:	3a 00       	r0 = r5 + Null;
+842006b2:	ff fd 34 f0 	call (m) 0x6fbe;
+842006b6:	2d e8 
+    return TRUE;
+842006b8:	42 20       	r0 = Null + 1;
+
+842006ba <Lc_atr_vad_send_event_message_6>:
+}
+842006ba:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842006bc:	d8 4c       	rts;
+
+842006be <$_atr_vad_process_event>:
+842006be:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+/******************************************************************************
+Public Function Definitions
+*/
+
+bool atr_vad_process_event(ATR_VAD_EVENT *p_event)
+{
+842006c0:	16 00       	r4 = r0 + Null;
+    bool ret_val = FALSE;
+842006c2:	07 00       	r5 = Null + Null;
+
+    unsigned detection = *p_event->p_detect;
+842006c4:	31 98       	rMAC = M[r4 + 32];
+842006c6:	09 e8       	rMAC = M[rMAC + Null];
+
+    switch (p_event->state)
+842006c8:	33 b1       	r1 = MBS[r4 + 28];
+842006ca:	1a 00       	r0 = r1 + Null;
+842006cc:	1a 60       	if EQ jump (m) Lc_atr_vad_process_event_13;
+
+842006ce <Lc_atr_vad_process_event_2>:
+842006ce:	50 24       	Null = r0 - 1;
+842006d0:	25 60       	if EQ jump (m) Lc_atr_vad_process_event_17;
+
+842006d2 <Lc_atr_vad_process_event_3>:
+842006d2:	90 24       	Null = r0 - 2;
+842006d4:	34 60       	if EQ jump (m) Lc_atr_vad_process_event_23;
+
+842006d6 <Lc_atr_vad_process_event_4>:
+842006d6:	d0 24       	Null = r0 - 3;
+842006d8:	3b 60       	if EQ jump (m) Lc_atr_vad_process_event_25;
+
+842006da <Lc_atr_vad_process_event_5>:
+842006da:	10 25       	Null = r0 - 4;
+842006dc:	44 60       	if EQ jump (m) Lc_atr_vad_process_event_28;
+
+842006de <Lc_atr_vad_process_event_6>:
+842006de:	50 25       	Null = r0 - 5;
+842006e0:	50 62       	if NE jump (m) Lc_atr_vad_process_event_32;
+
+842006e2 <Lc_atr_vad_process_event_7>:
+                }
+            }
+            break;
+        case ATR_VAD_EVENT_RELEASE_MESSAGE:
+            /* Final frame count check */
+            if (detection == 0)
+842006e2:	08 04       	Null = rMAC - Null;
+842006e4:	4a 62       	if NE jump (m) Lc_atr_vad_process_event_31;
+
+842006e6 <Lc_atr_vad_process_event_8>:
+            {
+                if (p_event->notify_release)
+842006e6:	61 f0 35 82 	rMAC = MBU[r4 + 53];
+842006ea:	06 60       	if EQ jump (m) Lc_atr_vad_process_event_10;
+
+842006ec <Lc_atr_vad_process_event_9>:
+                {
+                    atr_vad_setup_event_payload(p_event);
+842006ec:	32 00       	r0 = r4 + Null;
+842006ee:	78 4e       	call (m) Lc_atr_vad_setup_event_payload_1;
+                    p_event->msg.type = ATR_VAD_EVENT_TYPE_RELEASE;
+842006f0:	41 20       	rMAC = Null + 1;
+842006f2:	71 ad       	MH[r4 + 42] = rMAC;
+                    ret_val = TRUE;
+842006f4:	0f 00       	r5 = rMAC + Null;
+
+842006f6 <Lc_atr_vad_process_event_10>:
+                }
+                p_event->state = ATR_VAD_EVENT_RELEASE;
+842006f6:	30 bb       	MB[r4 + 28] = Null;
+
+842006f8 <Lc_atr_vad_process_event_11>:
+            {
+                atr_vad_setup_event_payload(p_event);
+                p_event->msg.type = ATR_VAD_EVENT_TYPE_ATTACK;
+                ret_val = TRUE;
+                p_event->state = ATR_VAD_EVENT_ATTACK;
+                p_event->confirm = FALSE;
+842006f8:	60 f0 34 8a 	MB[r4 + 52] = Null;
+
+842006fc <Lc_atr_vad_process_event_12>:
+        default:
+            L2_DBG_MSG1("ATR_VAD: unhandled event state %d", p_event->state);
+            break;
+    }
+
+    return ret_val;
+842006fc:	3a 00       	r0 = r5 + Null;
+842006fe:	4c 6e       	jump (m) Lc_atr_vad_process_event_34;
+
+84200700 <Lc_atr_vad_process_event_13>:
+        /* Initial state or after release message or if speech is not detected
+         * for long enough during counting. Reset the counters and watch for a
+         * detection to start counting.
+         */
+        case ATR_VAD_EVENT_RELEASE:
+            p_event->counter = p_event->attack_reset_count;
+84200700:	72 89       	r0 = M[r4 + 20];
+84200702:	32 8f       	M[r4 + 16] = r0;
+            if (detection > 0)
+84200704:	08 04       	Null = rMAC - Null;
+84200706:	04 60       	if EQ jump (m) Lc_atr_vad_process_event_15;
+
+84200708 <Lc_atr_vad_process_event_14>:
+            {
+                p_event->state = ATR_VAD_EVENT_ATTACK_COUNT;
+84200708:	41 20       	rMAC = Null + 1;
+8420070a:	31 bb       	MB[r4 + 28] = rMAC;
+8420070c:	f8 6f       	jump (m) Lc_atr_vad_process_event_12;
+
+8420070e <Lc_atr_vad_process_event_15>:
+            {
+                /* If a confirmation message is required move to ATTACK
+                 * because a lack of speech in this condition will move
+                 * through the release cycle and send a message.
+                 */
+                if (p_event->confirm)
+8420070e:	61 f0 34 82 	rMAC = MBU[r4 + 52];
+84200712:	f5 61       	if EQ jump (m) Lc_atr_vad_process_event_12;
+
+84200714 <Lc_atr_vad_process_event_16>:
+                {
+                    p_event->state = ATR_VAD_EVENT_ATTACK;
+84200714:	c1 20       	rMAC = Null + 3;
+84200716:	31 bb       	MB[r4 + 28] = rMAC;
+84200718:	f2 6f       	jump (m) Lc_atr_vad_process_event_12;
+
+8420071a <Lc_atr_vad_process_event_17>:
+         * 2 (counter frames + 2 for the state machine) then move to send the
+         * message. Otherwise if speech is not detected return to the release
+         * state.
+         */
+        case ATR_VAD_EVENT_ATTACK_COUNT:
+            if (detection > 0)
+8420071a:	08 04       	Null = rMAC - Null;
+8420071c:	0b 60       	if EQ jump (m) Lc_atr_vad_process_event_21;
+
+8420071e <Lc_atr_vad_process_event_18>:
+            {
+                if (p_event->counter > 2)
+8420071e:	31 89       	rMAC = M[r4 + 16];
+84200720:	88 24       	Null = rMAC - 2;
+84200722:	05 6c       	if LE jump (m) Lc_atr_vad_process_event_20;
+
+84200724 <Lc_atr_vad_process_event_19>:
+                {
+                    p_event->counter -= 1;
+84200724:	31 89       	rMAC = M[r4 + 16];
+84200726:	49 24       	rMAC = rMAC - 1;
+84200728:	31 8f       	M[r4 + 16] = rMAC;
+8420072a:	e9 6f       	jump (m) Lc_atr_vad_process_event_12;
+
+8420072c <Lc_atr_vad_process_event_20>:
+                }
+                else
+                {
+                    p_event->state = ATR_VAD_EVENT_ATTACK_MESSAGE;
+8420072c:	81 20       	rMAC = Null + 2;
+8420072e:	31 bb       	MB[r4 + 28] = rMAC;
+84200730:	e6 6f       	jump (m) Lc_atr_vad_process_event_12;
+
+84200732 <Lc_atr_vad_process_event_21>:
+            {
+                /* If a confirmation message is required move to ATTACK
+                 * because a lack of speech in this condition will move
+                 * through the release cycle and send a message.
+                 */
+                if (p_event->confirm)
+84200732:	61 f0 34 82 	rMAC = MBU[r4 + 52];
+84200736:	ef 63       	if NE jump (m) Lc_atr_vad_process_event_16;
+
+84200738 <Lc_atr_vad_process_event_22>:
+                {
+                    p_event->state = ATR_VAD_EVENT_ATTACK;
+                }
+                else
+                {
+                    p_event->state = ATR_VAD_EVENT_RELEASE;
+84200738:	30 bb       	MB[r4 + 28] = Null;
+8420073a:	e1 6f       	jump (m) Lc_atr_vad_process_event_12;
+
+8420073c <Lc_atr_vad_process_event_23>:
+            }
+            break;
+        /* Send the attack unsolicited message and move to the ATTACK state. */
+        case ATR_VAD_EVENT_ATTACK_MESSAGE:
+            /* Final frame count check */
+            if (detection > 0)
+8420073c:	08 04       	Null = rMAC - Null;
+8420073e:	fa 61       	if EQ jump (m) Lc_atr_vad_process_event_21;
+
+84200740 <Lc_atr_vad_process_event_24>:
+            {
+                atr_vad_setup_event_payload(p_event);
+84200740:	32 00       	r0 = r4 + Null;
+84200742:	4e 4e       	call (m) Lc_atr_vad_setup_event_payload_1;
+                p_event->msg.type = ATR_VAD_EVENT_TYPE_ATTACK;
+84200744:	70 ad       	MH[r4 + 42] = Null;
+                ret_val = TRUE;
+84200746:	47 20       	r5 = Null + 1;
+                p_event->state = ATR_VAD_EVENT_ATTACK;
+84200748:	c1 20       	rMAC = Null + 3;
+8420074a:	31 bb       	MB[r4 + 28] = rMAC;
+8420074c:	d6 6f       	jump (m) Lc_atr_vad_process_event_11;
+
+8420074e <Lc_atr_vad_process_event_25>:
+        /* Initial state or after attack message or if speech is detected during
+         * release counting. Reset the counters and watch for no detection to
+         * start counting.
+         */
+        case ATR_VAD_EVENT_ATTACK:
+            p_event->counter = p_event->release_reset_count;
+8420074e:	b2 89       	r0 = M[r4 + 24];
+84200750:	32 8f       	M[r4 + 16] = r0;
+            if (detection == 0)
+84200752:	08 04       	Null = rMAC - Null;
+84200754:	04 62       	if NE jump (m) Lc_atr_vad_process_event_27;
+
+84200756 <Lc_atr_vad_process_event_26>:
+            {
+                p_event->state = ATR_VAD_EVENT_RELEASE_COUNT;
+84200756:	01 21       	rMAC = Null + 4;
+84200758:	31 bb       	MB[r4 + 28] = rMAC;
+8420075a:	d1 6f       	jump (m) Lc_atr_vad_process_event_12;
+
+8420075c <Lc_atr_vad_process_event_27>:
+            {
+                /* If a confirmation message is required move to RELEASE
+                 * because speech in this condition will move through the attack
+                 * cycle and send a message.
+                 */
+                if (p_event->confirm)
+8420075c:	61 f0 34 82 	rMAC = MBU[r4 + 52];
+84200760:	ec 63       	if NE jump (m) Lc_atr_vad_process_event_22;
+
+84200762 <Lc__ite_2>:
+84200762:	cd 6f       	jump (m) Lc_atr_vad_process_event_12;
+
+84200764 <Lc_atr_vad_process_event_28>:
+         * 2 (counter frames + 2 for the state machine) then move to send the
+         * message. Otherwise if speech is not detected return to the ATTACK
+         * state.
+         */
+        case ATR_VAD_EVENT_RELEASE_COUNT:
+            if (detection == 0)
+84200764:	08 04       	Null = rMAC - Null;
+84200766:	09 62       	if NE jump (m) Lc_atr_vad_process_event_31;
+
+84200768 <Lc_atr_vad_process_event_29>:
+            {
+                if (p_event->counter > 2)
+84200768:	31 89       	rMAC = M[r4 + 16];
+8420076a:	88 24       	Null = rMAC - 2;
+8420076c:	dc 6b       	if GT jump (m) Lc_atr_vad_process_event_19;
+
+8420076e <Lc_atr_vad_process_event_30>:
+                {
+                    p_event->counter -= 1;
+                }
+                else
+                {
+                    p_event->msg.type = ATR_VAD_EVENT_TYPE_RELEASE;
+8420076e:	41 20       	rMAC = Null + 1;
+84200770:	71 ad       	MH[r4 + 42] = rMAC;
+                    p_event->state = ATR_VAD_EVENT_RELEASE_MESSAGE;
+84200772:	41 21       	rMAC = Null + 5;
+84200774:	31 bb       	MB[r4 + 28] = rMAC;
+84200776:	c3 6f       	jump (m) Lc_atr_vad_process_event_12;
+
+84200778 <Lc_atr_vad_process_event_31>:
+            {
+                /* If a confirmation message is required move to RELEASE
+                 * because speech in this condition will move through the attack
+                 * cycle and send a message.
+                 */
+                if (p_event->confirm)
+84200778:	61 f0 34 82 	rMAC = MBU[r4 + 52];
+8420077c:	de 63       	if NE jump (m) Lc_atr_vad_process_event_22;
+
+8420077e <Lc__ite_3>:
+8420077e:	cb 6f       	jump (m) Lc_atr_vad_process_event_16;
+
+84200780 <Lc_atr_vad_process_event_32>:
+                    p_event->state = ATR_VAD_EVENT_ATTACK;
+                }
+            }
+            break;
+        default:
+            L2_DBG_MSG1("ATR_VAD: unhandled event state %d", p_event->state);
+84200780:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200784:	88 24       	Null = rMAC - 2;
+84200786:	bb 69       	if LT jump (m) Lc_atr_vad_process_event_12;
+
+84200788 <Lc_atr_vad_process_event_33>:
+84200788:	55 f1 02 f0 	r0 = Null + 357564855;
+8420078c:	b7 41 
+8420078e:	ff fd 04 f0 	call (m) 0x10c2;
+84200792:	35 e9 
+84200794:	b4 6f       	jump (m) Lc_atr_vad_process_event_12;
+
+84200796 <Lc_atr_vad_process_event_34>:
+            break;
+    }
+
+    return ret_val;
+}
+84200796:	f2 48       	popm <FP, r4, r5, rLink>;
+84200798:	d8 4c       	rts;
+
+8420079a <$_atr_vad_setup_event>:
+void atr_vad_setup_event(ATR_VAD_EVENT *p_event, ATR_VAD_RELEASE release_select)
+{
+    unsigned rate;
+    ATR_VAD_EVENT_CONFIG *p_config = &p_event->config;
+
+    rate = p_config->attack_time * ATR_VAD_DEFAULT_FRAME_RATE;
+8420079a:	11 e8       	rMAC = M[r0 + Null];
+8420079c:	42 f1 94 d9 	r2 = rMAC * 133 (int);
+    p_event->attack_reset_count = rate >> ATR_VAD_TIMER_PARAM_SHIFT;
+842007a0:	77 f4 d4 d8 	r2 = r2 LSHIFT -17;
+842007a4:	54 8f       	M[r0 + 20] = r2;
+
+    /* Default to sending a notification for release */
+    p_event->notify_release = TRUE;
+842007a6:	41 20       	rMAC = Null + 1;
+842007a8:	21 f0 35 8a 	MB[r0 + 53] = rMAC;
+
+    switch (release_select)
+842007ac:	18 04       	Null = r1 - Null;
+842007ae:	09 60       	if EQ jump (m) Lc_atr_vad_setup_event_5;
+
+842007b0 <Lc_atr_vad_setup_event_2>:
+842007b0:	58 24       	Null = r1 - 1;
+842007b2:	0b 60       	if EQ jump (m) Lc_atr_vad_setup_event_6;
+
+842007b4 <Lc_atr_vad_setup_event_3>:
+842007b4:	d8 24       	Null = r1 - 3;
+842007b6:	0d 62       	if NE jump (m) Lc_atr_vad_setup_event_7;
+
+842007b8 <Lc_atr_vad_setup_event_4>:
+            break;
+        case ATR_VAD_RELEASE_SHORT:
+            rate = p_config->short_release_time * ATR_VAD_DEFAULT_FRAME_RATE;
+            break;
+        case ATR_VAD_RELEASE_LONG:
+            rate = p_config->long_release_time * ATR_VAD_DEFAULT_FRAME_RATE;
+842007b8:	d1 88       	rMAC = M[r0 + 12];
+842007ba:	42 f1 93 d9 	r1 = rMAC * 133 (int);
+            break;
+842007be:	0c 6e       	jump (m) Lc_atr_vad_setup_event_8;
+
+842007c0 <Lc_atr_vad_setup_event_5>:
+
+    switch (release_select)
+    {
+        case ATR_VAD_RELEASE_NONE:
+            /* Configure for no release message */
+            p_event->notify_release = FALSE;
+842007c0:	20 f0 35 8a 	MB[r0 + 53] = Null;
+            rate = 0;
+842007c4:	03 00       	r1 = Null + Null;
+            break;
+842007c6:	08 6e       	jump (m) Lc_atr_vad_setup_event_8;
+
+842007c8 <Lc_atr_vad_setup_event_6>:
+        case ATR_VAD_RELEASE_SHORT:
+            rate = p_config->short_release_time * ATR_VAD_DEFAULT_FRAME_RATE;
+842007c8:	51 88       	rMAC = M[r0 + 4];
+842007ca:	42 f1 93 d9 	r1 = rMAC * 133 (int);
+            break;
+842007ce:	04 6e       	jump (m) Lc_atr_vad_setup_event_8;
+
+842007d0 <Lc_atr_vad_setup_event_7>:
+        case ATR_VAD_RELEASE_LONG:
+            rate = p_config->long_release_time * ATR_VAD_DEFAULT_FRAME_RATE;
+            break;
+        case ATR_VAD_RELEASE_NORMAL:
+        default:
+            rate = p_config->normal_release_time * ATR_VAD_DEFAULT_FRAME_RATE;
+842007d0:	91 88       	rMAC = M[r0 + 8];
+842007d2:	42 f1 93 d9 	r1 = rMAC * 133 (int);
+
+842007d6 <Lc_atr_vad_setup_event_8>:
+            break;
+    }
+
+    p_event->release_reset_count = rate >> ATR_VAD_TIMER_PARAM_SHIFT;
+842007d6:	77 f3 d3 d8 	r1 = r1 LSHIFT -17;
+842007da:	93 8f       	M[r0 + 24] = r1;
+
+842007dc <Lc_atr_vad_setup_event_9>:
+
+    return;
+842007dc:	d8 4c       	rts;
+
+842007de <Lc_atr_vad_setup_event_payload_1>:
+ *
+ * \return - TRUE if successful
+ */
+static void atr_vad_setup_event_payload(ATR_VAD_EVENT *p_event)
+{
+    AHM_EVENT_MSG *p_msg = &p_event->msg;
+842007de:	12 32       	r0 = r0 + 40;
+
+    switch (*p_event->p_mode)
+842007e0:	21 f3 ff b9 	rMAC = M[r0 + -4];
+842007e4:	09 e8       	rMAC = M[rMAC + Null];
+842007e6:	88 24       	Null = rMAC - 2;
+842007e8:	0b 64       	if NC jump (m) Lc_atr_vad_setup_event_payload_6;
+
+842007ea <Lc_atr_vad_setup_event_payload_2>:
+842007ea:	c8 24       	Null = rMAC - 3;
+842007ec:	08 f0 8b e0 	if HI jump (m) Lc_atr_vad_setup_event_payload_4;
+
+842007f0 <Lc_atr_vad_setup_event_payload_3>:
+    {
+        case ATR_VAD_SYSMODE_1MIC:
+        case ATR_VAD_SYSMODE_1MIC_MS:
+            p_msg->id = AHM_EVENT_ID_ATR_VAD_1MIC;
+842007f0:	01 21       	rMAC = Null + 4;
+842007f2:	11 ec       	MH[r0 + Null] = rMAC;
+            break;
+842007f4:	05 6e       	jump (m) Lc_atr_vad_setup_event_payload_6;
+
+842007f6 <Lc_atr_vad_setup_event_payload_4>:
+ */
+static void atr_vad_setup_event_payload(ATR_VAD_EVENT *p_event)
+{
+    AHM_EVENT_MSG *p_msg = &p_event->msg;
+
+    switch (*p_event->p_mode)
+842007f6:	08 25       	Null = rMAC - 4;
+842007f8:	03 62       	if NE jump (m) Lc_atr_vad_setup_event_payload_6;
+
+842007fa <Lc_atr_vad_setup_event_payload_5>:
+        case ATR_VAD_SYSMODE_1MIC:
+        case ATR_VAD_SYSMODE_1MIC_MS:
+            p_msg->id = AHM_EVENT_ID_ATR_VAD_1MIC;
+            break;
+        case ATR_VAD_SYSMODE_2MIC:
+            p_msg->id = AHM_EVENT_ID_ATR_VAD_2MIC;
+842007fa:	41 21       	rMAC = Null + 5;
+842007fc:	11 ec       	MH[r0 + Null] = rMAC;
+
+842007fe <Lc_atr_vad_setup_event_payload_6>:
+            break;
+842007fe:	d8 4c       	rts;
+
+84200800 <$_ATR_VAD_GetDefaults>:
+84200800:	20 f0 e3 24 	Null = r0 - 227;
+   0x001E0000u,			// MSG_LONG_RELEASE_TIME
+   0x00010000u			// MSG_ATTACK_TIME
+};
+
+unsigned *ATR_VAD_GetDefaults(unsigned capid){
+	switch(capid){
+84200804:	05 60       	if EQ jump (m) Lc_ATR_VAD_GetDefaults_3;
+
+84200806 <Lc_ATR_VAD_GetDefaults_2>:
+84200806:	01 f0 20 f0 	Null = r0 - 16585;
+8420080a:	c9 24 
+8420080c:	05 62       	if NE jump (m) Lc_ATR_VAD_GetDefaults_4;
+
+8420080e <Lc_ATR_VAD_GetDefaults_3>:
+		case 0x00E3: return defaults_atr_vadATR_VAD;
+8420080e:	f1 ff 02 f3 	r0 = Null + -15335424;
+84200812:	00 40 
+84200814:	02 6e       	jump (m) Lc_ATR_VAD_GetDefaults_5;
+
+84200816 <Lc_ATR_VAD_GetDefaults_4>:
+		case 0x40C9: return defaults_atr_vadATR_VAD;
+	}
+	return((unsigned *)0);
+84200816:	02 00       	r0 = Null + Null;
+
+84200818 <Lc_ATR_VAD_GetDefaults_5>:
+84200818:	d8 4c       	rts;
+
+8420081a <$_aud_cur_create>:
+8420081a:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+}
+
+bool aud_cur_create(OPERATOR_DATA *op_data,
+                    unsigned max_sources,
+                    unsigned max_sinks)
+{
+8420081c:	16 00       	r4 = r0 + Null;
+8420081e:	1f 00       	r5 = r1 + Null;
+84200820:	20 09       	r6 = r2 + Null;
+
+    unsigned input_size, output_size;
+    AUDIO_CURATION_DEF *ptr;
+
+    /* Allocate class data including space for linked lists */
+    output_size = max_sources * sizeof(tCbuffer);
+84200822:	3a 47       	r0 = r5 * 28 (int);
+    input_size = max_sinks * sizeof(tCbuffer);
+84200824:	0e f8 91 c9 	rMAC = r6 * 28 (int);
+
+    ptr = (AUDIO_CURATION_DEF*)xzpmalloc(sizeof(AUDIO_CURATION_DEF) + \
+        input_size + output_size);
+84200828:	c3 20       	r1 = Null + 3;
+8420082a:	51 00       	rMAC = r0 + rMAC;
+8420082c:	12 f0 64 20 	r0 = rMAC + 100;
+84200830:	ff fd 33 f0 	call (m) 0x6f8e;
+84200834:	3f ea 
+84200836:	11 09       	r7 = r0 + Null;
+
+    if (ptr == NULL)
+84200838:	0d 62       	if NE jump (m) Lc_aud_cur_create_5;
+
+8420083a <Lc_aud_cur_create_2>:
+    {
+          L4_DBG_MSG("base aud cur create: class allocation failed.");
+8420083a:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420083e:	08 25       	Null = rMAC - 4;
+84200840:	07 68       	if LT jump (m) Lc_aud_cur_create_4;
+
+84200842 <Lc_aud_cur_create_3>:
+84200842:	55 f1 02 f0 	r0 = Null + 357565158;
+84200846:	e6 42 
+84200848:	ff fd 04 f0 	call (m) 0x10b0;
+8420084c:	29 e3 
+
+8420084e <Lc_aud_cur_create_4>:
+          return FALSE;
+8420084e:	02 00       	r0 = Null + Null;
+84200850:	22 6e       	jump (m) Lc_aud_cur_create_6;
+
+84200852 <Lc_aud_cur_create_5>:
+    }
+
+    ptr->sources.max = (uint16)max_sources;
+84200852:	97 f0 0a 8c 	MH[r7 + 20] = r5;
+    ptr->sinks.max = (uint16)max_sinks;
+84200856:	98 f0 04 8c 	MH[r7 + 8] = r6;
+
+    ptr->sinks.p_buffer_list = (tCbuffer**)&ptr->buffer_data;
+8420085a:	91 f0 64 20 	rMAC = r7 + 100;
+8420085e:	91 f0 04 8e 	M[r7 + 16] = rMAC;
+    ptr->sources.p_buffer_list = ptr->sinks.p_buffer_list + max_sources;
+84200862:	7a 54       	r0 = r5 LSHIFT 2;
+84200864:	51 00       	rMAC = r0 + rMAC;
+84200866:	91 f0 07 8e 	M[r7 + 28] = rMAC;
+
+    ptr->buffer_size = 2 * AUD_CUR_DEFAULT_BLOCK_SIZE;
+8420086a:	81 20       	rMAC = Null + 2;
+8420086c:	91 f0 08 8e 	M[r7 + 32] = rMAC;
+    ptr->block_size  = AUD_CUR_DEFAULT_BLOCK_SIZE;
+84200870:	41 20       	rMAC = Null + 1;
+84200872:	91 f0 09 8e 	M[r7 + 36] = rMAC;
+
+    ptr->cap_id = base_op_get_cap_id(op_data);
+84200876:	32 00       	r0 = r4 + Null;
+84200878:	ff fd 00 f0 	call (m) 0x8ee;
+8420087c:	37 e3 
+8420087e:	92 f0 0f 8e 	M[r7 + 60] = r0;
+
+    ptr->re_init_flag = TRUE;
+84200882:	41 20       	rMAC = Null + 1;
+84200884:	91 f0 00 ea 	MB[r7 + Null] = rMAC;
+ * \return - NONE
+ */
+static inline void set_class_data(OPERATOR_DATA *op_data,
+                                  AUDIO_CURATION_DEF *class_data)
+{
+    base_op_set_class_ext(op_data, class_data);
+84200888:	4b 08       	r1 = r7 + Null;
+8420088a:	32 00       	r0 = r4 + Null;
+8420088c:	ff fd 00 f0 	call (m) 0x938;
+84200890:	2d e5 
+    ptr->re_init_flag = TRUE;
+
+    /* Save Pointer to channel definition in operator data */
+    set_class_data(op_data, ptr);
+
+    return TRUE;
+84200892:	42 20       	r0 = Null + 1;
+
+84200894 <Lc_aud_cur_create_6>:
+}
+84200894:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+84200896:	d8 4c       	rts;
+
+84200898 <$_aud_cur_destroy>:
+
+void aud_cur_destroy(OPERATOR_DATA *op_data)
+{
+84200898:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+8420089a:	16 00       	r4 = r0 + Null;
+ * \return - Pointer to the class data
+ */
+
+static inline AUDIO_CURATION_DEF *get_class_data(OPERATOR_DATA *op_data)
+{
+    return (AUDIO_CURATION_DEF *) base_op_get_class_ext(op_data);
+8420089c:	ff fd 00 f0 	call (m) 0x934;
+842008a0:	39 e4 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    if (p_class_data == NULL)
+842008a2:	10 04       	Null = r0 - Null;
+842008a4:	09 60       	if EQ jump (m) Lc_aud_cur_destroy_3;
+
+842008a6 <Lc_aud_cur_destroy_2>:
+    {
+        return;
+    }
+
+    pfree(p_class_data);
+842008a6:	ff fd 33 f0 	call (m) 0x6fbe;
+842008aa:	39 e8 
+    set_class_data(op_data, NULL);
+842008ac:	03 00       	r1 = Null + Null;
+ * \return - NONE
+ */
+static inline void set_class_data(OPERATOR_DATA *op_data,
+                                  AUDIO_CURATION_DEF *class_data)
+{
+    base_op_set_class_ext(op_data, class_data);
+842008ae:	32 00       	r0 = r4 + Null;
+842008b0:	ff fd 00 f0 	call (m) 0x938;
+842008b4:	29 e4 
+
+842008b6 <Lc_aud_cur_destroy_3>:
+    }
+
+    pfree(p_class_data);
+    set_class_data(op_data, NULL);
+    return;
+}
+842008b6:	f1 48       	popm <FP, r4, rLink>;
+842008b8:	d8 4c       	rts;
+
+842008ba <$_aud_cur_connect>:
+
+bool aud_cur_connect(OPERATOR_DATA *op_data,
+                     void *message_data,
+                     unsigned *response_id,
+                     void **response_data)
+{
+842008ba:	c8 1c       	pushm <FP(=SP), rLink>;
+    return aud_cur_connect_common(op_data,
+                                  message_data,
+                                  response_id,
+                                  response_data,
+                                  TRUE);
+842008bc:	00 f0 51 e0 	push Null + 1;
+842008c0:	02 f0 2b e9 	call (m) Lc_aud_cur_connect_common_1;
+842008c4:	7f 4c       	SP = SP + -4;
+
+842008c6 <Lc_aud_cur_connect_2>:
+}
+842008c6:	c8 48       	popm <FP, rLink>;
+842008c8:	d8 4c       	rts;
+
+842008ca <$_aud_cur_disconnect>:
+
+bool aud_cur_disconnect(OPERATOR_DATA *op_data,
+                        void *message_data,
+                        unsigned *response_id,
+                        void **response_data)
+{
+842008ca:	c8 1c       	pushm <FP(=SP), rLink>;
+    return aud_cur_connect_common(op_data,
+                                  message_data,
+                                  response_id,
+                                  response_data,
+                                  FALSE);
+842008cc:	00 f0 30 cf 	push Null;
+842008d0:	02 f0 3b e8 	call (m) Lc_aud_cur_connect_common_1;
+842008d4:	7f 4c       	SP = SP + -4;
+
+842008d6 <Lc_aud_cur_disconnect_2>:
+}
+842008d6:	c8 48       	popm <FP, rLink>;
+842008d8:	d8 4c       	rts;
+
+842008da <$_aud_cur_buffer_details>:
+
+bool aud_cur_buffer_details(OPERATOR_DATA *op_data,
+                            void *message_data,
+                            unsigned *response_id,
+                            void **response_data)
+{
+842008da:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+842008dc:	17 00       	r5 = r0 + Null;
+842008de:	19 09       	r7 = r1 + Null;
+842008e0:	2e 00       	r4 = r3 + Null;
+842008e2:	ff fd 00 f0 	call (m) 0x934;
+842008e6:	33 e2 
+842008e8:	10 09       	r6 = r0 + Null;
+    tCbuffer **p_metadata;
+    unsigned terminal_id, buffer_size;
+    uint16 terminal_num;
+    bool is_sink;
+
+    if (!base_op_buffer_details_lite(op_data, response_data))
+842008ea:	33 00       	r1 = r4 + Null;
+842008ec:	3a 00       	r0 = r5 + Null;
+842008ee:	ef fd ff ff 	call (m) 0x842;
+842008f2:	35 ea 
+842008f4:	10 04       	Null = r0 - Null;
+842008f6:	03 62       	if NE jump (m) Lc_aud_cur_buffer_details_3;
+
+842008f8 <Lc_aud_cur_buffer_details_2>:
+    {
+        return FALSE;
+842008f8:	02 00       	r0 = Null + Null;
+842008fa:	4f 6e       	jump (m) Lc_aud_cur_buffer_details_20;
+
+842008fc <Lc_aud_cur_buffer_details_3>:
+    }
+
+    p_resp = (OP_BUF_DETAILS_RSP*) *response_data;
+842008fc:	31 e8       	rMAC = M[r4 + Null];
+
+    /* Make sure the buffer size is at least adequate for the capability */
+    buffer_size = p_resp->b.buffer_size;
+842008fe:	4f 89       	r5 = M[rMAC + 20];
+    if (buffer_size < p_class_data->buffer_size)
+84200900:	82 f0 08 88 	r0 = M[r6 + 32];
+84200904:	b8 04       	Null = r5 - r0;
+84200906:	02 f0 87 e0 	if C jump (m) Lc_aud_cur_buffer_details_5;
+
+8420090a <Lc_aud_cur_buffer_details_4>:
+    {
+        buffer_size = p_class_data->buffer_size;
+8420090a:	17 00       	r5 = r0 + Null;
+
+8420090c <Lc_aud_cur_buffer_details_5>:
+    }
+
+    terminal_id = OPMGR_GET_OP_CONNECT_TERMINAL_ID(message_data);
+8420090c:	95 f0 00 e8 	r3 = M[r7 + Null];
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+84200910:	ab c2       	r1 = r3 AND 0x3f;
+    is_sink = terminal_id & TERMINAL_SINK_MASK;
+
+    /* Setup the selected terminal */
+    if (is_sink)
+84200912:	40 f0 52 f0 	r0 = r3 AND 0x800000;
+84200916:	00 00 
+84200918:	07 60       	if EQ jump (m) Lc_aud_cur_buffer_details_7;
+
+8420091a <Lc_aud_cur_buffer_details_6>:
+    {
+        /* Select source (opposite to the given buffer) */
+        p_opposite_terminal = &p_class_data->sources;
+8420091a:	84 f0 14 20 	r2 = r6 + 20;
+8420091e:	22 00       	r0 = r2 + Null;
+        p_metadata = p_class_data->metadata_ip;
+84200920:	04 f0 40 44 	r2 = r2 + 64;
+84200924:	06 6e       	jump (m) Lc_aud_cur_buffer_details_8;
+
+84200926 <Lc_aud_cur_buffer_details_7>:
+    }
+    else
+    {
+        /* Select sink (opposite to the given buffer) */
+        p_opposite_terminal = &p_class_data->sinks;
+84200926:	84 f0 08 20 	r2 = r6 + 8;
+8420092a:	22 00       	r0 = r2 + Null;
+        p_metadata = p_class_data->metadata_op;
+8420092c:	04 f0 54 44 	r2 = r2 + 84;
+
+84200930 <Lc_aud_cur_buffer_details_8>:
+    }
+
+    if (p_class_data->in_place_flag)
+84200930:	89 f0 01 82 	r7 = MBU[r6 + 1];
+84200934:	22 60       	if EQ jump (m) Lc_aud_cur_buffer_details_14;
+
+84200936 <Lc_aud_cur_buffer_details_9>:
+    {
+        /* Make sure the terminal is valid */
+        if (terminal_num >= p_opposite_terminal->max)
+84200936:	29 f0 00 e6 	r7 = MHU[r0 + Null];
+8420093a:	9f f3 00 c2 	Null = r1 - r7;
+8420093e:	10 68       	if LT jump (m) Lc_aud_cur_buffer_details_13;
+
+84200940 <Lc_aud_cur_buffer_details_10>:
+        {
+            L4_DBG_MSG1("base aud cur details: invalid terminal number %d",
+                        terminal_num);
+84200940:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200944:	08 25       	Null = rMAC - 4;
+84200946:	07 68       	if LT jump (m) Lc_aud_cur_buffer_details_12;
+
+84200948 <Lc_aud_cur_buffer_details_11>:
+84200948:	55 f1 02 f0 	r0 = Null + 357565204;
+8420094c:	14 43 
+8420094e:	ff fd 03 f0 	call (m) 0x10c2;
+84200952:	35 eb 
+
+84200954 <Lc_aud_cur_buffer_details_12>:
+84200954:	01 f0 00 60 	rMAC = Null + 4096;
+84200958:	32 e8       	r0 = M[r4 + Null];
+8420095a:	51 8e       	M[r0 + 4] = rMAC;
+8420095c:	1d 6e       	jump (m) Lc_aud_cur_buffer_details_19;
+
+8420095e <Lc_aud_cur_buffer_details_13>:
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+        }
+
+        /* Setup in-place payload */
+        p_resp->runs_in_place = TRUE;
+8420095e:	46 20       	r4 = Null + 1;
+84200960:	ce 9a       	MB[rMAC + 11] = r4;
+        p_resp->b.in_place_buff_params.in_place_terminal = \
+            SWAP_TERMINAL_DIRECTION(terminal_id);
+84200962:	08 f0 00 f0 	r3 = r3 XOR 0x800000;
+84200966:	00 f5 95 c8 
+8420096a:	4d 8f       	M[rMAC + 20] = r3;
+        p_resp->b.in_place_buff_params.size = buffer_size;
+8420096c:	8f 8f       	M[rMAC + 24] = r5;
+ * \return - pointer to the terminal cbuffer
+ */
+static inline tCbuffer *aud_cur_get_terminal(AUD_CUR_TERMINAL *p_def,
+                                             uint16 num)
+{
+    return p_def->p_buffer_list[num];
+8420096e:	92 88       	r0 = M[r0 + 8];
+84200970:	5d 54       	r3 = r1 LSHIFT 2;
+84200972:	52 e9       	r0 = M[r0 + r3];
+}
+84200974:	ca 8f       	M[rMAC + 28] = r0;
+84200976:	03 6e       	jump (m) Lc_aud_cur_buffer_details_15;
+
+84200978 <Lc_aud_cur_buffer_details_14>:
+        p_resp->b.in_place_buff_params.buffer = \
+            aud_cur_get_terminal(p_opposite_terminal, terminal_num);
+    }
+    else
+    {
+        p_resp->runs_in_place = FALSE;
+84200978:	c8 9a       	MB[rMAC + 11] = Null;
+        p_resp->b.buffer_size = buffer_size;
+8420097a:	4f 8f       	M[rMAC + 20] = r5;
+
+8420097c <Lc_aud_cur_buffer_details_15>:
+    }
+
+    /* Populate metadata response */
+    p_resp->supports_metadata = p_class_data->supports_metadata_flag;
+8420097c:	82 f0 02 82 	r0 = MBU[r6 + 2];
+84200980:	0a 9b       	MB[rMAC + 12] = r0;
+    if (p_class_data->supports_metadata_flag)
+84200982:	82 f0 02 82 	r0 = MBU[r6 + 2];
+84200986:	08 60       	if EQ jump (m) Lc_aud_cur_buffer_details_19;
+
+84200988 <Lc_aud_cur_buffer_details_16>:
+    {
+        if (terminal_num == AUD_CUR_PLAYBACK_TERMINAL)
+84200988:	18 04       	Null = r1 - Null;
+8420098a:	04 62       	if NE jump (m) Lc_aud_cur_buffer_details_18;
+
+8420098c <Lc_aud_cur_buffer_details_17>:
+        {
+            p_resp->metadata_buffer = p_metadata[AUD_CUR_METADATA_PLAYBACK];
+8420098c:	22 e8       	r0 = M[r2 + Null];
+8420098e:	0a 8f       	M[rMAC + 16] = r0;
+84200990:	03 6e       	jump (m) Lc_aud_cur_buffer_details_19;
+
+84200992 <Lc_aud_cur_buffer_details_18>:
+        }
+        else
+        {
+            p_resp->metadata_buffer = p_metadata[AUD_CUR_METADATA_MIC];
+84200992:	62 88       	r0 = M[r2 + 4];
+84200994:	0a 8f       	M[rMAC + 16] = r0;
+
+84200996 <Lc_aud_cur_buffer_details_19>:
+        }
+    }
+
+    return TRUE;
+84200996:	42 20       	r0 = Null + 1;
+
+84200998 <Lc_aud_cur_buffer_details_20>:
+}
+84200998:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+8420099a:	d8 4c       	rts;
+
+8420099c <$_aud_cur_start>:
+
+bool aud_cur_start(OPERATOR_DATA *op_data,
+                   void *message_data,
+                   unsigned *response_id,
+                   void **response_data)
+{
+8420099c:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+8420099e:	16 00       	r4 = r0 + Null;
+842009a0:	19 09       	r7 = r1 + Null;
+842009a2:	27 00       	r5 = r2 + Null;
+842009a4:	2a 09       	r8 = r3 + Null;
+842009a6:	ef fd ff ff 	call (m) 0x934;
+842009aa:	2f ec 
+842009ac:	10 09       	r6 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    /* Create the response. If there aren't sufficient resources for this fail
+     * early.
+     */
+    if (!base_op_start(op_data, message_data, response_id, response_data))
+842009ae:	55 08       	r3 = r8 + Null;
+842009b0:	3c 00       	r2 = r5 + Null;
+842009b2:	4b 08       	r1 = r7 + Null;
+842009b4:	32 00       	r0 = r4 + Null;
+842009b6:	ef fd fe ff 	call (m) 0x730;
+842009ba:	3b eb 
+842009bc:	10 04       	Null = r0 - Null;
+842009be:	03 62       	if NE jump (m) Lc_aud_cur_start_3;
+
+842009c0 <Lc_aud_cur_start_2>:
+    {
+        return FALSE;
+842009c0:	02 00       	r0 = Null + Null;
+842009c2:	23 6e       	jump (m) Lc_aud_cur_start_11;
+
+842009c4 <Lc_aud_cur_start_3>:
+    }
+
+    /* If already running just ack */
+    if (opmgr_op_is_running(op_data))
+842009c4:	32 00       	r0 = r4 + Null;
+842009c6:	ff fd 29 f0 	call (m) 0x5ca4;
+842009ca:	3f e6 
+842009cc:	10 04       	Null = r0 - Null;
+842009ce:	12 62       	if NE jump (m) Lc_aud_cur_start_7;
+
+842009d0 <Lc_aud_cur_start_4>:
+       return TRUE;
+    }
+
+    /* Make sure we have valid terminal connections */
+    if (!aud_cur_check_valid_terminals(&p_class_data->sinks) ||
+        !aud_cur_check_valid_terminals(&p_class_data->sources))
+842009d0:	82 f0 08 20 	r0 = r6 + 8;
+842009d4:	02 f0 27 eb 	call (m) Lc_aud_cur_check_valid_terminals_1;
+842009d8:	10 04       	Null = r0 - Null;
+842009da:	07 60       	if EQ jump (m) Lc_aud_cur_start_6;
+
+842009dc <Lc_aud_cur_start_5>:
+842009dc:	82 f0 14 20 	r0 = r6 + 20;
+842009e0:	02 f0 3b ea 	call (m) Lc_aud_cur_check_valid_terminals_1;
+842009e4:	10 04       	Null = r0 - Null;
+842009e6:	08 62       	if NE jump (m) Lc_aud_cur_start_8;
+
+842009e8 <Lc_aud_cur_start_6>:
+842009e8:	01 f0 00 60 	rMAC = Null + 4096;
+842009ec:	a2 f0 00 e8 	r0 = M[r8 + Null];
+842009f0:	51 8e       	M[r0 + 4] = rMAC;
+
+842009f2 <Lc_aud_cur_start_7>:
+    }
+
+    /* If already running just ack */
+    if (opmgr_op_is_running(op_data))
+    {
+       return TRUE;
+842009f2:	42 20       	r0 = Null + 1;
+842009f4:	0a 6e       	jump (m) Lc_aud_cur_start_11;
+
+842009f6 <Lc_aud_cur_start_8>:
+    {
+        base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+        return TRUE;
+    }
+
+    if (p_class_data->start_fn != NULL)
+842009f6:	81 f0 10 88 	rMAC = M[r6 + 64];
+842009fa:	03 60       	if EQ jump (m) Lc_aud_cur_start_10;
+
+842009fc <Lc_aud_cur_start_9>:
+    {
+        p_class_data->start_fn(op_data);
+842009fc:	32 00       	r0 = r4 + Null;
+842009fe:	d1 4c       	call rMAC;
+
+84200a00 <Lc_aud_cur_start_10>:
+    }
+
+    /* Reinitialize the operator */
+    p_class_data->re_init_flag = TRUE;
+84200a00:	41 20       	rMAC = Null + 1;
+84200a02:	81 f0 00 ea 	MB[r6 + Null] = rMAC;
+84200a06:	f6 6f       	jump (m) Lc_aud_cur_start_7;
+
+84200a08 <Lc_aud_cur_start_11>:
+
+    return TRUE;
+}
+84200a08:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200a0a:	d8 4c       	rts;
+
+84200a0c <$_aud_cur_reset>:
+
+bool aud_cur_reset(OPERATOR_DATA *op_data,
+                   void *message_data,
+                   unsigned *response_id,
+                   void **response_data)
+{
+84200a0c:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200a0e:	16 00       	r4 = r0 + Null;
+84200a10:	1a 09       	r8 = r1 + Null;
+84200a12:	27 00       	r5 = r2 + Null;
+84200a14:	29 09       	r7 = r3 + Null;
+84200a16:	ef fd ff ff 	call (m) 0x934;
+84200a1a:	3f e8 
+84200a1c:	10 09       	r6 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    /* Create the response. If there aren't sufficient resources for this fail
+     * early. */
+    if (!base_op_reset(op_data, message_data, response_id, response_data))
+84200a1e:	4d 08       	r3 = r7 + Null;
+84200a20:	3c 00       	r2 = r5 + Null;
+84200a22:	53 08       	r1 = r8 + Null;
+84200a24:	32 00       	r0 = r4 + Null;
+84200a26:	ef fd fe ff 	call (m) 0x724;
+84200a2a:	3f e7 
+84200a2c:	10 04       	Null = r0 - Null;
+84200a2e:	03 62       	if NE jump (m) Lc_aud_cur_reset_3;
+
+84200a30 <Lc_aud_cur_reset_2>:
+    {
+        return FALSE;
+84200a30:	02 00       	r0 = Null + Null;
+84200a32:	05 6e       	jump (m) Lc_aud_cur_reset_4;
+
+84200a34 <Lc_aud_cur_reset_3>:
+    }
+
+    p_class_data->re_init_flag = TRUE;
+84200a34:	41 20       	rMAC = Null + 1;
+84200a36:	81 f0 00 ea 	MB[r6 + Null] = rMAC;
+
+    return TRUE;
+84200a3a:	0a 00       	r0 = rMAC + Null;
+
+84200a3c <Lc_aud_cur_reset_4>:
+}
+84200a3c:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200a3e:	d8 4c       	rts;
+
+84200a40 <$_aud_cur_get_sched_info>:
+
+bool aud_cur_get_sched_info(OPERATOR_DATA *op_data,
+                            void *message_data,
+                            unsigned *response_id,
+                            void **response_data)
+{
+84200a40:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200a42:	16 00       	r4 = r0 + Null;
+84200a44:	1a 09       	r8 = r1 + Null;
+84200a46:	20 09       	r6 = r2 + Null;
+84200a48:	2f 00       	r5 = r3 + Null;
+84200a4a:	ef fd ff ff 	call (m) 0x934;
+84200a4e:	2b e7 
+84200a50:	11 09       	r7 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    OP_SCHED_INFO_RSP* resp;
+
+    resp = base_op_get_sched_info_ex(op_data, message_data, response_id);
+84200a52:	44 08       	r2 = r6 + Null;
+84200a54:	53 08       	r1 = r8 + Null;
+84200a56:	32 00       	r0 = r4 + Null;
+84200a58:	ef fd fe ff 	call (m) 0x7f6;
+84200a5c:	3f ec 
+    if (resp == NULL)
+84200a5e:	10 04       	Null = r0 - Null;
+84200a60:	09 62       	if NE jump (m) Lc_aud_cur_get_sched_info_3;
+
+84200a62 <Lc_aud_cur_get_sched_info_2>:
+    {
+        return base_op_build_std_response_ex(op_data, STATUS_CMD_FAILED,
+                                             response_data);
+84200a62:	03 f0 00 60 	r1 = Null + 4096;
+84200a66:	3c 00       	r2 = r5 + Null;
+84200a68:	32 00       	r0 = r4 + Null;
+84200a6a:	ef fd ff ff 	call (m) 0x8c0;
+84200a6e:	37 e2 
+84200a70:	06 6e       	jump (m) Lc_aud_cur_get_sched_info_4;
+
+84200a72 <Lc_aud_cur_get_sched_info_3>:
+    }
+
+    *response_data = resp;
+84200a72:	3a ee       	M[r5 + Null] = r0;
+    resp->block_size = p_class_data->block_size;
+84200a74:	91 f0 09 88 	rMAC = M[r7 + 36];
+84200a78:	91 8e       	M[r0 + 8] = rMAC;
+
+    return TRUE;
+84200a7a:	42 20       	r0 = Null + 1;
+
+84200a7c <Lc_aud_cur_get_sched_info_4>:
+}
+84200a7c:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200a7e:	d8 4c       	rts;
+
+84200a80 <$_aud_cur_set_callbacks>:
+                           AUD_CUR_START_FN start_fn,
+                           AUD_CUR_STOP_FN stop_fn,
+                           AUD_CUR_CONNECT_FN connect_fn,
+                           AUD_CUR_DISCONNECT_FN disconnect_fn,
+                           AUD_CUR_PARAM_UPDATE_FN param_update_fn)
+{
+84200a80:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200a82:	1e 00       	r4 = r1 + Null;
+84200a84:	27 00       	r5 = r2 + Null;
+84200a86:	28 09       	r6 = r3 + Null;
+84200a88:	ef fd ff ff 	call (m) 0x934;
+84200a8c:	2d e5 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    p_class_data->start_fn = start_fn;
+84200a8e:	16 ae       	M[r0 + 64] = r4;
+    p_class_data->stop_fn = stop_fn;
+84200a90:	57 ae       	M[r0 + 68] = r5;
+    p_class_data->connect_fn = connect_fn;
+84200a92:	28 f0 12 8e 	M[r0 + 72] = r6;
+    p_class_data->disconnect_fn = disconnect_fn;
+84200a96:	f9 d9       	rMAC = M[FP + -4];
+84200a98:	d1 ae       	M[r0 + 76] = rMAC;
+    p_class_data->param_update_fn = param_update_fn;
+84200a9a:	f1 d9       	rMAC = M[FP + -8];
+84200a9c:	11 af       	M[r0 + 80] = rMAC;
+
+84200a9e <Lc_aud_cur_set_callbacks_2>:
+
+    return;
+84200a9e:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200aa0:	d8 4c       	rts;
+
+84200aa2 <$_aud_cur_set_flags>:
+
+void aud_cur_set_flags(OPERATOR_DATA *op_data,
+                       bool in_place,
+                       bool supports_metadata,
+                       bool dynamic_buffer_size)
+{
+84200aa2:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200aa4:	1e 00       	r4 = r1 + Null;
+84200aa6:	27 00       	r5 = r2 + Null;
+84200aa8:	28 09       	r6 = r3 + Null;
+84200aaa:	ef fd ff ff 	call (m) 0x934;
+84200aae:	2b e4 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    p_class_data->in_place_flag = in_place;
+84200ab0:	56 8a       	MB[r0 + 1] = r4;
+    p_class_data->supports_metadata_flag = supports_metadata;
+84200ab2:	97 8a       	MB[r0 + 2] = r5;
+    p_class_data->dynamic_buffer_size_flag = dynamic_buffer_size;
+84200ab4:	28 f0 03 8a 	MB[r0 + 3] = r6;
+
+84200ab8 <Lc_aud_cur_set_flags_2>:
+
+    return;
+84200ab8:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200aba:	d8 4c       	rts;
+
+84200abc <$_aud_cur_set_runtime_disconnect>:
+}
+
+void aud_cur_set_runtime_disconnect(OPERATOR_DATA *op_data,
+                                    bool allowed)
+{
+84200abc:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200abe:	1e 00       	r4 = r1 + Null;
+84200ac0:	ef fd ff ff 	call (m) 0x934;
+84200ac4:	35 e3 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    p_class_data->runtime_disconnect = allowed;
+84200ac6:	16 8b       	MB[r0 + 4] = r4;
+
+84200ac8 <Lc_aud_cur_set_runtime_disconnect_2>:
+}
+84200ac8:	f1 48       	popm <FP, r4, rLink>;
+84200aca:	d8 4c       	rts;
+
+84200acc <$_aud_cur_set_min_terminal_masks>:
+
+
+void aud_cur_set_min_terminal_masks(OPERATOR_DATA *op_data,
+                                    uint16 source_mask,
+                                    uint16 sink_mask)
+{
+84200acc:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200ace:	1e 00       	r4 = r1 + Null;
+84200ad0:	27 00       	r5 = r2 + Null;
+84200ad2:	ef fd ff ff 	call (m) 0x934;
+84200ad6:	23 e3 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    p_class_data->sources.min_valid_mask = source_mask;
+84200ad8:	d6 9c       	MH[r0 + 22] = r4;
+    p_class_data->sinks.min_valid_mask = sink_mask;
+84200ada:	57 8d       	MH[r0 + 10] = r5;
+
+84200adc <Lc_aud_cur_set_min_terminal_masks_2>:
+
+    return;
+84200adc:	f2 48       	popm <FP, r4, r5, rLink>;
+84200ade:	d8 4c       	rts;
+
+84200ae0 <$_aud_cur_get_cps>:
+
+    return;
+}
+
+CPS_PARAM_DEF *aud_cur_get_cps(OPERATOR_DATA *op_data)
+{
+84200ae0:	c8 1c       	pushm <FP(=SP), rLink>;
+84200ae2:	ef fd ff ff 	call (m) 0x934;
+84200ae6:	33 e2 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return &p_class_data->param_def;
+84200ae8:	12 32       	r0 = r0 + 40;
+
+84200aea <Lc_aud_cur_get_cps_2>:
+}
+84200aea:	c8 48       	popm <FP, rLink>;
+84200aec:	d8 4c       	rts;
+
+84200aee <$_aud_cur_set_buffer_size>:
+
+    return;
+}
+
+void aud_cur_set_buffer_size(OPERATOR_DATA *op_data, unsigned buffer_size)
+{
+84200aee:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200af0:	1e 00       	r4 = r1 + Null;
+84200af2:	ef fd ff ff 	call (m) 0x934;
+84200af6:	23 e2 
+   AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+   p_class_data->buffer_size  = buffer_size;
+84200af8:	16 9e       	M[r0 + 32] = r4;
+
+84200afa <Lc_aud_cur_set_buffer_size_2>:
+}
+84200afa:	f1 48       	popm <FP, r4, rLink>;
+84200afc:	d8 4c       	rts;
+
+84200afe <$_aud_cur_set_block_size>:
+
+void aud_cur_set_block_size(OPERATOR_DATA *op_data, unsigned block_size)
+{
+84200afe:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200b00:	1e 00       	r4 = r1 + Null;
+84200b02:	ef fd ff ff 	call (m) 0x934;
+84200b06:	33 e1 
+   AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+   p_class_data->block_size  = block_size;
+84200b08:	56 9e       	M[r0 + 36] = r4;
+
+84200b0a <Lc_aud_cur_set_block_size_2>:
+}
+84200b0a:	f1 48       	popm <FP, r4, rLink>;
+84200b0c:	d8 4c       	rts;
+
+84200b0e <$_aud_cur_get_sink_terminal>:
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return aud_cur_get_terminal(&p_class_data->sources, id);
+}
+
+tCbuffer *aud_cur_get_sink_terminal(OPERATOR_DATA *op_data, uint16 id)
+{
+84200b0e:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200b10:	1e 00       	r4 = r1 + Null;
+84200b12:	ef fd ff ff 	call (m) 0x934;
+84200b16:	23 e1 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return aud_cur_get_terminal(&p_class_data->sinks, id);
+84200b18:	11 22       	rMAC = r0 + 8;
+ * \return - pointer to the terminal cbuffer
+ */
+static inline tCbuffer *aud_cur_get_terminal(AUD_CUR_TERMINAL *p_def,
+                                             uint16 num)
+{
+    return p_def->p_buffer_list[num];
+84200b1a:	89 88       	rMAC = M[rMAC + 8];
+84200b1c:	72 54       	r0 = r4 LSHIFT 2;
+84200b1e:	8a e8       	r0 = M[rMAC + r0];
+
+84200b20 <Lc_aud_cur_get_sink_terminal_2>:
+}
+
+tCbuffer *aud_cur_get_sink_terminal(OPERATOR_DATA *op_data, uint16 id)
+{
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return aud_cur_get_terminal(&p_class_data->sinks, id);
+84200b20:	f1 48       	popm <FP, r4, rLink>;
+84200b22:	d8 4c       	rts;
+
+84200b24 <$_aud_cur_opmsg_get_params>:
+
+bool aud_cur_opmsg_get_params(OPERATOR_DATA *op_data,
+                              void *message_data,
+                              unsigned *resp_length,
+                              OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84200b24:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200b26:	1f 00       	r5 = r1 + Null;
+84200b28:	26 00       	r4 = r2 + Null;
+84200b2a:	28 09       	r6 = r3 + Null;
+84200b2c:	ef fd ff ff 	call (m) 0x934;
+84200b30:	29 e0 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return cpsGetParameterMsgHandler(&p_class_data->param_def, message_data,
+                                     resp_length, response_data);
+84200b32:	12 32       	r0 = r0 + 40;
+84200b34:	45 08       	r3 = r6 + Null;
+84200b36:	34 00       	r2 = r4 + Null;
+84200b38:	3b 00       	r1 = r5 + Null;
+84200b3a:	ff fd 00 f0 	call (m) 0xb7c;
+84200b3e:	23 e2 
+
+84200b40 <Lc_aud_cur_opmsg_get_params_2>:
+}
+84200b40:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200b42:	d8 4c       	rts;
+
+84200b44 <$_aud_cur_opmsg_get_defaults>:
+
+bool aud_cur_opmsg_get_defaults(OPERATOR_DATA *op_data,
+                                void *message_data,
+                                unsigned *resp_length,
+                                OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84200b44:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200b46:	1f 00       	r5 = r1 + Null;
+84200b48:	26 00       	r4 = r2 + Null;
+84200b4a:	28 09       	r6 = r3 + Null;
+84200b4c:	ef fd fe ff 	call (m) 0x934;
+84200b50:	29 ef 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return cpsGetDefaultsMsgHandler(&p_class_data->param_def, message_data,
+                                    resp_length, response_data);
+84200b52:	12 32       	r0 = r0 + 40;
+84200b54:	45 08       	r3 = r6 + Null;
+84200b56:	34 00       	r2 = r4 + Null;
+84200b58:	3b 00       	r1 = r5 + Null;
+84200b5a:	ff fd 00 f0 	call (m) 0xc2c;
+84200b5e:	33 e6 
+
+84200b60 <Lc_aud_cur_opmsg_get_defaults_2>:
+}
+84200b60:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200b62:	d8 4c       	rts;
+
+84200b64 <$_aud_cur_opmsg_set_params>:
+
+bool aud_cur_opmsg_set_params(OPERATOR_DATA *op_data,
+                              void *message_data,
+                              unsigned *resp_length,
+                              OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84200b64:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200b66:	11 09       	r7 = r0 + Null;
+84200b68:	1a 09       	r8 = r1 + Null;
+84200b6a:	27 00       	r5 = r2 + Null;
+84200b6c:	28 09       	r6 = r3 + Null;
+84200b6e:	ef fd fe ff 	call (m) 0x934;
+84200b72:	27 ee 
+84200b74:	16 00       	r4 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    bool success;
+
+    success = cpsSetParameterMsgHandler(&p_class_data->param_def, message_data,
+                                        resp_length, response_data);
+84200b76:	32 32       	r0 = r4 + 40;
+84200b78:	45 08       	r3 = r6 + Null;
+84200b7a:	3c 00       	r2 = r5 + Null;
+84200b7c:	53 08       	r1 = r8 + Null;
+84200b7e:	ff fd 00 f0 	call (m) 0xd00;
+84200b82:	23 ec 
+84200b84:	17 00       	r5 = r0 + Null;
+
+    if (success)
+84200b86:	07 60       	if EQ jump (m) Lc_aud_cur_opmsg_set_params_5;
+
+84200b88 <Lc_aud_cur_opmsg_set_params_2>:
+    {
+        if (p_class_data->param_update_fn != NULL)
+84200b88:	31 a9       	rMAC = M[r4 + 80];
+84200b8a:	03 60       	if EQ jump (m) Lc_aud_cur_opmsg_set_params_4;
+
+84200b8c <Lc_aud_cur_opmsg_set_params_3>:
+        {
+            p_class_data->param_update_fn(op_data);
+84200b8c:	4a 08       	r0 = r7 + Null;
+84200b8e:	d1 4c       	call rMAC;
+
+84200b90 <Lc_aud_cur_opmsg_set_params_4>:
+        }
+        /* Set re-initialization flag */
+        p_class_data->re_init_flag = TRUE;
+84200b90:	41 20       	rMAC = Null + 1;
+84200b92:	31 ea       	MB[r4 + Null] = rMAC;
+
+84200b94 <Lc_aud_cur_opmsg_set_params_5>:
+    }
+
+    return success;
+84200b94:	3a 00       	r0 = r5 + Null;
+
+84200b96 <Lc_aud_cur_opmsg_set_params_6>:
+}
+84200b96:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200b98:	d8 4c       	rts;
+
+84200b9a <$_aud_cur_ups_params>:
+                        PERSISTENCE_RANK rank,
+                        uint16 length,
+                        unsigned* data,
+                        STATUS_KYMERA status,
+                        uint16 extra_status_info)
+{
+84200b9a:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200b9c:	10 09       	r6 = r0 + Null;
+84200b9e:	2f 00       	r5 = r3 + Null;
+84200ba0:	ef fd fe ff 	call (m) 0x934;
+84200ba4:	35 ec 
+84200ba6:	16 00       	r4 = r0 + Null;
+    OPERATOR_DATA *op_data = (OPERATOR_DATA*)instance_data;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    cpsSetParameterFromPsStore(&p_class_data->param_def, length, data, status);
+84200ba8:	e5 d5       	r3 = MHS[FP + -8];
+84200baa:	fc d9       	r2 = M[FP + -4];
+84200bac:	32 32       	r0 = r4 + 40;
+84200bae:	3b 00       	r1 = r5 + Null;
+84200bb0:	ff fd 01 f0 	call (m) 0xdf6;
+84200bb4:	27 e2 
+
+    if (p_class_data->param_update_fn != NULL)
+84200bb6:	31 a9       	rMAC = M[r4 + 80];
+84200bb8:	03 60       	if EQ jump (m) Lc_aud_cur_ups_params_3;
+
+84200bba <Lc_aud_cur_ups_params_2>:
+    {
+        p_class_data->param_update_fn(op_data);
+84200bba:	42 08       	r0 = r6 + Null;
+84200bbc:	d1 4c       	call rMAC;
+
+84200bbe <Lc_aud_cur_ups_params_3>:
+    }
+
+    /* Set the re-init flag after the parameters are updated. */
+    p_class_data->re_init_flag = TRUE;
+84200bbe:	41 20       	rMAC = Null + 1;
+84200bc0:	31 ea       	MB[r4 + Null] = rMAC;
+
+    return TRUE;
+84200bc2:	0a 00       	r0 = rMAC + Null;
+
+84200bc4 <Lc_aud_cur_ups_params_4>:
+}
+84200bc4:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200bc6:	d8 4c       	rts;
+
+84200bc8 <$_aud_cur_opmsg_set_ucid>:
+
+bool aud_cur_opmsg_set_ucid(OPERATOR_DATA *op_data,
+                            void *message_data,
+                            unsigned *resp_length,
+                            OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84200bc8:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200bca:	12 09       	r8 = r0 + Null;
+84200bcc:	19 09       	r7 = r1 + Null;
+84200bce:	27 00       	r5 = r2 + Null;
+84200bd0:	28 09       	r6 = r3 + Null;
+84200bd2:	ef fd fe ff 	call (m) 0x934;
+84200bd6:	23 eb 
+84200bd8:	16 00       	r4 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    PS_KEY_TYPE key;
+    bool success;
+
+    success = cpsSetUcidMsgHandler(&p_class_data->param_def, message_data,
+                                  resp_length, response_data);
+84200bda:	32 32       	r0 = r4 + 40;
+84200bdc:	45 08       	r3 = r6 + Null;
+84200bde:	3c 00       	r2 = r5 + Null;
+84200be0:	4b 08       	r1 = r7 + Null;
+84200be2:	ff fd 00 f0 	call (m) 0xd92;
+84200be6:	31 ed 
+84200be8:	17 00       	r5 = r0 + Null;
+    key = MAP_CAPID_UCID_SBID_TO_PSKEYID(p_class_data->cap_id,
+                                         p_class_data->param_def.ucid,
+                                         OPMSG_P_STORE_PARAMETER_SUB_ID);
+84200bea:	f1 99       	rMAC = M[r4 + 60];
+84200bec:	8a c6       	r0 = rMAC AND 0xffff;
+84200bee:	92 55       	r0 = r0 LSHIFT 7;
+84200bf0:	b1 99       	rMAC = M[r4 + 56];
+84200bf2:	8b c2       	r1 = rMAC AND 0x3f;
+84200bf4:	1b 54       	r1 = r1 LSHIFT 1;
+84200bf6:	9b 12       	r1 = r1 OR r0;
+
+    ps_entry_read((void*)op_data, key, PERSIST_ANY, aud_cur_ups_params);
+84200bf8:	42 f0 05 f0 	r3 = Null + 69208987;
+84200bfc:	9b 53 
+84200bfe:	04 00       	r2 = Null + Null;
+84200c00:	52 08       	r0 = r8 + Null;
+84200c02:	ff fd 3b f0 	call (m) 0x8370;
+84200c06:	2f eb 
+
+    return success;
+84200c08:	3a 00       	r0 = r5 + Null;
+
+84200c0a <Lc_aud_cur_opmsg_set_ucid_2>:
+}
+84200c0a:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200c0c:	d8 4c       	rts;
+
+84200c0e <$_aud_cur_opmsg_get_ps_id>:
+
+bool aud_cur_opmsg_get_ps_id(OPERATOR_DATA *op_data,
+                             void *message_data,
+                             unsigned *resp_length,
+                             OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84200c0e:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200c10:	1f 00       	r5 = r1 + Null;
+84200c12:	26 00       	r4 = r2 + Null;
+84200c14:	28 09       	r6 = r3 + Null;
+84200c16:	ef fd fe ff 	call (m) 0x934;
+84200c1a:	3f e8 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return cpsGetUcidMsgHandler(&p_class_data->param_def, p_class_data->cap_id,
+                                message_data, resp_length, response_data);
+84200c1c:	10 1c       	pushm <r6>;
+84200c1e:	d3 99       	r1 = M[r0 + 60];
+84200c20:	35 00       	r3 = r4 + Null;
+84200c22:	12 32       	r0 = r0 + 40;
+84200c24:	3c 00       	r2 = r5 + Null;
+84200c26:	ff fd 00 f0 	call (m) 0xdb4;
+84200c2a:	2f ec 
+84200c2c:	7f 4c       	SP = SP + -4;
+
+84200c2e <Lc_aud_cur_opmsg_get_ps_id_2>:
+}
+84200c2e:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200c30:	d8 4c       	rts;
+
+84200c32 <$_aud_cur_calc_samples>:
+/****************************************************************************
+Process Data
+*/
+
+unsigned aud_cur_calc_samples(OPERATOR_DATA *op_data, TOUCHED_TERMINALS *touched)
+{
+84200c32:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84200c34:	43 de       	M[FP + 32] = r1;
+84200c36:	ef fd fe ff 	call (m) 0x934;
+84200c3a:	3f e7 
+84200c3c:	16 00       	r4 = r0 + Null;
+
+    unsigned min_data, min_space, block_size, amount, i, samples;
+    tCbuffer **p_inputs, **p_outputs;
+
+    /* If no input terminal connections then do nothing */
+    if (p_class_data->sinks.connected == 0)
+84200c3e:	f1 87       	rMAC = MHU[r4 + 14];
+84200c40:	03 62       	if NE jump (m) Lc_aud_cur_calc_samples_3;
+
+84200c42 <Lc_aud_cur_calc_samples_2>:
+    {
+        return 0;
+84200c42:	02 00       	r0 = Null + Null;
+84200c44:	4b 6e       	jump (m) Lc_aud_cur_calc_samples_23;
+
+84200c46 <Lc_aud_cur_calc_samples_3>:
+    }
+
+    /* Initialize data */
+    block_size = p_class_data->block_size;
+84200c46:	6b f0 09 88 	r9 = M[r4 + 36];
+
+    /* Find the minimum amount of data available in the input buffers */
+    min_data = UINT_MAX;
+84200c4a:	0a f0 01 24 	r8 = Null - 1;
+    p_inputs = p_class_data->sinks.p_buffer_list;
+84200c4e:	68 f0 04 88 	r6 = M[r4 + 16];
+
+    for (i = 0; i < p_class_data->sinks.max; i++)
+84200c52:	07 00       	r5 = Null + Null;
+
+84200c54 <Lc_aud_cur_calc_samples_4>:
+84200c54:	31 87       	rMAC = MHU[r4 + 8];
+84200c56:	78 04       	Null = r5 - rMAC;
+84200c58:	02 f0 a7 e0 	if C jump (m) Lc_aud_cur_calc_samples_10;
+
+84200c5c <Lc_aud_cur_calc_samples_5>:
+    {
+        if (p_inputs[i] != NULL)
+84200c5c:	82 f0 00 e8 	r0 = M[r6 + Null];
+84200c60:	0c 60       	if EQ jump (m) Lc_aud_cur_calc_samples_9;
+
+84200c62 <Lc_aud_cur_calc_samples_6>:
+        {
+            amount = cbuffer_calc_amount_data_in_words(p_inputs[i]);
+84200c62:	ff fd 67 f2 	call (m) 0x4db5a;
+84200c66:	39 e7 
+            if (amount < min_data)
+84200c68:	af f2 00 c2 	Null = r0 - r8;
+84200c6c:	02 f0 8d e0 	if C jump (m) Lc_aud_cur_calc_samples_9;
+
+84200c70 <Lc_aud_cur_calc_samples_7>:
+            {
+                /* Need at least one block of data available */
+                if (amount < block_size)
+84200c70:	bf f2 00 c2 	Null = r0 - r9;
+84200c74:	e7 65       	if NC jump (m) Lc_aud_cur_calc_samples_2;
+
+84200c76 <Lc_aud_cur_calc_samples_8>:
+                {
+                    return 0;
+                }
+                min_data = amount;
+84200c76:	12 09       	r8 = r0 + Null;
+
+84200c78 <Lc_aud_cur_calc_samples_9>:
+
+    /* Find the minimum amount of data available in the input buffers */
+    min_data = UINT_MAX;
+    p_inputs = p_class_data->sinks.p_buffer_list;
+
+    for (i = 0; i < p_class_data->sinks.max; i++)
+84200c78:	7f 20       	r5 = r5 + 1;
+84200c7a:	20 75       	r6 = r6 + 4;
+84200c7c:	ec 6f       	jump (m) Lc_aud_cur_calc_samples_4;
+
+84200c7e <Lc_aud_cur_calc_samples_10>:
+            }
+        }
+    }
+
+    /* Find the minimum amount of space available at the output buffers */
+    min_space = UINT_MAX;
+84200c7e:	47 24       	r5 = Null - 1;
+    p_outputs = p_class_data->sources.p_buffer_list;
+84200c80:	69 f0 07 88 	r7 = M[r4 + 28];
+
+    if (p_class_data->sources.connected > 0)
+84200c84:	71 97       	rMAC = MHU[r4 + 26];
+84200c86:	17 60       	if EQ jump (m) Lc_aud_cur_calc_samples_18;
+
+84200c88 <Lc_aud_cur_calc_samples_11>:
+    {
+        for (i = 0; i < p_class_data->sources.max; i++)
+84200c88:	00 09       	r6 = Null + Null;
+
+84200c8a <Lc_aud_cur_calc_samples_12>:
+84200c8a:	b1 96       	rMAC = MHU[r4 + 20];
+84200c8c:	1f f8 00 c2 	Null = r6 - rMAC;
+84200c90:	02 f0 a5 e0 	if C jump (m) Lc_aud_cur_calc_samples_18;
+
+84200c94 <Lc_aud_cur_calc_samples_13>:
+        {
+            if (p_outputs[i] != NULL)
+84200c94:	92 f0 00 e8 	r0 = M[r7 + Null];
+84200c98:	0b 60       	if EQ jump (m) Lc_aud_cur_calc_samples_17;
+
+84200c9a <Lc_aud_cur_calc_samples_14>:
+            {
+                amount = cbuffer_calc_amount_space_in_words(p_outputs[i]);
+84200c9a:	ff fd 67 f2 	call (m) 0x4db14;
+84200c9e:	3b e3 
+                if (amount < min_space)
+84200ca0:	d0 05       	Null = r0 - r5;
+84200ca2:	02 f0 8d e0 	if C jump (m) Lc_aud_cur_calc_samples_17;
+
+84200ca6 <Lc_aud_cur_calc_samples_15>:
+                {
+                    /* Need at least one block of space available */
+                    if (amount < block_size)
+84200ca6:	bf f2 00 c2 	Null = r0 - r9;
+84200caa:	cc 65       	if NC jump (m) Lc_aud_cur_calc_samples_2;
+
+84200cac <Lc_aud_cur_calc_samples_16>:
+                    {
+                        return 0;
+                    }
+                    min_space = amount;
+84200cac:	17 00       	r5 = r0 + Null;
+
+84200cae <Lc_aud_cur_calc_samples_17>:
+    min_space = UINT_MAX;
+    p_outputs = p_class_data->sources.p_buffer_list;
+
+    if (p_class_data->sources.connected > 0)
+    {
+        for (i = 0; i < p_class_data->sources.max; i++)
+84200cae:	08 75       	r6 = r6 + 1;
+84200cb0:	21 75       	r7 = r7 + 4;
+84200cb2:	ec 6f       	jump (m) Lc_aud_cur_calc_samples_12;
+
+84200cb4 <Lc_aud_cur_calc_samples_18>:
+            }
+        }
+    }
+
+    /* Update kick flags */
+    touched->sources = p_class_data->sources.connected;
+84200cb4:	71 97       	rMAC = MHU[r4 + 26];
+84200cb6:	42 d8       	r0 = M[FP + 32];
+84200cb8:	11 ee       	M[r0 + Null] = rMAC;
+
+    /* Samples to process is the smaller of data or space available */
+    if (min_data < min_space)
+84200cba:	7f fa 00 c2 	Null = r8 - r5;
+84200cbe:	02 f0 89 e0 	if C jump (m) Lc_aud_cur_calc_samples_20;
+
+84200cc2 <Lc_aud_cur_calc_samples_19>:
+    {
+        samples = min_data;
+84200cc2:	52 08       	r0 = r8 + Null;
+84200cc4:	02 6e       	jump (m) Lc_aud_cur_calc_samples_21;
+
+84200cc6 <Lc_aud_cur_calc_samples_20>:
+    }
+    else
+    {
+        samples = min_space;
+84200cc6:	3a 00       	r0 = r5 + Null;
+
+84200cc8 <Lc_aud_cur_calc_samples_21>:
+    }
+
+    /* If there is less than a block left then kick backwards */
+    if (min_data - samples < block_size)
+84200cc8:	2f fa 01 c2 	rMAC = r8 - r0;
+84200ccc:	bf f1 00 c2 	Null = rMAC - r9;
+84200cd0:	02 f0 8b e0 	if C jump (m) Lc_aud_cur_calc_samples_23;
+
+84200cd4 <Lc_aud_cur_calc_samples_22>:
+    {
+        touched->sinks = p_class_data->sinks.connected;
+84200cd4:	f1 87       	rMAC = MHU[r4 + 14];
+84200cd6:	43 d8       	r1 = M[FP + 32];
+84200cd8:	59 8e       	M[r1 + 4] = rMAC;
+
+84200cda <Lc_aud_cur_calc_samples_23>:
+    }
+
+    return samples;
+84200cda:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200cdc:	d8 4c       	rts;
+
+84200cde <$_aud_cur_mic_data_transfer>:
+}
+
+unsigned aud_cur_mic_data_transfer(OPERATOR_DATA *op_data,
+                                   unsigned amount,
+                                   unsigned terminal_skip_mask)
+{
+84200cde:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84200ce0:	1a 09       	r8 = r1 + Null;
+84200ce2:	44 de       	M[FP + 32] = r2;
+84200ce4:	ef fd fe ff 	call (m) 0x934;
+84200ce8:	31 e2 
+84200cea:	4a de       	M[FP + 36] = r0;
+84200cec:	11 00       	rMAC = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    unsigned i, mic_amt, temp_amt;
+    tCbuffer **ip_buffers, **op_buffers;
+
+    ip_buffers = p_class_data->sinks.p_buffer_list;
+84200cee:	09 89       	rMAC = M[rMAC + 16];
+    op_buffers = p_class_data->sources.p_buffer_list;
+84200cf0:	d2 89       	r0 = M[r0 + 28];
+
+    /* Copy mic stream data */
+    mic_amt = amount;
+84200cf2:	53 09       	r9 = r8 + Null;
+
+    for (i = 1; i < p_class_data->sinks.max; i++)
+84200cf4:	46 20       	r4 = Null + 1;
+84200cf6:	18 f0 04 20 	r6 = rMAC + 4;
+84200cfa:	17 21       	r5 = r0 + 4;
+84200cfc:	0d 6e       	jump (m) Lc_aud_cur_mic_data_transfer_6;
+
+84200cfe <Lc_aud_cur_mic_data_transfer_2>:
+                                            ip_buffers[i],
+                                            amount);
+                }
+                else
+                {
+                    cbuffer_advance_read_ptr(ip_buffers[i], amount);
+84200cfe:	53 08       	r1 = r8 + Null;
+84200d00:	ff fd 67 f2 	call (m) 0x4db68;
+84200d04:	29 e3 
+
+84200d06 <Lc_aud_cur_mic_data_transfer_3>:
+                }
+                if (temp_amt < mic_amt)
+84200d06:	bf f9 00 c2 	Null = r7 - r9;
+84200d0a:	02 f0 87 e0 	if C jump (m) Lc_aud_cur_mic_data_transfer_5;
+
+84200d0e <Lc_aud_cur_mic_data_transfer_4>:
+                {
+                    mic_amt = temp_amt;
+84200d0e:	4b 09       	r9 = r7 + Null;
+
+84200d10 <Lc_aud_cur_mic_data_transfer_5>:
+    op_buffers = p_class_data->sources.p_buffer_list;
+
+    /* Copy mic stream data */
+    mic_amt = amount;
+
+    for (i = 1; i < p_class_data->sinks.max; i++)
+84200d10:	76 20       	r4 = r4 + 1;
+84200d12:	20 75       	r6 = r6 + 4;
+84200d14:	3f 21       	r5 = r5 + 4;
+
+84200d16 <Lc_aud_cur_mic_data_transfer_6>:
+84200d16:	49 d8       	rMAC = M[FP + 36];
+84200d18:	09 87       	rMAC = MHU[rMAC + 8];
+84200d1a:	70 04       	Null = r4 - rMAC;
+84200d1c:	02 f0 ad e0 	if C jump (m) Lc_aud_cur_mic_data_transfer_11;
+
+84200d20 <Lc_aud_cur_mic_data_transfer_7>:
+    {
+        if(!(AUD_CUR_GET_TERMINAL_POS(i) & terminal_skip_mask))
+84200d20:	31 00       	rMAC = r4 + Null;
+84200d22:	00 f1 92 de 	r0 = 0x1 LSHIFT rMAC;
+84200d26:	41 d8       	rMAC = M[FP + 32];
+84200d28:	89 10       	rMAC = rMAC AND r0;
+84200d2a:	f3 63       	if NE jump (m) Lc_aud_cur_mic_data_transfer_5;
+
+84200d2c <Lc_aud_cur_mic_data_transfer_8>:
+        {
+            /* Perform copy/advance if terminal number (i) is not in
+             * terminal_skip_mask
+             */
+            temp_amt = amount;
+84200d2c:	51 09       	r7 = r8 + Null;
+            if (ip_buffers[i] != NULL)
+84200d2e:	82 f0 00 e8 	r0 = M[r6 + Null];
+84200d32:	ef 61       	if EQ jump (m) Lc_aud_cur_mic_data_transfer_5;
+
+84200d34 <Lc_aud_cur_mic_data_transfer_9>:
+            {
+                if (op_buffers[i] != NULL)
+84200d34:	39 e8       	rMAC = M[r5 + Null];
+84200d36:	e4 61       	if EQ jump (m) Lc_aud_cur_mic_data_transfer_2;
+
+84200d38 <Lc_aud_cur_mic_data_transfer_10>:
+                {
+                    temp_amt = cbuffer_copy(op_buffers[i],
+                                            ip_buffers[i],
+                                            amount);
+84200d38:	54 08       	r2 = r8 + Null;
+84200d3a:	13 00       	r1 = r0 + Null;
+84200d3c:	0a 00       	r0 = rMAC + Null;
+84200d3e:	ff fd 68 f2 	call (m) 0x4dda4;
+84200d42:	27 e3 
+84200d44:	11 09       	r7 = r0 + Null;
+84200d46:	e0 6f       	jump (m) Lc_aud_cur_mic_data_transfer_3;
+
+84200d48 <Lc_aud_cur_mic_data_transfer_11>:
+                }
+            }
+        }
+    }
+
+    return mic_amt;
+84200d48:	5a 08       	r0 = r9 + Null;
+
+84200d4a <Lc_aud_cur_mic_data_transfer_12>:
+
+}
+84200d4a:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200d4c:	d8 4c       	rts;
+
+84200d4e <$_aud_cur_mic_metadata_transfer>:
+
+unsigned aud_cur_mic_metadata_transfer(OPERATOR_DATA *op_data, unsigned amount)
+{
+84200d4e:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200d50:	1e 00       	r4 = r1 + Null;
+84200d52:	ef fd fd ff 	call (m) 0x934;
+84200d56:	23 ef 
+84200d58:	11 00       	rMAC = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    tCbuffer *p_metadata_ip, *p_metadata_op;
+    /* Only copy metadata if samples were transferred */
+    if (amount > 0)
+84200d5a:	30 04       	Null = r4 - Null;
+84200d5c:	07 60       	if EQ jump (m) Lc_aud_cur_mic_metadata_transfer_3;
+
+84200d5e <Lc_aud_cur_mic_metadata_transfer_2>:
+    {
+        p_metadata_ip = p_class_data->metadata_ip[AUD_CUR_METADATA_MIC];
+84200d5e:	8a a9       	r0 = M[rMAC + 88];
+        p_metadata_op = p_class_data->metadata_op[AUD_CUR_METADATA_MIC];
+84200d60:	0b b8       	r1 = M[rMAC + 96];
+
+        metadata_strict_transport(p_metadata_ip,
+                                  p_metadata_op,
+                                  amount * OCTETS_PER_SAMPLE);
+84200d62:	74 54       	r2 = r4 LSHIFT 2;
+84200d64:	ff fd 9e f0 	call (m) 0x14af0;
+84200d68:	2d ec 
+
+84200d6a <Lc_aud_cur_mic_metadata_transfer_3>:
+    }
+    return amount;
+84200d6a:	32 00       	r0 = r4 + Null;
+
+84200d6c <Lc_aud_cur_mic_metadata_transfer_4>:
+}
+84200d6c:	f1 48       	popm <FP, r4, rLink>;
+84200d6e:	d8 4c       	rts;
+
+84200d70 <Lc_aud_cur_connect_terminal_1>:
+ */
+static void aud_cur_connect_terminal(AUD_CUR_TERMINAL *p_def,
+                                     uint16 num,
+                                     tCbuffer *p_buffer)
+{
+    p_def->p_buffer_list[num] = p_buffer;
+84200d70:	91 88       	rMAC = M[r0 + 8];
+84200d72:	5d 54       	r3 = r1 LSHIFT 2;
+84200d74:	4c ef       	M[rMAC + r3] = r2;
+    p_def->connected |= (uint16)(1 << num);
+84200d76:	00 f3 93 de 	r1 = 0x1 LSHIFT r1;
+84200d7a:	d1 86       	rMAC = MHU[r0 + 6];
+84200d7c:	c9 12       	rMAC = rMAC OR r1;
+84200d7e:	d1 8c       	MH[r0 + 6] = rMAC;
+
+84200d80 <Lc_aud_cur_connect_terminal_2>:
+    return;
+84200d80:	d8 4c       	rts;
+
+84200d82 <Lc_aud_cur_disconnect_terminal_1>:
+ * \return - NONE
+ */
+static void aud_cur_disconnect_terminal(AUD_CUR_TERMINAL *p_def,
+                                        uint16 num)
+{
+    p_def->p_buffer_list[num] = NULL;
+84200d82:	91 88       	rMAC = M[r0 + 8];
+84200d84:	5c 54       	r2 = r1 LSHIFT 2;
+84200d86:	08 ef       	M[rMAC + r2] = Null;
+    p_def->connected &= (uint16)(~(1 << num));
+84200d88:	00 f3 93 de 	r1 = 0x1 LSHIFT r1;
+84200d8c:	ff f3 51 d6 	rMAC = -1 - r1;
+84200d90:	d3 86       	r1 = MHU[r0 + 6];
+84200d92:	c9 10       	rMAC = rMAC AND r1;
+84200d94:	d1 8c       	MH[r0 + 6] = rMAC;
+
+84200d96 <Lc_aud_cur_disconnect_terminal_2>:
+    return;
+84200d96:	d8 4c       	rts;
+
+84200d98 <Lc_aud_cur_connect_metadata_1>:
+    unsigned idx;
+
+    /* Select the correct metadata buffer */
+    if (num == AUD_CUR_PLAYBACK_TERMINAL)
+    {
+        idx = AUD_CUR_METADATA_PLAYBACK;
+84200d98:	05 00       	r3 = Null + Null;
+84200d9a:	18 04       	Null = r1 - Null;
+84200d9c:	21 f0 45 ce 	if NE r3 = Null + 1;
+    {
+        idx = AUD_CUR_METADATA_MIC;
+    }
+
+    /* Populate the metadata buffer */
+    if (p_metadata_list[idx] == NULL && buff_has_metadata(p_buffer))
+84200da0:	6b 54       	r1 = r3 LSHIFT 2;
+84200da2:	9a 00       	r0 = r1 + r0;
+84200da4:	11 e8       	rMAC = M[r0 + Null];
+84200da6:	04 62       	if NE jump (m) Lc_aud_cur_connect_metadata_4;
+
+84200da8 <Lc_aud_cur_connect_metadata_2>:
+ *
+ * \return TRUE if the buffer supports metadata. FALSE if it doesn't.
+ */
+static inline bool buff_has_metadata(const tCbuffer *buff)
+{
+    if (buff->metadata != NULL)
+84200da8:	a1 89       	rMAC = M[r2 + 24];
+84200daa:	02 60       	if EQ jump (m) Lc_aud_cur_connect_metadata_4;
+
+84200dac <Lc_aud_cur_connect_metadata_3>:
+    {
+            p_metadata_list[idx] = p_buffer;
+84200dac:	14 ee       	M[r0 + Null] = r2;
+
+84200dae <Lc_aud_cur_connect_metadata_4>:
+84200dae:	d8 4c       	rts;
+
+84200db0 <Lc_aud_cur_disconnect_metadata_1>:
+ * \return - None
+ */
+static void aud_cur_disconnect_metadata(tCbuffer **p_metadata_list,
+                                        AUD_CUR_TERMINAL *p_def,
+                                        uint16 num)
+{
+84200db0:	72 1c       	pushm <FP(=SP), r4, r5>;
+    int i;
+    tCbuffer *p_buffer;
+    tCbuffer **p_buffer_list;
+
+    /* Playback metadata only travels on a single terminal */
+    if (num == AUD_CUR_PLAYBACK_TERMINAL)
+84200db2:	20 04       	Null = r2 - Null;
+84200db4:	03 62       	if NE jump (m) Lc_aud_cur_disconnect_metadata_3;
+
+84200db6 <Lc_aud_cur_disconnect_metadata_2>:
+    {
+        p_metadata_list[AUD_CUR_METADATA_PLAYBACK] = NULL;
+84200db6:	10 ee       	M[r0 + Null] = Null;
+84200db8:	17 6e       	jump (m) Lc_aud_cur_disconnect_metadata_11;
+
+84200dba <Lc_aud_cur_disconnect_metadata_3>:
+    }
+
+    /* Look for metadata on another terminal if the terminal being used for
+     * metadata is being disconnected.
+     */
+    p_buffer_list = p_def->p_buffer_list;
+84200dba:	99 88       	rMAC = M[r1 + 8];
+    if (p_metadata_list[AUD_CUR_METADATA_MIC] == p_buffer_list[num])
+84200dbc:	55 88       	r3 = M[r0 + 4];
+84200dbe:	66 54       	r4 = r2 LSHIFT 2;
+84200dc0:	8e e9       	r4 = M[rMAC + r4];
+84200dc2:	a8 05       	Null = r3 - r4;
+84200dc4:	11 62       	if NE jump (m) Lc_aud_cur_disconnect_metadata_11;
+
+84200dc6 <Lc_aud_cur_disconnect_metadata_4>:
+    {
+        /* Set the metadata buffer to NULL and populate if a replacement is
+         * available.
+         */
+        p_metadata_list[AUD_CUR_METADATA_MIC] = NULL;
+84200dc6:	50 8e       	M[r0 + 4] = Null;
+84200dc8:	1b e6       	r1 = MHU[r1 + Null];
+
+        /* Iterate through microphone terminals */
+        for (i = (AUD_CUR_PLAYBACK_TERMINAL + 1); i < p_def->max; i++)
+84200dca:	45 20       	r3 = Null + 1;
+84200dcc:	0e 21       	r4 = rMAC + 4;
+
+84200dce <Lc_aud_cur_disconnect_metadata_5>:
+84200dce:	e8 04       	Null = r3 - r1;
+84200dd0:	0b 66       	if GE jump (m) Lc_aud_cur_disconnect_metadata_11;
+
+84200dd2 <Lc_aud_cur_disconnect_metadata_6>:
+        {
+            /* Don't look at the terminal that is being disconnected */
+            if (i == num)
+84200dd2:	28 05       	Null = r3 - r2;
+84200dd4:	05 60       	if EQ jump (m) Lc_aud_cur_disconnect_metadata_9;
+
+84200dd6 <Lc_aud_cur_disconnect_metadata_7>:
+            {
+                continue;
+            }
+            /* Update the metadata buffer with the new buffer information */
+            p_buffer = p_buffer_list[i];
+            if (p_buffer != NULL && buff_has_metadata(p_buffer))
+84200dd6:	31 e8       	rMAC = M[r4 + Null];
+84200dd8:	03 60       	if EQ jump (m) Lc_aud_cur_disconnect_metadata_9;
+
+84200dda <Lc_aud_cur_disconnect_metadata_8>:
+84200dda:	8f 89       	r5 = M[rMAC + 24];
+84200ddc:	04 62       	if NE jump (m) Lc_aud_cur_disconnect_metadata_10;
+
+84200dde <Lc_aud_cur_disconnect_metadata_9>:
+         * available.
+         */
+        p_metadata_list[AUD_CUR_METADATA_MIC] = NULL;
+
+        /* Iterate through microphone terminals */
+        for (i = (AUD_CUR_PLAYBACK_TERMINAL + 1); i < p_def->max; i++)
+84200dde:	6d 20       	r3 = r3 + 1;
+84200de0:	36 21       	r4 = r4 + 4;
+84200de2:	f6 6f       	jump (m) Lc_aud_cur_disconnect_metadata_5;
+
+84200de4 <Lc_aud_cur_disconnect_metadata_10>:
+            }
+            /* Update the metadata buffer with the new buffer information */
+            p_buffer = p_buffer_list[i];
+            if (p_buffer != NULL && buff_has_metadata(p_buffer))
+            {
+                p_metadata_list[AUD_CUR_METADATA_MIC] = p_buffer;
+84200de4:	51 8e       	M[r0 + 4] = rMAC;
+
+84200de6 <Lc_aud_cur_disconnect_metadata_11>:
+                break;
+84200de6:	72 48       	popm <FP, r4, r5>;
+84200de8:	d8 4c       	rts;
+
+84200dea <Lc_aud_cur_connect_common_1>:
+static bool aud_cur_connect_common(OPERATOR_DATA *op_data,
+                                   void *message_data,
+                                   unsigned *response_id,
+                                   void **response_data,
+                                   bool connect)
+{
+84200dea:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84200dec:	42 de       	M[FP + 32] = r0;
+84200dee:	19 09       	r7 = r1 + Null;
+84200df0:	26 00       	r4 = r2 + Null;
+84200df2:	4d de       	M[FP + 36] = r3;
+84200df4:	f9 d9       	rMAC = M[FP + -4];
+84200df6:	51 de       	M[FP + 40] = rMAC;
+84200df8:	ef fd fd ff 	call (m) 0x934;
+84200dfc:	3d e9 
+84200dfe:	13 09       	r9 = r0 + Null;
+    tCbuffer **p_metadata_list;
+    AUD_CUR_TERMINAL *p_terminal;
+
+    /* Verify class data and create response */
+    if ((p_class_data == NULL) ||
+        (!base_op_connect(op_data, message_data, response_id, response_data)))
+84200e00:	0a 60       	if EQ jump (m) Lc_aud_cur_connect_common_3;
+
+84200e02 <Lc_aud_cur_connect_common_2>:
+84200e02:	34 00       	r2 = r4 + Null;
+84200e04:	4b 08       	r1 = r7 + Null;
+84200e06:	4d d8       	r3 = M[FP + 36];
+84200e08:	42 d8       	r0 = M[FP + 32];
+84200e0a:	ef fd fc ff 	call (m) 0x7c8;
+84200e0e:	3f ed 
+84200e10:	10 04       	Null = r0 - Null;
+84200e12:	03 62       	if NE jump (m) Lc_aud_cur_connect_common_4;
+
+84200e14 <Lc_aud_cur_connect_common_3>:
+    {
+        return FALSE;
+84200e14:	02 00       	r0 = Null + Null;
+84200e16:	90 6e       	jump (m) Lc_aud_cur_connect_common_30;
+
+84200e18 <Lc_aud_cur_connect_common_4>:
+    }
+
+    /* Prevent runtime connection */
+    if (opmgr_op_is_running(op_data))
+84200e18:	42 d8       	r0 = M[FP + 32];
+84200e1a:	ff fd 27 f0 	call (m) 0x5ca4;
+84200e1e:	2b e4 
+84200e20:	10 04       	Null = r0 - Null;
+84200e22:	06 60       	if EQ jump (m) Lc_aud_cur_connect_common_7;
+
+84200e24 <Lc_aud_cur_connect_common_5>:
+    {
+        /* Exception: allow runtime disconnection if the flag is set */
+        if (connect || !p_class_data->runtime_disconnect)
+84200e24:	51 d8       	rMAC = M[FP + 40];
+84200e26:	29 62       	if NE jump (m) Lc_aud_cur_connect_common_13;
+
+84200e28 <Lc_aud_cur_connect_common_6>:
+84200e28:	b1 f0 04 82 	rMAC = MBU[r9 + 4];
+84200e2c:	26 60       	if EQ jump (m) Lc_aud_cur_connect_common_13;
+
+84200e2e <Lc_aud_cur_connect_common_7>:
+            return TRUE;
+        }
+    }
+
+    /* Get the terminal ID, number, and determine whether sink or source */
+    terminal_id = OPMGR_GET_OP_CONNECT_TERMINAL_ID(message_data);
+84200e2e:	9a f0 00 e8 	r8 = M[r7 + Null];
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+84200e32:	a7 f0 3f 00 	r5 = r8 AND 0x3f;
+    terminal_pos = (uint16)AUD_CUR_GET_TERMINAL_POS(terminal_num);
+84200e36:	39 00       	rMAC = r5 + Null;
+84200e38:	00 f1 92 de 	r0 = 0x1 LSHIFT rMAC;
+84200e3c:	91 c6       	rMAC = r0 AND 0xffff;
+    is_sink = terminal_id & TERMINAL_SINK_MASK;
+
+    /* Setup the selected terminal */
+    if (is_sink)
+84200e3e:	40 f0 a3 f0 	r1 = r8 AND 0x800000;
+84200e42:	00 00 
+84200e44:	07 60       	if EQ jump (m) Lc_aud_cur_connect_common_9;
+
+84200e46 <Lc_aud_cur_connect_common_8>:
+    {
+        p_terminal = &p_class_data->sinks;
+84200e46:	b3 f0 08 20 	r1 = r9 + 8;
+84200e4a:	1e 00       	r4 = r1 + Null;
+        p_metadata_list = p_class_data->metadata_ip;
+84200e4c:	38 f0 4c 20 	r6 = r1 + 76;
+84200e50:	06 6e       	jump (m) Lc_aud_cur_connect_common_10;
+
+84200e52 <Lc_aud_cur_connect_common_9>:
+    }
+    else
+    {
+        p_terminal = &p_class_data->sources;
+84200e52:	b3 f0 14 20 	r1 = r9 + 20;
+84200e56:	1e 00       	r4 = r1 + Null;
+        p_metadata_list = p_class_data->metadata_op;
+84200e58:	38 f0 48 20 	r6 = r1 + 72;
+
+84200e5c <Lc_aud_cur_connect_common_10>:
+    }
+
+    /* Make sure the terminal is valid */
+    if (terminal_num >= p_terminal->max)
+84200e5c:	33 e6       	r1 = MHU[r4 + Null];
+84200e5e:	f8 04       	Null = r5 - r1;
+84200e60:	12 68       	if LT jump (m) Lc_aud_cur_connect_common_14;
+
+84200e62 <Lc_aud_cur_connect_common_11>:
+    {
+        L4_DBG_MSG1("base aud cur connect: terminal num %d is out \
+                    of max range", terminal_num);
+84200e62:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200e66:	08 25       	Null = rMAC - 4;
+84200e68:	08 68       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84200e6a <Lc_aud_cur_connect_common_12>:
+84200e6a:	55 f1 02 f0 	r0 = Null + 357564889;
+84200e6e:	d9 41 
+84200e70:	3b 00       	r1 = r5 + Null;
+84200e72:	ff fd 01 f0 	call (m) 0x10c2;
+84200e76:	31 e2 
+
+84200e78 <Lc_aud_cur_connect_common_13>:
+84200e78:	01 f0 00 60 	rMAC = Null + 4096;
+84200e7c:	4a d8       	r0 = M[FP + 36];
+84200e7e:	12 e8       	r0 = M[r0 + Null];
+84200e80:	51 8e       	M[r0 + 4] = rMAC;
+84200e82:	59 6e       	jump (m) Lc_aud_cur_connect_common_29;
+
+84200e84 <Lc_aud_cur_connect_common_14>:
+        return TRUE;
+    }
+
+    /* Make sure the terminal is not marked as invalid */
+    if (p_terminal->max_valid_mask &&
+       !(p_terminal->max_valid_mask & terminal_pos))
+84200e84:	b3 86       	r1 = MHU[r4 + 4];
+84200e86:	0f 60       	if EQ jump (m) Lc_aud_cur_connect_common_18;
+
+84200e88 <Lc_aud_cur_connect_common_15>:
+84200e88:	c9 10       	rMAC = rMAC AND r1;
+84200e8a:	0d 62       	if NE jump (m) Lc_aud_cur_connect_common_18;
+
+84200e8c <Lc_aud_cur_connect_common_16>:
+    {
+        L4_DBG_MSG1("base aud cur connect: invalid terminal number %d",
+                    terminal_num);
+84200e8c:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200e90:	08 25       	Null = rMAC - 4;
+84200e92:	f3 69       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84200e94 <Lc_aud_cur_connect_common_17>:
+84200e94:	55 f1 02 f0 	r0 = Null + 357564967;
+84200e98:	27 42 
+84200e9a:	3b 00       	r1 = r5 + Null;
+84200e9c:	ff fd 01 f0 	call (m) 0x10c2;
+84200ea0:	27 e1 
+84200ea2:	eb 6f       	jump (m) Lc_aud_cur_connect_common_13;
+
+84200ea4 <Lc_aud_cur_connect_common_18>:
+        base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+        return TRUE;
+    }
+
+    if (connect)
+84200ea4:	51 d8       	rMAC = M[FP + 40];
+84200ea6:	26 60       	if EQ jump (m) Lc_aud_cur_connect_common_24;
+
+84200ea8 <Lc_aud_cur_connect_common_19>:
+ * \return - TRUE if the terminal is connected
+ */
+static inline bool aud_cur_is_terminal_connected(AUD_CUR_TERMINAL *p_def,
+                                                 uint16 num)
+{
+    return (p_def->connected & (1 << num)) > 0;
+84200ea8:	f1 86       	rMAC = MHU[r4 + 6];
+84200eaa:	52 10       	r0 = r0 AND rMAC;
+84200eac:	01 00       	rMAC = Null + Null;
+84200eae:	10 04       	Null = r0 - Null;
+84200eb0:	2c f0 41 ce 	if GT rMAC = Null + 1;
+        return TRUE;
+    }
+
+    if (connect)
+    {
+        if (aud_cur_is_terminal_connected(p_terminal, terminal_num))
+84200eb4:	08 04       	Null = rMAC - Null;
+84200eb6:	0d 60       	if EQ jump (m) Lc_aud_cur_connect_common_22;
+
+84200eb8 <Lc_aud_cur_connect_common_20>:
+        {
+            L4_DBG_MSG1("base aud cur connect: terminal %d already connected",
+                        terminal_num);
+84200eb8:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200ebc:	08 25       	Null = rMAC - 4;
+84200ebe:	dd 69       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84200ec0 <Lc_aud_cur_connect_common_21>:
+84200ec0:	55 f1 02 f0 	r0 = Null + 357565016;
+84200ec4:	58 42 
+84200ec6:	3b 00       	r1 = r5 + Null;
+84200ec8:	ff fd 00 f0 	call (m) 0x10c2;
+84200ecc:	3b ef 
+84200ece:	d5 6f       	jump (m) Lc_aud_cur_connect_common_13;
+
+84200ed0 <Lc_aud_cur_connect_common_22>:
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+        }
+
+        /* Connect the terminal */
+        tCbuffer *p_buffer = OPMGR_GET_OP_CONNECT_BUFFER(message_data);
+84200ed0:	99 f0 01 88 	r7 = M[r7 + 4];
+        aud_cur_connect_terminal(p_terminal, terminal_num, p_buffer);
+84200ed4:	4c 08       	r2 = r7 + Null;
+84200ed6:	3b 00       	r1 = r5 + Null;
+84200ed8:	32 00       	r0 = r4 + Null;
+84200eda:	4b 4f       	call (m) Lc_aud_cur_connect_terminal_1;
+        aud_cur_connect_metadata(p_metadata_list, terminal_num, p_buffer);
+84200edc:	4c 08       	r2 = r7 + Null;
+84200ede:	3b 00       	r1 = r5 + Null;
+84200ee0:	42 08       	r0 = r6 + Null;
+84200ee2:	5b 4f       	call (m) Lc_aud_cur_connect_metadata_1;
+
+        if (p_class_data->connect_fn != NULL)
+84200ee4:	b1 f0 12 88 	rMAC = M[r9 + 72];
+84200ee8:	26 60       	if EQ jump (m) Lc_aud_cur_connect_common_29;
+
+84200eea <Lc_aud_cur_connect_common_23>:
+        {
+            p_class_data->connect_fn(op_data, terminal_id);
+84200eea:	53 08       	r1 = r8 + Null;
+84200eec:	42 d8       	r0 = M[FP + 32];
+84200eee:	d1 4c       	call rMAC;
+84200ef0:	22 6e       	jump (m) Lc_aud_cur_connect_common_29;
+
+84200ef2 <Lc_aud_cur_connect_common_24>:
+ * \return - TRUE if the terminal is connected
+ */
+static inline bool aud_cur_is_terminal_connected(AUD_CUR_TERMINAL *p_def,
+                                                 uint16 num)
+{
+    return (p_def->connected & (1 << num)) > 0;
+84200ef2:	f1 86       	rMAC = MHU[r4 + 6];
+84200ef4:	52 10       	r0 = r0 AND rMAC;
+84200ef6:	01 00       	rMAC = Null + Null;
+84200ef8:	10 04       	Null = r0 - Null;
+84200efa:	2c f0 41 ce 	if GT rMAC = Null + 1;
+            p_class_data->connect_fn(op_data, terminal_id);
+        }
+    }
+    else
+    {
+        if (!aud_cur_is_terminal_connected(p_terminal, terminal_num))
+84200efe:	08 04       	Null = rMAC - Null;
+84200f00:	0d 62       	if NE jump (m) Lc_aud_cur_connect_common_27;
+
+84200f02 <Lc_aud_cur_connect_common_25>:
+        {
+            L4_DBG_MSG1("base aud cur connect: terminal %d not connected",
+                        terminal_num);
+84200f02:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200f06:	08 25       	Null = rMAC - 4;
+84200f08:	b8 69       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84200f0a <Lc_aud_cur_connect_common_26>:
+84200f0a:	55 f1 02 f0 	r0 = Null + 357565068;
+84200f0e:	8c 42 
+84200f10:	3b 00       	r1 = r5 + Null;
+84200f12:	ff fd 00 f0 	call (m) 0x10c2;
+84200f16:	31 ed 
+84200f18:	b0 6f       	jump (m) Lc_aud_cur_connect_common_13;
+
+84200f1a <Lc_aud_cur_connect_common_27>:
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+        }
+
+        aud_cur_disconnect_metadata(p_metadata_list, p_terminal, terminal_num);
+84200f1a:	3c 00       	r2 = r5 + Null;
+84200f1c:	33 00       	r1 = r4 + Null;
+84200f1e:	42 08       	r0 = r6 + Null;
+84200f20:	48 4f       	call (m) Lc_aud_cur_disconnect_metadata_1;
+        aud_cur_disconnect_terminal(p_terminal, terminal_num);
+84200f22:	3b 00       	r1 = r5 + Null;
+84200f24:	32 00       	r0 = r4 + Null;
+84200f26:	2e 4f       	call (m) Lc_aud_cur_disconnect_terminal_1;
+
+        if (p_class_data->disconnect_fn != NULL)
+84200f28:	b1 f0 13 88 	rMAC = M[r9 + 76];
+84200f2c:	04 60       	if EQ jump (m) Lc_aud_cur_connect_common_29;
+
+84200f2e <Lc_aud_cur_connect_common_28>:
+        {
+            p_class_data->disconnect_fn(op_data, terminal_id);
+84200f2e:	53 08       	r1 = r8 + Null;
+84200f30:	42 d8       	r0 = M[FP + 32];
+84200f32:	d1 4c       	call rMAC;
+
+84200f34 <Lc_aud_cur_connect_common_29>:
+    {
+        /* Exception: allow runtime disconnection if the flag is set */
+        if (connect || !p_class_data->runtime_disconnect)
+        {
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+84200f34:	42 20       	r0 = Null + 1;
+
+84200f36 <Lc_aud_cur_connect_common_30>:
+        {
+            p_class_data->disconnect_fn(op_data, terminal_id);
+        }
+    }
+    return TRUE;
+}
+84200f36:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200f38:	d8 4c       	rts;
+
+84200f3a <Lc_aud_cur_check_valid_terminals_1>:
+ * \param  p_term           Pointer to the terminal information
+ *
+ * \return - result TRUE if the terminals are valid
+ */
+static bool aud_cur_check_valid_terminals(AUD_CUR_TERMINAL *p_term)
+{
+84200f3a:	c8 1c       	pushm <FP(=SP), rLink>;
+    /* No validity mask to test */
+    if (p_term->min_valid_mask == 0)
+84200f3c:	51 86       	rMAC = MHU[r0 + 2];
+84200f3e:	03 62       	if NE jump (m) Lc_aud_cur_check_valid_terminals_3;
+
+84200f40 <Lc_aud_cur_check_valid_terminals_2>:
+    {
+        return TRUE;
+84200f40:	42 20       	r0 = Null + 1;
+84200f42:	10 6e       	jump (m) Lc_aud_cur_check_valid_terminals_7;
+
+84200f44 <Lc_aud_cur_check_valid_terminals_3>:
+    }
+
+    /* Connection mask doesn't have at least the valid mask bits */
+    if ((p_term->min_valid_mask & p_term->connected) != p_term->min_valid_mask)
+84200f44:	d3 86       	r1 = MHU[r0 + 6];
+84200f46:	5a 10       	r0 = r1 AND rMAC;
+84200f48:	50 04       	Null = r0 - rMAC;
+84200f4a:	fb 61       	if EQ jump (m) Lc_aud_cur_check_valid_terminals_2;
+
+84200f4c <Lc_aud_cur_check_valid_terminals_4>:
+    {
+        L4_DBG_MSG1("base aud cur start: invalid terminals %hu",
+                    p_term->connected);
+84200f4c:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200f50:	08 25       	Null = rMAC - 4;
+84200f52:	07 68       	if LT jump (m) Lc_aud_cur_check_valid_terminals_6;
+
+84200f54 <Lc_aud_cur_check_valid_terminals_5>:
+84200f54:	55 f1 02 f0 	r0 = Null + 357565116;
+84200f58:	bc 42 
+84200f5a:	ff fd 00 f0 	call (m) 0x10c2;
+84200f5e:	29 eb 
+
+84200f60 <Lc_aud_cur_check_valid_terminals_6>:
+        return FALSE;
+84200f60:	02 00       	r0 = Null + Null;
+
+84200f62 <Lc_aud_cur_check_valid_terminals_7>:
+    }
+
+    return TRUE;
+}
+84200f62:	c8 48       	popm <FP, rLink>;
+84200f64:	d8 4c       	rts;
+
+84200f66 <$kdc_start>:
+.MODULE $M.kdc_start;
+.CODESEGMENT PM;
+.DATASEGMENT DM;
+
+$kdc_start:
+r0 = $_atr_vad_cap_data;
+84200f66:	01 f0 02 f3 	r0 = Null + 1441792;
+84200f6a:	00 40 
+    /* Force this symbol to be exported in ELF */
+    Null = $___kymera_debug_map_addr;
+84200f6c:	00 f0 4c 5a 	Null = Null + 3660;

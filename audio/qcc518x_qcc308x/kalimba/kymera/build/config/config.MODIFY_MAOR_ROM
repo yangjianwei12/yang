@@ -1,0 +1,28 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright (c) 2019 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# Definitions for ROM on Maor
+
+%cpp
+INSTALL_CACHE
+
+%build
+
+# These need to match how the startup code sets up the NVMEM windows
+# Use "rom" even for LPC builds; it only affects the output filename extension
+KALELF2MEM_FLAGS=-nvmem0=rom -nvmem1=rom -nvmem2=rom
+
+# For ROM / LPC builds we need to run the DM_APPEND stage after kalelf2mem,
+# to add the DM initialisation data to the image
+APPEND_DM_TO_XUV=true
+
+# Cruft?
+PM_RAM_CODE_START_ADDRESS=0x04002000
+
+LINKSCRIPT_NAME=linkscript_maor_audio.ld
+
+# Temporary hacky extra ROM content for hardware testing
+#EXTRA_XUV=platform/crescendo_rom_fence_test.xuv

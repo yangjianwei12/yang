@@ -1,0 +1,30 @@
+############################################################################
+#  Copyright (c) 2015 Qualcomm Technologies International, Ltd.
+#  All Rights Reserved.
+#  Qualcomm Technologies International, Ltd. Confidential and Proprietary.
+#  Notifications and licenses are retained for attribution purposes only
+############################################################################
+
+#
+# Capabilities to include in the build
+#
+%list CFG_CAPABILITIES
+WIND_NOISE_DETECT
+
+# List of global include paths
+%list ALL_INCDIRS
+capabilities/base_aud_cur_op
+capabilities/anc_hw_manager
+../lib_private/aanc/aanc_security
+../lib_private/aanc/wnd200
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/base_aud_cur_op/base_aud_cur_op
+capabilities/wind_noise_detect/wind_noise_detect
+
+%build
+RELEASE_BUILD=FALSE
+
+%list PREBUILT_LIBS
+libaanc.a

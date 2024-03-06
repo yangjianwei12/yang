@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project path="">
+    <folder name="C Files">
+        <file path="../../src/main.c"/>
+    </folder>
+    <folder name="Header Files">
+        <!-- Empty header files section -->
+    </folder>
+    <configurations>
+        <configuration name="debug" options="clean|build|deploy|run|default">
+            <devkitConfiguration>application</devkitConfiguration>
+            <devkitGroup>kitres://{32D72C9E-F2CE-45FC-847C-4562B2C4E485}</devkitGroup>
+            <deployProject>deploy</deployProject>
+            <property name="BUILD_TYPE">DEBUG</property>
+            <property name="CHIP_TYPE">qcc518x_qcc308x</property>
+            <property name="CHIP_NAME">QCC517x_apps</property>
+            <property name="NUM_PIO_BANKS">2</property>
+            <property name="DBG_CORE">app/p1</property>
+            <property name="DEFAULT_LIBS">usb_early_init</property>
+            <property name="DEFS">AV_DEBUG BLUELAB BOARD_TX_POWER_PATH_LOSS=236 BREDR_SECURE_CONNECTION_ALL_HANDSETS CHIP_LED_BASE_PIO=60 CHIP_NUM_LEDS=1 DEBUG DISABLE_TWS_PLUS ENABLE_CHARGER_HYSTERESIS_SW ENABLE_GRAPH_MANAGER_CLOCK_CONTROL ENABLE_MAX_APP_PROCS_CLOCK_ON_BOOT EXCLUDE_CONN_PROMPTS EXCLUDE_POWER_PROMPTS FAST_CHARGE_CURRENT=140 FAST_CHARGE_EXTERNAL_RESISTOR=0 FORCE_LED_FLASHES HAVE_1_BUTTON HAVE_1_LED HAVE_32BIT_DATA_WIDTH HAVE_ANC_UPGRADE_FILTER HAVE_THERMISTOR HYDRA HYDRACORE INCLUDE_AAC_PROMPTS INCLUDE_ANC_V2 INCLUDE_AV INCLUDE_CHARGER INCLUDE_DEVICE_TEST_SERVICE_RADIOTEST_V2 INCLUDE_DFU INCLUDE_EXTENDED_TDL_DB_SERIALISER INCLUDE_GATT INCLUDE_GATT_BATTERY_SERVER INCLUDE_GATT_GAIA_SERVER INCLUDE_HFP INCLUDE_PROMPTS INCLUDE_TEMPERATURE INCLUDE_TONES INCLUDE_WUW_METADATA INSTALL_HYDRA_LOG NUMBER_OF_PIO_BANKS=2 PRE_CHARGE_CURRENT=20 QCC3086_AA_DEV_BRD_R3_AA SYNERGY_FOR_VM THERMISTOR_ADC=adcsel_led0 THERMISTOR_DATA_FILE=thermistor_lp4549652p3m.h THERMISTOR_ON=15 USE_BDADDR_FOR_LEFT_RIGHT USE_CH430_LED_MAP USE_SYNERGY WIRED_AUDIO_LINE_IN_PIO=255 __KALIMBA__ __QCC307X__ __QCC308X__</property>
+            <property name="EXTRA_WARNINGS">FALSE</property>
+            <property name="FLASH_CONFIG">../../32Mbit_default_qcc308x_flash_config.py</property>
+            <property name="HW_VARIANT"></property>
+            <property name="INCPATHS">../../../../adk/src/installed_libs\include\profiles\default_qcc518x_qcc308x ../../../../audio/qcc518x_qcc308x/kalimba/kymera/common/interface/gen/k32 ../../../../os/qcc518x_qcc308x/freeRTOS/src/installed_libs\include\firmware_qcc518x_qcc308x ../../../../os/qcc518x_qcc308x/freeRTOS/src/installed_libs\include\firmware_qcc518x_qcc308x\app ../../../../os/qcc518x_qcc308x/freeRTOS/src/installed_libs\include\firmware_qcc518x_qcc308x\app\bluestack ../../../../os/qcc518x_qcc308x/freeRTOS/src/installed_libs\include\standard ../../src ../../src/chains ../../../../os/qcc518x_qcc308x/freeRTOS/src/fw\src ../../../../os/qcc518x_qcc308x/freeRTOS/src/fw\src\core ../../../../os/qcc518x_qcc308x/freeRTOS/src/fw\src\core\include ../../../../os/qcc518x_qcc308x/freeRTOS/src/fw\src\core\include_fw</property>
+            <property name="LIBPATHS">../../../../adk/src/installed_libs\lib\default_qcc518x_qcc308x\native ../../../../adk/src/installed_libs\lib\default_qcc518x_qcc308x\private ../../../../os/qcc518x_qcc308x/freeRTOS/src/installed_libs\lib\os\qcc518x_qcc308x</property>
+            <property name="LIBS">logging task_list usb_device_class vmal</property>
+            <property name="OUTPUT">loopback</property>
+            <property name="OUTPUT_TYPE">EXECUTABLE</property>
+            <property name="PRESERVED_LIBS">qcc518x_qcc308x </property>
+            <property name="STRIP_SYMBOLS">FALSE</property>
+            <property name="GC_SECTIONS">TRUE</property>
+            <property name="SW_VARIANT"></property>
+            <property name="argument"></property>
+            <property name="default"></property>
+            <property name="description"></property>
+            <property name="devkit_group"></property>
+            <property name="permission"></property>
+            <property name="BUILD_ID">../../../../adk/tools/packages/buildid/examples/timestamp.py</property>
+        </configuration>
+    </configurations>
+</project>

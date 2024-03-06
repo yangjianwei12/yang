@@ -1,0 +1,166 @@
+
+/******************************************************************************
+ *  Copyright (c) 2020 - 2021 Qualcomm Technologies International, Ltd.
+ *  %%version
+ *  %%appversion
+ *
+ *  FILE
+ *      gatt_pacs_server_db.dbi
+ *
+ *  DESCRIPTION
+ *      This file defines the Published Audio Capability Service in JSON format, which is 
+ *      fairly human readable.  This file is included in the main 
+ *      application data base file which is used to produce ATT flat data 
+ *      base. 
+ *
+ *****************************************************************************/
+#ifndef __GATT_PACS_SERVER_DB_DBI__
+#define __GATT_PACS_SERVER_DB_DBI__
+
+
+ #include "gatt_pacs_server_uuids.h"
+ 
+/* Primary service declaration of Published Audio Capabilities Service */
+
+primary_service {
+    uuid : UUID_PUBLISHED_AUDIO_CAPABILITIES_SERVICE,
+    name : "PUBLISHED_AUDIO_CAPABILITIES_SERVICE",
+
+    /* SINK PAC characteristic - x -octet. */
+
+    characteristic {
+        uuid        : UUID_SINK_PAC,
+        name        : "SINK_PAC_1",
+        flags       : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00 ],
+
+        client_config {
+            name : "SINK_PAC_CLIENT_CONFIG_1",
+            flags : [ FLAG_IRQ ]
+            }
+    },
+
+    characteristic {
+        uuid        : UUID_SINK_PAC,
+        name        : "SINK_PAC_2",
+        flags       : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00 ],
+
+        client_config {
+            name : "SINK_PAC_CLIENT_CONFIG_2",
+            flags : [ FLAG_IRQ ]
+            }
+    },
+
+    characteristic {
+        uuid        : UUID_SINK_PAC,
+        name        : "SINK_PAC_VS",
+        flags       : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00 ],
+
+        client_config {
+            name : "SINK_PAC_CLIENT_CONFIG_VS",
+            flags : [ FLAG_IRQ ]
+            }
+    },
+
+    /* SINK AUDIO LOCATIONS characteristic - 4 -octet. */
+    characteristic {
+        uuid        : UUID_SINK_AUDIO_LOCATIONS,
+        name        : "SINK_AUDIO_LOCATIONS",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00],
+
+        client_config {
+            name : "SINK_AUDIO_LOCATIONS_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ ]
+            }
+
+    },
+
+    /* SOURCE PAC characteristic - x -octet. */
+
+    characteristic {
+        uuid        : UUID_SOURCE_PAC,
+        name        : "SOURCE_PAC",
+        flags       : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00],
+
+        client_config {
+            name : "SOURCE_PAC_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ ]
+            }
+    },
+
+    characteristic {
+        uuid        : UUID_SOURCE_PAC,
+        name        : "SOURCE_PAC_VS",
+        flags       : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00],
+
+        client_config {
+            name : "SOURCE_PAC_CLIENT_CONFIG_VS",
+            flags : [ FLAG_IRQ ]
+            }
+    },
+
+    /* SOURCE AUDIO LOCATIONS characteristic - 4 -octet. */
+    characteristic {
+        uuid        : UUID_SOURCE_AUDIO_LOCATIONS,
+        name        : "SOURCE_AUDIO_LOCATIONS",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00],
+
+        client_config {
+            name : "SOURCE_AUDIO_LOCATIONS_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ ]
+            }
+     },
+
+    /* AVAILABLE AUDIO CONTEXTS characteristic - 4 -octet. */
+    characteristic {
+        uuid        : UUID_AUDIO_CONTEXT_AVAILABILTY,
+        name        : "AVAILABLE_AUDIO_CONTEXTS",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00],
+
+        client_config {
+            name : "AVAILABLE_AUDIO_CONTEXTS_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ ]
+            }
+     },
+
+    /* SUPPORTED AUDIO CONTEXTS characteristic - 4 -octet. */
+    characteristic {
+        uuid        : UUID_SUPPORTED_AUDIO_CONTEXTS,
+        name        : "SUPPORTED_AUDIO_CONTEXTS",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00],
+
+        client_config {
+            name : "SUPPORTED_AUDIO_CONTEXTS_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ ]
+            }
+     }
+
+},
+
+#endif /* __GATT_PACS_SERVER_DB_DBI__ */

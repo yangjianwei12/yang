@@ -1,0 +1,6 @@
+VARIANTS := debug disable_root_key_exchange
+
+CFLAGS_debug := -DGATT_ROOT_KEY_SERVER_DEBUG_LIB
+
+CFLAGS_disable_root_key_exchange := -DDISABLE_ROOT_KEY_EXCHANGE
+

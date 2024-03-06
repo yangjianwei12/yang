@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2021 - 2023 Qualcomm Technologies International, Ltd.-->
+<!--Chain for AHM -->
+
+<chain name="CHAIN_AHM" id="1" generate_operator_roles_enum="False" generate_endpoint_roles_enum="False">
+
+    <include_header name="app_chain_config.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+
+    <operator name="OPR_AHM" id="EB_CAP_ID_AHM">
+        <sink name="FF_MIC_IN" terminal="1"/>
+        <sink name="FB_MIC_IN" terminal="2"/>
+        <source name="FF_MIC_OUT" terminal="1"/>
+        <source name="FB_MIC_OUT" terminal="2"/>
+    </operator>
+
+    <input sink="OPR_AHM.FF_MIC_IN" role="EPR_AHM_FF_MIC_IN"/>
+    <input sink="OPR_AHM.FB_MIC_IN" role="EPR_AHM_FB_MIC_IN"/>
+    <output source="OPR_AHM.FF_MIC_OUT" role="EPR_AHM_FF_MIC_OUT"/>
+    <output source="OPR_AHM.FB_MIC_OUT" role="EPR_AHM_FB_MIC_OUT"/>
+
+</chain>

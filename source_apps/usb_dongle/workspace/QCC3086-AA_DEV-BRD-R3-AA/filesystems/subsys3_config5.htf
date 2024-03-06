@@ -1,0 +1,5 @@
+file=audio5
+
+# Increase this value if there are audio glitches
+# The default value is 576
+USBSourceBufferSize = 2400

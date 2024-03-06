@@ -1,0 +1,12 @@
+# Copyright (c) 2022 Qualcomm Technologies International, Ltd.
+
+Import('Paths')
+
+# Replacing default csr_bt_config.h file with pta/csr_bt_config.h
+Paths['SYNERGY_INCLUDE_PATHS'].insert(0, 'config/inc/pta')
+index = Paths['BT_PUBLIC_HEADERS'].index('config/inc/default/csr_bt_config.h')
+Paths['BT_PUBLIC_HEADERS'][index] = 'config/inc/pta/csr_bt_config.h'
+
+# Replacing default csr_bt_usr_config.h file with pta/csr_bt_usr_config.h
+index = Paths['BT_PUBLIC_HEADERS'].index('config/inc/csr_bt_usr_config.h')
+Paths['BT_PUBLIC_HEADERS'][index] = 'config/inc/pta/csr_bt_usr_config.h'

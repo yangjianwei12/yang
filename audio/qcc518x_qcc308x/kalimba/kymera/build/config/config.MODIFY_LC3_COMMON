@@ -1,0 +1,57 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright 2017 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# Common definitions required to build both LC3 Encode and LC3 Decode
+
+%cpp
+BUILD_KAL_EC
+LC3_KYMERA_BUILD
+LC3_KYMERA_PACKET_BYTE_ORDERING
+#LC3_BYTE_ORDERING_BIG_ENDIAN
+#LC3_FILE_IO_TEST
+
+
+%list ALL_SRCDIRS
+capabilities/lc3_common
+../lib/lc3
+../lib/lc3/src
+../lib/lc3/src/bitstream
+../lib/lc3/src/fixedpoint
+../lib/lc3/src/mdct
+../lib/lc3/src/misc
+../lib/lc3/src/noise_filling
+../lib/lc3/src/residual_coding
+../lib/lc3/src/spectral_quant
+../lib/lc3/src/sns
+../lib/lc3/src/tns
+../lib/lc3/src/ltpf
+
+%list ALL_INCDIRS
+../lib/lc3/
+../lib/lc3/inc
+../lib/lc3/src 
+../lib/lc3/src/bandwidth_detector
+../lib/lc3/src/bitstream
+../lib/lc3/src/qualcomm
+../lib/lc3/src/fixedpoint
+../lib/lc3/src/ltpf
+../lib/lc3/src/mdct
+../lib/lc3/src/misc
+../lib/lc3/src/noise_filling
+../lib/lc3/src/noise_lvl_estim
+../lib/lc3/src/plc
+../lib/lc3/src/residual_coding
+../lib/lc3/src/residual_decoding
+../lib/lc3/src/sns
+../lib/lc3/src/spectral_quant
+../lib/lc3/src/tns
+../lib/lc3/src/transient_detector
+capabilities/lc3_common
+
+
+%list CFG_LIBS
+capabilities/lc3_common/lc3_common
+../lib/lc3/lc3

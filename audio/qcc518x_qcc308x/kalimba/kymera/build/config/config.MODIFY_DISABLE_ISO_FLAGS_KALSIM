@@ -1,0 +1,30 @@
+############################################################################
+# Copyright (c) 2020 Qualcomm Technologies International, Ltd.
+############################################################################
+# Disable ISO flags that the FW suports on the target, but currently not on 
+# KALSIM.
+
+%cpp
+-ACTIVATE_SDU_NUMBERING
+
+# See B-302331 for why these flags are here:
+# XXX install temporary transitional backward compatibility bodge to
+# cope with KATS prior to change of shape of ISO_PARAMS_UNFRAMED
+# message; see B-297787. Once KATS catches up, this option should
+# be bodily removed.
+TODO_ISO_SUPPORT_PRE_202002_SERVICE_MSG
+# XXX: support getting BLE isochronous endpoints over ACCMD via
+# STREAM_DEVICE_SCO. This is a transitional arrangement for backward
+# compatibility with KATS tests until they move to using
+# STREAM_DEVICE_ISO. Once the KATS tests catch up, this option
+# should be bodily removed.
+TODO_STREAM_DEVICE_SCO_SUPPORTS_ISO
+# XXX: if the to-air ISO driver finds itself with nothing to send,
+# normally it would send a zero-length NO_DATA record. But
+# (a) KATS currently doesn't like this (b) the condition seems to
+# occur in KATS tests. So, bodge this out until that's somehow
+# resolved.
+TODO_ISO_SUPPRESS_TO_AIR_NO_DATA_RECORDS
+# Do not send a zero-length frame size in the RUN_STATE message to BTSS,
+# for Kalsim builds
+TODO_SCO_USE_OPERATOR_FRAME_SIZE

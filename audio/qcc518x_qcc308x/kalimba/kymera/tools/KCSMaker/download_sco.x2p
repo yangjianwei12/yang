@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project path="@@@root@@@/audio/qcc518x_qcc308x/kalimba/kymera/capabilities/" type="tree">
+            <file path="../../capabilities/sco_nb/sco_rcv.c"/>
+            <file path="../../capabilities/sco_nb/sco_rcv_data_processing_c.c"/>
+            <file path="../../capabilities/sco_nb/sco_send.c"/>
+            <file path="../../capabilities/sco_nb/sco_nb.h"/>
+            <file path="../../capabilities/sco_nb/sco_nb_private.h"/>
+            <file path="../../capabilities/sco_nb/sco_nb_struct.h"/>
+            <file path="../../capabilities/wbs/wbs.c"/>
+            <file path="../../capabilities/wbs/wbs_c_stubs.asm"/>
+            <file path="../../capabilities/wbs/wbs_dec.c"/>
+            <file path="../../capabilities/wbs/wbs_dec_data_processing_c.c"/>
+            <file path="../../capabilities/wbs/wbs_enc.c"/>
+            <file path="../../capabilities/wbs/wbs.h"/>
+            <file path="../../capabilities/wbs/wbs_private.h"/>
+            <file path="../../capabilities/wbs/wbs_struct.h"/>
+    <configurations>
+        <configuration name="debug" options="build|clean|default">
+            <devkitConfiguration>application</devkitConfiguration>
+            <devkitGroup>kitres://{32D72C9E-F2CE-45FC-847C-4562B2C4E485}</devkitGroup>
+            <property name="CHIP_TYPE">qcc518x_qcc308x</property>
+            <property name="MAKEFILE_TO_CALL">makefile</property>
+            <property name="KYMERA_SRC_PATH">KYMERA_SRC_PATH=../..</property>
+            <property name="BUILD_NAME">BUILD_NAME=kymera_maor_audio</property>
+            <property name="BUILD_PATH">BUILD_PATH=../../../../kalimba_ROM_14612/kymera/output/maor_rom_release/build</property>
+            <property name="BUILD_ROOT">BUILD_ROOT=../../build</property>
+            <property name="INCPATHS">../../components ../../components/common/interface ../../capabilities/common ../../capabilities/base_op ../../common/interface/gen/k32 ../../output/maor_rom_release/build</property>
+            <property name="PRE_INCLUDES">preinclude_defs.h preinclude_defs_asm.h</property>
+            <property name="MAKE_JOBS">MAKE_JOBS=True</property>
+            <property name="ALL_DM_AS_PM">ALL_DM_AS_PM=False</property>
+            <property name="DATA_IN_EXTRA_HEAP">DATA_IN_EXTRA_HEAP=False</property>
+            <group name="sco_nb" type="capability">
+                <property name="CAP_NAME">sco_nb</property>
+                <property name="H_PATH">${KYMERA_ROOT}/output/$(CONFIG)/gen,${KYMERA_ROOT}/output/$(CONFIG)/gen/sco_nb,${KYMERA_ROOT}/capabilities/sco_fw</property>
+            </group>
+            <group name="wbs" type="capability">
+                <property name="CAP_NAME">wbs</property>
+                <property name="H_PATH">${KYMERA_ROOT}/output/$(CONFIG)/gen,${KYMERA_ROOT}/output/$(CONFIG)/gen/wbs,${KYMERA_ROOT}/capabilities/sco_fw</property>
+                <property name="GEN_ASM_HDRS">wbs_struct.h</property>
+            </group>
+            <property name="CONFIG_MAKE">CONFIG=maor_rom_release</property>
+            <property name="BUNDLE_NAME">BUNDLE_NAME=download_sco</property>
+            <property name="OSTYPE">OSTYPE=Windows_NT</property>
+            <property name="BUILD_TYPE">MAKEFILE</property>
+            <property name="OUTPUT">../../output_bundles/maor_rom_release/download_sco/download_sco.elf</property>
+            <property name="SUBSYSTEM_NAME">audio</property>
+            <property name="KALSIM_MODE">false</property>
+            <property name="KALSIM_ENABLE_DEBUGGER">false</property>
+            <property name="KALSIM_NAME">kalsim_qcc517x_audio.exe</property>
+            <property name="KALSIM_LOGLEVEL">20</property>
+            <property name="KALSIM_PSTORE_USE">false</property>
+            <property name="KALSIM_TIMER_UPDATE">6400</property>
+            <property name="KALSIM_FIRMWARE">../../output/maor_rom_kalsim_kalcmd2_release/build/debugbin/kymera_maor_audio.elf</property>
+            <property name="KALSIM_SCRIPTS">script/kalsim/download.py,script/kalsim/download_sco.dkcs</property>
+            <property name="KALSIM_PLATFORM">maor</property>
+            <property name="KALSIM_CONFIG_MAKE">CONFIG=maor_rom_kalsim_kalcmd2_release</property>
+            <property name="KALSIM_KSE_PATH">../../../../../kse/workspace</property>
+        </configuration>
+        <configuration name="kse" options="build|clean|deploy">
+            <devkitConfiguration>application</devkitConfiguration>
+            <devkitGroup>kitres://{32D72C9E-F2CE-45FC-847C-4562B2C4E485}</devkitGroup>
+            <property name="CHIP_TYPE">qcc518x_qcc308x</property>
+            <property name="MAKEFILE_TO_CALL">makefile</property>
+            <property name="KYMERA_SRC_PATH">KYMERA_SRC_PATH=../..</property>
+            <property name="BUILD_NAME">BUILD_NAME=kymera_maor_audio</property>
+            <property name="BUILD_PATH">BUILD_PATH=../../output/maor_rom_kalsim_kalcmd2_release/build</property>
+            <property name="BUILD_ROOT">BUILD_ROOT=../../build</property>
+            <property name="INCPATHS">../../components ../../components/common/interface ../../capabilities/common ../../capabilities/base_op ../../common/interface/gen/k32 ../../output/maor_rom_release/build</property>
+            <property name="PRE_INCLUDES">preinclude_defs.h preinclude_defs_asm.h</property>
+            <property name="MAKE_JOBS">MAKE_JOBS=True</property>
+            <property name="ALL_DM_AS_PM">ALL_DM_AS_PM=False</property>
+            <property name="DATA_IN_EXTRA_HEAP">DATA_IN_EXTRA_HEAP=False</property>
+            <group name="sco_nb" type="capability">
+                <property name="CAP_NAME">sco_nb</property>
+                <property name="H_PATH">${KYMERA_ROOT}/output/$(CONFIG)/gen,${KYMERA_ROOT}/output/$(CONFIG)/gen/sco_nb,${KYMERA_ROOT}/capabilities/sco_fw</property>
+            </group>
+            <group name="wbs" type="capability">
+                <property name="CAP_NAME">wbs</property>
+                <property name="H_PATH">${KYMERA_ROOT}/output/$(CONFIG)/gen,${KYMERA_ROOT}/output/$(CONFIG)/gen/wbs,${KYMERA_ROOT}/capabilities/sco_fw</property>
+                <property name="GEN_ASM_HDRS">wbs_struct.h</property>
+            </group>
+            <property name="CONFIG_MAKE">CONFIG=maor_rom_release</property>
+            <property name="BUNDLE_NAME">BUNDLE_NAME=download_sco</property>
+            <property name="OSTYPE">OSTYPE=Windows_NT</property>
+            <property name="BUILD_TYPE">MAKEFILE</property>
+            <property name="OUTPUT">../../output_bundles/maor_rom_kalsim_kalcmd2_release/download_sco/download_sco.elf</property>
+            <property name="SUBSYSTEM_NAME">audio</property>
+            <property name="KALSIM_MODE">true</property>
+            <property name="KALSIM_ENABLE_DEBUGGER">false</property>
+            <property name="KALSIM_NAME">kalsim_qcc517x_audio.exe</property>
+            <property name="KALSIM_LOGLEVEL">20</property>
+            <property name="KALSIM_PSTORE_USE">false</property>
+            <property name="KALSIM_TIMER_UPDATE">6400</property>
+            <property name="KALSIM_FIRMWARE">../../output/maor_rom_kalsim_kalcmd2_release/build/debugbin/kymera_maor_audio.elf</property>
+            <property name="KALSIM_SCRIPTS">script/kalsim/download.py,script/kalsim/download_sco.dkcs</property>
+            <property name="KALSIM_PLATFORM">maor</property>
+            <property name="KALSIM_CONFIG_MAKE">CONFIG=maor_rom_kalsim_kalcmd2_release</property>
+            <property name="KALSIM_KSE_PATH">../../../../../kse/workspace</property>
+        </configuration>
+    </configurations>
+</project>

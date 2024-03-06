@@ -1,0 +1,65 @@
+############################################################################
+# Copyright (c) 2020 Qualcomm Technologies International, Ltd.
+############################################################################
+# Modifications for Maor 2.x
+
+%include config.MODIFY_LIGHTWEIGHT_HW_LOCK
+
+%cpp
+CHIP_HAS_ROM_PWR_CONTROL
+CHIP_HAS_NVRAM_ACCESS_TO_DM
+#macro to be used for separating ANC and eANC in common files
+INSTALL_ANC_V2P0
+# Build define used by AANC for Maor 2.0 
+AANC_MAOR_V20
+
+#macro for monitor_out type endpoint
+INSTALL_MONITOR_OUT
+
+NUMBER_INPUT_VOICE_SLOTS=16
+NUMBER_OUTPUT_VOICE_SLOTS=10
+#Macro to be used for hardware which support 8Channel PCM
+CHIP_SUPPORTS_8CH_PCM
+#Macro to be used for hardware where PCM1 have dedicated PIO for CLK FS
+PCM1_SUPPORT_DEDICATED_PIO_FOR_CLK_FS
+#Macro to be used for hardware where PCM1 can Lend CLK & FS to PCM2 (rely on INSTALL_BORROWED_CLOCK_MODE_SUPPORT)
+PCM1_CAN_LEND_CLK_FS
+
+# Address generation unit bit width for circular addressing = 18 bits
+# maximum buffer size in words = (2^18/ADDR_PER_WORD - 1)
+MAX_CIRCULAR_BUFFER_SIZE_WORDS = 65535
+
+# Maor 2.x supports the Hardware lock
+CHIP_HAS_LIGHTWEIGHT_HW_LOCK = 1
+
+# Maor 2.0 has the new low power TxADC on both instances, i.e.,
+# on all 4 channels.
+CHIP_HAS_LOW_POWER_TX_ADC
+
+# Hardware fixes specific to Maor 2.0
+INSTALL_MAOR_ROM_V20_HW_SPECIFIC_FIXES
+
+# Maor 2.0 has enhanced multiplier modes to support Machine Learning
+CHIP_HAS_ENHANCED_MAC_MODES
+
+# Maor analog has additional modes for pop and click mitigation
+CHIP_HAS_HW_ASSISTED_DSM_SHUTDOWN
+
+%build
+CHIP_VER=d01
+CHIP_NAME_KCC = QCC517x_audio
+CHIP_NAME_KALSIM = maor2_audio
+LINKSCRIPT_NAME=linkscript_maor2_audio.ld
+
+# Allow enhanced ANC for maor2.0 only
+BUILD_ANC_V2P0 = TRUE
+
+# Make sure autogen runs for mlfe100 and to do that
+# it needs a component and another private library.
+%list CFG_LIBS
+components/ml_modules/ml_modules
+../lib_private/eai/eai
+../lib_private/mlfe100/mlfe100
+
+%list PM_KEEP_LIBS
+../lib_private/mlfe100/mlfe100

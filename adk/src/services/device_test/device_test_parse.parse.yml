@@ -1,0 +1,354 @@
+CUSTOM_TYPES:
+  hexdigit:
+    regex_expr: "[0-9A-Fa-f]"
+
+SETTINGS:
+  prefix: DeviceTestServiceParser_
+
+
+AT + AUTHSTART:
+  c_handle: DeviceTestServiceCommand_HandleAuthStart
+
+AT + AUTHRESP = <response>:
+  c_handle: DeviceTestServiceCommand_HandleAuthResp
+  parameters:
+    response:
+      type: hexdigit
+      qualifier: +
+
+AT + AUTHDISABLE:
+  c_handle: DeviceTestServiceCommand_HandleAuthDisable
+
+AT + DTSENDTESTING = <reboot>:
+  c_handle: DeviceTestServiceCommand_HandleDtsEndTesting
+  parameters:
+    reboot:
+      type: decimal
+
+AT + DTSSETTESTMODE = <testmode>:
+  c_handle: DeviceTestServiceCommand_HandleDtsSetTestMode
+  parameters:
+    testmode:
+      type: decimal
+
+AT + DTSTESTMODE ?:
+  c_handle: DeviceTestServiceCommand_HandleDtsTestModeQuery
+
+AT + ANCENABLE = <mode>:
+  c_handle: DeviceTestServiceCommand_HandleAncEnable
+  parameters:
+    mode:
+      type: decimal
+
+AT + ANCDISABLE:
+  c_handle: DeviceTestServiceCommand_HandleAncDisable
+
+AT + ANCREADFINEGAIN = <mode>, <gainpath>:
+  c_handle: DeviceTestServiceCommand_HandleAncReadFineGain
+  parameters:
+    mode:
+      type: decimal
+    gainpath:
+      type: decimal
+
+AT + ANCSETFINEGAIN = <mode>, <gainpath>, <gainvalue>:
+  c_handle: DeviceTestServiceCommand_HandleAncSetFineGain
+  parameters:
+    mode:
+      type: decimal
+    gainpath:
+      type: decimal
+    gainvalue:
+      type: decimal
+
+AT + ANCWRITEFINEGAIN = <mode>, <gainpath>, <gainvalue>:
+  c_handle: DeviceTestServiceCommand_HandleAncWriteFineGain
+  parameters:
+    mode:
+      type: decimal
+    gainpath:
+      type: decimal
+    gainvalue:
+      type: decimal
+
+AT + ANCREADCOARSEGAIN = <mode>, <gainpath>:
+  c_handle: DeviceTestServiceCommand_HandleAncReadCoarseGain
+  parameters:
+    mode:
+      type: decimal
+    gainpath:
+      type: decimal
+
+AT + ANCREADFINEGAINDUAL = <mode>, <gainpath>:
+  c_handle: DeviceTestServiceCommand_HandleAncReadFineGainDual
+  parameters:
+    mode:
+      type: decimal
+    gainpath:
+      type: decimal
+
+AT + ANCWRITEFINEGAINDUAL = <mode>, <gainpath>,  <instance0gain>, <instance1gain>:
+  c_handle: DeviceTestServiceCommand_HandleAncWriteFineGainDual
+  parameters:
+    mode:
+      type: decimal
+    gainpath:
+      type: decimal
+    instance0gain:
+      type: decimal
+    instance1gain:
+      type: decimal
+
+AT + ANCSETFINEGAINDUAL = <mode>, <gainpath>, <instance0gain>, <instance1gain>:
+  c_handle: DeviceTestServiceCommand_HandleAncSetFineGainDual
+  parameters:
+    mode:
+      type: decimal
+    gainpath:
+      type: decimal
+    instance0gain:
+      type: decimal
+    instance1gain:
+      type: decimal
+
+AT + ANCSETPSKEY = <pskey>, <instance>, <value>:
+  c_handle: DeviceTestServiceCommand_HandleAncSetPsKey
+  parameters:
+    pskey:
+      type: hexdigit
+      qualifier: +
+    instance:
+      type: decimal
+    value:
+      type: complex
+
+AT + ANCGETPSKEY = <pskey>, <instance>:
+  c_handle: DeviceTestServiceCommand_HandleAncGetPsKey
+  parameters:
+    pskey:
+      type: hexdigit
+      qualifier: +
+    instance:
+      type: decimal
+
+AT + LOCALBDADDR ?:
+  c_handle: DeviceTestServiceCommand_HandleLocalBdaddr
+
+AT + LOOPBACKSTART = <micSelection>, <speakerSelection>, <sampleRate>:
+  c_handle: DeviceTestServiceCommand_HandleAudioLoopbackStart
+  parameters:
+    micSelection:
+      type: decimal
+    speakerSelection:
+      type: decimal
+    sampleRate:
+      type: decimal
+
+AT + LOOPBACKSTOP:
+  c_handle: DeviceTestServiceCommand_HandleAudioLoopbackStop
+
+AT + AUDIOPLAYTESTTONE:
+  c_handle: DeviceTestServiceCommand_HandleAudioPlayTestTone
+
+AT + AUDIOPLAYTONE = <tone>, <speakerSelection>, <durationMs>:
+  c_handle: DeviceTestServiceCommand_HandleAudioPlayTone
+  parameters:
+    tone:
+      type: decimal
+    speakerSelection:
+      type: decimal
+    durationMs:
+      type: decimal
+
+AT + RFTESTSTOP:
+  c_handle: DeviceTestServiceCommand_HandleRfTestStop
+
+AT + RFTESTCARRIER = <channel>:
+  c_handle: DeviceTestServiceCommand_HandleRfTestCarrier
+  parameters:
+    channel:
+      type: decimal
+
+AT + RFTESTTXSTART:
+  c_handle: DeviceTestServiceCommand_HandleRfTestTxStart
+
+AT + RFTESTCFGCHANNEL = <channel>:
+  c_handle: DeviceTestServiceCommand_HandleRfTestCfgChannel
+  parameters:
+    channel:
+      type: decimal
+
+AT + RFTESTCFGPACKET = <payload>, <packetType>, <length>:
+  c_handle: DeviceTestServiceCommand_HandleRfTestCfgPacket
+  parameters:
+    payload:
+      type: hexdigit
+      qualifier: +
+    packetType:
+      type: hexdigit
+      qualifier: +
+    length:
+      type: decimal
+      qualifier: +
+
+AT + RFTESTCFGADDRESS = <logicalAddr>, <bdaddr>:
+  c_handle: DeviceTestServiceCommand_HandleRfTestCfgAddress
+  parameters:
+    logicalAddr:
+      type: decimal
+    bdaddr:
+      type: hexdigit
+      qualifier: +
+
+AT + RFTESTCFGPOWER = <powerSetting>:
+  c_handle: DeviceTestServiceCommand_HandleRfTestCfgPower
+  parameters:
+    powerSetting:
+      type: decimal
+
+AT + RFTESTCFGSTOPTIME = <reboot>, <timeMs>:
+  c_handle: DeviceTestServiceCommand_HandleRfTestCfgStopTime
+  parameters:
+    reboot:
+      type: decimal
+    timeMs:
+      type: decimal
+
+AT + RFTESTCFGSTOPPIO = <pio>:
+  c_handle: DeviceTestServiceCommand_HandleRfTestCfgStopPio
+  parameters:
+    pio:
+      type: decimal
+
+AT + RFTESTCFGSTOPTOUCH:
+  c_handle: DeviceTestServiceCommand_HandleRfTestCfgStopTouch
+
+AT + RFTESTDUTMODE:
+  c_handle: DeviceTestServiceCommand_HandleDeviceUnderTestMode
+
+AT + RFTESTLETXSTART = <lechannel>, <lelength>, <pattern>:
+  c_handle: DeviceTestServiceCommand_HandleRfTestLeTxStart
+  parameters:
+    lechannel:
+      type: decimal
+    lelength:
+      type: decimal
+    pattern:
+      type: decimal
+
+AT + RFTESTLERXSTART = <lechannel>:
+  c_handle: DeviceTestServiceCommand_HandleRfTestLeRxStart
+  parameters:
+    lechannel:
+      type: decimal
+
+AT + TESTPIOOUTPUT = <pio>, <onOff>:
+  c_handle: DeviceTestServiceCommand_HandlePioOutput
+  parameters:
+    pio:
+      type: decimal
+    onOff:
+      type: decimal
+
+AT + TESTPIOINPUTPIO = <pio>:
+  c_handle: DeviceTestServiceCommand_HandlePioInput
+  parameters:
+    pio:
+      type: decimal
+
+AT + TESTPIOINPUTS:
+  c_handle: DeviceTestServiceCommand_HandlePioAllInputs
+
+AT + TESTLED = <ledValue>:
+  c_handle: DeviceTestServiceCommand_HandleLed
+  parameters:
+    ledValue:
+      type: decimal
+
+AT + RSSIREAD:
+  c_handle: DeviceTestServiceCommand_HandleRssiRead
+
+AT + PSKEYSET = <pskey>, <value>:
+  c_handle: DeviceTestServiceCommand_HandlePskeySet
+  parameters:
+    pskey:
+      type: decimal
+    value:
+      type: complex
+
+AT + PSKEYGET = <pskey>:
+  c_handle: DeviceTestServiceCommand_HandlePskeyGet
+  parameters:
+    pskey:
+      type: decimal
+
+AT + PSKEYCLEAR = <pskey>:
+  c_handle: DeviceTestServiceCommand_HandlePskeyClear
+  parameters:
+    pskey:
+      type: decimal
+
+AT + PSKEYMIBGET = <pskey>:
+  c_handle: DeviceTestServiceCommand_HandleMibPskeyGet
+  parameters:
+    pskey:
+      type: decimal
+
+AT + TESTACCELEROMETER = <durationS>, <stopAfter>:
+  c_handle: DeviceTestServiceCommand_HandleAccelerometer
+  parameters:
+    durationS:
+      type: decimal
+    stopAfter:
+      type: decimal
+
+AT + TESTPROXIMITY = <durationS>, <stopAfter>:
+  c_handle: DeviceTestServiceCommand_HandleProximitySensor
+  parameters:
+    durationS:
+      type: decimal
+    stopAfter:
+      type: decimal
+
+AT + TESTTOUCH = <durationS>, <stopAfter>:
+  c_handle: DeviceTestServiceCommand_HandleTouchSensor
+  parameters:
+    durationS:
+      type: decimal
+    stopAfter:
+      type: decimal
+
+AT + TESTHALLEFFECT = <durationS>, <stopAfter>:
+  c_handle: DeviceTestServiceCommand_HandleHallEffectSensor
+  parameters:
+    durationS:
+      type: decimal
+    stopAfter:
+      type: decimal
+
+AT + TEMPERATURE ?:
+  c_handle: DeviceTestServiceCommand_HandleTemperature
+
+AT + BATTERYLEVEL ?:
+  c_handle: DeviceTestServiceCommand_HandleBatteryLevel
+
+AT + DEVCFGREAD ?: 
+  c_handle: DeviceTestServiceCommand_HandleDevCfgRead
+
+AT + DEVCFGREADPART = <size>: 
+  c_handle: DeviceTestServiceCommand_HandleDevCfgReadPart
+  parameters:
+    size:
+      type: decimal
+
+AT + DEVCFGUPD = <size>: 
+  c_handle: DeviceTestServiceCommand_HandleDevCfgUpdate
+  parameters:
+    size:
+      type: decimal
+
+AT + DEVCFGUPDPART = <value>: 
+  c_handle: DeviceTestServiceCommand_HandleDevCfgUpdatePart
+  parameters:
+    value:
+      type: complex

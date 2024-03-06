@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['pio_5fproximity_2ec_111',['pio_proximity.c',['../pio__proximity_8c.html',1,'']]],
+  ['pio_5fproximity_2eh_112',['pio_proximity.h',['../pio__proximity_8h.html',1,'']]],
+  ['pios_113',['pios',['../struct____accelerometer__config.html#a57d863cd9d9c5c84ab34f3139269c5c3',1,'__accelerometer_config::pios()'],['../struct____lis25ba__accelerometer.html#aa213524ddc9eda0cbaafd9ac39da07a5',1,'__lis25ba_accelerometer::pios()'],['../struct____touch__config__t.html#a178262b7c91700f189fec350b92ef6e1',1,'__touch_config_t::pios()'],['../struct____touch__config__t.html#afc1bd657ce8145a371b0cbc2fbcc7905',1,'__touch_config_t::pios()'],['../struct____proximity__config.html#a177f162f2cd2ce5b44cf4e526bf171e2',1,'__proximity_config::pios()'],['../struct____proximity__config.html#ab478dd5351f95e847f8d61beae54272a',1,'__proximity_config::pios()']]],
+  ['pitype_114',['PITYPE',['../uniontxcpa224__cfg3__register.html#a33d7f9099959fd784d1fa35398906acb',1,'txcpa224_cfg3_register']]],
+  ['power_5foff_115',['power_off',['../audio__i2s___s_s_m2518_8c.html#a52798e1b1c37a41a08e142de5d0c3484a54d551eead05b0791463fc0bc0f2e8f6',1,'audio_i2s_SSM2518.c']]],
+  ['product_5fid_116',['product_id',['../unionvncl3020__revision__register.html#a5bed62150433b4544cd5490586aa0400',1,'vncl3020_revision_register']]],
+  ['prox_5fdata_5frdy_117',['prox_data_rdy',['../unionvncl3020__command__register.html#ae3ffd11139de854cbd856707ad196b69',1,'vncl3020_command_register']]],
+  ['prox_5fen_118',['prox_en',['../uniontxcpa224__cfg0__register.html#aceffc589f5bdebd4692a724371b1b2f3',1,'txcpa224_cfg0_register::prox_en()'],['../unionvncl3020__command__register.html#aceffc589f5bdebd4692a724371b1b2f3',1,'vncl3020_command_register::prox_en()']]],
+  ['prox_5fod_119',['prox_od',['../unionvncl3020__command__register.html#ae0663b3036860b2827137865a7edf8ed',1,'vncl3020_command_register']]],
+  ['prox_5fready_120',['prox_ready',['../unionvncl3020__interrupt__status__register.html#a05e3d67d420b2ff7e558648e6f402166',1,'vncl3020_interrupt_status_register']]],
+  ['proximity_121',['proximity',['../struct____proximity__state.html#aacb90c54c62abde783ce2256997be35a',1,'__proximity_state']]],
+  ['proximity_5fready_5fen_122',['proximity_ready_en',['../unionvncl3020__interrupt__control__register.html#a447822119c510cdb0406154c6d69d59e',1,'vncl3020_interrupt_control_register']]],
+  ['proximity_5fstates_123',['proximity_states',['../pio__proximity_8h.html#ab26735e293db8cdcea69a4d274a9491a',1,'proximity_states():&#160;pio_proximity.h'],['../txcpa224_8h.html#ab26735e293db8cdcea69a4d274a9491a',1,'proximity_states():&#160;txcpa224.h'],['../vncl3020_8h.html#ab26735e293db8cdcea69a4d274a9491a',1,'proximity_states():&#160;vncl3020.h']]],
+  ['psintf_124',['PSINTF',['../uniontxcpa224__cfg2__register.html#a2a9c7b3ae80b7051804b82b9e8c67967',1,'txcpa224_cfg2_register']]],
+  ['psmodesel_125',['PSMODESEL',['../uniontxcpa224__cfg2__register.html#ae813fff0b5e13288fb5bbe7ed9a8eafa',1,'txcpa224_cfg2_register']]],
+  ['psprst_126',['PSPRST',['../uniontxcpa224__cfg1__register.html#a5fbc920021ac0195eb6e944ca918bc6d',1,'txcpa224_cfg1_register']]],
+  ['psslp_127',['PSSLP',['../uniontxcpa224__cfg3__register.html#ad8b1f760115cd3d2202f75e2a68a55e5',1,'txcpa224_cfg3_register']]]
+];

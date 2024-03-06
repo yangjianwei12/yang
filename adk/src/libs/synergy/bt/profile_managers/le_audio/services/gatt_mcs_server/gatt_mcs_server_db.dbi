@@ -1,0 +1,302 @@
+/******************************************************************************
+ *  Copyright (c) 2022 Qualcomm Technologies International, Ltd.
+ *  %%version
+ *  %%appversion
+ *
+ *  FILE
+ *      gatt_mcs_server_db.dbi
+ *
+ *  DESCRIPTION
+ *
+ *      This file defines the Media Control Service in JSON format.
+ *      This file is included in the main application data base file which is
+ *      used to produce ATT flat data base. 
+ *
+ *****************************************************************************/
+
+#ifndef __GATT_MCS_SERVER_DB_DBI__
+#define __GATT_MCS_SERVER_DB_DBI__
+
+#include "gatt_mcs_server_uuids.h"
+
+/* Primary service declaration of Media Control Service */
+
+primary_service {
+    uuid : GATT_GMCS_UUID_MEDIA_CONTROL_SERVICE,
+    name : "GENERIC_MEDIA_CONTROL_SERVICE",
+
+    /* Media Player Name (Mandatory) - X-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_MEDIA_PLAYER_NAME,
+        name        : "MEDIA_PLAYER_NAME",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+
+        client_config {
+            name : "MEDIA_PLAYER_NAME_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Media Player Icon Object (Optional) - 6-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_MEDIA_PLAYER_ICON_OBJ_ID,
+        name        : "MEDIA_PLAYER_ICON_OBJ_ID",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ]
+    },
+
+    /* Media Player Icon URL (Optional) - X-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_MEDIA_PLAYER_ICON_URL,
+        name        : "MEDIA_PLAYER_ICON_URL",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read ],
+
+        value       : 0x00
+    },
+
+    /* Track Changed (Mandatory) - 0-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_TRACK_CHANGED,
+        name        : "TRACK_CHANGED",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ notify ],
+
+        client_config {
+            name : "TRACK_CHANGED_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Track Title (Mandatory) - X-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_TRACK_TITLE,
+        name        : "TRACK_TITLE",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+
+        client_config {
+            name : "TRACK_TITLE_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Track Duration (Mandatory) - 4-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_TRACK_DURATION,
+        name        : "TRACK_DURATION",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00 ],
+
+        client_config {
+            name : "TRACK_DURATION_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Track Position (Mandatory) - 4-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_TRACK_POSITION,
+        name        : "TRACK_POSITION",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, write, write_cmd, notify ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00 ],
+
+        client_config {
+            name : "TRACK_POSITION_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Playback Speed (Optional) - 1-octet */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_PLAYBACK_SPEED,
+        name        : "PLAYBACK_SPEED",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, write, write_cmd, notify ],
+
+        value       : 0x00,
+
+        client_config {
+            name : "PLAYBACK_SPEED_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Seeking Speed (Optional) - 1-octet */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_SEEKING_SPEED,
+        name        : "SEEKING_SPEED",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+
+        client_config {
+            name : "SEEKING_SPEED_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+	
+    /* Current Track Segments Object Id (Optional) - 6-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_CURRENT_TRACK_SEGMENTS_OBJ_ID,
+        name        : "CURRENT_TRACK_SEGMENTS_OBJ_ID",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ]
+    },
+
+    /* Current Track Object Id (Optional) - 6-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_CURRENT_TRACK_OBJ_ID,
+        name        : "CURRENT_TRACK_OBJ_ID",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, write, write_cmd, notify ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ]
+    },
+
+    /* Next Track Object Id (Optional) - 6-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_NEXT_TRACK_OBJ_ID,
+        name        : "NEXT_TRACK_OBJ_ID",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, write, write_cmd, notify ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ]
+    },
+
+    /* Current Group Object Id (Optional) - 6-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_CURRENT_GROUP_OBJ_ID,
+        name        : "CURRENT_GROUP_OBJ_ID",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, write, write_cmd, notify ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ]
+    },
+
+    /* Parent Group Object Id (Optional) - 6-octets */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_PARENT_GROUP_OBJ_ID,
+        name        : "PARENT_GROUP_OBJ_ID",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ]
+    },
+
+    /* Playing Order (Optional) - 1-octet */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_PLAYING_ORDER,
+        name        : "PLAYING_ORDER",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, write, write_cmd, notify ],
+
+        value       : 0x00,
+
+        client_config {
+            name : "PLAYING_ORDER_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Playing Order Supported(Optional) - 2-octet */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_PLAYING_ORDER_SUPPORTED,
+        name        : "PLAYING_ORDER_SUPPORTED",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read ],
+
+        value       : [ 0x00, 0x00 ]
+    },
+
+    /* Media State (Mandatory) - 1-octet */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_MEDIA_STATE,
+        name        : "MEDIA_STATE",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+
+        client_config {
+            name : "MEDIA_STATE_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Media Control Point (Optional) - 1-octet */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_MEDIA_CONTROL_POINT,
+        name        : "MEDIA_CONTROL_POINT",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ write, write_cmd, notify ],
+
+        value       : 0x00,
+
+        client_config {
+            name : "MEDIA_CONTROL_POINT_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Media Control Point Opcode Supported(Optional) - 4-octet */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_MEDIA_CONTROL_POINT_OP_SUPP,
+        name        : "MEDIA_CONTROL_POINT_OP_SUPP",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+
+        value       : [0x00, 0x00, 0x00, 0x00],
+
+        client_config {
+            name : "MEDIA_CONTROL_POINT_OP_SUPP_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Search Results Object Id(Optional) - 6-octet */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_SEARCH_RESULTS_OBJ_ID,
+        name        : "SEARCH_RESULTS_OBJ_ID",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+
+        value       : [0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+    },
+
+    /* Search Control Point(Optional) - Maximum 64-octet */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_SEARCH_CONTROL_POINT,
+        name        : "SEARCH_CONTROL_POINT",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W, FLAG_DYNLEN ],
+        properties  : [ write, write_cmd, notify ],
+
+        value       : 0x00
+    },
+
+    /* Content Control Id(mandatory) - 2 octet */
+    characteristic {
+        uuid        : GATT_GMCS_UUID_MEDIA_CONTENT_CONTROL_ID,
+        name        : "MEDIA_CONTENT_CONTROL_ID",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read ],
+
+        value       : 0x00
+    }
+},
+
+#endif /* __GATT_MCS_SERVER_DB_DBI__ */

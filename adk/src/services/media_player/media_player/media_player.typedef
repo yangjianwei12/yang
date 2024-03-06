@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2023 Qualcomm Technologies International, Ltd.-->
+
+<types name="media_player">
+    <include_header name="service_marshal_types.h"/>
+    <include_header name="audio_sources_list.h"/>
+    
+<typedef_enum name="media_player_internal_messages" basic="true" doc="Media Player internal messages">
+    /*! Group messages for each audio source */
+    
+    /*! For pausing unrouted audio sources */
+    MEDIA_PLAYER_INTERNAL_UNROUTED_PAUSE_BASE,
+    MEDIA_PLAYER_INTERNAL_MESSAGES_MAX_SOURCES = MEDIA_PLAYER_INTERNAL_UNROUTED_PAUSE_BASE + max_audio_sources,
+    
+    /*! Non-group messages must be placed afterwards, from this point. */
+</typedef_enum>
+
+<typedef_struct name="media_player_task_data_t" doc="Media Player task structure">
+    <member marshal="false" doc="Media Player main task">TaskData media_task</member>
+    <member marshal="false" doc="Media Player UI task">TaskData ui_task</member>
+    <member marshal="true" doc="List of due times (in 256-ms steps), for each pending source-specific timeout. Reserved for handover.">uint8 outstanding_timeouts[MEDIA_PLAYER_INTERNAL_MESSAGES_MAX_SOURCES - MEDIA_PLAYER_INTERNAL_UNROUTED_PAUSE_BASE]</member>
+</typedef_struct>
+
+</types>

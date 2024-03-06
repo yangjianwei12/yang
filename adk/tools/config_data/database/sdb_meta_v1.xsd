@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <xs:element name="description_user" type="xs:string" />
+  <xs:element name="description_internal" type="xs:string" />
+  <xs:element name="additional_information" type="xs:string" />
+  <xs:element name="label" type="xs:string" />
+  <xs:element name="category" type="xs:string" />
+  <xs:element name="oid" type="xs:string" />
+  <xs:element name="source_reference" type="xs:string" />
+  <xs:element name="source_default" type="xs:string" />
+  <xs:element name="units" type="xs:string" />
+  <xs:element name="access_rights" type="access_rights_enum" />
+  <xs:element name="is_internal" type="xs:boolean" default="false" />
+  <xs:element name="type" type="xs:string" /> <!-- Can take the values integer, octet_string, uint8, int8, uint16, int16, uint32, int32, uint64, int64, boolean, an enum_name or a struct_name -->
+  <xs:element name="format" type="format_enum" />
+  <xs:element name="is_array" type="xs:boolean" default="false" />
+  <xs:element name="range_min" type="xs:integer" />
+  <xs:element name="range_max" type="xs:integer" />
+  <xs:element name="array_length_min" type="xs:integer" />
+  <xs:element name="array_length_max" type="xs:integer" />
+
+  <xs:element name="table_name" type="xs:string" />
+  <xs:element name="enum" type="xs:string" />
+  <xs:element name="element" type="xs:string" />
+  
+  <xs:simpleType name="notEmptyString">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="psidType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base='xs:string'>
+          <xs:length value="0"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base='xs:integer' />
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="access_rights_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="read_write" />
+      <xs:enumeration value="read_only" />
+      <xs:enumeration value="write_only" />
+      <xs:enumeration value="not_accessible" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="format_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="signed_decimal" />
+      <xs:enumeration value="unsigned_decimal" />
+      <xs:enumeration value="hexadecimal" />
+      <xs:enumeration value="boolean" />
+      <xs:enumeration value="unicode_string" />
+      <xs:enumeration value="unpacked_unicode_string" />
+      <xs:enumeration value="mac_addr" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="function_type_enum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="set" />
+      <xs:enumeration value="get" />
+      <xs:enumeration value="init" />
+      <xs:enumeration value="inited" />
+      <xs:enumeration value="reset" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="struct_def">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="structure_element" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+              <xs:all>
+                <xs:element ref="label" minOccurs="0"/>
+                <xs:element ref="description_user" minOccurs="0"/>
+                <xs:element ref="description_internal" minOccurs="0"/>
+                <xs:element ref="type" minOccurs="0"/>
+                <xs:element ref="format" minOccurs="0"/>
+                <xs:element ref="range_min" minOccurs="0"/>
+                <xs:element ref="range_max" minOccurs="0"/>
+                <xs:element ref="is_array" minOccurs="0"/>
+                <xs:element ref="array_length_min" minOccurs="0"/>
+                <xs:element ref="array_length_max" minOccurs="0"/>
+              </xs:all>
+            <xs:attribute name="lsb_bit_position" type="xs:integer" use="required" />
+            <xs:attribute name="bit_width" type="xs:integer" use="required" />
+            <xs:attribute name="name" type="notEmptyString" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="struct_name" type="notEmptyString" use="required" />
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="enum_def">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="enum_entry" minOccurs="2" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:attribute name="enum_label" type="notEmptyString" use="required" />
+            <xs:attribute name="enum_value" type="notEmptyString" use="required" />
+            <xs:attribute name="enum_description" type="notEmptyString" use="optional" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="enum_name" type="notEmptyString" use="required" />
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="default" >
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="index1" type="xs:string" use="optional" /> <!-- Mandatory if index2 present -->
+          <xs:attribute name="index2" type="xs:string" use="optional" /> <!-- Mandatory if index3 present-->
+          <xs:attribute name="index3" type="xs:string" use="optional" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="default_list">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="default" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="function" >
+    <xs:complexType>
+      <xs:attribute name="function_name" type="notEmptyString" use="required" />
+      <xs:attribute name="type" type="function_type_enum" use="required" /> 
+      <xs:attribute name="is_for_vif" type="xs:boolean" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="function_list">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="function" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="index1" >
+    <xs:complexType>
+      <xs:attribute name="name" type="notEmptyString" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="index2" >
+    <xs:complexType>
+      <xs:attribute name="name" type="notEmptyString" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="index3" >
+    <xs:complexType>
+      <xs:attribute name="name" type="notEmptyString" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+<xs:element name="config_element">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="label" minOccurs="0"/>
+        <xs:element ref="category" minOccurs="0"/>
+        <xs:element ref="description_user" minOccurs="0"/>
+        <xs:element ref="description_internal" minOccurs="0"/>
+        <xs:element ref="additional_information" minOccurs="0"/>
+        <xs:element ref="default" minOccurs="0" /> <!-- Mutually exclusive with default_list -->
+        <xs:element ref="default_list" minOccurs="0" /> <!-- Mutually exclusive with default -->
+        <xs:element ref="oid" minOccurs="0"/>
+        <xs:element ref="source_reference" minOccurs="0"/>
+        <xs:element ref="source_default" minOccurs="0"/>
+        <xs:element ref="units" minOccurs="0"/>
+        <xs:element ref="access_rights" minOccurs="0"/>
+        <xs:element ref="is_internal" minOccurs="0"/>
+        <xs:element ref="type" minOccurs="1"/>
+        <xs:element ref="format" minOccurs="0"/>
+        <xs:element ref="is_array" minOccurs="0"/>
+        <xs:element ref="array_length_min" minOccurs="0"/>
+        <xs:element ref="array_length_max" minOccurs="0"/>
+        <xs:element ref="range_min" minOccurs="0"/>
+        <xs:element ref="range_max" minOccurs="0"/>
+        <xs:element ref="table_name" minOccurs="0"/>
+        <xs:element ref="function" minOccurs="0" /> <!-- Mutually exclusive with function_list -->
+        <xs:element ref="function_list" minOccurs="0"/> <!-- Mutually exclusive with function -->
+       </xs:all>
+      <xs:attribute name="name" type="notEmptyString" use="required" />
+      <xs:attribute name="psid" type="psidType" use="required" />
+    </xs:complexType>
+  </xs:element>
+  
+<xs:element name="config_table">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="description_user" minOccurs="0"/>
+        <xs:element ref="description_internal" minOccurs="0"/>
+        <xs:element ref="index1" minOccurs="0"/>
+        <xs:element ref="index2" minOccurs="0"/>
+        <xs:element ref="index3" minOccurs="0"/>
+        <xs:element ref="oid" minOccurs="0"/>
+        <xs:element ref="source_reference" minOccurs="0"/>
+        <xs:element ref="is_internal" minOccurs="0"/>
+       </xs:all>
+      <xs:attribute name="table_name" type="notEmptyString" use="required" />
+      <xs:attribute name="num_indices" type="xs:nonNegativeInteger" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+<xs:element name="metadata">
+  <xs:complexType mixed="true">
+    <xs:sequence>
+        <xs:element ref="enum_def" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="struct_def" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="config_element" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="config_table" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="subsystem_name" type="notEmptyString" use="required" />
+    <xs:attribute name="subsystem_layer" type="xs:string" use="optional" />
+    <xs:attribute name="subsystem_alias" type="xs:string" use="optional" />
+    <xs:attribute name="subsystem_id" type="notEmptyString" use="required" /> <!-- enum value from FILENAME_SUBSYSTEM_ID defined in filename.xml / filename_prim.h  -->
+    <xs:attribute name="version" type="xs:integer" use="required" />
+    <xs:attribute name="variant" type="xs:integer" use="optional" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+    <xs:attribute name="build_date_time" type="xs:string" use="optional" />
+  </xs:complexType>
+</xs:element>
+
+  <xs:element name="metadata_list">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+          <xs:element ref="metadata" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
+

@@ -1,0 +1,43 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright 2020 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# Configuration file for switchable cache configuration.
+# This is initially for chips running from ROM but with additional code in SQIF
+
+%cpp
+# Boot with direct-mapped cache, but provide the ability 
+# to switch to 2-way cache later
+INSTALL_SWITCHABLE_CACHE
+
+# PM RAM used by 2-way cache in words
+PM_RAM_2WAY_CACHE_BANK_SIZE_WORDS=0x2200
+
+# Start of 2-way P1 cache
+PM_RAM_2WAY_P1_CACHE_START_ADDRESS=0x04057800
+
+# PM RAM used by DM cache in words
+PM_RAM_DM_CACHE_BANK_SIZE_WORDS=0x200
+
+# Start of Direct-mapped P1 cache
+PM_RAM_DM_P1_CACHE_START_ADDRESS=0x0405F800
+
+# Default cache size / P1 start (allowing for 2-way case)
+PM_RAM_CACHE_BANK_SIZE_WORDS=PM_RAM_2WAY_CACHE_BANK_SIZE_WORDS
+PM_RAM_P1_CACHE_START_ADDRESS=PM_RAM_2WAY_P1_CACHE_START_ADDRESS
+
+%build
+USE_2WAY_CACHE=1
+
+%list ALL_SRCDIRS
+components/pm_cache
+
+# List of global include paths
+%list ALL_INCDIRS
+components/pm_cache
+
+# List of libraries to build
+%list CFG_LIBS
+components/pm_cache/pm_cache

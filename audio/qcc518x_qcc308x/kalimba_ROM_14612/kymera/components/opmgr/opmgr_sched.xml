@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 Qualcomm Technologies International, Ltd. -->
+<!-- Declaration of the static scheduler task used by the "opmgr" component.
+     See the header of kymera/build/gen_sched.py for an explanation of
+     what each element does. -->
+
+<scheduler>
+    <task>
+        <name value="opmgr"/>
+        <init value="opmgr_task_init"/>
+        <handler value="opmgr_task_handler"/>
+        <queue value="OPMGR_TASK_QUEUE_ID"/>
+    </task>
+</scheduler>

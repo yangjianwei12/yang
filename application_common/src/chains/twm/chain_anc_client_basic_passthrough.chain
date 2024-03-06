@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2021 - 2023 Qualcomm Technologies International, Ltd.-->
+<!--Basic passthrough connected to Mic Framework-->
+
+<chain name="CHAIN_ANC_CLIENT_BASIC_PASSTHROUGH" id="1" generate_operator_roles_enum="False" generate_endpoint_roles_enum="False">
+
+    <include_header name="app_chain_config.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+    
+    <operator name="OPR_BASIC_PASSTHROUGH" id="CAP_ID_DOWNLOAD_PASSTHROUGH">
+        <sink name="FF_IN" terminal="0"/>
+        <sink name="FB_IN" terminal="1"/>
+        <sink name="REF_IN" terminal="2"/>
+        <sink name="VOICE_IN" terminal="3"/>
+        <sink name="BCM_IN" terminal="4"/>
+        <source name="FF_OUT" terminal="0"/>
+        <source name="FB_OUT" terminal="1"/>
+        <source name="REF_OUT" terminal="2"/>
+        <source name="VOICE_OUT" terminal="3"/>
+        <source name="BCM_OUT" terminal="4"/>
+    </operator>
+    
+    <input sink="OPR_BASIC_PASSTHROUGH.FF_IN" role="EPR_BPT_FF_IN"/>
+    <input sink="OPR_BASIC_PASSTHROUGH.FB_IN" role="EPR_BPT_FB_IN"/>
+    <input sink="OPR_BASIC_PASSTHROUGH.REF_IN" role="EPR_BPT_REF_IN"/>
+    <input sink="OPR_BASIC_PASSTHROUGH.VOICE_IN" role="EPR_BPT_VOICE_IN"/>
+    <input sink="OPR_BASIC_PASSTHROUGH.BCM_IN" role="EPR_BPT_BCM_IN"/>
+
+    <output source="OPR_BASIC_PASSTHROUGH.FF_OUT" role="EPR_BPT_FF_OUT"/>
+    <output source="OPR_BASIC_PASSTHROUGH.FB_OUT" role="EPR_BPT_FB_OUT"/>
+    <output source="OPR_BASIC_PASSTHROUGH.REF_OUT" role="EPR_BPT_REF_OUT"/>
+    <output source="OPR_BASIC_PASSTHROUGH.VOICE_OUT" role="EPR_BPT_VOICE_OUT"/>
+    <output source="OPR_BASIC_PASSTHROUGH.BCM_OUT" role="EPR_BPT_BCM_OUT"/>
+    
+</chain>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 Qualcomm Technologies International, Ltd. -->
+<!-- Declaration of the static scheduler task used by the "mem_utils" component.
+     See the header of kymera/build/gen_sched.py for an explanation of
+     what each element does. -->
+
+<scheduler>
+    <task>
+        <onlyif value="defined(INSTALL_CAPABILITY_CONSTANT_EXPORT)"/>
+        <name value="mem_utils"/>
+        <init value="mem_utils_task_init"/>
+        <handler value="mem_utils_task"/>
+        <queue value="MEM_UTILS_QUEUE"/>
+        <cores value="PROC_BIT_PROCESSOR_0"/>
+    </task>
+</scheduler>

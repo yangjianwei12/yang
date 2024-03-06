@@ -1,0 +1,79 @@
+/******************************************************************************
+ *  Copyright (c) 2022-2023 Qualcomm Technologies International, Ltd.
+ *  %%version
+ *  %%appversion
+ *
+ *  FILE
+ *      gatt_gmas_server_db.dbi
+ *
+ *  DESCRIPTION
+ *
+ *      This file defines the Gaming Mode Audio Service in JSON format.
+ *      This file is included in the main application data base file which
+ *      is used to produce ATT flat data base.
+ *
+ *****************************************************************************/
+
+#ifndef __GATT_GMAS_SERVER_DB_DBI__
+#define __GATT_GMAS_SERVER_DB_DBI__
+
+#include "gatt_gmas_server_uuids.h"
+#include "csr_bt_config_global.h"
+
+/* Primary service declaration of Gaming Audio Service */
+
+primary_service {
+    uuid : UUID_GAMING_AUDIO_SERVICE,
+    name : "GAMING_AUDIO_SERVICE",
+
+#if defined(ENABLE_GMAP_UGG_BGS)
+    /* Ugg features characteristic - 1-octet. */
+    characteristic {
+        uuid        : UUID_GMAS_UGG_FEATURES,
+        name        : "GMAS_UGG_FEATURES",
+        flags       : [ FLAG_IRQ ],
+        properties  : [ read ],
+        value       : 0x00
+    },
+
+    /* Bgs features characteristic - 1-octet. */
+    characteristic {
+        uuid        : UUID_GMAS_BGS_FEATURES,
+        name        : "GMAS_BGS_FEATURES",
+        flags       : [ FLAG_IRQ ],
+        properties  : [ read ],
+        value       : 0x00
+    },
+#endif
+
+#if defined(ENABLE_GMAP_UGT_BGR)
+    /* Ugt features characteristic - 1-octet. */
+    characteristic {
+        uuid        : UUID_GMAS_UGT_FEATURES,
+        name        : "GMAS_UGT_FEATURES",
+        flags       : [ FLAG_IRQ ],
+        properties  : [ read ],
+        value       : 0x00
+    },
+
+    /* Bgr features characteristic - 1-octet. */
+    characteristic {
+        uuid        : UUID_GMAS_BGR_FEATURES,
+        name        : "GMAS_BGR_FEATURES",
+        flags       : [ FLAG_IRQ ],
+        properties  : [ read ],
+        value       : 0x00
+    },
+#endif
+
+    /* Role characteristic - 1-octet. */
+    characteristic {
+        uuid        : UUID_GMAS_ROLE,
+        name        : "GMAS_ROLE",
+        flags       : [ FLAG_IRQ ],
+        properties  : [ read ],
+        value       : 0x00
+    }
+},
+
+#endif /* __GATT_GMAS_SERVER_DB_DBI__ */

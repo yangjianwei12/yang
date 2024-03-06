@@ -1,0 +1,28 @@
+############################################################################
+# Copyright (c) 2021 Qualcomm Technologies International, Ltd.
+############################################################################
+
+%cpp
+
+%list CFG_CAPABILITIES
+ML_NNOPS
+
+%list ALL_SRCDIRS
+capabilities/ml_nnops
+
+%list ALL_INCDIRS
+capabilities/ml_nnops
+# Include public header file paths for ML NN operator library
+../lib/ml/nnops
+# Include common headers for ML NN operator library
+../lib/ml/common
+# Include headers for the ML Operator interface
+components/ml_modules/ml_op_interface
+
+%list CFG_LIBS
+capabilities/ml_nnops/ml_nnops
+components/ml_modules/ml_op_interface/ml_op_interface
+../lib_private/eai/eai
+
+%list MAXIM_C_LIBS
+../lib_private/eai/eai

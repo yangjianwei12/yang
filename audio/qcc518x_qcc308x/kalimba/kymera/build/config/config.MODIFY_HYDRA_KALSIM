@@ -1,0 +1,35 @@
+############################################################################
+# Copyright (c) 2015 - 2021 Qualcomm Technologies International, Ltd.
+############################################################################
+# common defintions for hydra subsystems builds running on Kalsim
+
+%include config.MODIFY_KALSIM
+
+%cpp
+SUBMSG_LOCAL_DELIVERY
+-INSTALL_AUDIO_RESOURCE_ROUTING
+-INSTALL_TEMPERATURE_MONITORING
+NONSECURE_PROCESSING
+-USE_VAD_QVA_CAPS_LICENSING
+
+%list ALL_SRCDIRS
+components/kalsim_msgif
+components/kalsim_audio_slots
+
+%list ALL_INCDIRS
+components/kalsim_msgif
+components/kalsim_audio_slots
+
+%list CFG_LIBS
+components/kalsim_msgif/kalsim_msgif
+components/kalsim_audio_slots/kalsim_audio_slots
+
+#-components/hydra_modules/submsg/submsg
+#-components/hydra_modules/bus_message/bus_message
+
+%build
+-BUILD_TEMPERATURE_MONITORING
+USE_VAD_QVA_CAPS_LICENSING=
+
+%options
+SUPPORTS_LICENSING=False

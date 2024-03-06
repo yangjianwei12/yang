@@ -1,0 +1,14 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright 2019 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# Configuration file to make use of Kalimba's 2-Way cache.
+# This is useful for chips running from SQIF and having enough Program RAM.
+# If neither this file nor config.MODIFY_MAOR_PM_RAM_2WAYHALF_CACHE is
+# included, then direct cache will be used.
+
+%cpp
+#Macro to map SQIF_FLASH into NVMEM Window 1 of the DM and PM
+RUN_CAPABILITIES_FROM_SQIF

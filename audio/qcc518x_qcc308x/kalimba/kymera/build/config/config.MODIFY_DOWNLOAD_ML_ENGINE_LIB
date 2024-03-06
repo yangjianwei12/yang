@@ -1,0 +1,27 @@
+############################################################################
+# Copyright (c) 2021 Qualcomm Technologies International, Ltd.
+############################################################################
+# Definitions required to build the Downloadable ML Engine
+
+#
+# Capabilities/files to include in the build
+#
+
+%list ALL_SRCDIRS
+capabilities/download_ml_engine_lib
+
+%list ALL_INCDIRS
+capabilities/download_ml_engine_lib
+capabilities/ml_engine
+support_lib/ml_engine_lib
+
+%list CFG_LIBS
+capabilities/download_ml_engine_lib/download_ml_engine_lib
+support_lib/ml_engine_lib/ml_engine_lib
+
+%build
+INSTALL_DOWNLOAD_ML_ENGINE_LIB_SUPPORT=True
+
+%list PREBUILT_LIBS
+libeai.a
+libml_modules.a

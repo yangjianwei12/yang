@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2021-2023 Qualcomm Technologies International, Ltd.-->
+
+<types name="le_broadcast_manager_sync" standalone="true">
+
+    <inherit header="marshal_common.h" count="NUMBER_OF_COMMON_MARSHAL_OBJECT_TYPES" x_macro_table="MARSHAL_COMMON_TYPES_TABLE"/>
+    
+    <include_header name="scan_delegator_role.h"/>
+    <include_header name="panic.h"/>
+
+<typedef_header_source>
+<![CDATA[
+#define MARSHAL_TYPE_le_bm_pa_sync_t MARSHAL_TYPE_uint8
+]]>
+</typedef_header_source>
+
+    <source>
+<![CDATA[
+#include "domain_marshal_types.h"
+
+#ifndef HOSTED_TEST_ENVIRONMENT
+COMPILE_TIME_ASSERT(sizeof(le_bm_pa_sync_t) == sizeof(uint8), le_bm_pa_sync_t_uint8_mismatched);
+#endif
+
+#ifndef HOSTED_TEST_ENVIRONMENT
+/* The sync structures need to match the size and layout of the equivalent scan delegator client structures as the
+   non-dynamic array members of the structures are copied directly.
+   The only different between the sync structures and the equivalent scan delegator client structures is that
+   the sync structures are a single allocation of dynamic length, whereas the scan delegator client structures
+   have a seperate allocation for the dynamic length metadata/code fields. The peer signalling marshal
+   interface requires the objects to be a single allocated.
+
+   The following assertions check for structure equivalence. If a mismatch is found
+   the structures in this file should be updated to match the equivalent ones.
+*/
+COMPILE_TIME_ASSERT(offsetof(le_broadcast_manager_sync_add_broadcast_source_t, pa_sync) == offsetof(scan_delegator_client_add_broadcast_source_t, pa_sync), le_broadcast_manager_sync_add_broadcast_source_t_mismatched_pa_sync);
+COMPILE_TIME_ASSERT(offsetof(le_broadcast_manager_sync_add_broadcast_source_t, advertiser_address) == offsetof(scan_delegator_client_add_broadcast_source_t, advertiser_address), le_broadcast_manager_sync_add_broadcast_source_t_mismatched_advertiser_address);
+COMPILE_TIME_ASSERT(offsetof(le_broadcast_manager_sync_add_broadcast_source_t, broadcast_id) == offsetof(scan_delegator_client_add_broadcast_source_t, broadcast_id), le_broadcast_manager_sync_add_broadcast_source_t_mismatched_broadcast_id);
+COMPILE_TIME_ASSERT(offsetof(le_broadcast_manager_sync_add_broadcast_source_t, source_adv_sid) == offsetof(scan_delegator_client_add_broadcast_source_t, source_adv_sid), le_broadcast_manager_sync_add_broadcast_source_t_mismatched_source_adv_sid);
+COMPILE_TIME_ASSERT(offsetof(le_broadcast_manager_sync_add_broadcast_source_t, pa_interval) == offsetof(scan_delegator_client_add_broadcast_source_t, pa_interval), le_broadcast_manager_sync_add_broadcast_source_t_mismatched_pa_interval);
+COMPILE_TIME_ASSERT(offsetof(le_broadcast_manager_sync_add_broadcast_source_t, assistant_address) == offsetof(scan_delegator_client_add_broadcast_source_t, assistant_address), le_broadcast_manager_sync_add_broadcast_source_t_mismatched_assistant_address);
+COMPILE_TIME_ASSERT(offsetof(le_broadcast_manager_sync_add_broadcast_source_t, num_subgroups) == offsetof(scan_delegator_client_add_broadcast_source_t, num_subgroups), le_broadcast_manager_sync_add_broadcast_source_t_mismatched_num_sub_groups);
+
+#endif
+
+static uint32 leBroadcastManager_SyncGetAddBroadcastSourceSubGroupsArrayElements(
+                    const void *parent,
+                    const marshal_member_descriptor_t *member_descriptor,
+                    uint32 array_element)
+{
+    const le_broadcast_manager_sync_add_broadcast_source_t *obj = parent;
+
+    PanicFalse(obj && member_descriptor);
+    PanicFalse(array_element == 0);
+    PanicFalse(member_descriptor->offset == offsetof(le_broadcast_manager_sync_add_broadcast_source_t, subgroups));
+
+    return obj->subgroups_length;
+}
+
+static uint32 leBroadcastManager_SyncGetModifyBroadcastSourceSubGroupsArrayElements(
+                    const void *parent,
+                    const marshal_member_descriptor_t *member_descriptor,
+                    uint32 array_element)
+{
+    const le_broadcast_manager_sync_modify_broadcast_source_t *obj = parent;
+
+    PanicFalse(obj && member_descriptor);
+    PanicFalse(array_element == 0);
+    PanicFalse(member_descriptor->offset == offsetof(le_broadcast_manager_sync_modify_broadcast_source_t, subgroups));
+
+    return obj->subgroups_length;
+}
+
+]]>
+    </source>
+
+    <typedef_struct name="le_broadcast_manager_sync_add_broadcast_source_t" has="dynamic_array" array_elements_cb="leBroadcastManager_SyncGetAddBroadcastSourceSubGroupsArrayElements" doc="">
+        <member marshal="true" doc="">le_bm_pa_sync_t pa_sync</member>
+        <member marshal="true" doc="">typed_bdaddr advertiser_address</member>
+        <member marshal="true" doc="">uint32 broadcast_id</member>
+        <member marshal="true" doc="">uint8 source_adv_sid</member>
+        <member marshal="true" doc="">uint16 pa_interval</member>
+        <member marshal="true" doc="">typed_bdaddr assistant_address</member>
+        <member marshal="true" doc="">uint8 num_subgroups</member>
+        <member marshal="true" doc="">uint8 subgroups_length</member>
+        <member marshal="true" doc="">uint8 subgroups[1]</member>
+    </typedef_struct>
+
+    <typedef_struct name="le_broadcast_manager_sync_modify_broadcast_source_t"
+        has="dynamic_array"
+        array_elements_cb="leBroadcastManager_SyncGetModifyBroadcastSourceSubGroupsArrayElements"
+        doc="">
+
+        <member marshal="true" doc="">uint8 source_id</member>
+        <member marshal="true" doc="">uint8 pa_sync</member>
+        <member marshal="true" doc="">uint16 pa_interval</member>
+        <member marshal="true" doc="">uint8 num_subgroups</member>
+        <member marshal="true" doc="">uint8 subgroups_length</member>
+        <member marshal="true" doc="">uint8 subgroups[1]</member>
+    </typedef_struct>
+
+    <typedef_struct name="le_broadcast_manager_sync_remove_broadcast_source_t" doc="">
+        <member marshal="true" doc="">uint8 source_id</member>
+    </typedef_struct>
+
+    <typedef_struct name="le_broadcast_manager_sync_set_broadcast_code_t" doc="">
+        <member marshal="true" doc="">uint8 source_id</member>
+        <member marshal="true" doc="">uint8 broadcast_code[SCAN_DELEGATOR_BROADCAST_CODE_SIZE]</member>
+    </typedef_struct>
+
+    <typedef_struct name="le_broadcast_manager_sync_set_source_match_address_t" doc="">
+        <member marshal="true" doc="">uint8 source_id</member>
+        <member marshal="true" doc="">typed_bdaddr source_match_address</member>
+    </typedef_struct>
+
+    <typedef_enum name="le_broadcast_sync_command_t" basic="true" doc="Commands to sync broadcast audio">
+        le_broadcast_sync_command_mute,
+        le_broadcast_sync_command_unsync
+    </typedef_enum>
+
+    <typedef_struct name="le_broadcast_manager_sync_ready_to_start_ind_t" doc="Secondary sends this message to Primary when it has synced to a BIS">
+        <member marshal="true" doc="Broadcast Source ID that is ready to start">uint8 source_id</member>
+    </typedef_struct>
+
+    <typedef_struct name="le_broadcast_manager_sync_unmute_ind_t" doc="Primary sends this to Secondary to tell it when to unmute.">
+        <member marshal="true" doc="Broadcast Source ID to un-mute">uint8 source_id</member>
+        <member marshal="true" doc="The time at which to un-mute">marshal_rtime_t unmute_time</member>
+    </typedef_struct>
+
+    <typedef_struct name="le_broadcast_manager_sync_command_ind_t" doc="Primary sends commands to secondary to syncronise broadcast mute and stop.">
+        <member marshal="true" doc="Command to send">le_broadcast_sync_command_t command</member>
+    </typedef_struct>
+    
+    <typedef_struct name="le_broadcast_manager_sync_pause_ind_t" doc="Primary sends this to Secondary to tell it when to pause.">
+        <member marshal="true" doc="Broadcast Source ID to pause">uint8 source_id</member>
+    </typedef_struct>
+    
+    <typedef_struct name="le_broadcast_manager_sync_resume_ind_t" doc="Primary sends this to Secondary to tell it when to resume.">
+        <member marshal="true" doc="Broadcast Source ID to resume">uint8 source_id</member>
+    </typedef_struct>
+    
+    <typedef_struct name="le_broadcast_manager_sync_to_source_t" doc="Primary sends this to Secondary to tell it when to sync to the BIS of a specific source.">
+        <member marshal="true" doc="Broadcast Source ID to sync to">uint8 source_id</member>
+    </typedef_struct>
+
+</types>

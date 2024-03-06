@@ -1,0 +1,26 @@
+var group__select__focus__domains =
+[
+    [ "focus_select_audio_tie_break_t", "group__select__focus__domains.html#ga469a893cf71af76ff981a6a43645e928", null ],
+    [ "focus_select_voice_tie_break_t", "group__select__focus__domains.html#gab739897625add45e06f9c5c0efd02a36", null ],
+    [ "FocusSelect_CompileFocusStatus", "group__select__focus__domains.html#gaff62b7b2ebe6ff5d1e062dbabddde9e3", null ],
+    [ "FocusSelect_ConfigInit", "group__select__focus__domains.html#ga6d99184f1c89c9584abc02ae05a4b3d2", null ],
+    [ "FocusSelect_ConfigureAudioSourceTieBreakOrder", "group__select__focus__domains.html#ga87879365f8650a9e3a5c24af32912640", null ],
+    [ "FocusSelect_ConfigureVoiceSourceTieBreakOrder", "group__select__focus__domains.html#gad04bf7ebd8f9051d5c678d1ea79d28bb", null ],
+    [ "FocusSelect_DeviceHasVoiceOrAudioForegroundFocus", "group__select__focus__domains.html#gad602252ff1d7fe7e1b8fd7f05e26f4fc", null ],
+    [ "FocusSelect_GetAudioSourceForContext", "group__select__focus__domains.html#ga4466b776b61e291660168312559bb30c", null ],
+    [ "FocusSelect_GetAudioSourceForUiInput", "group__select__focus__domains.html#gaff376340c64496bee0306a6b86455d33", null ],
+    [ "FocusSelect_GetDeviceForContext", "group__select__focus__domains.html#ga46ebd370cd29fffd6e64b153c1b8d988", null ],
+    [ "FocusSelect_GetDeviceForUiInput", "group__select__focus__domains.html#ga3aa630166adc27a9e2834f2b5bf0cba4", null ],
+    [ "FocusSelect_GetFocusedSourceForAudioRouting", "group__select__focus__domains.html#gacc2671e244d588b41bb554428a88b1dd", null ],
+    [ "FocusSelect_GetFocusForDevice", "group__select__focus__domains.html#gaa46c9b14b22f086b33cdc442d57630ee", null ],
+    [ "FocusSelect_GetVoiceSourceForContext", "group__select__focus__domains.html#ga942bfc710bd2e2e17537b66843476a74", null ],
+    [ "FocusSelect_GetVoiceSourceForUiInput", "group__select__focus__domains.html#ga4b9fe399c7b491767577334d693ea5a8", null ],
+    [ "FocusSelect_GetVoiceSourceInContextArray", "group__select__focus__domains.html#gae95bb5c32d5b620fc19c2aeaccfb5431", null ],
+    [ "FocusSelect_HandleTieBreak", "group__select__focus__domains.html#ga4bf6861b0e0327f746093e895157d534", null ],
+    [ "FocusSelect_HandleVoiceTieBreak", "group__select__focus__domains.html#ga248950df79b2381bb1520a4da9770dbd", null ],
+    [ "FocusSelect_Init", "group__select__focus__domains.html#gab2d3f23ba676f5d1544beda1650a71e6", null ],
+    [ "FocusSelect_IsAudioSourceContextConnected", "group__select__focus__domains.html#gab3b141ec9266a90f8cb8eeb601f2782f", null ],
+    [ "FocusSelect_IsSourceContextHighestPriority", "group__select__focus__domains.html#ga8656874e7472ed8b2c8a028fa058daa7", null ],
+    [ "FocusSelect_SetCacheDataForSource", "group__select__focus__domains.html#ga29b6611683a6cc65bd4a783c9598bd26", null ],
+    [ "FocusSelect_TieBreakInit", "group__select__focus__domains.html#ga66f37e7b08bb92cfbc7a4017d1151906", null ]
+];

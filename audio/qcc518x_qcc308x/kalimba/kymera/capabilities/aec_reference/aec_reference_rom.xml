@@ -1,0 +1,1377 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Copyright (c) 2014 - 2017 Qualcomm Technologies International, Ltd. -->
+<ns1:UnifiedParameterSchema xmlns:ns1="com.csr.cps.4">
+	<Version>
+		<Revision>$Id: //depot/dspsw/maor_rom_v20/kalimba/kymera/capabilities/aec_reference/aec_reference.xml#1 $</Revision>
+		<ChangeList>$Change: 3572284 $</ChangeList>
+		<ChangeDate>$DateTime: 2020/12/11 20:12:21 $</ChangeDate>
+		<UserID>$Author: pm33 $</UserID>
+	</Version>
+<!--
+        **************** CAPABILITY ****************
+                                 only one per file!
+-->
+	<CodeBase>
+		<BaseName>aec_reference</BaseName>
+		<CompileConfig>COMPILED_CONFIG</CompileConfig>
+		<ModeStatistic>CUR_MODE_OFFSET</ModeStatistic>
+	</CodeBase>
+<!--
+        ***************** VARIANTS ******************
+-->
+    <Capability>
+        <CapabilityID>0x0043</CapabilityID>
+        <AlternativeCapabilityID>0x4007</AlternativeCapabilityID>
+        <VariantID>AECREF</VariantID>
+        <CapabilityName>AECRef</CapabilityName>
+        <ProductName>Aec Reference v. 3</ProductName>
+        <!-- The sample rate is set by host -->
+        <SampleRate>0</SampleRate>
+        <VersionMajor>2</VersionMajor>
+    </Capability>
+<!--
+        ***************** CONSTANT DEFINITIONS ******************
+-->
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_MIKE_1</Symbol>
+    <Value>0x0001</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_MIKE_2</Symbol>
+    <Value>0x0002</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_MIKE_3</Symbol>
+    <Value>0x0004</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_MIKE_4</Symbol>
+    <Value>0x0008</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_MIKE_5</Symbol>
+    <Value>0x00010000</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_MIKE_6</Symbol>
+    <Value>0x00020000</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_MIKE_7</Symbol>
+    <Value>0x00040000</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_MIKE_8</Symbol>
+    <Value>0x00080000</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_MIKE_1_INPUT_ONLY</Symbol>
+    <Value>0x00100000</Value>
+  </Constant>
+
+
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_SPKR_1</Symbol>
+    <Value>0x0010</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_SPKR_2</Symbol>
+    <Value>0x0020</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_SPKR_3</Symbol>
+    <Value>0x0040</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_SPKR_4</Symbol>
+    <Value>0x0080</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_SPKR_5</Symbol>
+    <Value>0x0100</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_SPKR_6</Symbol>
+    <Value>0x0200</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_SPKR_7</Symbol>
+    <Value>0x0400</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_SPKR_8</Symbol>
+    <Value>0x0800</Value>
+  </Constant>
+
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_TYPE_PARA</Symbol>
+    <Value>0x1000</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_TYPE_MIX</Symbol>
+    <Value>0x2000</Value>
+  </Constant>
+  <Constant>
+    <Comment/>
+    <Symbol>CONN_TYPE_REF</Symbol>
+    <Value>0x4000</Value>
+  </Constant>
+  <!--
+        ***************** COMPILE-TIME BITFLAGS ******************
+-->
+    <BlockBitField>
+        <Comment/>
+        <Symbol>uses_SIDETONE</Symbol>
+        <Value>0x8000</Value>
+        <State>1</State>
+    </BlockBitField>
+
+    <BlockBitField>
+        <Comment/>
+        <Symbol>uses_AEC_REFERENCE</Symbol>
+        <Value>0x10000</Value>
+        <State>1</State>
+    </BlockBitField>
+<!--
+        ***************** RUN-TIME BITFLAGS ******************
+-->
+    <PiecewiseBitField>
+        <Comment/>
+        <Symbol>SIDETONEENA</Symbol>
+        <Value>0x000010</Value>
+        <State>0</State>
+        <Display>Bypass Sidetone</Display>
+        <Description>Bypass the Sidetone module.</Description>
+        <ConfigParam>CONFIG</ConfigParam>
+    </PiecewiseBitField>
+    <PiecewiseBitField>
+        <Comment/>
+        <Symbol>SIDETONE_DISABLE</Symbol>
+        <Value>0x000008</Value>
+        <State>1</State>
+        <Display>Disable Sidetone (Reboot needed)</Display>
+        <Description>Disable Sidetone.</Description>
+        <ConfigParam>CONFIG</ConfigParam>
+    </PiecewiseBitField>
+    <PiecewiseBitField>
+        <Comment/>
+        <Symbol>SUPPORT_HW_SIDETONE</Symbol>
+        <Value>0x000004</Value>
+        <State>0</State>
+        <Display>Support HW sidetone </Display>
+        <Description>Support HW sidetone. Change of this flag in run time wont be effective.</Description>
+        <ConfigParam>CONFIG</ConfigParam>
+    </PiecewiseBitField>
+
+<!--
+        ***************** STATISTIC ENUMERATIONS ******************
+-->
+    <StatusBitField>
+		<Comment/>
+		<Symbol>SYSMODE.STATIC</Symbol>
+		<Value>0</Value>
+		<VariantID/>
+		<StatRef>CUR_MODE_OFFSET</StatRef>
+		<Indicator>S</Indicator>
+		<Display>Mode: Static</Display>
+		<BitmapID/>
+		<Point/>
+	</StatusBitField>
+	<StatusBitField>
+		<Comment/>
+		<Symbol>SYSMODE.FULL</Symbol>
+		<Value>1</Value>
+		<VariantID/>
+		<StatRef>CUR_MODE_OFFSET</StatRef>
+		<Indicator>F</Indicator>
+		<Display>Mode: Full</Display>
+		<BitmapID/>
+		<Point/>
+	</StatusBitField>
+  <StatusBitField>
+    <Comment/>
+    <Symbol>RATEMATCHING_SUPPORT_NONE</Symbol>
+    <Value>0</Value>
+    <VariantID/>
+    <StatRef>RATE_ENACT_MIC</StatRef>
+    <Indicator>0</Indicator>
+    <Display>(NONE)</Display>
+    <BitmapID/>
+    <Point/>
+  </StatusBitField>
+  <StatusBitField>
+    <Comment/>
+    <Symbol>RATEMATCHING_SUPPORT_SW</Symbol>
+    <Value>1</Value>
+    <VariantID/>
+    <StatRef>RATE_ENACT_MIC</StatRef>
+    <Indicator>1</Indicator>
+    <Display>(SW)</Display>
+    <BitmapID/>
+    <Point/>
+  </StatusBitField>
+  <StatusBitField>
+    <Comment/>
+    <Symbol>RATEMATCHING_SUPPORT_HW</Symbol>
+    <Value>2</Value>
+    <VariantID/>
+    <StatRef>RATE_ENACT_MIC</StatRef>
+    <Indicator>2</Indicator>
+    <Display>(HW)</Display>
+    <BitmapID/>
+    <Point/>
+  </StatusBitField>
+  <StatusBitField>
+    <Comment/>
+    <Symbol>RATEMATCHING_SUPPORT_AUTO</Symbol>
+    <Value>3</Value>
+    <VariantID/>
+    <StatRef>RATE_ENACT_MIC</StatRef>
+    <Indicator>3</Indicator>
+    <Display>(AUTO)</Display>
+    <BitmapID/>
+    <Point/>
+  </StatusBitField>
+  <StatusBitField>
+    <Comment/>
+    <Symbol>RATEMATCHING_SUPPORT_NONE</Symbol>
+    <Value>0</Value>
+    <VariantID/>
+    <StatRef>RATE_ENACT_SPKR</StatRef>
+    <Indicator>0</Indicator>
+    <Display>(NONE)</Display>
+    <BitmapID/>
+    <Point/>
+  </StatusBitField>
+  <StatusBitField>
+    <Comment/>
+    <Symbol>RATEMATCHING_SUPPORT_SW</Symbol>
+    <Value>1</Value>
+    <VariantID/>
+    <StatRef>RATE_ENACT_SPKR</StatRef>
+    <Indicator>1</Indicator>
+    <Display>(SW)</Display>
+    <BitmapID/>
+    <Point/>
+  </StatusBitField>
+  <StatusBitField>
+    <Comment/>
+    <Symbol>RATEMATCHING_SUPPORT_HW</Symbol>
+    <Value>2</Value>
+    <VariantID/>
+    <StatRef>RATE_ENACT_SPKR</StatRef>
+    <Indicator>2</Indicator>
+    <Display>(HW)</Display>
+    <BitmapID/>
+    <Point/>
+  </StatusBitField>
+  <StatusBitField>
+    <Comment/>
+    <Symbol>RATEMATCHING_SUPPORT_AUTO</Symbol>
+    <Value>3</Value>
+    <VariantID/>
+    <StatRef>RATE_ENACT_SPKR</StatRef>
+    <Indicator>3</Indicator>
+    <Display>(AUTO)</Display>
+    <BitmapID/>
+    <Point/>
+  </StatusBitField>
+  <!--
+        ***************** PARAMETERS ******************
+-->
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Config" subgroup="Config" >CONFIG</Symbol>
+        <Display>Config</Display>
+        <Default>0x2080</Default>
+        <Precision>1</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_UINT</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>1</Max>
+        <Description/>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment>Microphone Gains</Comment>
+        <Symbol/>
+        <Display/>
+        <Default/>
+        <Precision/>
+        <Q/>
+        <Conversion/>
+        <Mult/>
+        <Units/>
+        <Min/>
+        <Max/>
+        <Description/>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Gains" subgroup="Gains" >ADC_GAIN1</Symbol>
+        <Display>Gain Sink 1</Display>
+        <Default>0x0000CF</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>0.01666666666</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>90</Max>
+        <Description>System Codec ADC gain setting</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Gains" subgroup="Gains" >ADC_GAIN2</Symbol>
+        <Display>Gain Sink 2</Display>
+        <Default>0x0000CF</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>0.01666666666</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>90</Max>
+        <Description>System Codec ADC gain setting</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Gains" subgroup="Gains" >ADC_GAIN3</Symbol>
+        <Display>Gain Sink 3</Display>
+        <Default>0x0000CF</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>0.01666666666</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>90</Max>
+        <Description>System Codec ADC gain setting</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Gains" subgroup="Gains" >ADC_GAIN4</Symbol>
+        <Display>Gain Sink 4</Display>
+        <Default>0x0000CF</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>0.01666666666</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>90</Max>
+        <Description>System Codec ADC gain setting</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Gains" subgroup="Gains" >ADC_GAIN5</Symbol>
+        <Display>Gain Sink 5</Display>
+        <Default>0x0000CF</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>0.01666666666</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>90</Max>
+        <Description>System Codec ADC gain setting</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Gains" subgroup="Gains" >ADC_GAIN6</Symbol>
+        <Display>Gain Sink 6</Display>
+        <Default>0x0000CF</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>0.01666666666</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>90</Max>
+        <Description>System Codec ADC gain setting</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Gains" subgroup="Gains" >ADC_GAIN7</Symbol>
+        <Display>Gain Sink 7</Display>
+        <Default>0x0000CF</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>0.01666666666</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>90</Max>
+        <Description>System Codec ADC gain setting</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Gains" subgroup="Gains" >ADC_GAIN8</Symbol>
+        <Display>Gain Sink 8</Display>
+        <Default>0x0000CF</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>0.01666666666</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>90</Max>
+        <Description>System Codec ADC gain setting</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment>Sidetone with High-Pass Filters</Comment>
+        <Symbol/>
+        <Display/>
+        <Default/>
+        <Precision/>
+        <Q/>
+        <Conversion/>
+        <Mult/>
+        <Units/>
+        <Min/>
+        <Max/>
+        <Description/>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Sidetone" subgroup="Sidetone" >ST_CLIP_POINT</Symbol>
+        <Display>Sidetone Clip</Display>
+        <Default>1.0</Default>
+        <Precision>1</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DB</Conversion>
+        <Mult/>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>0</Max>
+        <Description>Target point above which the sidetone signal will be forced to clip to avoid saturation over DAC after mixing with receive signal.</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Sidetone" subgroup="Sidetone" >ST_ADJUST_LIMIT</Symbol>
+        <Display>Gain Adjustment Limit</Display>
+        <Default>1.0</Default>
+        <Precision>1</Precision>
+        <Q>9.N</Q>
+        <Conversion>FORMAT_DB</Conversion>
+        <Mult/>
+        <Units>dB</Units>
+        <Min>0</Min>
+        <Max>45</Max>
+        <Description>Maximum digital limit allowed in the sidetone path prior to mixing with receive signal. Above this value sidetone level won't change even volume changes.</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol display="CHECKBOX"  group="Sidetone" subgroup="Sidetone" >STF_SWITCH</Symbol>
+        <Display>Enable Filter</Display>
+        <Default>0</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_UINT</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>Switch to turn on/off sidetone filter.</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Sidetone" subgroup="Sidetone" hide="true">STF_NOISE_LOW_THRES</Symbol>
+        <Display>Low Filter Threshold</Display>
+        <Default>0.0</Default>
+        <Precision>2</Precision>
+        <Q>8.N</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>3.01029995663981</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>0</Max>
+        <Description>Sidetone filter will be deactivated if noise level is below this threshold.</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Sidetone" subgroup="Sidetone" hide="true">STF_NOISE_HIGH_THRES</Symbol>
+        <Display>High Filter Threshold</Display>
+        <Default>0.0</Default>
+        <Precision>2</Precision>
+        <Q>8.N</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>3.01029995663981</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>0</Max>
+        <Description>Sidetone filter will be activated only if noise level is above this threshold.</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Sidetone" subgroup="Sidetone" >STF_GAIN_EXP</Symbol>
+        <Display>Sidetone Gain</Display>
+        <Default>1</Default>
+        <Precision>2</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_CUSTOM</Conversion>
+        <Mult/>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>36</Max>
+        <Description>Gain used to increase or decrease the amount of side tone heard at the receiver.</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Sidetone" subgroup="Sidetone" >STF_GAIN_MANTISSA</Symbol>
+        <Display/>
+        <Default>0.5</Default>
+        <Precision>2</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0.5</Max>
+        <Description>Gain applied to sidetone path prior to clip.</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_CONFIG</Symbol>
+        <Display/>
+        <Default>0x000003</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_UINT</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>5</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_GAIN_EXP</Symbol>
+        <Display/>
+        <Default>1</Default>
+        <Precision>2</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_CUSTOM</Conversion>
+        <Mult/>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>36</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_GAIN_MANT</Symbol>
+        <Display/>
+        <Default>0.5</Default>
+        <Precision>2</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0.5</Max>
+        <Description>PEQ master gain applied prior to PEQ filtering</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE1_B2</Symbol>
+        <Display/>
+        <Default>0.431542396545410</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE1_B1</Symbol>
+        <Display/>
+        <Default>-0.863084912300110</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE1_B0</Symbol>
+        <Display/>
+        <Default>0.431542396545410</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE1_A2</Symbol>
+        <Display/>
+        <Default>0.372502088546753</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE1_A1</Symbol>
+        <Display/>
+        <Default>-0.853667855262756</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE2_B2</Symbol>
+        <Display/>
+        <Default>0.431542396545410</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE2_B1</Symbol>
+        <Display/>
+        <Default>-0.863084912300110</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE2_B0</Symbol>
+        <Display/>
+        <Default>0.431542396545410</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE2_A2</Symbol>
+        <Display/>
+        <Default>0.372502088546753</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE2_A1</Symbol>
+        <Display/>
+        <Default>-0.853667855262756</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE3_B2</Symbol>
+        <Display/>
+        <Default>0.431542396545410</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE3_B1</Symbol>
+        <Display/>
+        <Default>-0.863084912300110</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE3_B0</Symbol>
+        <Display/>
+        <Default>0.431542396545410</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE3_A2</Symbol>
+        <Display/>
+        <Default>0.372502088546753</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_STAGE3_A1</Symbol>
+        <Display/>
+        <Default>-0.853667855262756</Default>
+        <Precision>15</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_SCALE1</Symbol>
+        <Display/>
+        <Default>1</Default>
+        <Precision>15</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_UINT</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_SCALE2</Symbol>
+        <Display/>
+        <Default>1</Default>
+        <Precision>15</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_UINT</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="PEQ" subgroup="PEQ" inBasicView="false"  >ST_PEQ_SCALE3</Symbol>
+        <Display/>
+        <Default>1</Default>
+        <Precision>15</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_UINT</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>NA</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol display="CHECKBOX"  group="HL_LIMITER" subgroup="HL_LIMITER" >HL_SWITCH</Symbol>
+        <Display>Enable Howling Limiter</Display>
+        <Default>0</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_UINT</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0</Max>
+        <Description>Switch to turn on/off howling limiter.</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="HL_LIMITER" subgroup="HL_LIMITER" >HL_LIMIT_LEVEL</Symbol>
+        <Display>HL Limit Level</Display>
+        <Default>0x0000CF</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>0.01666666666</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>90</Max>
+        <Description>Sidetone gain in case of howling detected</Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="HL_LIMITER" subgroup="HL_LIMITER" >HL_LIMIT_THRESHOLD</Symbol>
+        <Display>HL Threshold Level</Display>
+        <Default>0xFFFFFD30</Default>
+        <Precision>0</Precision>
+        <Q>M.0</Q>
+        <Conversion>FORMAT_DOUBLE_MULT</Conversion>
+        <Mult>0.01666666666</Mult>
+        <Units>dB</Units>
+        <Min>-90</Min>
+        <Max>0</Max>
+        <Description>Howling Limiter detection threshold level</Description>
+    </Parameter>
+  <Parameter>
+    <VariantID/>
+    <Comment/>
+    <Symbol group="HL_LIMITER" subgroup="HL_LIMITER" inBasicView="false"  >HL_LIMIT_HOLD_MS</Symbol>
+    <Display>HL Hold Time</Display>
+    <Default>0x000fa0</Default>
+    <Precision>0</Precision>
+    <Q>M.0</Q>
+    <Conversion>FORMAT_UINT</Conversion>
+    <Mult/>
+    <Units>ms</Units>
+    <Min>0</Min>
+    <Max>64000</Max>
+    <Description>Howling Limiter hold time in ms</Description>
+  </Parameter>
+  <Parameter>
+    <VariantID/>
+    <Comment/>
+    <Symbol group="HL_LIMITER" subgroup="HL_LIMITER" inBasicView="false"  >HL_LIMIT_DETECT_FC</Symbol>
+    <Display>HL Detect corner frequency</Display>
+    <Default>0x0001f4</Default>
+    <Precision>0</Precision>
+    <Q>M.0</Q>
+    <Conversion>FORMAT_UINT</Conversion>
+    <Mult/>
+    <Units>Hz</Units>
+    <Min>20</Min>
+    <Max>4000</Max>
+    <Description>Howling Limiter detection highpass corner frequency (Hz)</Description>
+  </Parameter>
+  <Parameter>
+    <VariantID/>
+    <Comment/>
+    <Symbol group="HL_LIMITER" subgroup="HL_LIMITER" inBasicView="false"  >HL_LIMIT_TC</Symbol>
+    <Display>HL Detect Time Constant</Display>
+    <Default>0x000032</Default>
+    <Precision>0</Precision>
+    <Q>M.0</Q>
+    <Conversion>FORMAT_UINT</Conversion>
+    <Mult/>
+    <Units>ms</Units>
+    <Min>10</Min>
+    <Max>400</Max>
+    <Description>Howling Limiter detection time constant (ms)</Description>
+  </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Sidetone" subgroup="Sidetone" >STF_GAIN_RAMP_EXP</Symbol>
+        <Display>Sidetone Exponential Ramping Speed</Display>
+        <Default>0</Default>
+        <Precision>2</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0.5</Max>
+        <Description>Sidetone exponential ramping speed, use (10**(dB_per_second/2000.0) - 1.0)) or 0 for no ramping </Description>
+    </Parameter>
+    <Parameter>
+        <VariantID/>
+        <Comment/>
+        <Symbol group="Sidetone" subgroup="Sidetone" >STF_GAIN_RAMP_LIN</Symbol>
+        <Display>Sidetone Linear Ramping Speed</Display>
+        <Default>0</Default>
+        <Precision>2</Precision>
+        <Q>1.N</Q>
+        <Conversion>FORMAT_DOUBLE</Conversion>
+        <Mult/>
+        <Units/>
+        <Min>0</Min>
+        <Max>0.5</Max>
+        <Description>Sidetone linear ramping Speed, use full_scale_percent_per_sec/10000.0) or 0 for no ramping </Description>
+    </Parameter>
+  <Parameter>
+    <VariantID/>
+    <Comment/>
+    <Symbol group="Sidetone" subgroup="Sidetone" >SIDETONE_MICS_MAP0</Symbol>
+    <Display>Sidetone microphones map</Display>
+    <Default>0x0000000</Default>
+    <Precision>1</Precision>
+    <Q>M.0</Q>
+    <Conversion>FORMAT_UINT</Conversion>
+    <Mult/>
+    <Units/>
+    <Min>0</Min>
+    <Max>15</Max>
+    <Description>Sidetone mics, nibble(4-bit) #n shows which mic shall be mixed into the speaker #n</Description>
+  </Parameter>
+
+<!--
+        ***************** STATISTICS ******************
+-->
+    <Statistic>
+        <VariantID/>
+        <Comment/>
+        <Symbol>CUR_MODE_OFFSET</Symbol>
+        <SysMode/>
+        <ShortName>SysMode</ShortName>
+        <LongName>System Mode</LongName>
+        <Precision>0</Precision>
+        <Q>1.N</Q>
+        <Conversion>SYS_INDICATOR</Conversion>
+        <Mult/>
+        <Link>-1</Link>
+        <Limit>-1</Limit>
+        <Rect>23 113 34 203</Rect>
+        <Description/>
+    </Statistic>
+    <Statistic>
+        <VariantID/>
+        <Comment/>
+        <Symbol>SYS_CONTROL_OFFSET</Symbol>
+        <SysMode/>
+        <ShortName>SysCtrl</ShortName>
+        <LongName>System Control</LongName>
+        <Precision>0</Precision>
+        <Q>1.N</Q>
+        <Conversion>STAT_BIT_INDICATOR</Conversion>
+        <Mult/>
+        <Link>-1</Link>
+        <Limit>-1</Limit>
+        <Rect>23 45 34 110</Rect>
+        <Description/>
+    </Statistic>
+    <Statistic>
+        <VariantID/>
+        <Comment/>
+        <Symbol>COMPILED_CONFIG</Symbol>
+        <SysMode/>
+        <ShortName>CompCfg</ShortName>
+        <LongName>CompCfg</LongName>
+        <Precision>0</Precision>
+        <Q>5.N</Q>
+        <Conversion>STAT_NO_DRAW</Conversion>
+        <Mult/>
+        <Link>-1</Link>
+        <Limit>32767</Limit>
+        <Rect>35 0 46 11</Rect>
+        <Description/>
+    </Statistic>
+    <Statistic>
+        <VariantID/>
+        <Comment/>
+        <Symbol>VOLUME</Symbol>
+        <SysMode/>
+        <ShortName>Volume</ShortName>
+        <LongName>BT Vol</LongName>
+        <Precision>0</Precision>
+        <Q>1.N</Q>
+        <Conversion>STAT_NO_DRAW</Conversion>
+        <Mult/>
+        <Link>-1</Link>
+        <Limit>32767</Limit>
+        <Rect>47 0 58 11</Rect>
+        <Description/>
+    </Statistic>
+    <Statistic>
+        <VariantID/>
+        <Comment/>
+        <Symbol>CONNECTION</Symbol>
+        <SysMode/>
+        <ShortName>Conn</ShortName>
+        <LongName>Conn</LongName>
+        <Precision>0</Precision>
+        <Q>5.N</Q>
+        <Conversion>STAT_NO_DRAW</Conversion>
+        <Mult/>
+        <Link>-1</Link>
+        <Limit>32767</Limit>
+        <Rect>59 0 70 11</Rect>
+        <Description/>
+    </Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>MIC_SAMPLERATE</Symbol>
+      <SysMode/>
+      <ShortName>MicSR</ShortName>
+      <LongName>Mike SR</LongName>
+      <Precision>0</Precision>
+      <Q>5.N</Q>
+      <Conversion>FORMAT_UINT</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>59 0 70 11</Rect>
+      <Description>Microphone sample rate</Description>
+   </Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>OUT_SAMPLERATE</Symbol>
+      <SysMode/>
+      <ShortName>OutSR</ShortName>
+      <LongName>Output SR</LongName>
+      <Precision>0</Precision>
+      <Q>5.N</Q>
+      <Conversion>FORMAT_UINT</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>59 0 70 11</Rect>
+      <Description> Output sample rate (to operators) </Description>
+   </Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>IN_SAMPLERATE</Symbol>
+      <SysMode/>
+      <ShortName>InSR</ShortName>
+      <LongName>Input SR</LongName>
+      <Precision>0</Precision>
+      <Q>5.N</Q>
+      <Conversion>FORMAT_UINT</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>59 0 70 11</Rect>
+      <Description>Input sample rate (from operators) </Description>
+   </Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>SPKR_SAMPLERATE</Symbol>
+      <SysMode/>
+      <ShortName>SpkrSR</ShortName>
+      <LongName>Spkr SR</LongName>
+      <Precision>0</Precision>
+      <Q>5.N</Q>
+      <Conversion>FORMAT_UINT</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>59 0 70 11</Rect>
+      <Description>Speaker sample rate</Description>
+   </Statistic>
+
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>RATE_ENACT_MIC</Symbol>
+		<SysMode/>
+		<ShortName>MicRM</ShortName>
+		<LongName>Mic RM Type</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+	   <Rect>0 0 0 0</Rect>
+		<Description/>
+	</Statistic>
+
+	<Statistic>
+		<VariantID/>
+		<Comment/>
+		<Symbol>RATE_ENACT_SPKR</Symbol>
+		<SysMode/>
+		<ShortName>SpkrRM</ShortName>
+		<LongName>Spkr RM Type</LongName>
+		<Precision>0</Precision>
+		<Q>M.0</Q>
+		<Conversion>STAT_INDICATOR</Conversion>
+		<Mult/>
+		<Link>-1</Link>
+		<Limit>-1</Limit>
+	  <Rect>0 0 0 0</Rect>
+		<Description/>
+	</Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>MIC_MEASURE</Symbol>
+      <SysMode/>
+      <ShortName>MicMeas</ShortName>
+      <LongName>Mic Measure</LongName>
+      <Precision>0</Precision>
+      <Q>6.N</Q>
+      <Conversion>FORMAT_UINT</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>0 0 0 0</Rect>
+      <Description>Number of samples measured on microphone path in 3 seconds for SW RM or 1 second for HW RM</Description>
+   </Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>SPKR_MEASURE</Symbol>
+      <SysMode/>
+      <ShortName>SpkrMeas</ShortName>
+      <LongName>Spkr Measure</LongName>
+      <Precision>0</Precision>
+      <Q>6.N</Q>
+      <Conversion>FORMAT_UINT</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>0 0 0 0</Rect>
+      <Description>Number of samples measured on speaker path in 3 seconds for SW RM or 1 second for HW RM</Description>
+   </Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>MIC_ADJUST</Symbol>
+      <SysMode/>
+      <ShortName>MicAdj</ShortName>
+      <LongName>Mic Adjust</LongName>
+      <Precision>6</Precision>
+      <Q>1.N</Q>
+      <Conversion>FORMAT_DOUBLE</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>0 0 0 0</Rect>
+      <Description>Amount of rate adjustment enacted on microphone path</Description>
+   </Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>SPKR_ADJUST</Symbol>
+      <SysMode/>
+      <ShortName>SpkrAdj</ShortName>
+      <LongName>Spkr Adjust</LongName>
+      <Precision>6</Precision>
+      <Q>1.N</Q>
+      <Conversion>FORMAT_DOUBLE</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>0 0 0 0</Rect>
+      <Description>Amount of rate adjustment enacted on speaker path</Description>
+   </Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>REF_ADJUST</Symbol>
+      <SysMode/>
+      <ShortName>RefAdj</ShortName>
+      <LongName>Ref Adjust</LongName>
+      <Precision>6</Precision>
+      <Q>1.N</Q>
+      <Conversion>FORMAT_DOUBLE</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>0 0 0 0</Rect>
+      <Description>Amount of rate adjustment enacted on reference path</Description>
+   </Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>SPKR_INSERTS</Symbol>
+      <SysMode/>
+      <ShortName>SpkrIns</ShortName>
+      <LongName>Spkr Inserts</LongName>
+      <Precision>0</Precision>
+      <Q>6.N</Q>
+      <Conversion>FORMAT_UINT</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>0 0 0 0</Rect>
+      <Description>Number of samples zero inserts on speaker path</Description>
+   </Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>REF_DROPS_INSERTS</Symbol>
+      <SysMode/>
+      <ShortName>RefDropInsert</ShortName>
+      <LongName>Ref Drops and Inserts</LongName>
+      <Precision>0</Precision>
+      <Q>6.N</Q>
+      <Conversion>FORMAT_UINT</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>0 0 0 0</Rect>
+      <Description>Number of samples dropped or inserted on reference path</Description>
+   </Statistic>
+
+   <Statistic>
+      <VariantID/>
+      <Comment/>
+      <Symbol>ST_DROPS</Symbol>
+      <SysMode/>
+      <ShortName>STDrop</ShortName>
+      <LongName>ST Drops</LongName>
+      <Precision>0</Precision>
+      <Q>6.N</Q>
+      <Conversion>FORMAT_UINT</Conversion>
+      <Mult/>
+      <Link>-1</Link>
+      <Limit>-1</Limit>
+      <Rect>0 0 0 0</Rect>
+      <Description>Number of samples dropped on the sidetone path</Description>
+   </Statistic>
+
+    <Statistic>
+        <VariantID/>
+        <Comment/>
+        <Symbol>MIC_REF_DELAY</Symbol>
+        <SysMode/>
+        <ShortName>MicRefD</ShortName>
+        <LongName>Mic RefD</LongName>
+        <Precision>0</Precision>
+        <Q>6.N</Q>
+        <Conversion>FORMAT_UINT</Conversion>
+        <Mult/>
+        <Link>-1</Link>
+        <Limit>-1</Limit>
+        <Rect>0 0 0 0</Rect>
+        <Description>Delay between mic and reference streams</Description>
+    </Statistic>
+    <Statistic>
+        <VariantID/>
+        <Comment/>
+        <Symbol>HL_DETECT_CNT</Symbol>
+        <SysMode/>
+        <ShortName>HL_CNT</ShortName>
+        <LongName>HL_CNT</LongName>
+        <Precision>0</Precision>
+        <Q>6.N</Q>
+        <Conversion>FORMAT_UINT</Conversion>
+        <Units>ms</Units>
+        <Mult/>
+        <Link>-1</Link>
+        <Limit>-1</Limit>
+        <Rect>0 0 0 0</Rect>
+        <Description>Dispalys number of ms that howling limiter will be active after howling detection event</Description>
+    </Statistic>
+</ns1:UnifiedParameterSchema>

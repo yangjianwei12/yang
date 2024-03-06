@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2021 Qualcomm Technologies International, Ltd.-->
+
+<types name="le_audio_volume_sync" standalone="true">
+
+    <inherit header="marshal_common.h" count="NUMBER_OF_COMMON_MARSHAL_OBJECT_TYPES" x_macro_table="MARSHAL_COMMON_TYPES_TABLE"/>
+
+    <include_header name="source_param_types.h"/>
+
+    <typedef_header_source>
+<![CDATA[
+#define MARSHAL_TYPE_source_type_t MARSHAL_TYPE_uint8
+#define MARSHAL_TYPE_audio_source_t MARSHAL_TYPE_uint8
+#define MARSHAL_TYPE_voice_source_t MARSHAL_TYPE_uint8
+]]>
+    </typedef_header_source>
+
+    <source>
+<![CDATA[
+#include "domain_marshal_types.h"
+
+#ifndef HOSTED_TEST_ENVIRONMENT
+COMPILE_TIME_ASSERT(sizeof(source_type_t) == sizeof(uint8), source_type_t_uint8_mismatched);
+COMPILE_TIME_ASSERT(sizeof(audio_source_t) == sizeof(uint8), audio_source_t_uint8_mismatched);
+COMPILE_TIME_ASSERT(sizeof(voice_source_t) == sizeof(uint8), voice_source_t_uint8_mismatched);
+#endif
+]]>
+    </source>
+
+    <typedef_struct name="le_audio_volume_sync_update_t" doc="">
+        <member marshal="true" doc="The source_type_t of the source">source_type_t source_type</member>
+        <member marshal="true" doc="Either the audio_source_t or voice_source_t of the source">uint8 source</member>
+        <member marshal="true" doc="The absolute volume, in VCP units">uint8 volume</member>
+        <member marshal="true" doc="The mute state of the source">uint8 mute</member>
+    </typedef_struct>
+
+</types>

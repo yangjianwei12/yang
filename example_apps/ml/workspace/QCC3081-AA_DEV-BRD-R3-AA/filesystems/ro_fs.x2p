@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project path="" type="list">
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_aah.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_aanc2.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_anc_compander.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_anc_hw_manager.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_anc_tuning.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_aptx_adaptive_r3_decode.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_aptx_lite_decode_sco_iso.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_aptx_lite_encode_sco_iso.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_atr_vad.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_hcgr.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_lc3_decode_sco_iso.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_lc3_encode_sco_iso.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_mips_monitor.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_noise_id.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_passthrough.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_rtp_decode.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_splitter.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_swbs.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_va_graph_manager.edkcs"/>
+    <file path="../../../../../audio/qcc518x_qcc308x/kalimba_ROM_14612/kymera/prebuilt_dkcs/maor_rom_release/download_wind_noise_detect.edkcs"/>
+    <configurations>
+        <configuration name="filesystem" options="build|deploy">
+            <devkitConfiguration>filesystem</devkitConfiguration>
+            <devkitGroup>kitres://{32D72C9E-F2CE-45FC-847C-4562B2C4E485}</devkitGroup>
+            <deployProject>deploy</deployProject>
+            <property name="FS_ROOT">../customer_ro_filesystem</property>
+            <property name="TYPE">customer_ro</property>
+            <property name="system_label">QCC518X_CONFIG</property>
+            <property name="CHIP_TYPE">qcc518x_qcc308x</property>
+        </configuration>
+    </configurations>
+</project>

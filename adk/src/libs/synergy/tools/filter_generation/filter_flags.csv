@@ -1,0 +1,15 @@
+# Usage for this csv database
+# This database consists of tuple <flag, option>.
+# flag = feature flag which is supposed to be checked for filter.
+# option = there are two options.
+#          1. DEFINED = Remove the code inside "#ifdef flag" and keep the #else part.
+#          2. NOT_DEFINED = Remove the code inside "#ifndef flag" and keep the #else part.
+# Note: 
+# New filters are required to be added in new lines.
+# Spaces are not allowed between comma separated values. e.g. entry <FLAG, DEFINED> will throw error because of space before "DEFINED".
+#
+# Examples:
+# FLAG_1,DEFINED
+# FLAG_2,NOT_DEFINED
+#
+ADD_TO_RELEASE,NOT_DEFINED

@@ -1,0 +1,30 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright 2017 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# definitions required to build LC3 Encode
+
+%include config.MODIFY_LC3_COMMON
+
+%list CFG_CAPABILITIES
+LC3_ENCODE_SCO_ISO
+
+%cpp
+# produce canned LC3 data - for test purposes
+#LC3_PRODUCE_CANNED_ENCODER_DATA
+#ALLOW_MED_HIGH_ER            /* Enable this to allow all BER levels */
+WBM_ENCODE_STATS 
+
+%list ALL_SRCDIRS
+capabilities/lc3_encode
+
+%list ALL_INCDIRS
+capabilities/lc3_encode
+
+%list CFG_LIBS
+capabilities/lc3_encode/lc3_encode
+
+%list MAXIM_LIBS
+../lib/lc3/src/LC3Encode

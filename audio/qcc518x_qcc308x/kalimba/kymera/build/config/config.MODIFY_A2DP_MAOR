@@ -1,0 +1,20 @@
+############################################################################
+# Copyright (c) 2020 Qualcomm Technologies International, Ltd.
+############################################################################
+# Definitions for A2DP for Maor builds.
+# This mainly includes A2DP_HYDRA and adds the new capabilities that
+# are only on Maor rom builds.
+
+%include config.MODIFY_A2DP_HYDRA
+
+%include config.MODIFY_APTX_DEMUX
+%include config.MODIFY_APTX_ADAPTIVE_R2_DECODE
+%include config.MODIFY_APTX_ADAPTIVE_R2_ENCODE
+
+#
+# Capabilities we want to include on the chip
+# This list gets turned into a set of defines of the form INSTALL_OPERATOR_XXXX
+#
+%list CFG_CAPABILITIES
+APTXHD_MONO_DECODER
+APTXHD_MONO_DECODER_NO_AUTOSYNC

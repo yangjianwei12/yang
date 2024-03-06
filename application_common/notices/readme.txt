@@ -1,0 +1,1 @@
+There are currently no licence files associated with the application_common.

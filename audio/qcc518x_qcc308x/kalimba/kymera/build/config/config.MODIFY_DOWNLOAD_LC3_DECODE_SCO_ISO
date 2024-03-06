@@ -1,0 +1,28 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright 2017 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# definitions required to build LC3 Decode
+
+%include config.MODIFY_LC3_COMMON
+
+%list CFG_CAPABILITIES
+LC3_DECODE_SCO_ISO
+
+%cpp
+INSTALL_LC3_LC_PLC
+
+%list ALL_SRCDIRS
+capabilities/lc3_decode
+../lib/lc3/src/plc
+
+%list ALL_INCDIRS
+capabilities/lc3_decode
+
+%list CFG_LIBS
+capabilities/lc3_decode/lc3_decode
+
+%list MAXIM_LIBS
+../lib/lc3/src/LC3Decode

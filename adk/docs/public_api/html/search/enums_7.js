@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['gaia_5fdebug_5fdevice_5ftype_5ft_15916',['gaia_debug_device_type_t',['../group__gaia__debug__plugin.html#ga31680ef4e6ad3c079cd8834454b1417a',1,'gaia_debug_plugin_router_private.h']]],
+  ['gaia_5fdebug_5fl2cap_5fpeer_5flink_5fmessage_5fcommand_5ft_15917',['gaia_debug_l2cap_peer_link_message_command_t',['../group__gaia__debug__plugin.html#ga77819f596b0fbeb221fc9c9c25c96757',1,'gaia_debug_plugin_router_l2cap_peer_link.h']]],
+  ['gaia_5fdebug_5fl2cap_5fpeer_5flink_5fsend_5fstatus_5ft_15918',['gaia_debug_l2cap_peer_link_send_status_t',['../group__gaia__debug__plugin.html#ga0b333024a75dd5b8f3ee1c6e6d487b2e',1,'gaia_debug_plugin_router_l2cap_peer_link.h']]],
+  ['gaia_5fdebug_5fl2cap_5fpeer_5flink_5fstate_5ft_15919',['gaia_debug_l2cap_peer_link_state_t',['../gaia__debug__plugin__router__l2cap__peer__link_8c.html#ad20197c105e38cf5aef0e79d15f087f9',1,'gaia_debug_plugin_router_l2cap_peer_link.c']]],
+  ['gaia_5fdefault_5ferror_5fcodes_5ft_15920',['gaia_default_error_codes_t',['../group__gaia__framework.html#ga569810c764b2887e5abcd733c62d0b3e',1,'gaia_framework.h']]],
+  ['gaia_5fframework_5fcommand_5fstatus_5ft_15921',['gaia_framework_command_status_t',['../group__gaia__framework.html#gad5779e98416e8f8afcf7ce023100ebc3',1,'gaia_framework.h']]],
+  ['gaia_5fhandler_5finternal_5fmessages_15922',['gaia_handler_internal_messages',['../gaia__framework__internal_8c.html#a29525cf89eaef75422f4711a7b60db52',1,'gaia_framework_internal.c']]],
+  ['gaia_5fsystem_5finformation_5fid_5ft_15923',['gaia_system_information_id_t',['../group__gaia__framework.html#gaa6774a8c013d477ff0f2fa32d2d20eda',1,'gaia_core_plugin.h']]],
+  ['gaia_5fuser_5ffeature_5ftype_5ft_15924',['gaia_user_feature_type_t',['../group__gaia__framework.html#gab3d6bc0a0a867924f7c4a567be9375c9',1,'gaia_core_plugin.h']]],
+  ['gaming_5fmode_5finternal_5fmsg_5ft_15925',['gaming_mode_internal_msg_t',['../gaming__mode_8c.html#a6b857afee626f045c042417e815aa94c',1,'gaming_mode.c']]],
+  ['gaming_5fmode_5fstate_5ft_15926',['gaming_mode_state_t',['../gaming__mode_8c.html#a6c257cad610ebdd7d935b1bf9e869271',1,'gaming_mode.c']]],
+  ['gaming_5fmode_5fui_5fevents_15927',['gaming_mode_ui_events',['../group__gaming__mode.html#gadf353bbcd333076d284d15d9edfc97b3',1,'gaming_mode.h']]],
+  ['gatt_5fancs_5fevent_15928',['gatt_ancs_event',['../group__gatt__client__ancs.html#ga1c644b9605d2c7e2dcd75fa71ea250a0',1,'gatt_client_ancs_event_handler.h']]],
+  ['gatt_5fconnect_5fdisconnect_5freason_5ft_15929',['gatt_connect_disconnect_reason_t',['../group__gatt__connect.html#ga101c993d1d2efa42db5a0b81f973b7a0',1,'gatt_connect.h']]],
+  ['gatt_5fconnect_5fmessage_5ft_15930',['gatt_connect_message_t',['../group__gatt__connect.html#ga82c3d357b01589b935ee3d77c0e9f575',1,'gatt_connect.h']]],
+  ['gatt_5fserver_5fbattery_5ftype_15931',['gatt_server_battery_type',['../group__gatt__server__battery.html#ga4971f30c6fa192d7009d7eaca1d5bd21',1,'gatt_server_battery.h']]],
+  ['gatt_5fservice_5fdiscovery_5fmsg_5ft_15932',['gatt_service_discovery_msg_t',['../group__gatt__service__discovery.html#ga13bb9f844ab35dc558c5461ec771bbbd',1,'gatt_service_discovery.h']]]
+];

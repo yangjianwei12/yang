@@ -1,0 +1,105 @@
+/******************************************************************************
+ *  Copyright (c) 2019-2022 Qualcomm Technologies International, Ltd.
+ *  %%version
+ *  %%appversion
+ *
+ *  FILE
+ *      gatt_csis_server_db.dbi
+ *
+ *  DESCRIPTION
+ *      This file defines the Coordinated Set Identification Service in JSON format, which is 
+ *      fairly human readable.  This file is included in the main 
+ *      application data base file which is used to produce ATT flat data 
+ *      base. 
+ *
+ *****************************************************************************/
+
+#ifndef __GATT_CSIS_SERVER_DB_DBI__
+#define __GATT_CSIS_SERVER_DB_DBI__
+
+#include "gatt_csis_server_uuids.h"
+
+/* Primary service declaration of Coordinates Set Identification Service */
+#ifndef STRINGIFY
+  /* Convert a macro into a string */
+  #define STRINGIFY_(s)       #s
+  #define STRINGIFY(s)        STRINGIFY_(s)
+#endif
+
+#define INCLUDE_CSIS_REF(ID) \
+   , include { \
+       ref: STRINGIFY(COORDINATED_SET_IDENTIFICATION_SERVICE ## ID) \
+   }
+
+#define ADD_CSIS_SERVICE(ID) \
+primary_service {\
+   uuid : UUID_COORDINATED_SET_IDENTIFICATION_SERVICE, \
+   name : STRINGIFY(COORDINATED_SET_IDENTIFICATION_SERVICE ## ID), \
+\
+   /* SIRK characteristic - fixed size 16 octets*/ \
+\
+   characteristic {\
+       uuid        : UUID_SET_IDENTITY_RESOLVING_KEY,\
+       name        : "SIRK",\
+       flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],\
+       properties  : [ read, notify],\
+\
+       value       : [0x83, 0x8e, 0x68, 0x05, 0x53, 0xf1, 0x41, 0x5a, 0xa2, 0x65, 0xbb, 0xaf, 0xc6, 0xea, 0x03, 0xb8],\
+\
+       client_config {\
+           name : "SIRK_CLIENT_CONFIG",\
+           flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]\
+           }\
+\
+   },\
+   /* Coordinated Set Size characteristic - 1 -octet. */\
+\
+   characteristic {\
+       uuid        : UUID_COORDINATED_SET_SIZE,\
+       name        : "SIZE",\
+       flags       : [FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],\
+       properties  : [ read, notify ],\
+\
+       value       : [ 0x01],\
+\
+       client_config {\
+           name : "SIZE_CLIENT_CONFIG",\
+           flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]\
+           }\
+   },\
+\
+\
+   /* Coordinated Set Lock characteristic - 1 octet . */\
+\
+   characteristic {\
+       uuid        : UUID_COORDINATED_SET_LOCK,\
+       name        : "LOCK",\
+       flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_w ],\
+       properties  : [ write, read, notify ],\
+\
+       value       : 0x01,\
+\
+       client_config {\
+           name : "LOCK_CLIENT_CONFIG",\
+           flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]\
+           }\
+\
+   },\
+\
+   /* Coordinated Set Rank characteristic - 1 octet . */\
+\
+   characteristic {\
+       uuid        : UUID_COORDINATED_SET_RANK,\
+       name        : "RANK",\
+       flags       : [FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],\
+       properties  : [read ],\
+\
+       value       : 0x01\
+   }\
+},
+
+#ifdef GATT_DBI_LIB
+  ADD_CSIS_SERVICE()
+#endif
+
+#endif /* __GATT_CSIS_SERVER_DB_DBI__ */

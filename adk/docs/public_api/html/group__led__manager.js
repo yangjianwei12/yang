@@ -1,0 +1,76 @@
+var group__led__manager =
+[
+    [ "led_manager.c", "led__manager_8c.html", null ],
+    [ "led_manager_hw_config_t", "structled__manager__hw__config__t.html", [
+      [ "led0_pio", "group__led__manager.html#ga66f71fdc677603ad38f0bc429c0e7e39", null ],
+      [ "led1_pio", "group__led__manager.html#ga84f156cd6c3f58bf417712e258420bc3", null ],
+      [ "led2_pio", "group__led__manager.html#ga66d79c614374fe0d16346b510bab3493", null ],
+      [ "leds_use_pio", "group__led__manager.html#ga33a23823abef756223e28c8600789258", null ]
+    ] ],
+    [ "led_manager_task_data_t", "structled__manager__task__data__t.html", [
+      [ "enable", "group__led__manager.html#ga0d886b7b3ff6717ca8cb63c8a9cdceaa", null ],
+      [ "filter", "group__led__manager.html#ga7537309a60ec5337ca39e5749b6a9f2d", null ],
+      [ "force_enabled", "group__led__manager.html#ga1e80f02fc5c64b2d9b747bb0afc56aeb", null ],
+      [ "led_forced_pattern", "group__led__manager.html#gaf555b0d475c0458541bffc709c97e1e9", null ],
+      [ "led_state", "group__led__manager.html#gadefe5cc4be23e9c82e75ad96deb7d2c5", null ],
+      [ "lock", "group__led__manager.html#gaead3ddf4987e26442969df1029288f7d", null ],
+      [ "priority", "group__led__manager.html#gadb6f58a25aa780278052607fc48155ff", null ],
+      [ "priority_state", "group__led__manager.html#ga74750678fe2755e799e9c464d77ae36a", null ],
+      [ "task", "group__led__manager.html#gaba8d7e5c1906844fdb6e47953d3518fc", null ],
+      [ "wallclock_sink", "group__led__manager.html#gac632f69c3316a0ebb29aa1dbc57c8573", null ]
+    ] ],
+    [ "led_pattern_t", "structled__pattern__t.html", [
+      [ "code", "group__led__manager.html#gaf4be217d83e530d187f8024a46bdf7ae", null ],
+      [ "data", "group__led__manager.html#ga56dc4455d04b83cfa7cefe5f46ba81c2", null ]
+    ] ],
+    [ "led_priority_state_t", "structled__priority__state__t.html", [
+      [ "pattern", "group__led__manager.html#ga6f8dbab6759b3fe6a8c1f5d38d22e13f", null ],
+      [ "stack", "group__led__manager.html#ga43647092781014d232bc84b436bf32ff", null ],
+      [ "stack_ptr", "group__led__manager.html#ga402f85fc74a6291feabcd985daa3ebbd", null ]
+    ] ],
+    [ "led_stack_t", "structled__stack__t.html", [
+      [ "loop_count", "group__led__manager.html#gab29449999c4959f6d5ecf5f035a6539b", null ],
+      [ "loop_end", "group__led__manager.html#ga0d0192ab77d9719395c4ef6cbb5f8b3f", null ],
+      [ "loop_start", "group__led__manager.html#ga7c6dc72d2b8d7332aff67e269e5af4c4", null ],
+      [ "position", "group__led__manager.html#ga1d7b72031fa39d396d531503904f337b", null ]
+    ] ],
+    [ "led_filter_t", "group__led__manager.html#ga06acc57026a922d33ab7f245eb02ee93", null ],
+    [ "LedManager_CancelFilter", "group__led__manager.html#ga7e8169fdb2aa8b96627bfe52c18517d6", null ],
+    [ "LedManager_Enable", "group__led__manager.html#ga71cf6692ac66f6c708d3853d953855b1", null ],
+    [ "LedManager_ForceLeds", "group__led__manager.html#ga7a0a05791a137f7c2df38666761c5d1d", null ],
+    [ "LedManager_ForceLedsStop", "group__led__manager.html#gaf7f84ab47a10045df03a66052b779c57", null ],
+    [ "LedManager_GetFilter", "group__led__manager.html#ga9320bbde7e51ebb09399bf3d2ebc1fc9", null ],
+    [ "LedManager_GetLedNumberForPio", "group__led__manager.html#ga209f0d218b081522786167492d6c709c", null ],
+    [ "LedManager_Init", "group__led__manager.html#gae85e0bc60043748e2e972e3f18741325", null ],
+    [ "LedManager_IsPioAnLed", "group__led__manager.html#ga1f332338f21aab73aa6ad350f469ebbe", null ],
+    [ "LedManager_PioCanWakeFromDormant", "group__led__manager.html#gaf49456eed708fc40817f8081075a58d1", null ],
+    [ "LedManager_RestartPattern", "group__led__manager.html#ga647bb218d147e8ed06ed14cbb1fd6f3e", null ],
+    [ "LedManager_SetFilter", "group__led__manager.html#ga6569d2f2382ee340a6ee9bbc0502734e", null ],
+    [ "LedManager_SetHwConfig", "group__led__manager.html#ga2136777c4be5158096ed5ce2104ac548", null ],
+    [ "LedManager_SetPattern", "group__led__manager.html#ga6a79a541addce6f7974328f3256aa275", null ],
+    [ "LedManager_SetWallclock", "group__led__manager.html#ga4297060d20a2d3a73779343dcf032926", null ],
+    [ "LedManager_StopPattern", "group__led__manager.html#ga75348b577e06584582b9fbeca01ec933", null ],
+    [ "code", "group__led__manager.html#gaf4be217d83e530d187f8024a46bdf7ae", null ],
+    [ "data", "group__led__manager.html#ga56dc4455d04b83cfa7cefe5f46ba81c2", null ],
+    [ "enable", "group__led__manager.html#ga0d886b7b3ff6717ca8cb63c8a9cdceaa", null ],
+    [ "filter", "group__led__manager.html#ga7537309a60ec5337ca39e5749b6a9f2d", null ],
+    [ "force_enabled", "group__led__manager.html#ga1e80f02fc5c64b2d9b747bb0afc56aeb", null ],
+    [ "led0_pio", "group__led__manager.html#ga66f71fdc677603ad38f0bc429c0e7e39", null ],
+    [ "led1_pio", "group__led__manager.html#ga84f156cd6c3f58bf417712e258420bc3", null ],
+    [ "led2_pio", "group__led__manager.html#ga66d79c614374fe0d16346b510bab3493", null ],
+    [ "led_forced_pattern", "group__led__manager.html#gaf555b0d475c0458541bffc709c97e1e9", null ],
+    [ "led_state", "group__led__manager.html#gadefe5cc4be23e9c82e75ad96deb7d2c5", null ],
+    [ "leds_use_pio", "group__led__manager.html#ga33a23823abef756223e28c8600789258", null ],
+    [ "lock", "group__led__manager.html#gaead3ddf4987e26442969df1029288f7d", null ],
+    [ "loop_count", "group__led__manager.html#gab29449999c4959f6d5ecf5f035a6539b", null ],
+    [ "loop_end", "group__led__manager.html#ga0d0192ab77d9719395c4ef6cbb5f8b3f", null ],
+    [ "loop_start", "group__led__manager.html#ga7c6dc72d2b8d7332aff67e269e5af4c4", null ],
+    [ "pattern", "group__led__manager.html#ga6f8dbab6759b3fe6a8c1f5d38d22e13f", null ],
+    [ "position", "group__led__manager.html#ga1d7b72031fa39d396d531503904f337b", null ],
+    [ "priority", "group__led__manager.html#gadb6f58a25aa780278052607fc48155ff", null ],
+    [ "priority_state", "group__led__manager.html#ga74750678fe2755e799e9c464d77ae36a", null ],
+    [ "stack", "group__led__manager.html#ga43647092781014d232bc84b436bf32ff", null ],
+    [ "stack_ptr", "group__led__manager.html#ga402f85fc74a6291feabcd985daa3ebbd", null ],
+    [ "task", "group__led__manager.html#gaba8d7e5c1906844fdb6e47953d3518fc", null ],
+    [ "wallclock_sink", "group__led__manager.html#gac632f69c3316a0ebb29aa1dbc57c8573", null ]
+];

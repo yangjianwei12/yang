@@ -1,0 +1,24 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright (c) 2015 - 2021 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# Definitions required to build the DOWNLOAD ANC COMPANDER
+
+
+#
+# Capabilities to include in the build
+#
+%list CFG_CAPABILITIES
+ANC_COMPANDER
+
+## List of global include paths
+%list ALL_INCDIRS
+capabilities/base_aud_cur_op
+capabilities/anc_hw_manager
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/base_aud_cur_op/base_aud_cur_op
+capabilities/anc_compander/anc_compander

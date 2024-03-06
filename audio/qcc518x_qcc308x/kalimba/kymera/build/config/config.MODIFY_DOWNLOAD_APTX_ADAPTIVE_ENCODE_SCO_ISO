@@ -1,0 +1,35 @@
+############################################################################
+# CONFIDENTIAL
+# Copyright 2023 Qualcomm Technologies International, Ltd.
+############################################################################
+# definitions required to build aptX Adaptive Encode SCO ISO
+# This list gets turned into a set of defines of the form INSTALL_OPERATOR_XXXX
+
+%list CFG_CAPABILITIES
+APTX_ADAPTIVE_ENCODE_SCO_ISO
+
+# Defines for codec lib
+%cpp
+ENABLE_R3_CMFB_ASSEMBLY
+#ENABLE_R3_QUAN_ASSEMBLY
+#ENABLE_R3_BIT_ASSEMBLY
+#ENABLE_R3_COMP_08_ASSEMPLY
+AX_CONFIG_H
+
+# List of global include paths
+%list ALL_INCDIRS
+../lib_private/aptx_adaptive_r3_common
+../lib_private/aptx_adaptive_r3_encode
+../lib_private/aptx_adaptive_r3_decode
+../lib/codec
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/aptx_adaptive_r3_encode/aptx_adaptive_r3_encode
+
+#required to build
+../lib_private/aptx_adaptive_r3_common/aptx_adaptive_r3_common
+../lib_private/aptx_adaptive_r3_encode/aptx_adaptive_r3_encode
+
+%build
+REL_EXT_BUILD=TRUE

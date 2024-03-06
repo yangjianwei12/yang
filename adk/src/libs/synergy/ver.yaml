@@ -1,0 +1,40 @@
+###############################################################################
+# Copyright (c) 2023 Qualcomm Technologies International, Ltd
+#
+# This file contains the Synergy version, in this format, 
+#   "MAJOR_VERSION.MINOR_VERSION.FIX_VERSION"
+#
+#   MAJOR_VERSION: 
+#          This version indicates a source breakage since the API set is not 
+#          backward compatible with the previous release. For example an 
+#          application written for 21.0.0 shall provide compilation errors 
+#          when it is re-compiled with Synergy 22.0.0 release.
+#          The usual reasons to bump the major version are
+#          -  Introduction of a new feature/set of features.
+#          -  Compliance with a newer Core-specification introducing a 
+#             significant impact on profile use-cases.
+#          -  Improvements to an existing API set that have been "extended" 
+#             in a minor release.
+#
+#   MINOR_VERSION:
+#          This version indicates that new features have been introduced in 
+#          a release. The new features introduced must be configurable. 
+#          Their introduction should be protected under a compile-time flag.
+#          There should be no functionality changes by default for customers 
+#          upgrading to a minor version release. However, it should be 
+#          possible to include the new functionality by enabling the compile 
+#          flag.
+#
+#  FIX_VERSION:
+#          This is incremented for a bug-fix release under a minor version 
+#          release line. The bug fix release inherits the qualification of 
+#          the minor release. 
+#          API is backward compatible with the dot release of the minor version.
+#          New API changes that do not break the backward compatibility 
+#          are allowed.
+#          No functionality is introduced which shall compromise the 
+#          qualification of the minor release.
+###############################################################################
+MAJOR_VERSION: 21
+MINOR_VERSION: 2
+FIX_VERSION: 0

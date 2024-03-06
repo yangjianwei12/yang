@@ -1,0 +1,4 @@
+
+VARIANTS := debug
+
+CFLAGS_debug := -DGATT_TELEPHONE_BEARER_SERVER_DEBUG_LIB # flags for building debug version of TBS server lib

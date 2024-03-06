@@ -1,0 +1,44 @@
+############################################################################
+# Copyright (c) 2015 - 2023 Qualcomm Technologies International, Ltd.
+############################################################################
+
+#
+# Capabilities we want to include on the chip
+# This list gets turned into a set of defines of the form INSTALL_OPERATOR_XXXX
+#
+%list CFG_CAPABILITIES
+APTX_LITE_DECODE_SCO_ISO
+
+# List of global include paths
+%list ALL_INCDIRS
+../lib/codec
+../lib/sbc
+../lib_private/latency_comp
+../lib_private/eplc
+../lib_private/security
+../lib_private/aptx_lite
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/aptx_lite_decode/aptx_lite_decode
+../lib_private/latency_comp/latency_comp
+../lib_private/eplc/eplc
+../lib_private/aptx_lite/aptx_lite
+../lib_private/security/security
+
+# Libraries needed by a2dp capabilities
+../lib/codec/codec
+../lib/sbc/sbc
+
+%list PRIVATE_LIBS
+../lib_private/
+../lib_private/aptx_lite
+../lib_private/latency_comp
+../lib_private/eplc
+
+%list MAXIM_LIBS
+../lib/sbc/sbc
+
+%build
+# Include the SCO_ISO version of the aptX Lite Decoder.
+

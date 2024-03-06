@@ -1,0 +1,25 @@
+############################################################################
+# Copyright (c) 2019 Qualcomm Technologies International, Ltd.
+############################################################################
+# Definitions required to build the Inter Processor Communication component.
+
+%cpp
+INSTALL_IPC
+
+%build
+BUILD_IPC=true
+
+%list ALL_SRCDIRS
+components/ipc
+
+# List of global include paths
+%list ALL_INCDIRS
+components/ipc
+
+# List of libraries to build
+%list CFG_LIBS
+components/ipc/ipc
+
+# The component uses a static scheduler task
+%list TASKS
+components/ipc/ipc_sched.xml

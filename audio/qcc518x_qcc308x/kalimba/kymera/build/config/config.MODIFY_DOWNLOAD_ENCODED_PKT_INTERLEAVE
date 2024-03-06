@@ -1,0 +1,17 @@
+############################################################################
+# CONFIDENTIAL
+# Copyright 2023 Qualcomm Technologies International, Ltd.
+############################################################################
+# This list gets turned into a set of defines of the form INSTALL_OPERATOR_XXXX
+
+%list CFG_CAPABILITIES
+ENCODED_PKT_INTERLEAVE
+
+%list ALL_INCDIRS
+capabilities/encoded_pkt_interleave
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/encoded_pkt_interleave/encoded_pkt_interleave
+
+%build

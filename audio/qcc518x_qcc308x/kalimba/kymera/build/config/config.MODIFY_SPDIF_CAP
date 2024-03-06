@@ -1,0 +1,18 @@
+############################################################################
+# Copyright (c) 2019 Qualcomm Technologies International, Ltd.
+############################################################################
+# definitions for spdif capabilities
+
+%list CFG_CAPABILITIES
+SPDIF
+
+%list ALL_SRCDIRS
+capabilities/spdif_decode
+
+# List of global include paths
+%list ALL_INCDIRS
+
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/spdif_decode/spdif_decode

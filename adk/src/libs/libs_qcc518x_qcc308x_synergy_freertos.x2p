@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project path="" name="libs" type="auto">
+    <folder name="a2dp">
+        <file path="a2dp_synergy/a2dp.h"/>
+    </folder>
+    <folder name="anc">
+        <file path="anc/anc.c"/>
+        <file path="anc/anc.h"/>
+        <file path="anc/anc_common_state.c"/>
+
+        <file path="anc/anc_common_state.h"/>
+        <file path="anc/anc_config_data.c"/>
+        <file path="anc/anc_config_data.h"/>
+        <file path="anc/anc_config_read.c"/>
+        <file path="anc/anc_config_read.h"/>
+        <file path="anc/anc_config_write.c"/>
+        <file path="anc/anc_config_write.h"/>
+        <file path="anc/anc_configure.c"/>
+        <file path="anc/anc_configure.h"/>
+        <file path="anc/anc_configure_coefficients.c"/>
+        <file path="anc/anc_configure_coefficients.h"/>
+        <file path="anc/anc_data.c"/>
+        <file path="anc/anc_data.h"/>
+        <file path="anc/anc_debug.h"/>
+        <file path="anc/anc_disabled_state.c"/>
+        <file path="anc/anc_disabled_state.h"/>
+        <file path="anc/anc_enabled_state.c"/>
+        <file path="anc/anc_enabled_state.h"/>
+        <file path="anc/anc_licence_check.c"/>
+        <file path="anc/anc_licence_check.h"/>
+        <file path="anc/anc_sm.c"/>
+        <file path="anc/anc_sm.h"/>
+        <file path="anc/anc_tuning_data.h"/>
+        <file path="anc/anc_uninitialised_state.c"/>
+        <file path="anc/anc_uninitialised_state.h"/>
+    </folder>
+    <folder name="aghfp">
+        <files path="aghfp/aghfp*.h"/>
+        <files path="aghfp/aghfp*.c"/>
+        <file path="aghfp/aghfp_parse.parse"/>
+    </folder>
+    <folder name="audio_config">
+        <file path="audio_config/audio_config.c"/>
+        <file path="audio_config/audio_config.h"/>
+    </folder>
+    <folder name="audio_data_types">
+        <file path="audio_data_types/audio_data_types.h"/>
+    </folder>
+    <folder name="audio_i2s_common">
+        <folder name="CONFIG_I2S_MCLK">
+            <file path="audio_i2s_common/CONFIG_I2S_MCLK/audio_i2s_mclk.c"/>
+        </folder>
+        <file path="audio_i2s_common/audio_i2s_common.c"/>
+        <file path="audio_i2s_common/audio_i2s_common.h"/>
+        <file path="audio_i2s_common/audio_i2s_CSRA6620.c"/>
+        <file path="audio_i2s_common/audio_i2s_CSRA6620.h"/>
+        <file path="audio_i2s_common/audio_i2s_mclk.c"/>
+        <file path="audio_i2s_common/audio_i2s_mclk.h"/>
+    </folder>
+    <folder name="audio_pcm_common">
+        <file path="audio_pcm_common/audio_pcm_common.c"/>
+        <file path="audio_pcm_common/audio_pcm_common.h"/>
+        <file path="audio_pcm_common/audio_pcm_mclk.c"/>
+        <file path="audio_pcm_common/audio_pcm_mclk.h"/>
+    </folder>
+    <folder name="audio_instance">
+        <file path="audio_instance/audio_instance.c"/>
+        <file path="audio_instance/audio_instance.h"/>
+    </folder>
+    <folder name="audio_output">
+        <file path="audio_output/audio_output.h"/>
+        <file path="audio_output/audio_output_connect.c"/>
+        <file path="audio_output/audio_output_gain.c"/>
+        <file path="audio_output/audio_output_private.h"/>
+    </folder>
+    <folder name="audio_plugin_common">
+        <folder name="CONFIG_HYDRACORE">
+            <file path="audio_plugin_common/CONFIG_HYDRACORE/audio_plugin_ra.c"/>
+        </folder>
+        <file path="audio_plugin_common/audio_plugin_common.c"/>
+        <file path="audio_plugin_common/audio_plugin_common.h"/>
+    </folder>
+    <folder name="audio_plugin_if">
+        <file path="audio_plugin_if/audio_plugin_if.h"/>
+    </folder>
+    <folder name="audio_plugin_music_params">
+        <file path="audio_plugin_music_params/audio_plugin_music_params.h"/>
+    </folder>
+    <folder name="audio_plugin_music_variants">
+        <folder name="CONFIG_KYMERA">
+            <file path="audio_plugin_music_variants/CONFIG_KYMERA/audio_plugin_music_variants.c"/>
+        </folder>
+        <file path="audio_plugin_music_variants/audio_plugin_music_variants.h"/>
+    </folder>
+    <folder name="audio_plugin_output_variants">
+        <file path="audio_plugin_output_variants/audio_plugin_output_variants.h"/>
+    </folder>
+    <folder name="audio_plugin_ucid">
+        <file path="audio_plugin_ucid/audio_plugin_ucid.h"/>
+    </folder>
+    <folder name="audio_plugin_voice_prompts_variants">
+        <file path="audio_plugin_voice_prompts_variants/audio_plugin_voice_prompts_variants.h"/>
+    </folder>
+    <folder name="audio_plugin_voice_variants">
+        <folder name="CONFIG_KYMERA">
+            <file path="audio_plugin_voice_variants/CONFIG_KYMERA/audio_plugin_voice_variants.c"/>
+        </folder>
+    </folder>
+    <folder name="audio_ports">
+        <file path="audio_ports/audio_ports.c"/>
+        <file path="audio_ports/audio_ports.h"/>
+    </folder>
+    <folder name="audio_processor">
+        <file path="audio_processor/audio_processor.c"/>
+        <file path="audio_processor/audio_processor.h"/>
+    </folder>
+    <folder name="audio_ucid">
+        <file path="audio_ucid/audio_ucid.h"/>
+    </folder>
+    <folder name="avrcp">
+        <file path="avrcp_synergy/avrcp.h"/>
+    </folder>
+    <folder name="base64">
+        <file path="base64/base64.c"/>
+        <file path="base64/base64.h"/>
+    </folder>
+    <folder name="bdaddr">
+        <file path="bdaddr/bdaddr.h"/>
+        <file path="bdaddr/bdaddr_bs_to_vm.c"/>
+        <file path="bdaddr/bdaddr_is_same.c"/>
+        <file path="bdaddr/bdaddr_is_zero.c"/>
+        <file path="bdaddr/bdaddr_tp_bs_to_vm.c"/>
+        <file path="bdaddr/bdaddr_tp_from_bredr_bdaddr.c"/>
+        <file path="bdaddr/bdaddr_tp_from_typed_and_flags.c"/>
+        <file path="bdaddr/bdaddr_tp_is_empty.c"/>
+        <file path="bdaddr/bdaddr_tp_is_same.c"/>
+        <file path="bdaddr/bdaddr_tp_set_empty.c"/>
+        <file path="bdaddr/bdaddr_tp_vm_to_bs.c"/>
+        <file path="bdaddr/bdaddr_typed_bs_to_vm.c"/>
+        <file path="bdaddr/bdaddr_typed_is_empty.c"/>
+        <file path="bdaddr/bdaddr_typed_is_same.c"/>
+        <file path="bdaddr/bdaddr_typed_set_empty.c"/>
+        <file path="bdaddr/bdaddr_typed_vm_to_bs.c"/>
+        <file path="bdaddr/bdaddr_vm_to_bs.c"/>
+    </folder>
+    <folder name="byte_utils">
+        <file path="byte_utils/byte_utils.c"/>
+        <file path="byte_utils/byte_utils.h"/>
+    </folder>
+    <folder name="chain">
+        <file path="chain/chain.c"/>
+        <file path="chain/chain.h"/>
+        <file path="chain/chain_bundle_management.c"/>
+        <file path="chain/chain_config.c"/>
+        <file path="chain/chain_config.h"/>
+        <file path="chain/chain_connect.c"/>
+        <file path="chain/chain_connect.h"/>
+        <file path="chain/chain_list.c"/>
+        <file path="chain/chain_list.h"/>
+        <file path="chain/chain_path.c"/>
+        <file path="chain/chain_path.h"/>
+    </folder>
+    <folder name="connection">
+        <file path="connection_synergy/dm_crypto_api.c"/>
+		<file path="connection_synergy/connection_synergy.c"/>
+        <file path="connection_synergy/connection.h"/>
+        <file path="connection_synergy/connection_no_ble.h"/>
+    </folder>
+    <folder name="cryptovm">
+        <file path="cryptovm/aes_cmac.c"/>
+        <file path="cryptovm/bluetooth_cryptographic_toolbox.c"/>
+        <file path="cryptovm/cryptovm.h"/>
+    </folder>
+    <folder name="custom_operator">
+        <file path="custom_operator/custom_operator.c"/>
+        <file path="custom_operator/custom_operator.h"/>
+        <file path="custom_operator/custom_operator_bundle_files.c"/>
+        <file path="custom_operator/custom_operator_bundle_files.h"/>
+        <file path="custom_operator/custom_operator_capability_id_translator.c"/>
+        <file path="custom_operator/custom_operator_capability_id_translator.h"/>
+        <file path="custom_operator/custom_operator_dkcs_reader.c"/>
+        <file path="custom_operator/custom_operator_dkcs_reader.h"/>
+        <file path="custom_operator/custom_operator_processor_id_translator.c"/>
+        <file path="custom_operator/custom_operator_processor_id_translator.h"/>
+    </folder>
+    <folder name="device_list">
+        <file path="device_list/device_list.c"/>
+        <file path="device_list/device_list.h"/>
+    </folder>
+    <folder name="device">
+        <file path="device/device.c"/>
+        <file path="device/device.h"/>
+    </folder>
+    <folder name="file_list">
+        <file path="file_list/file_list.c"/>
+        <file path="file_list/file_list.h"/>
+    </folder>
+    <folder name="gaia">
+        <file path="gaia/gaia.c"/>
+        <file path="gaia/gaia.h"/>
+        <file path="gaia/gaia_db.dbi"/>
+        <file path="gaia/gaia_gatt_uuids.h"/>
+        <file path="gaia/gaia_private.h"/>
+        <file path="gaia/CONFIG_SYNERGY/gaia_register_custom_sdp.c"/>
+        <file path="gaia/gaia_register_custom_sdp.h"/>
+        <file path="gaia/gaia_transport.c"/>
+        <file path="gaia/gaia_transport.h"/>
+        <file path="gaia/gaia_transport_common.c"/>
+        <file path="gaia/gaia_transport_common.h"/>
+    </folder>
+    <folder name="gain_utils">
+        <file path="gain_utils/gain_utils.h"/>
+        <file path="gain_utils/gain_utils_codec.c"/>
+    </folder>
+    <folder name="gatt">
+        <file path="gatt_synergy/gatt.h"/>
+    </folder>
+    <folder name="gatt_ams_client">
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client.c"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client.h"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_discover.c"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_discover.h"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_external_msg_send.c"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_external_msg_send.h"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_msg_handler.c"/>
+        <file path="gatt_ams_client/gatt_ams_client_msg_handler.h"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_notification.c"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_notification.h"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_private.c"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_private.h"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_read.c"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_read.h"/>
+        <file path="gatt_ams_client/gatt_ams_client_ready_state.c"/>
+        <file path="gatt_ams_client/gatt_ams_client_ready_state.h"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_write.c"/>
+        <file path="gatt_ams_client/CONFIG_SYNERGY/gatt_ams_client_write.h"/>
+    </folder>
+    <folder name="gatt_apple_notification_client">
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client.c"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client.h"/>
+        <file path="gatt_apple_notification_client/gatt_apple_notification_client_debug.h"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_destroy.c"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_discover.c"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_discover.h"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_external_msg_send.c"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_external_msg_send.h"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_init.c"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_msg_handler.c"/>
+        <file path="gatt_apple_notification_client/gatt_apple_notification_client_msg_handler.h"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_notification.c"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_notification.h"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_private.h"/>
+        <file path="gatt_apple_notification_client/gatt_apple_notification_client_ready_state.c"/>
+        <file path="gatt_apple_notification_client/gatt_apple_notification_client_ready_state.h"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_write.c"/>
+        <file path="gatt_apple_notification_client/CONFIG_SYNERGY/gatt_apple_notification_client_write.h"/>
+    </folder>
+    <folder name="gatt_fast_pair_server">
+        <file path="gatt_fast_pair_server/CONFIG_SYNERGY/gatt_fast_pair_server.c"/>
+        <file path="gatt_fast_pair_server/CONFIG_SYNERGY/gatt_fast_pair_server.h"/>
+        <file path="gatt_fast_pair_server/gatt_fast_pair_server_db.dbi"/>
+        <file path="gatt_fast_pair_server/gatt_fast_pair_server_debug.h"/>
+        <file path="gatt_fast_pair_server/CONFIG_SYNERGY/gatt_fast_pair_server_msg_handler.c"/>
+        <file path="gatt_fast_pair_server/CONFIG_SYNERGY/gatt_fast_pair_server_msg_handler.h"/>
+        <file path="gatt_fast_pair_server/CONFIG_SYNERGY/gatt_fast_pair_server_private.h"/>
+        <file path="gatt_fast_pair_server/gatt_fast_pair_server_uuids.h"/>
+    </folder>
+    <folder name="gatt_proxy_stream">
+        <file path="gatt_proxy_stream/gatt_proxy_stream.c"/>
+        <file path="gatt_proxy_stream/gatt_proxy_stream.h"/>
+    </folder>
+    <folder name="gatt_role_selection_client">
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client.h"/>
+        <file path="gatt_role_selection_client/gatt_role_selection_client_debug.h"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_discover.c"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_discover.h"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_init.c"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_init.h"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_msg_handler.c"/>
+        <file path="gatt_role_selection_client/gatt_role_selection_client_msg_handler.h"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_notification.c"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_notification.h"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_private.h"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_read.c"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_read.h"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_state.c"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_state.h"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_write.c"/>
+        <file path="gatt_role_selection_client/CONFIG_SYNERGY/gatt_role_selection_client_write.h"/>
+    </folder>
+    <folder name="gatt_role_selection_server">
+        <file path="gatt_role_selection_server/CONFIG_SYNERGY/gatt_role_selection_server.h"/>
+        <file path="gatt_role_selection_server/CONFIG_SYNERGY/gatt_role_selection_server_access.c"/>
+        <file path="gatt_role_selection_server/CONFIG_SYNERGY/gatt_role_selection_server_access.h"/>
+        <file path="gatt_role_selection_server/gatt_role_selection_server_db.dbi"/>
+        <file path="gatt_role_selection_server/gatt_role_selection_server_debug.h"/>
+        <file path="gatt_role_selection_server/CONFIG_SYNERGY/gatt_role_selection_server_init.c"/>
+        <file path="gatt_role_selection_server/CONFIG_SYNERGY/gatt_role_selection_server_msg_handler.c"/>
+        <file path="gatt_role_selection_server/gatt_role_selection_server_msg_handler.h"/>
+        <file path="gatt_role_selection_server/CONFIG_SYNERGY/gatt_role_selection_server_notify.c"/>
+        <file path="gatt_role_selection_server/CONFIG_SYNERGY/gatt_role_selection_server_notify.h"/>
+        <file path="gatt_role_selection_server/CONFIG_SYNERGY/gatt_role_selection_server_private.h"/>
+        <file path="gatt_role_selection_server/gatt_role_selection_server_uuids.h"/>
+    </folder>
+    <folder name="gatt_role_selection_service">
+        <file path="gatt_role_selection_service/CONFIG_SYNERGY/gatt_role_selection_service.h"/>
+    </folder>
+    <folder name="gatt_root_key_client">
+        <file path="gatt_root_key_client/gatt_root_key_client.h"/>
+        <file path="gatt_root_key_client/CONFIG_SYNERGY/gatt_root_key_client_challenge.c"/>
+        <file path="gatt_root_key_client/gatt_root_key_client_challenge.h"/>
+        <file path="gatt_root_key_client/gatt_root_key_client_debug.h"/>
+        <file path="gatt_root_key_client/CONFIG_SYNERGY/gatt_root_key_client_destroy.c"/>
+        <file path="gatt_root_key_client/CONFIG_SYNERGY/gatt_root_key_client_discover.c"/>
+        <file path="gatt_root_key_client/CONFIG_SYNERGY/gatt_root_key_client_discover.h"/>
+        <file path="gatt_root_key_client/CONFIG_SYNERGY/gatt_root_key_client_indication.c"/>
+        <file path="gatt_root_key_client/CONFIG_SYNERGY/gatt_root_key_client_indication.h"/>
+        <file path="gatt_root_key_client/CONFIG_SYNERGY/gatt_root_key_client_init.c"/>
+        <file path="gatt_root_key_client/CONFIG_SYNERGY/gatt_root_key_client_init.h"/>
+        <file path="gatt_root_key_client/CONFIG_SYNERGY/gatt_root_key_client_msg_handler.c"/>
+        <file path="gatt_root_key_client/CONFIG_SYNERGY/gatt_root_key_client_msg_handler.h"/>
+        <file path="gatt_root_key_client/gatt_root_key_client_private.h"/>
+        <file path="gatt_root_key_client/gatt_root_key_client_state.c"/>
+        <file path="gatt_root_key_client/gatt_root_key_client_state.h"/>
+        <file path="gatt_root_key_client/CONFIG_SYNERGY/gatt_root_key_client_write.c"/>
+        <file path="gatt_root_key_client/gatt_root_key_client_write.h"/>
+    </folder>
+    <folder name="gatt_root_key_server">
+        <file path="gatt_root_key_server/CONFIG_SYNERGY/gatt_root_key_server.h"/>
+        <file path="gatt_root_key_server/CONFIG_SYNERGY/gatt_root_key_server_access.c"/>
+        <file path="gatt_root_key_server/CONFIG_SYNERGY/gatt_root_key_server_access.h"/>
+        <file path="gatt_root_key_server/CONFIG_SYNERGY/gatt_root_key_server_challenge.c"/>
+        <file path="gatt_root_key_server/gatt_root_key_server_challenge.h"/>
+        <file path="gatt_root_key_server/gatt_root_key_server_db.dbi"/>
+        <file path="gatt_root_key_server/gatt_root_key_server_debug.h"/>
+        <file path="gatt_root_key_server/CONFIG_SYNERGY/gatt_root_key_server_indicate.c"/>
+        <file path="gatt_root_key_server/CONFIG_SYNERGY/gatt_root_key_server_indicate.h"/>
+        <file path="gatt_root_key_server/CONFIG_SYNERGY/gatt_root_key_server_init.c"/>
+        <file path="gatt_root_key_server/CONFIG_SYNERGY/gatt_root_key_server_msg_handler.c"/>
+        <file path="gatt_root_key_server/gatt_root_key_server_msg_handler.h"/>
+        <file path="gatt_root_key_server/CONFIG_SYNERGY/gatt_root_key_server_private.h"/>
+        <file path="gatt_root_key_server/gatt_root_key_server_state.c"/>
+        <file path="gatt_root_key_server/gatt_root_key_server_state.h"/>
+        <file path="gatt_root_key_server/gatt_root_key_server_uuids.h"/>
+    </folder>
+    <folder name="gatt_root_key_service">
+        <file path="gatt_root_key_service/gatt_root_key_service.c"/>
+        <file path="gatt_root_key_service/CONFIG_SYNERGY/gatt_root_key_service.h"/>
+        <file path="gatt_root_key_service/gatt_root_key_service_debug.h"/>
+    </folder>
+    
+    
+    <folder name="hfp">
+        <file path="hfp_synergy/hfp.h"/>
+    </folder>
+    <folder name="hid">
+        <file path="hid/hid.h"/>
+        <file path="hid/hid_common.c"/>
+        <file path="hid/hid_common.h"/>
+        <file path="hid/hid_connect.c"/>
+        <file path="hid/hid_connect.h"/>
+        <file path="hid/hid_control_handler.c"/>
+        <file path="hid/hid_control_handler.h"/>
+        <file path="hid/hid_init.c"/>
+        <file path="hid/hid_init.h"/>
+        <file path="hid/hid_l2cap_handler.c"/>
+        <file path="hid/hid_l2cap_handler.h"/>
+        <file path="hid/hid_pin.c"/>
+        <file path="hid/hid_private.h"/>
+        <file path="hid/hid_profile_handler.c"/>
+        <file path="hid/hid_profile_handler.h"/>
+        <file path="hid/hid_sdp.c"/>
+        <file path="hid/hid_sdp.h"/>
+    </folder>
+    <folder name="hid_upgrade">
+        <file path="hid_upgrade/hid_upgrade.c"/>
+        <file path="hid_upgrade/hid_upgrade.h"/>
+    </folder>
+    <folder name="hydra_dev">
+        <file path="hydra_dev/hydra_dev.h"/>
+    </folder>
+    <folder name="input_event_manager">
+        <file path="input_event_manager/input_event_manager.c"/>
+        <file path="input_event_manager/input_event_manager.h"/>
+        <file path="input_event_manager/input_event_manager_private.h"/>
+    </folder>
+    <folder name="kalimba_if">
+        <file path="kalimba_if/kalimba_if.h"/>
+    </folder>
+    <folder name="kalimba_standard_messages">
+        <file path="kalimba_standard_messages/kalimba_standard_messages.h"/>
+    </folder>
+    <folder name="key_value_list">
+        <file path="key_value_list/key_value_list.h"/>
+        <file path="key_value_list/key_value_list.c"/>
+    </folder>
+    <folder name="library">
+        <file path="library/library.h"/>
+    </folder>
+    <folder name="local_device">
+        <file path="local_device/local_device.c"/>
+        <file path="local_device/local_device.h"/>
+        <file path="local_device/local_device_app.c"/>
+        <file path="local_device/local_device_app.h"/>
+        <file path="local_device/local_device_bdaddr.c"/>
+        <file path="local_device/local_device_bdaddr.h"/>
+        <file path="local_device/local_device_ble_tx_power.c"/>
+        <file path="local_device/local_device_ble_tx_power.h"/>
+        <file path="local_device/local_device_cl.c"/>
+        <file path="local_device/local_device_cl.h"/>
+        <file path="local_device/local_device_state.c"/>
+        <file path="local_device/local_device_state.h"/>
+    </folder>
+    <folder name="logging">
+        <file path="logging/logging.c"/>
+        <file path="logging/logging.h"/>
+    </folder>
+    <folder name="mapc">
+        <file path="mapc/mapc.h"/>
+        <file path="mapc/mapc_browsing.c"/>
+        <file path="mapc/mapc_connect.c"/>
+        <file path="mapc/mapc_downstream_handler.c"/>
+        <file path="mapc/mapc_extern.h"/>
+        <file path="mapc/mapc_mas_handler.c"/>
+        <file path="mapc/mapc_messages.c"/>
+        <file path="mapc/mapc_mns_handler.c"/>
+        <file path="mapc/mapc_notification.c"/>
+        <file path="mapc/mapc_private.h"/>
+        <file path="mapc/mapc_profile_handler.c"/>
+    </folder>
+    <folder name="marshal_common_desc">
+        <file path="marshal_common_desc/marshal_common_desc.c"/>
+        <file path="marshal_common_desc/marshal_common_desc.h"/>
+    </folder>
+    <folder name="md5">
+        <file path="md5/md5.c"/>
+        <file path="md5/md5.h"/>
+    </folder>
+    <folder name="message_broker">
+        <file path="message_broker/message_broker.c"/>
+        <file path="message_broker/message_broker.h"/>
+    </folder>
+    <folder name="obex">
+        <file path="obex/obex.h"/>
+        <file path="obex/obex_client.c"/>
+        <file path="obex/obex_client_handler.c"/>
+        <file path="obex/obex_common.c"/>
+        <file path="obex/obex_extern.h"/>
+        <file path="obex/obex_messages.c"/>
+        <file path="obex/obex_object_handler.c"/>
+        <file path="obex/obex_packet_handler.c"/>
+        <file path="obex/obex_private.h"/>
+        <file path="obex/obex_profile_handler.c"/>
+        <file path="obex/obex_server.c"/>
+        <file path="obex/obex_server_handler.c"/>
+    </folder>
+    <folder name="operators">
+        <file path="operators/operators.c"/>
+        <file path="operators/operators.h"/>
+        <file path="operators/operators_params_helper.c"/>
+    </folder>
+    <folder name="pbapc">
+        <file path="pbapc/pbapc.h"/>
+        <file path="pbapc/pbapc_extern.h"/>
+        <file path="pbapc/pbapc_goep_handler.c"/>
+        <file path="pbapc/pbapc_init.c"/>
+        <file path="pbapc/pbapc_int_handler.c"/>
+        <file path="pbapc/pbapc_interface.c"/>
+        <file path="pbapc/pbapc_messages.c"/>
+        <file path="pbapc/pbapc_private.h"/>
+        <file path="pbapc/pbapc_set_phonebook.c"/>
+        <file path="pbapc/pbapc_util.c"/>
+        <file path="pbapc/pbapc_util.h"/>
+    </folder>
+    <folder name="pblock">
+        <file path="pblock/pblock.c"/>
+        <file path="pblock/pblock.h"/>
+    </folder>
+    <folder name="pio_common">
+        <folder name="CONFIG_HYDRACORE">
+            <file path="pio_common/CONFIG_HYDRACORE/pio_common_configure.c"/>
+        </folder>
+        <file path="pio_common/pio_common.c"/>
+        <file path="pio_common/pio_common.h"/>
+        <file path="pio_common/pio_common_bits.c"/>
+    </folder>
+    <folder name="pio_monitor">
+        <file path="pio_monitor/pio_monitor.c"/>
+        <file path="pio_monitor/pio_monitor.h"/>
+        <file path="pio_monitor/pio_monitor_private.h"/>
+    </folder>
+    <folder name="print">
+        <file path="print/print.h"/>
+    </folder>
+    <folder name="protobuf">
+        <file path="protobuf/protobuf.c"/>
+        <file path="protobuf/protobuf.h"/>
+    </folder>
+    <folder name="region">
+        <file path="region/region.h"/>
+        <file path="region/region_matches_uuid128.c"/>
+        <file path="region/region_matches_uuid32.c"/>
+        <file path="region/region_read_unsigned.c"/>
+        <file path="region/region_write_unsigned.c"/>
+    </folder>
+    <folder name="resource_manager">
+        <file path="resource_manager/resource_manager.c"/>
+        <file path="resource_manager/resource_manager.h"/>
+        <file path="resource_manager/resource_manager_private.h"/>
+    </folder>
+    <folder name="rsa_decrypt">
+        <file path="rsa_decrypt/rsa_decrypt.c"/>
+        <file path="rsa_decrypt/rsa_decrypt.h"/>
+    </folder>
+    <folder name="rsa_pss_constants">
+        <file path="rsa_pss_constants/rsa_pss_constants.h"/>
+    </folder>
+    <folder name="rtime">
+        <file path="rtime/rtime.c"/>
+        <file path="rtime/rtime.h"/>
+        <file path="rtime/wallclock.c"/>
+    </folder>
+    <folder name="rwcp_server">
+        <file path="rwcp_server/rwcp_server.c"/>
+        <file path="rwcp_server/rwcp_server.h"/>
+    </folder>
+    <folder name="sdp_parse">
+        <file path="sdp_parse/sdp_parse.h"/>
+        <file path="sdp_parse/sdp_parse_arbitrary.c"/>
+        <file path="sdp_parse/sdp_parse_features.c"/>
+        <file path="sdp_parse/sdp_parse_l2cap.c"/>
+        <file path="sdp_parse/sdp_parse_map.c"/>
+        <file path="sdp_parse/sdp_parse_pbap.c"/>
+        <file path="sdp_parse/sdp_parse_profile_version.c"/>
+        <file path="sdp_parse/sdp_parse_rf_server_channel.c"/>
+        <file path="sdp_parse/sdp_parse_service_name.c"/>
+    </folder>
+    <folder name="service">
+        <file path="service/service.h"/>
+        <file path="service/service_find_attribute.c"/>
+        <file path="service/service_get_value.c"/>
+        <file path="service/service_next_attribute.c"/>
+        <file path="service/service_private.h"/>
+    </folder>
+    <folder name="system_clock">
+        <file path="system_clock/system_clock.c"/>
+        <file path="system_clock/system_clock.h"/>
+    </folder>
+    <folder name="task_list">
+        <file path="task_list/task_list.c"/>
+        <file path="task_list/task_list.h"/>
+    </folder>
+    <folder name="transport_adaptation">
+        <file path="transport_adaptation/transport_accessory.c"/>
+        <file path="transport_adaptation/transport_accessory.h"/>
+        <file path="transport_adaptation/CONFIG_SYNERGY/transport_adaptation.c"/>
+        <file path="transport_adaptation/transport_adaptation.h"/>
+        <file path="transport_adaptation/transport_adaptation_common.c"/>
+        <file path="transport_adaptation/transport_adaptation_common.h"/>
+        <file path="transport_adaptation/transport_gatt.c"/>
+        <file path="transport_adaptation/transport_gatt.h"/>
+        <file path="transport_adaptation/CONFIG_SYNERGY/transport_rfcomm.c"/>
+        <file path="transport_adaptation/CONFIG_SYNERGY/transport_rfcomm.h"/>
+    </folder>
+    <folder name="transport_manager">
+        <file path="transport_manager/transport_manager.c"/>
+        <file path="transport_manager/transport_manager.h"/>
+        <file path="transport_manager/transport_manager_data_handler.c"/>
+        <file path="transport_manager/transport_manager_handler.c"/>
+        <file path="transport_manager/transport_manager_private.c"/>
+        <file path="transport_manager/transport_manager_private.h"/>
+    </folder>
+    <folder name="upgrade">
+        <folder name="HYDRACORE">
+            <file path="upgrade/CONFIG_HYDRACORE/c_mont_mult.c"/>
+            <file path="upgrade/CONFIG_HYDRACORE/secrsa_padding.c"/>
+            <file path="upgrade/CONFIG_HYDRACORE/secrsa_padding.h"/>
+            <file path="upgrade/CONFIG_HYDRACORE/upgrade_fw_if_config.c"/>
+            <file path="upgrade/CONFIG_HYDRACORE/upgrade_partition_data_config.c"/>
+            <file path="upgrade/CONFIG_HYDRACORE/upgrade_partitions_config.c"/>
+            <file path="upgrade/CONFIG_HYDRACORE/upgrade_psstore_config.c"/>
+            <file path="upgrade/CONFIG_HYDRACORE/upgrade_partition_offset_calculator_config.c"/>
+        </folder>
+        <file path="upgrade/upgrade.c"/>
+        <file path="upgrade/upgrade.h"/>
+        <file path="upgrade/upgrade_ctx.c"/>
+        <file path="upgrade/upgrade_ctx.h"/>
+        <file path="upgrade/upgrade_fw_if.c"/>
+        <file path="upgrade/upgrade_fw_if.h"/>
+        <file path="upgrade/upgrade_fw_if_priv.h"/>
+        <file path="upgrade/upgrade_host_if.c"/>
+        <file path="upgrade/upgrade_host_if.h"/>
+        <file path="upgrade/upgrade_host_if_data.c"/>
+        <file path="upgrade/upgrade_host_if_data.h"/>
+        <file path="upgrade/upgrade_msg_internal.h"/>
+        <file path="upgrade/upgrade_msg_vm.h"/>
+        <file path="upgrade/upgrade_partition_data.c"/>
+        <file path="upgrade/upgrade_partition_data.h"/>
+        <file path="upgrade/upgrade_partition_data_priv.h"/>
+        <file path="upgrade/upgrade_partitions.c"/>
+        <file path="upgrade/upgrade_partitions.h"/>
+        <file path="upgrade/upgrade_private.h"/>
+        <file path="upgrade/upgrade_psstore.c"/>
+        <file path="upgrade/upgrade_psstore.h"/>
+        <file path="upgrade/upgrade_psstore_priv.h"/>
+        <file path="upgrade/upgrade_partition_offset_calculator.c"/>
+        <file path="upgrade/upgrade_partition_offset_calculator.h"/>
+        <file path="upgrade/upgrade_partition_offset_calculator_private.h"/>
+        <file path="upgrade/upgrade_sm.c"/>
+        <file path="upgrade/upgrade_sm.h"/>
+    </folder>
+    <folder name="upgrade_partition_reader">
+        <file path="upgrade_partition_reader/upgrade_partition_reader.c"/>
+        <file path="upgrade_partition_reader/upgrade_partition_reader.h"/>
+    </folder>
+    <folder name="upgrade_peer">
+        <file path="upgrade_peer/upgrade_peer.c"/>
+        <file path="upgrade_peer/upgrade_peer.h"/>
+        <file path="upgrade_peer/upgrade_peer_if_data.c"/>
+        <file path="upgrade_peer/upgrade_peer_if_data.h"/>
+        <file path="upgrade_peer/upgrade_peer_private.h"/>
+    </folder>
+    <folder name="upgrade_protocol">
+        <file path="upgrade_protocol/upgrade_protocol.h"/>
+    </folder>
+    <folder name="usb_device_class">
+        <file path="usb_device_class/usb_device_audio.c"/>
+        <file path="usb_device_class/usb_device_audio.h"/>
+        <file path="usb_device_class/usb_device_battery_charging.c"/>
+        <file path="usb_device_class/usb_device_battery_charging.h"/>
+        <file path="usb_device_class/usb_device_class.c"/>
+        <file path="usb_device_class/usb_device_class.h"/>
+        <file path="usb_device_class/usb_device_class_private.h"/>
+        <file path="usb_device_class/usb_device_hid.c"/>
+        <file path="usb_device_class/usb_device_hid.h"/>
+        <file path="usb_device_class/usb_device_mass_storage.c"/>
+        <file path="usb_device_class/usb_device_mass_storage.h"/>
+        <file path="usb_device_class/usb_device_mass_storage_fat16.c"/>
+        <file path="usb_device_class/usb_device_mass_storage_fat16.h"/>
+    </folder>
+    <folder name="uuid">
+        <file path="uuid/uuid.c"/>
+        <file path="uuid/uuid.h"/>
+    </folder>
+    <folder name="vmal">
+        <folder name="HAVE_PIO_BANKS">
+            <file path="vmal/CONFIG_HAVE_PIO_BANKS/vmal_pio.c"/>
+        </folder>
+        <folder name="KYMERA">
+            <file path="vmal/CONFIG_KYMERA/vmal_operator.c"/>
+            <file path="vmal/CONFIG_KYMERA/vmal_transform.c"/>
+            <file path="vmal/CONFIG_KYMERA/vmal_vm.c"/>
+        </folder>
+        <file path="vmal/vmal.h"/>
+    </folder>
+    <folder name="vmtypes">
+        <file path="vmtypes/vmtypes.h"/>
+    </folder>
+    <configurations>
+        <configuration name="makefile_project" options="clean|build|default">
+            <devkitConfiguration>makefile_project</devkitConfiguration>
+            <devkitGroup>kitres://{32D72C9E-F2CE-45FC-847C-4562B2C4E485}</devkitGroup>
+            <property name="BUILD_ARGUMENTS">CONFIGS=qcc518x_qcc308x LIBTYPE=synergy EXTRA_WARNINGS=FALSE install</property>
+            <property name="BUILD_LIBS_AS_PRIVATE"></property>
+            <property name="BUILD_TYPE">DEBUG</property>
+            <property name="CHIP_NAME">QCC517x_apps</property>
+            <property name="CHIP_TYPE">qcc518x_qcc308x</property>
+            <property name="OS_VARIANT">freeRTOS</property>
+            <property name="CLEAN_ARGUMENTS">CONFIGS=qcc518x_qcc308x clean</property>
+            <property name="DBG_CORE"></property>
+            <property name="DEFS"></property>
+            <property name="HW_VARIANT"></property>
+            <property name="INCPATHS">../installed_libs/include/profiles/default_qcc518x_qcc308x ../../../os/qcc518x_qcc308x/freeRTOS/src/installed_libs/include/firmware_qcc518x_qcc308x ../../../os/qcc518x_qcc308x/freeRTOS/src/installed_libs/include/firmware_qcc518x_qcc308x/app ../../../os/qcc518x_qcc308x/freeRTOS/src/installed_libs/include/standard ../../../os/qcc518x_qcc308x/freeRTOS/src/installed_libs/include/firmware_qcc518x_qcc308x/app/bluestack  ../../../os/qcc518x_qcc308x/freeRTOS/src/fw/src ../../../os/qcc518x_qcc308x/freeRTOS/src/fw/src/core ../../../os/qcc518x_qcc308x/freeRTOS/src/fw/src/core/include ../../../os/qcc518x_qcc308x/freeRTOS/src/fw/src/core/include_fw</property>
+            <property name="LIBPATHS">../installed_libs/lib/default_qcc518x_qcc308x ../../../os/qcc518x_qcc308x/freeRTOS/src/installed_libs/lib/os/qcc518x_qcc308x</property>
+            <property name="LIBS"></property>
+            <property name="MAKEFILE_TO_CALL">Makefile</property>
+            <property name="NUM_PIO_BANKS">2</property>
+            <property name="OUTPUT"></property>
+            <property name="OUTPUT_TYPE"></property>
+            <property name="PRESERVED_LIBS"></property>
+            <property name="STRIP_SYMBOLS"></property>
+            <property name="SUBSYSTEM_NAME"></property>
+            <property name="SW_VARIANT"></property>
+        </configuration>
+    </configurations>
+</project>

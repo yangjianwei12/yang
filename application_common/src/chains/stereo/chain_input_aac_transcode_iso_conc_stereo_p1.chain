@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2023 Qualcomm Technologies International, Ltd.-->
+<!--Chain for A2DP Stereo(AAC) Decoder(with transcoding) and provide outputs for To-Air ISO chain -->
+
+<chain name="CHAIN_INPUT_AAC_TRANSCODE_ISO_CONC_STEREO_P1" id="0" generate_endpoint_roles_enum="False" generate_operator_roles_enum="False">
+
+    <include_header name="app_chain_config.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+
+    <operator name="OPR_RTP_DECODER" id="CAP_ID_RTP_DECODE">
+        <sink name="IN" terminal="0"/>
+        <source name="OUT" terminal="0"/>
+    </operator>
+
+    <operator name="OPR_AAC_DECODER" id="HS_CAP_ID_AAC_DECODER" processor="P1">
+        <sink name="IN" terminal="0"/>
+        <source name="OUT_L" terminal="0"/>
+        <source name="OUT_R" terminal="1"/>
+    </operator>
+
+    <operator name="OPR_SPEAKER_RESAMPLER" id="CAP_ID_IIR_RESAMPLER">
+        <sink name="IN_0" terminal="0"/>
+        <sink name="IN_1" terminal="1"/>
+        <source name="OUT_0" terminal="0"/>
+        <source name="OUT_1" terminal="1"/>
+    </operator>
+
+    <operator name="OPR_LC3_ENCODE_SCO_ISO" id="CAP_ID_LC3_SCO_ISO_ENC" processor="P0">
+        <sink name="IN_L" terminal="0"/>
+        <source name="ISO_OUT_L" terminal="0"/>
+    </operator>
+
+    <operator name="OPR_LC3_ENCODE_SCO_ISO_RIGHT" id="CAP_ID_LC3_SCO_ISO_ENC" processor="P0">
+        <sink name="IN_R" terminal="0"/>
+        <source name="ISO_OUT_R" terminal="0"/>
+    </operator>
+
+    <operator name="OPR_LEA_SPLT_ISO_TX" id="CAP_ID_SPLITTER">
+        <sink name="IN_0" terminal="0"/>
+        <sink name="IN_1" terminal="1"/>
+        <source name="OUT_0" terminal="0"/>
+        <source name="OUT_1" terminal="1"/>
+        <source name="OUT_2" terminal="2"/>
+        <source name="OUT_3" terminal="3"/>
+    </operator>
+
+    <operator name="OPR_LC3_DECODE_SCO_ISO" id="CAP_ID_LC3_SCO_ISO_DEC" processor="P0">
+        <sink name="IN_L" terminal="0"/>
+        <source name="OUT_L" terminal="0"/>
+    </operator>
+
+    <operator name="OPR_LC3_DECODE_SCO_ISO_RIGHT" id="CAP_ID_LC3_SCO_ISO_DEC" processor="P0">
+        <sink name="IN_R" terminal="0"/>
+        <source name="OUT_R" terminal="0"/>
+    </operator>
+    
+    <connection source="OPR_RTP_DECODER.OUT" sink="OPR_AAC_DECODER.IN"/>
+    <connection source="OPR_AAC_DECODER.OUT_L" sink="OPR_SPEAKER_RESAMPLER.IN_0"/>
+    <connection source="OPR_AAC_DECODER.OUT_R" sink="OPR_SPEAKER_RESAMPLER.IN_1"/>
+
+    <connection source="OPR_SPEAKER_RESAMPLER.OUT_0" sink="OPR_LEA_SPLT_ISO_TX.IN_0"/>
+    <connection source="OPR_SPEAKER_RESAMPLER.OUT_1" sink="OPR_LEA_SPLT_ISO_TX.IN_1"/>
+
+    <connection source="OPR_LEA_SPLT_ISO_TX.OUT_0" sink="OPR_LC3_ENCODE_SCO_ISO.IN_L"/>
+    <connection source="OPR_LEA_SPLT_ISO_TX.OUT_2" sink="OPR_LC3_ENCODE_SCO_ISO_RIGHT.IN_R"/>
+
+    <connection source="OPR_LC3_ENCODE_SCO_ISO.ISO_OUT_L" sink="OPR_LC3_DECODE_SCO_ISO.IN_L"/>
+    <connection source="OPR_LC3_ENCODE_SCO_ISO_RIGHT.ISO_OUT_R" sink="OPR_LC3_DECODE_SCO_ISO_RIGHT.IN_R"/>
+
+    <output source="OPR_LEA_SPLT_ISO_TX.OUT_1" role="EPR_LEA_CONC_SPLT_ISO_LEFT"/>
+    <output source="OPR_LEA_SPLT_ISO_TX.OUT_3" role="EPR_LEA_CONC_SPLT_ISO_RIGHT"/>
+
+    <output source="OPR_LC3_DECODE_SCO_ISO.OUT_L" role="EPR_SOURCE_DECODED_PCM"/>
+    <output source="OPR_LC3_DECODE_SCO_ISO_RIGHT.OUT_R" role="EPR_SOURCE_DECODED_PCM_RIGHT"/>
+
+    <input sink="OPR_RTP_DECODER.IN" role="EPR_SINK_MEDIA"/>
+
+</chain>

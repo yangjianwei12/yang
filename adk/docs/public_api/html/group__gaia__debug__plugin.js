@@ -1,0 +1,98 @@
+var group__gaia__debug__plugin =
+[
+    [ "gaia_debug_plugin.c", "gaia__debug__plugin_8c.html", null ],
+    [ "gaia_debug_plugin_pydbg_remote_debug.c", "gaia__debug__plugin__pydbg__remote__debug_8c.html", null ],
+    [ "gaia_debug_plugin_router.c", "gaia__debug__plugin__router_8c.html", null ],
+    [ "gaia_debug_plugin_router_l2cap_peer_link.c", "gaia__debug__plugin__router__l2cap__peer__link_8c.html", null ],
+    [ "allocated_pydbg_rsp_pdu_t", "structallocated__pydbg__rsp__pdu__t.html", [
+      [ "cmd_rsp_message", "structallocated__pydbg__rsp__pdu__t.html#a31ec533bc5b851d3c7cff416817e00fa", null ],
+      [ "payload", "structallocated__pydbg__rsp__pdu__t.html#a0c47d9b2c6ba596be2218186ac947fd0", null ],
+      [ "pdu", "structallocated__pydbg__rsp__pdu__t.html#a402a1713d5d56bb07efc5fcccd9377b6", null ],
+      [ "pdu_size", "structallocated__pydbg__rsp__pdu__t.html#a71336b0368837624c513f635e02a9a85", null ]
+    ] ],
+    [ "gaia_debug_l2cap_peer_link_functions_t", "structgaia__debug__l2cap__peer__link__functions__t.html", [
+      [ "handle_peer_link_disconnect_ind", "structgaia__debug__l2cap__peer__link__functions__t.html#a7bbe392111febfc2852fb90840a79aa8", null ],
+      [ "handle_peer_link_failed_to_connect", "structgaia__debug__l2cap__peer__link__functions__t.html#a54121fe078bc4a63afd08c712c2b43da", null ],
+      [ "handle_peer_link_handover_complete", "structgaia__debug__l2cap__peer__link__functions__t.html#a5c6e13f6ed4ebf5ac0cb1ecf938e95eb", null ],
+      [ "handle_peer_link_handover_veto", "structgaia__debug__l2cap__peer__link__functions__t.html#a6ab3b507ca400cf4032c0e26a2a7982d", null ],
+      [ "handle_peer_link_received_messages", "structgaia__debug__l2cap__peer__link__functions__t.html#a4146c29b4a1289958a4b06aef9074748", null ]
+    ] ],
+    [ "pydbg_remote_debug_pdu_info_t", "structpydbg__remote__debug__pdu__info__t.html", [
+      [ "cmd_id", "structpydbg__remote__debug__pdu__info__t.html#a5f141e207bccab7c44b606da515f77ec", null ],
+      [ "gaia_client_id", "structpydbg__remote__debug__pdu__info__t.html#a30d3cc9ed9dfbe2649eab29543804d44", null ],
+      [ "gaia_tag", "structpydbg__remote__debug__pdu__info__t.html#abf4b6ca250fac827b8c211b56add5e83", null ],
+      [ "gaia_transport", "structpydbg__remote__debug__pdu__info__t.html#ae4ff5c0e5becb585784a90a4bb6de1cb", null ],
+      [ "pdu_type", "structpydbg__remote__debug__pdu__info__t.html#a2ac64ce462b63e050a85950ab4e819b0", null ],
+      [ "pydbg_seq_no", "structpydbg__remote__debug__pdu__info__t.html#abfa4c17e189bf74fd4d6398a054d08c5", null ],
+      [ "routed_cmd_id", "structpydbg__remote__debug__pdu__info__t.html#a3b7a8d23d98ad4a5a8a17cf191582a00", null ],
+      [ "routed_pdu_type", "structpydbg__remote__debug__pdu__info__t.html#a12d7d5a701ae6da4bd68d4e509d54a7a", null ],
+      [ "routed_req_to", "structpydbg__remote__debug__pdu__info__t.html#a9e2d5aed683e12a00d6f65e17a1fcfa6", null ],
+      [ "routed_rsp_from", "structpydbg__remote__debug__pdu__info__t.html#a00eae67c4d403778400a95f669d6b77e", null ]
+    ] ],
+    [ "apps_ss_block_id_t", "group__gaia__debug__plugin.html#gab10f70afbb7dba5b59045aa410ff59ba", null ],
+    [ "debug_plugin_configure_debug_logging_cmd_t", "group__gaia__debug__plugin.html#ga82e597f8d76dcf3e0e3d01ce751236ca", null ],
+    [ "debug_plugin_configure_debug_logging_rsp_t", "group__gaia__debug__plugin.html#ga17ffd4a498baf2f1f9697eed8223aae4", null ],
+    [ "debug_plugin_debug_tunnel_to_chip_cmd_t", "group__gaia__debug__plugin.html#gaf0567044d5f8efdfd1700a432ad67e82", null ],
+    [ "debug_plugin_debug_tunnel_to_chip_rsp_t", "group__gaia__debug__plugin.html#ga44fb9f1eed9359c99d56b24c9b1e29ac", null ],
+    [ "debug_plugin_erase_panic_log_cmd_t", "group__gaia__debug__plugin.html#ga39943b03611702b8dfd4f5d3b4f672a3", null ],
+    [ "debug_plugin_erase_panic_log_rsp_t", "group__gaia__debug__plugin.html#ga4fb622f8b40cd0ffde338fe05d703247", null ],
+    [ "debug_plugin_get_debug_log_info_cmd_t", "group__gaia__debug__plugin.html#ga3e83f79f40bb08bfab227a01ccbdf3e8", null ],
+    [ "debug_plugin_get_debug_log_info_rsp_t", "group__gaia__debug__plugin.html#gac993d23a7e24dc19fb3fce9b7150d22c", null ],
+    [ "debug_plugin_get_panic_log_cmd_t", "group__gaia__debug__plugin.html#gaedb1d36f6b19c19d0bbf8c5465c7ed6a", null ],
+    [ "debug_plugin_get_panic_log_rsp_t", "group__gaia__debug__plugin.html#gab6009240eb40f046385732ab373debb8", null ],
+    [ "debug_plugin_notifications_t", "group__gaia__debug__plugin.html#ga2312593c628cbcd88a06443e981f9973", [
+      [ "debug_tunnel_from_chip_notification", "group__gaia__debug__plugin.html#gga2312593c628cbcd88a06443e981f9973a1d8ce169f26fa05e16532b2e14cc9444", null ],
+      [ "number_of_debug_notifications", "group__gaia__debug__plugin.html#gga2312593c628cbcd88a06443e981f9973a08220873e0ee19d0f25acd05fcde3c91", null ]
+    ] ],
+    [ "debug_plugin_pdu_ids_t", "group__gaia__debug__plugin.html#gaf4823e192372ce2fde04f3bab27c6a53", [
+      [ "get_debug_log_info", "group__gaia__debug__plugin.html#ggaf4823e192372ce2fde04f3bab27c6a53a0bf5b544dd8543e385e3a1239d0e94d6", null ],
+      [ "configure_debug_logging", "group__gaia__debug__plugin.html#ggaf4823e192372ce2fde04f3bab27c6a53a40d8d98057cbcf688f8603d93d1faf03", null ],
+      [ "setup_debug_log_transfer", "group__gaia__debug__plugin.html#ggaf4823e192372ce2fde04f3bab27c6a53a44bcae7f468e4b4f00c5bffa734496f2", null ],
+      [ "erase_panic_log", "group__gaia__debug__plugin.html#ggaf4823e192372ce2fde04f3bab27c6a53a5700208691240f50bab61216e9ba49dc", null ],
+      [ "debug_tunnel_to_chip", "group__gaia__debug__plugin.html#ggaf4823e192372ce2fde04f3bab27c6a53a3e1fe5baa5fa7304bf7a9a81aae70762", null ],
+      [ "number_of_debug_commands", "group__gaia__debug__plugin.html#ggaf4823e192372ce2fde04f3bab27c6a53a1041fb8eba93bb0179286073c336e895", null ]
+    ] ],
+    [ "debug_plugin_status_code_t", "group__gaia__debug__plugin.html#gaf88087c5dbea01c9f2b1ef941aff1730", [
+      [ "debug_plugin_status_success", "group__gaia__debug__plugin.html#ggaf88087c5dbea01c9f2b1ef941aff1730ad084af0d8eaed1ca4b04bca68b9d3a88", null ],
+      [ "debug_plugin_status_no_data", "group__gaia__debug__plugin.html#ggaf88087c5dbea01c9f2b1ef941aff1730ae9b8ef6537650fe1f670001864921481", null ],
+      [ "debug_plugin_status_not_enough_space", "group__gaia__debug__plugin.html#ggaf88087c5dbea01c9f2b1ef941aff1730a63035e6aec174a53ef4e825eeeac0208", null ],
+      [ "debug_plugin_status_busy", "group__gaia__debug__plugin.html#ggaf88087c5dbea01c9f2b1ef941aff1730a756f452981d08018f098ba02c3d8d126", null ],
+      [ "debug_plugin_status_invalid_command", "group__gaia__debug__plugin.html#ggaf88087c5dbea01c9f2b1ef941aff1730ad00ba9e4a704ed3fd9369e2106ac5192", null ],
+      [ "debug_plugin_status_invalid_parameters", "group__gaia__debug__plugin.html#ggaf88087c5dbea01c9f2b1ef941aff1730a6ed55dd255b4c912eec4a8265f8366f4", null ],
+      [ "debug_plugin_status_no_debug_partition", "group__gaia__debug__plugin.html#ggaf88087c5dbea01c9f2b1ef941aff1730acd00d1cf39bb123982b464b7a6068ecb", null ],
+      [ "debug_plugin_status_unknown_error", "group__gaia__debug__plugin.html#ggaf88087c5dbea01c9f2b1ef941aff1730acf9b9c026997ee3be312b144f6975085", null ],
+      [ "number_of_debug_error_codes", "group__gaia__debug__plugin.html#ggaf88087c5dbea01c9f2b1ef941aff1730a69e66ad50ea584b1e21afd1b90e1aafa", null ]
+    ] ],
+    [ "gaia_debug_device_type_t", "group__gaia__debug__plugin.html#ga31680ef4e6ad3c079cd8834454b1417a", null ],
+    [ "gaia_debug_l2cap_peer_link_message_command_t", "group__gaia__debug__plugin.html#ga77819f596b0fbeb221fc9c9c25c96757", [
+      [ "link_message_command_invalid", "group__gaia__debug__plugin.html#gga77819f596b0fbeb221fc9c9c25c96757af3b18241a0587857dd56d0470904e036", null ],
+      [ "link_message_command_ping", "group__gaia__debug__plugin.html#gga77819f596b0fbeb221fc9c9c25c96757abf974e0b7e6611f57efcc40f1119d576", null ],
+      [ "link_message_command_req", "group__gaia__debug__plugin.html#gga77819f596b0fbeb221fc9c9c25c96757aea592465ee5845167b341a42c926e4b4", null ],
+      [ "link_message_command_rsp", "group__gaia__debug__plugin.html#gga77819f596b0fbeb221fc9c9c25c96757a986d9908fa6b947c58a13ce81167888d", null ],
+      [ "link_message_command_error", "group__gaia__debug__plugin.html#gga77819f596b0fbeb221fc9c9c25c96757a4e390ec7ac07ae2317b80771c2753e5f", null ],
+      [ "link_message_command_text", "group__gaia__debug__plugin.html#gga77819f596b0fbeb221fc9c9c25c96757a78e20120d4b17acd44482c01deda134c", null ]
+    ] ],
+    [ "gaia_debug_l2cap_peer_link_send_status_t", "group__gaia__debug__plugin.html#ga0b333024a75dd5b8f3ee1c6e6d487b2e", null ],
+    [ "subsystem_id_t", "group__gaia__debug__plugin.html#ga233cbed4a91184683c7e5d82bfa9fafb", null ],
+    [ "GaiaDebugPlugin_DebugTunnelToChip", "group__gaia__debug__plugin.html#ga1a84b0c818c82286a274a11102e27a3c", null ],
+    [ "GaiaDebugPlugin_GetDeviceType", "group__gaia__debug__plugin.html#ga66b3bf0b0cded8417bf02db595337528", null ],
+    [ "GaiaDebugPlugin_Init", "group__gaia__debug__plugin.html#gae7d8db582a413502cf63b104df52c50c", null ],
+    [ "GaiaDebugPlugin_L2capPeerLinkCbGaiaLinkConnect", "group__gaia__debug__plugin.html#ga28e17d013fdcb113a7ca66afc13588a7", null ],
+    [ "GaiaDebugPlugin_L2capPeerLinkCbGaiaLinkDisconnect", "group__gaia__debug__plugin.html#ga91e5e69160d87a1a773cbe0b6ee85afb", null ],
+    [ "GaiaDebugPlugin_L2capPeerLinkCbHandoverComplete", "group__gaia__debug__plugin.html#ga4d469b7f9a0d3fe40f667750dca30ba8", null ],
+    [ "GaiaDebugPlugin_L2capPeerLinkCbHandoverVeto", "group__gaia__debug__plugin.html#gac7e46c56fc5bcb23d343518a3fc5ddab", null ],
+    [ "GaiaDebugPlugin_L2capPeerLinkDiscardTxBufferredData", "group__gaia__debug__plugin.html#ga765a3667b538498d6227ae7d512d4956", null ],
+    [ "GaiaDebugPlugin_L2capPeerLinkDisconnect", "group__gaia__debug__plugin.html#ga02e22bfc0b6fe1f02e9e7763ed18d537", null ],
+    [ "GaiaDebugPlugin_L2capPeerLinkInit", "group__gaia__debug__plugin.html#ga57914a9c5ad439c0355893ff7d95ba99", null ],
+    [ "GaiaDebugPlugin_L2capPeerLinkRegisterCallbackFunctions", "group__gaia__debug__plugin.html#gab9b88d3ebacb07d94255972f1a24d7ba", null ],
+    [ "GaiaDebugPlugin_L2capPeerLinkSend", "group__gaia__debug__plugin.html#ga1eae53d913384a35201ed019f6970726", null ],
+    [ "GaiaDebugPlugin_PyDbgDebugCommandHandler", "group__gaia__debug__plugin.html#ga50237c6b2f0f02acf5393a04c127b87e", null ],
+    [ "GaiaDebugPlugin_PydbgRoutingCbHandoverComplete", "group__gaia__debug__plugin.html#gaf44e473f41d41b894eae1b0b50ee7008", null ],
+    [ "GaiaDebugPlugin_PydbgRoutingCbHandoverVeto", "group__gaia__debug__plugin.html#gad15226547b763418a8811dbad6d4243b", null ],
+    [ "GaiaDebugPlugin_PydbgRoutingCbPeerLinkDisconnectInd", "group__gaia__debug__plugin.html#gacb83e17d3908f184f49a3579d40af265", null ],
+    [ "GaiaDebugPlugin_PydbgRoutingCbPeerLinkFailedToConnect", "group__gaia__debug__plugin.html#ga9d5f4671204172a9cc7094313a8d4c99", null ],
+    [ "GaiaDebugPlugin_PydbgRoutingCbReceiveMessageFromPeer", "group__gaia__debug__plugin.html#gae5d8cf97f6fd689956415bda980d6d03", null ],
+    [ "GaiaDebugPlugin_PydbgRoutingMallocRspPDU", "group__gaia__debug__plugin.html#ga3fe3489c0593611afebeacbbce5e05a4", null ],
+    [ "GaiaDebugPlugin_PydbgRoutingSendError", "group__gaia__debug__plugin.html#ga204d6573e327fbc49f0cdd11dc0a623a", null ],
+    [ "GaiaDebugPlugin_PydbgRoutingSendResponse", "group__gaia__debug__plugin.html#gab29b6bea5f899e2ee7a79044e3b675b7", null ]
+];

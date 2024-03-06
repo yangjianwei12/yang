@@ -1,0 +1,8 @@
+import imp
+import os
+cap_list = imp.load_source("mod", os.path.abspath(os.path.join(os.path.curdir,"bundle/config/capabilities.cfg")))
+
+# List of capabilites to be bundled up in KDCs
+KDCs = {}
+KDCs["download_aptx_adaptive_r3_decode"] = [dnld_aptx_adaptive_r3_mono_decode, dnld_aptx_adaptive_r3_stereo_decode]
+

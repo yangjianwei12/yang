@@ -1,0 +1,40 @@
+file=audio2
+
+# Select PIOs for I2S interface 1: SCK, WS, MCLK, SD_OUT, SD_IN.
+Pcm1PioConfig = [ 10 14 0F FF 13 ]
+
+DigMic0G722FilterEnable = true
+DigMic0G722FirEnable = true
+DigMic0ChanSwap = false
+DigMic0ClockRate = 4000
+DigMic0PioConfig = [25 22]
+
+DigMic1G722FilterEnable = true
+DigMic1G722FirEnable = true
+DigMic1ChanSwap = false
+DigMic1ClockRate = 4000
+DigMic1PioConfig = [25 22]
+
+DigMic2G722FilterEnable = true
+DigMic2G722FirEnable = true
+DigMic2ChanSwap = false
+DigMic2ClockRate = 4000
+DigMic2PioConfig = [ff ff]
+
+CodecOutputDisableTimeout = 28000000
+
+AncEnableDelay = 300
+MetadataTagsArraySize = 300
+
+#By default ANC IIR filter sample rate set to 32kHz (for QCC517x Based RDP devices) in both ANC instances
+AncIIRFilterSampleRate = 32000
+
+# Set DAC gain to -6dB (needs corresponding anc htf file)
+Codec0OutputQuietModeControl = 2
+
+# Use Class AB mode
+Codec0OutAmpQualityMode = false
+Codec0UseClassABAmplifier = true
+
+# Changing the PMNumShutDownBanks from default 30 to 16
+PMNumShutDownBanks = 16

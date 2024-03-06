@@ -1,0 +1,19 @@
+file=app5
+
+DeviceName = "QCC5181 Earbud RDP"
+
+# ApplicationReadOnlyKey0 - This key is used to set Fast Pair Model ID for an audio sink device. Stored in Little Endian format.
+ApplicationReadOnlyKey0 = [ 3C 0C 64 00 ]
+
+# ApplicationReadOnlyKey1 - This key is used to set Fast Pair ASPK for an audio sink device. Stored in Little Endian format.
+ApplicationReadOnlyKey1 = [ 44 00 af ff 3b 7e 6e bd 0a 9a 91 d1 4c 27 69 d4 94 f1 4b 90 59 5a 6a 2e 15 1a fd a0 4e 10 5c 18 ]
+
+# ApplicationReadOnlyKey2 - GAA model ID: A 32-bit unsigned number assigned by Google to identify the device to the Google Assistant Accessory (GAA).
+# The bytes in each 16-bit pair are reversed, so for example, for the Qualcomm ADK earbuds GAA model ID of 0xB50279 the sequence
+# is [ B5 00 79 02 ].
+ApplicationReadOnlyKey2 = [ 64 00 3C 0C ]
+
+# ApplicationReadOnlyKey3 - GAA OTA test control: A 16-bit value used to control GAA OTA testing. At the moment if it is absent or FALSE (0) then
+# no GAA OTA test control is done. If it is present and non-zero (TRUE) then silent commit is not supported and the GAA OTA will
+# perform an immediate commit on apply. In future this may be bit-mapped to provide separate controls of other aspects.
+#ApplicationReadOnlyKey3 = [ 01 00 ] #Uncomment to enable GAA OTA test control

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 Qualcomm Technologies International, Ltd. -->
+<!-- Declaration of the static scheduler task used by the "fault" component.
+     See the header of kymera/build/gen_sched.py for an explanation of
+     what each element does. -->
+
+<scheduler>
+    <bgint>
+        <onlyif value="!defined(FAULT_LEAN_AND_MEAN)"/>
+        <name value="fault_publish"/>
+        <handler value="publish_faults_bg"/>
+    </bgint>
+    <bgint>
+        <onlyif value="!defined(FAULT_LEAN_AND_MEAN)"/>
+        <name value="fault_publish_fresh"/>
+        <handler value="publish_fresh_faults_bg"/>
+    </bgint>
+</scheduler>

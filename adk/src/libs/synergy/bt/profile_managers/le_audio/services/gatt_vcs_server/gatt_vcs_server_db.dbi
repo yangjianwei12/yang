@@ -1,0 +1,73 @@
+/******************************************************************************
+ *  Copyright (c) 2020 Qualcomm Technologies International, Ltd.
+ *  %%version
+ *  %%appversion
+ *
+ *  FILE
+ *      gatt_vcs_server_db.dbi
+ *
+ *  DESCRIPTION
+ *
+ *      This file defines the Volume Control Service in JSON format. This file is
+ *      included in the main application data base file which is used to
+ *      produce ATT flat data base. 
+ *
+ *****************************************************************************/
+
+#ifndef __GATT_VCS_SERVER_DB_DBI__
+#define __GATT_VCS_SERVER_DB_DBI__
+
+#include "gatt_vcs_server_uuids.h"
+
+/* Primary service declaration of Volume Control Service */
+
+primary_service {
+    uuid : UUID_VOLUME_CONTROL_SERVICE,
+    name : "VOLUME_CONTROL_SERVICE",
+    sdp  : true,
+
+    /* Volume Setting characteristic - 3-octets. */
+
+    characteristic {
+        uuid        : UUID_VOLUME_STATE,
+        name        : "VOLUME_STATE",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+        
+        value       : [ 0x00, 0x00, 0x00 ],
+        
+        client_config {
+            name : "VOLUME_STATE_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Volume Control Point characteristic */
+
+    characteristic {
+        uuid        : UUID_VOLUME_CONTROL_POINT,
+        name        : "VOLUME_CONTROL_POINT",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_W, FLAG_DYNLEN ],
+        properties  : [ write ],
+        
+        value       : [0x00]
+    },
+
+    /* Volume Flags characteristic - 1-octet . */
+
+    characteristic {
+        uuid        : UUID_VOLUME_FLAGS,
+        name        : "VOLUME_FLAGS",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+        
+        value       : 0x00,
+        
+        client_config {
+            name : "VOLUME_FLAGS_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    }
+},
+
+#endif /* __GATT_VCS_SERVER_DB_DBI__ */

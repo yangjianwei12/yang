@@ -1,0 +1,5 @@
+file = audio
+
+# PSID=0x0086, capID=0x0001, UCID=0x0003, LE SREC chain basic_pass: gain +20dB
+# -> [ 1001 0001 0001 0D49 A782  ]
+0x000086 = [ 01 10 01 00 01 00 49 0D 82 A7 ]

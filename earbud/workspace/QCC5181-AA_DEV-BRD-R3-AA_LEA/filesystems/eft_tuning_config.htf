@@ -1,0 +1,54 @@
+file = audio
+
+# Earbud Fit Test with Jingle
+
+# EFT Capability
+# PSID=0x205100, capID=0x40A2, UCID=0x0000, capIDVer=1, Fit Quality Threshold = 3dB
+# -> [ 1001 0001 0001 0300 0000  ]
+0x205100 = [ 01 10 01 00 01 00 00 03 00 00 ]
+
+
+# Continuous Earbud Fit Test
+
+# GEQ Capability
+# Master gain 12db; output gain 12dB
+# Gain Smooth TC 10ms
+# Frequency settings must match with EFT capability
+# Num Bands = 4
+# Band1 Freq: 0 .. 250Hz
+# Band2 Freq: 250 .. 500Hz
+# Band3 Freq: 500 .. 750Hz
+# Band4 Freq: 750 .. 1kHz
+# Band5 Freq: 1k  .. 4kHz
+
+# GEQ Bypass mode at startup
+# PSID=0x206900, capID=0x40D2, UCID=0x0000
+# -> [ 1002 0000 0004 0000 0001 0000 02D0 0000 02D0 0000 0190 0007 0002 0000 02EE 0000 03E8  ]
+0x206900 = [ 02 10 00 00 04 00 00 00 01 00 00 00 D0 02 00 00 D0 02 00 00 90 01 07 00 02 00 00 00 EE 02 00 00 E8 03 ]
+
+# GEQ Full processing mode
+# PSID=0x206902, capID=0x40D2, UCID=0x0001
+# -> [ 1002 0001 0003 0000 02D0 0000 02D0 0000 0190 0007 0002 0000 02EE 0000 03E8  ]
+0x206902 = [ 02 10 01 00 03 00 00 00 D0 02 00 00 D0 02 00 00 90 01 07 00 02 00 00 00 EE 02 00 00 E8 03 ]
+
+# EFT Capability
+# Time constant 2s, interval 0.1s, smoothing time 4s
+# Sensitivity threshold -70dB
+# Gain calibration for RDPv17
+# Frequency settings must match with GEQ capability
+# Num Bands = 4
+# Band1 Freq: 125 .. 300Hz
+# Band2 Freq: 300 .. 550Hz
+# Band3 Freq: 550 .. 750Hz
+# Band4 Freq: 750 .. 1kHz
+# Band5 Freq: 1k  .. 4kHz
+
+# Continuous EFT standalone
+# PSID=0x205102, capID=0x40A2, UCID=0x0001
+# -> [ 1004 0000 0001 0010 0000 0004 0004 0000 07D0 0000 0014 0000 0FA0 FFFF FFB0 000F 0006 0000 02EE 0000 03E8 0000 0FA0 FFFF FFE2 0000 012C 0000 0064 0016 0001 FFFF FFCE  ]
+0x205102 = [ 04 10 00 00 01 00 10 00 00 00 04 00 04 00 00 00 D0 07 00 00 14 00 00 00 A0 0F FF FF B0 FF 0F 00 06 00 00 00 EE 02 00 00 E8 03 00 00 A0 0F FF FF E2 FF 00 00 2C 01 00 00 64 00 16 00 01 00 FF FF CE FF ]
+
+# Continuous EFT standalone + ANC
+# PSID=0x205104, capID=0x40A2, UCID=0x0002
+# -> [ 1003 0000 0001 0010 0000 0004 0004 0000 07D0 0000 0014 0000 0FA0 FFFF FFB0 000F 0008 0000 02EE 0000 03E8 0000 0FA0 FFFF FFE2 FFFF FF9C FFFF FE3E FFFF FE0C FFFF FEA2  ]
+0x205104 = [ 03 10 00 00 01 00 10 00 00 00 04 00 04 00 00 00 D0 07 00 00 14 00 00 00 A0 0F FF FF B0 FF 0F 00 08 00 00 00 EE 02 00 00 E8 03 00 00 A0 0F FF FF E2 FF FF FF 9C FF FF FF 3E FE FF FF 0C FE FF FF A2 FE ]

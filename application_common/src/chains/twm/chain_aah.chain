@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2021 - 2023 Qualcomm Technologies International, Ltd.-->
+<!--Chain for AAH -->
+
+<chain name="CHAIN_AAH" id="1" generate_operator_roles_enum="False" generate_endpoint_roles_enum="False">
+
+    <include_header name="app_chain_config.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+
+    <operator name="OPR_AAH" id="EB_CAP_ID_AAH">
+        <sink name="REF_IN" terminal="0"/>
+        <sink name="FB_IN" terminal="2"/>
+        <sink name="FF_IN" terminal="3"/>
+        <source name="REF_OUT" terminal="0"/>
+        <source name="FB_OUT" terminal="2"/>
+        <source name="FF_OUT" terminal="3"/>
+    </operator>
+
+    <input sink="OPR_AAH.REF_IN" role="EPR_AAH_REF_IN"/>
+    <input sink="OPR_AAH.FB_IN" role="EPR_AAH_FB_IN"/>
+    <input sink="OPR_AAH.FF_IN" role="EPR_AAH_FF_IN"/>
+    <output source="OPR_AAH.REF_OUT" role="EPR_AAH_REF_OUT"/>
+    <output source="OPR_AAH.FB_OUT" role="EPR_AAH_FB_OUT"/>
+    <output source="OPR_AAH.FF_OUT" role="EPR_AAH_FF_OUT"/>
+
+</chain>

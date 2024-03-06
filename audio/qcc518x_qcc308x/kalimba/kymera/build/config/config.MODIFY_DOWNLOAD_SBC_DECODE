@@ -1,0 +1,16 @@
+############################################################################
+# Copyright 2017 - 2019 Qualcomm Technologies International, Ltd.
+############################################################################
+
+#
+# Capabilities we want to include on the chip
+# This list gets turned into a set of defines of the form INSTALL_OPERATOR_XXXX
+#
+%list CFG_CAPABILITIES
+SBC_DECODE
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/sbc_decode/sbc_decode
+capabilities/a2dp_decode/a2dp_decode
+

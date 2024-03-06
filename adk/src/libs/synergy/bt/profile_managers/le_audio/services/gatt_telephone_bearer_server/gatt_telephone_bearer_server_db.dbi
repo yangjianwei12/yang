@@ -1,0 +1,271 @@
+/******************************************************************************
+ *  Copyright (c) 2020-2022 Qualcomm Technologies International, Ltd.
+ *  %%version
+ *  %%appversion
+ *
+ *  FILE
+ *      gatt_telephone_bearer_server_db.dbi
+ *
+ *  DESCRIPTION
+ *
+ *      This file defines the Telephone Bearer Service in JSON format. This
+ *      file is included in the main application data base file which is
+ *      used to produce ATT flat data base.
+ *
+ *****************************************************************************/
+
+#ifndef __GATT_TELEPHONE_BEARER_SERVER_DB_DBI__
+#define __GATT_TELEPHONE_BEARER_SERVER_DB_DBI__
+
+#include "gatt_telephone_bearer_server_uuids.h"
+
+/* Primary service declaration of Generic Telephone Bearer Service */
+
+primary_service {
+    uuid : GATT_GTBS_UUID_TELEPHONE_BEARER_SERVICE,
+    name : "GENERIC_TELEPHONE_BEARER_SERVICE",
+    sdp  : true,
+
+    /* Bearer Provider Name (Mandatory) - X-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_BEARER_PROVIDER_NAME,
+        name        : "BEARER_PROVIDER_NAME",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+        
+        client_config {
+            name : "BEARER_PROVIDER_NAME_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Bearer UCI (Mandatory) - X-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_BEARER_UCI,
+        name        : "BEARER_UCI",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN],
+        properties  : [ read ],
+
+        value       : 0x00
+    },
+
+
+    /* Bearer Technology (Mandatory) - 1-octet */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_BEARER_TECHNOLOGY,
+        name        : "BEARER_TECHNOLOGY",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+
+        client_config {
+            name : "BEARER_TECHNOLOGY_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+    
+
+    /* Bearer URI Prefixes Supported List (Mandatory) - X-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_BEARER_URI_PREFIX_LIST,
+        name        : "BEARER_URI_PREFIX_LIST",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+
+        client_config {
+            name : "BEARER_URI_PREFIX_LIST_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Bearer Signal Strength (Optional) - 1-octet */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_SIGNAL_STRENGTH,
+        name        : "SIGNAL_STRENGTH",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+
+        client_config {
+            name : "SIGNAL_STRENGTH_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+    /* Bearer Signal Strength Reporting Interval (Mandatory if Bearer Signal Strength is supported) - 1-octet */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_SIGNAL_STRENGTH_REPORTING_INTERVAL,
+        name        : "SIGNAL_STRENGTH_REPORTING_INTERVAL",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, write, write_cmd ],
+
+        value       : 0x00
+    },
+
+    /* Bearer List Current Calls (Optional) - 3-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_LIST_CURRENT_CALLS,
+        name        : "LIST_CURRENT_CALLS",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+        
+        client_config {
+            name : "CURRENT_CALLS_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+
+    /* Content Control ID (Mandatory) - 1-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_CONTENT_CONTROL_ID,
+        name        : "CONTENT_CONTROL_ID",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read ],
+
+        value       : 0x00
+    },
+
+    /* Status Flags (Mandatory) - 2-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_STATUS_FLAGS,
+        name        : "STATUS_FLAGS",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+
+        value       : [0x00, 0x00],
+
+        client_config {
+            name : "STATUS_FLAGS_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    },
+
+
+    /* Incoming Call Target Bearer URI (Optional) - X-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_INCOMING_CALL_TARGET_BEARER_URI,
+        name        : "INCOMING_CALL_TARGET_BEARER_URI",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+        
+        client_config {
+            name : "INCOMING_CALL_TARGET_BEARER_URI_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }        
+    },
+
+
+    /* Call State (Mandatory) - X-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_CALL_STATE,
+        name        : "CALL_STATE",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+        
+        client_config {
+            name : "CALL_STATE_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }        
+    },
+
+    /* Call Control Point (Mandatory) - X-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_CALL_CONTROL_POINT,
+        name        : "CALL_CONTROL_POINT",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_W, FLAG_DYNLEN ],
+        properties  : [ write, write_cmd, notify ],
+
+        value       : 0x00,
+        
+        client_config {
+            name : "CALL_CONTROL_POINT_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }        
+    },        
+
+    /* Call Control Point Optional Opcodes (Mandatory) - X-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_CALL_CONTROL_POINT_OPCODES,
+        name        : "CALL_CONTROL_POINT_OPCODES",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read ],
+
+        value       : [0x00, 0x00]
+    },
+    
+    /* Termination Reason (Optional) - 2-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_TERMINATION_REASON,
+        name        : "TERMINATION_REASON",
+        flags       : [ FLAG_IRQ ],
+        properties  : [ notify ],
+
+        value       : [0x00, 0x00],
+        
+        client_config {
+            name : "TERMINATION_REASON_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }        
+    },
+
+    /*  Remote Friendly Name (Optional) - X-octets */
+    characteristic {
+        uuid        : GATT_TBS_UUID_REMOTE_FRIENDLY_NAME,
+        name        : "REMOTE_FRIENDLY_NAME",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+        
+        client_config {
+            name : "REMOTE_FRIENDLY_NAME_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }        
+    },
+
+    /* Incoming Call (Mandatory) - X-octets */
+
+    characteristic {
+        uuid        : GATT_TBS_UUID_INCOMING_CALL,
+        name        : "INCOMING_CALL",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : 0x00,
+
+        client_config {
+            name : "INCOMING_CALL_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    }
+
+},
+
+#endif /* __GATT_TELEPHONE_BEARER_SERVER_DB_DBI__ */

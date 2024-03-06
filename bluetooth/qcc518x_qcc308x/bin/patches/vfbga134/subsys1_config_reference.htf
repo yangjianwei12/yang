@@ -1,0 +1,324 @@
+################################################################################
+# Following tags were merged from 
+# subsys1_config1_patch_defaults_ext.htf, subsys1_config1_vfbga134_ext.htf
+################################################################################
+
+# BTSS firmware updated default values for configuration tags that are exposed to apps subsytems.
+#
+
+
+# BTSS firmware updated default values for configuration tags.
+#
+# These values override ROM defaults and are placed in layer 1 config that are exposed to apps subsytems.
+# This file is WBLAM-134 package-specific, it is merged with the chip-generic
+# config HTF during the build to form a final HTF for each package.
+#
+
+
+# TX_POWER_CTRL_TX_POWER_TABLE
+# 
+# 
+# 
+TX_POWER_CTRL_TX_POWER_TABLE =                                                                      \
+{   /* tx_power_table[ 10 ]     [V] TX_POWER_CTRL_TX_POWER_TABLE */                                 \
+    {   /* tx_power_table_0 */                                                                      \
+        {   /* br */                                                                                \
+            0x05,   /* txatten */                                                                   \
+            0x08,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF0    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* edr */                                                                               \
+            0x05,   /* txatten */                                                                   \
+            0x08,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF0    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* le */                                                                                \
+            0x05,   /* txatten */                                                                   \
+            0x08,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF0    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* qhs */                                                                               \
+            0x05,   /* txatten */                                                                   \
+            0x08,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF0    /* dbm */                                                                       \
+        }                                                                                           \
+    },                                                                                              \
+    {   /* tx_power_table_1 */                                                                      \
+        {   /* br */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x0C,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF4    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* edr */                                                                               \
+            0x04,   /* txatten */                                                                   \
+            0x0C,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF4    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* le */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x0C,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF4    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* qhs */                                                                               \
+            0x04,   /* txatten */                                                                   \
+            0x0C,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF4    /* dbm */                                                                       \
+        }                                                                                           \
+    },                                                                                              \
+    {   /* tx_power_table_2 */                                                                      \
+        {   /* br */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x13,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF8    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* edr */                                                                               \
+            0x04,   /* txatten */                                                                   \
+            0x13,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF8    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* le */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x13,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF8    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* qhs */                                                                               \
+            0x04,   /* txatten */                                                                   \
+            0x13,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xF8    /* dbm */                                                                       \
+        }                                                                                           \
+    },                                                                                              \
+    {   /* tx_power_table_3 */                                                                      \
+        {   /* br */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x1E,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xFC    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* edr */                                                                               \
+            0x04,   /* txatten */                                                                   \
+            0x1E,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xFC    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* le */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x1E,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xFC    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* qhs */                                                                               \
+            0x04,   /* txatten */                                                                   \
+            0x1E,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0xFC    /* dbm */                                                                       \
+        }                                                                                           \
+    },                                                                                              \
+    {   /* tx_power_table_4 */                                                                      \
+        {   /* br */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x30,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* edr */                                                                               \
+            0x04,   /* txatten */                                                                   \
+            0x31,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* le */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x30,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* qhs */                                                                               \
+            0x04,   /* txatten */                                                                   \
+            0x31,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        }                                                                                           \
+    },                                                                                              \
+    {   /* tx_power_table_5 */                                                                      \
+        {   /* br */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x4D,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x04    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* edr */                                                                               \
+            0x04,   /* txatten */                                                                   \
+            0x4E,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x04    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* le */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x4D,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x04    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* qhs */                                                                               \
+            0x04,   /* txatten */                                                                   \
+            0x4E,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x04    /* dbm */                                                                       \
+        }                                                                                           \
+    },                                                                                              \
+    {   /* tx_power_table_6 */                                                                      \
+        {   /* br */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x9A,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x0A    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* edr */                                                                               \
+            0x00,   /* txatten */                                                                   \
+            0x6D,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x08    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* le */                                                                                \
+            0x04,   /* txatten */                                                                   \
+            0x9A,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x0A    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* qhs */                                                                               \
+            0x00,   /* txatten */                                                                   \
+            0x7A,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x09    /* dbm */                                                                       \
+        }                                                                                           \
+    },                                                                                              \
+    {   /* tx_power_table_7 */                                                                      \
+        {   /* br */                                                                                \
+            0x00,   /* txatten */                                                                   \
+            0xED,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x0F    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* edr */                                                                               \
+            0x00,   /* txatten */                                                                   \
+            0xA1,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x0B    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* le */                                                                                \
+            0x00,   /* txatten */                                                                   \
+            0xED,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x0F    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* qhs */                                                                               \
+            0x00,   /* txatten */                                                                   \
+            0xBE,   /* txpwrmag */                                                                  \
+            0x03,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x0D    /* dbm */                                                                       \
+        }                                                                                           \
+    },                                                                                              \
+    {   /* tx_power_table_8 */                                                                      \
+        {   /* br */                                                                                \
+            0x00,   /* txatten */                                                                   \
+            0x00,   /* txpwrmag */                                                                  \
+            0x00,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* edr */                                                                               \
+            0x00,   /* txatten */                                                                   \
+            0x00,   /* txpwrmag */                                                                  \
+            0x00,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* le */                                                                                \
+            0x00,   /* txatten */                                                                   \
+            0x00,   /* txpwrmag */                                                                  \
+            0x00,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* qhs */                                                                               \
+            0x00,   /* txatten */                                                                   \
+            0x00,   /* txpwrmag */                                                                  \
+            0x00,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        }                                                                                           \
+    },                                                                                              \
+    {   /* tx_power_table_9 */                                                                      \
+        {   /* br */                                                                                \
+            0x00,   /* txatten */                                                                   \
+            0x00,   /* txpwrmag */                                                                  \
+            0x00,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* edr */                                                                               \
+            0x00,   /* txatten */                                                                   \
+            0x00,   /* txpwrmag */                                                                  \
+            0x00,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* le */                                                                                \
+            0x00,   /* txatten */                                                                   \
+            0x00,   /* txpwrmag */                                                                  \
+            0x00,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        },                                                                                          \
+        {   /* qhs */                                                                               \
+            0x00,   /* txatten */                                                                   \
+            0x00,   /* txpwrmag */                                                                  \
+            0x00,   /* txpwrexp */                                                                  \
+            0x00,   /* flags */                                                                     \
+            0x00    /* dbm */                                                                       \
+        }                                                                                           \
+    }                                                                                               \
+}

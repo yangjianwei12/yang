@@ -1,0 +1,31 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright (c) 2014 - 2020 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# Definitions required to build the SVAD
+
+#
+# Capabilities we want to include on the chip
+# This list gets turned into a set of defines of the form INSTALL_OPERATOR_XXXX
+#
+%list CFG_CAPABILITIES
+SVAD
+
+%list ALL_SRCDIRS
+capabilities/svad
+
+# List of global include paths
+%list ALL_INCDIRS
+capabilities/svad
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/svad/svad
+
+%cpp
+# Enable SVAD licensing
+USE_SVAD_LICENSING
+
+

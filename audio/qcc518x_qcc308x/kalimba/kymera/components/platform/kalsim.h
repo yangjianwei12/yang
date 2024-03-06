@@ -1,0 +1,22 @@
+// *****************************************************************************
+// Copyright (c) 2005 - 2019 Qualcomm Technologies International, Ltd.
+// *****************************************************************************
+
+#ifndef INCLUDED_KALSIM_H
+#define INCLUDED_KALSIM_H
+
+// Macros used to control debug functions in Kalsim
+// These have no effect on real hardware
+
+// TERMINATE
+// Shuts down Kalsim
+// Causes an infinite loop on a real chip
+// Usage:  TERMINATE
+
+#define TERMINATE                \
+   kalcode(0x8D008000);          \
+   terminate_loop:               \
+   jump terminate_loop;
+
+#endif // INCLUDED_KALSIM_H
+

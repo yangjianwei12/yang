@@ -1,0 +1,343 @@
+<!-- Copyright (c) 2023 Qualcomm Technologies International, Ltd -->
+<REPORT_DESC>
+	<REPORT group='cm_report' global_name='csrBtCmData' title='Synergy Connection Manager Report' add_to_detailed_report='true'>
+		<TABLE title='SERVICE MANAGER REPORT' data_type='regular'  name='smVar'>
+			<COLUMN name='smVar.smMsgTypeInProgress' title='Message Locking SM'/>
+			<COLUMN name='smVar.smInProgress' title='Is SM Queue Locked'/>
+			<COLUMN name='smVar.appHandle' title='Application Handle' data_type='TaskHandler'/>
+			<COLUMN name='smVar.operatingBdAddr' title='Operating BD Address' data_type='CsrBtDeviceAddr'/>
+		</TABLE>
+		<TABLE title='DEVICE MANAGER REPORT' data_type='regular' name='dmVar' add_to_detailed_report='true'>
+			<COLUMN name='dmVar.appHandle' title='Application Handle' data_type='TaskHandler'/>
+			<COLUMN name='dmVar.state' title='State'/>
+			<COLUMN name='dmVar.lockMsg' title='Message Locking DM'/>
+		</TABLE>
+		<TABLE title='ACL REPORT' data_type='array' name='roleVar.aclVar' length='3' add_to_detailed_report='true'>
+			<COLUMN name='deviceAddr' title='Device Address' data_type='CsrBtDeviceAddr'/>
+			<COLUMN name='role' title='Role'/>
+			<COLUMN name='encryptType' title='Encryption Type'/>
+			<COLUMN name='incoming' title='Is Incoming Connection'/>
+			<COLUMN name='aclRequestedByApp' title='Is ACL Requested by Application'/>
+			<COLUMN name='lsto' title='Link Supervision Timeout'/>
+		</TABLE>
+		<TABLE title='L2CAP REPORT' data_type='Instanced_CsrCmnListSimple_t' name='l2caVar.connList' lvl1_element_type='cmL2caConnElement' lvl2_element_type='cmL2caConnInstType' lvl2_element_ptr='cmL2caConnInst' add_to_detailed_report='true'>
+			<COLUMN name='deviceAddr' title='Device Address' data_type='CsrBtDeviceAddr'/>
+			<COLUMN name='btConnId' title='Bluetooth Connection ID'/>
+			<COLUMN name='psm' title='PSM' />
+			<COLUMN name='remotePsm' title='Remote PSM'/>
+			<COLUMN name='appHandle' title='Application Handle' data_type='TaskHandler'/>
+			<COLUMN name='context' title='Context'/>
+			<COLUMN name='state' title='L2CAP State' data_type='CsrBtCmStateL2cap'/>
+			<COLUMN name='addressType' title='Address Type'/>
+			<COLUMN name='transportType' title='Transport'/>
+		</TABLE>
+		<TABLE title='RFC REPORT' data_type='Instanced_CsrCmnListSimple_t' name='rfcVar.connList' lvl1_element_type='cmRfcConnElement' lvl2_element_type='cmRfcConnInstType' lvl2_element_ptr='cmRfcConnInst' add_to_detailed_report='true'>
+			<COLUMN name='deviceAddr' title='Device Address' data_type='CsrBtDeviceAddr'/>
+			<COLUMN name='btConnId' title='Bluetooth Connection ID'/>
+			<COLUMN name='serverChannel' title='Local Server Channel'/>
+			<COLUMN name='remoteServerChan' title='Remote Server Channel'/>
+			<COLUMN name='dlci' title='DLCI'/>
+			<COLUMN name='appHandle' title='Application Handle' data_type='TaskHandler'/>
+			<COLUMN name='context' title='Context'/>
+			<COLUMN name='state' title='RFC State' data_type='CsrBtCmStateRfc'/>
+		</TABLE>
+		<TABLE title='SDC REPORT' data_type='CsrCmnListSimple_t' name='sdcVar.sdcSearchList' next_ptr='elem.next' lvl1_element_type='sdcSearchElement' add_to_detailed_report='true'>
+			<COLUMN name='deviceAddr' title='Device Address' data_type='CsrBtDeviceAddr'/>
+			<COLUMN name='appHandle' title='Application Handle' data_type='TaskHandler'/>
+			<COLUMN name='uuidCount' title='UUID Count'/>
+			<COLUMN name='uuidType' title='UUID Type'/>
+			<COLUMN name='obtainServerChannels' title='Is Obtained Server Channels'/>
+			<COLUMN name='readAttrDirect' title='Is Reading Direct Attributes'/>
+		</TABLE>
+		<TABLE title='LE REPORT' data_type='linked_list_ptr' name='leVar.connCache' next_ptr='next' lvl1_element_type='leConnVar' add_to_detailed_report='true'>
+			<COLUMN name='addr.addr' title='Device Address' data_type='CsrBtDeviceAddr'/>
+			<COLUMN name='master' title='Is Master Role'/>
+			<COLUMN name='idAddr.addr' title='ID Address' data_type='CsrBtDeviceAddr'/>
+			<COLUMN name='connParams.supervision_timeout' title='Supervision Timeout'/>
+		</TABLE>
+		<TABLE title='PENDING LIST' data_type='CsrCmnListSimple_t_ptr' name='pendingMsgs' next_ptr='elem.next' lvl1_element_type='cmPendingMsg_t' add_to_detailed_report='true'>
+			<COLUMN name='type' title='Pending Message Type'/>
+		</TABLE>
+	</REPORT>
+		<REPORT group='av_report' global_name='csrBtAvInstData' title='Synergy A2DP Profile Report'>
+		<TABLE title='AV Main Instance Report' data_type='regular'>
+			<COLUMN name='appHandle' title='Application Handle' data_type='TaskHandler'/>
+			<COLUMN name='state' title='AV Main Instance State'/>
+			<COLUMN name='role' title='Current Role for SDP Record Registration'/>
+			<COLUMN name='searchOngoing' title='Ongoing SDP Search'/>
+			<COLUMN name='isConnectable' title='Outstanding Connect Accept'/>
+		</TABLE>
+		<TABLE title='AV Connection Information' data_type='array' name='con' length='2' add_to_detailed_report='true'>
+			<COLUMN name='remoteDevAddr' title='Remote Device Address' data_type='CsrBtDeviceAddr'/>
+			<COLUMN name='signalCid' title='Local L2CAP Signaling CID'/>
+			<COLUMN name='remoteCid' title='Remote L2CAP Signaling CID'/>
+			<COLUMN name='conState' title='Connection State'/>
+			<COLUMN name='aclHandle' title='ACL Connection Handle'/>
+			<COLUMN name='incoming' title='Incoming'/>
+			<COLUMN name='pendingSigProc' title='Pending Signaling Procedure'/>
+		</TABLE>
+	    <TABLE title='AV Stream Information' data_type='array' name='stream' length='2' add_to_detailed_report='true'>
+			<COLUMN name='mediaCid' title='Local L2CAP Media CID'/>
+			<COLUMN name='remoteCid' title='Remote L2CAP Media CID'/>
+			<COLUMN name='remoteSeid' title='Remote Device SEID'/>
+			<COLUMN name='localSeid' title='Local Device SEID'/>
+			<COLUMN name='conId' title='Connection Information Index'/>
+			<COLUMN name='streamState' title='Stream State'/>
+		</TABLE>
+	</REPORT>
+	<REPORT group='hfg_report' global_name='csrBtHfgInstance' title='Synergy HFG Profile Report'>
+		<TABLE title='HFG Main Instance Report' data_type='regular' add_to_detailed_report='true'>
+			<COLUMN name='appHandle' title='Application Handle' data_type='TaskHandler'/>
+			<COLUMN name='state' title='HFG Global State' data_type='HfgMainState_t'/>
+			<COLUMN name='oldState' title='HFG Old Global State' data_type='HfgMainState_t'/>
+			<COLUMN name='locSupFeatures' title='Local supported features bitmask'/>
+			<COLUMN name='callConfig' title='CHLD/BTRH setup bitmask'/>
+			<COLUMN name='hfgConfig' title='Profile setup bitmask'/>	
+			<COLUMN name='maxConnections' title='Max concurrent connections'/>
+		</TABLE>
+		<TABLE title='HFG Instance Report' data_type='array' name='linkData' length='2' add_to_detailed_report='true'>
+			<COLUMN name='index' title='Instance Index'/>
+			<COLUMN name='state' title='Connection State' data_type='HfgConnectionState_t'/>
+			<COLUMN name='oldState' title='Old Connection State' data_type='HfgConnectionState_t'/>
+			<COLUMN name='atState' title='AT sub-state' data_type='HfgAtState_t'/>
+			<COLUMN name='hfgConnId' title='Connection ID'/>
+			<COLUMN name='serverChannel' title='Server channel'/>
+			<COLUMN name='address' title='Peer address' data_type='CsrBtDeviceAddr'/>
+		</TABLE>
+		<TABLE title='HFG Instance Report...contd' data_type='array' name='linkData' length='2' add_to_detailed_report='true'>	
+			<COLUMN name='index' title='Instance Index'/>			
+			<COLUMN name='remSupFeatures' title='Remote Supported Features Mask'/>
+			<COLUMN name='scoHandle' title='SCO connection handle'/>
+			<COLUMN name='remoteVersion' title='Remote Version'/>
+			<COLUMN name='remSupFeatures' title='Remote Supported Features Mask'/>
+			<COLUMN name='remSupportedCodecs' title='Remote Supported Codecs Mask'/>
+			<COLUMN name='selectedQceCodecId' title='Selected QCE Codec'/>
+		</TABLE>
+		<TABLE title='HFG Instance Report...pending info' data_type='array' name='linkData' length='2' add_to_detailed_report='true'>	
+			<COLUMN name='index' title='Instance Index'/>
+			<COLUMN name='searchAndCon' title='SDS search and connection'/>
+			<COLUMN name='pendingCodecNegotiation' title='Codec Negotiation'/>
+			<COLUMN name='pendingDisconnect' title='Disconnect'/>
+			<COLUMN name='pendingPeerDisconnect' title='Peer Disconnection'/>
+			<COLUMN name='pendingSco' title='SCO connection'/>
+			<COLUMN name='pendingScoConfirm' title='SCO requested by App'/>
+			<COLUMN name='pendingScoDisconnect' title='SCO disconnect by App'/>
+		</TABLE>
+	</REPORT>
+	<REPORT group='gatt_report' global_name='gattMainInstance' title='Synergy GATT Report'>
+		<TABLE title='GATT Report' data_type='regular'>
+			<COLUMN name='privateGattId' title='GATT Owns Id'/>
+			<COLUMN name='gattIdCounter' title='Total Registered App'/>
+			<COLUMN name='localLeFeatures' title='LE Feat'/>
+			<COLUMN name='dbInitialised' title='DB Initialised'/>
+			<COLUMN name='bredrAppHandle' title=' BREDR App Handle' data_type='TaskHandler'/>
+			<COLUMN name='preferredEattMtu' title='Preferred EATT MTU'/>
+		</TABLE>
+		<TABLE title='GATT Conn Instance Report' data_type='linked_list' name='connInst' next_ptr='next' lvl1_element_type='CsrBtGattConnElement' add_to_detailed_report='true'>
+			<COLUMN name='btConnId' title='BTConnId'/>
+		    <COLUMN name='peerAddr.addr' title='Peer Address' data_type='CsrBtDeviceAddr'/>
+			<COLUMN name='leConnection' title='Conn Type'/>
+			<COLUMN name='mtu' title='Neg MTU'/>
+			<COLUMN name='encrypted' title='Link Enc'/>
+			<COLUMN name='numCidSucess' title='No Of EATT Conn'/>
+			<COLUMN name='cidSuccess' title='CID Values'/>
+			<COLUMN name='numOfBearer' title='CID States'/>
+			<COLUMN name='connFlags' title='TDDB Val'/>
+		</TABLE>	
+	</REPORT>
+	<REPORT group='lea_report' report_type="lea_report" title='Synergy LEA Report'>
+		<TABLE title='PACS Server report' data_type='lea_data' profile_name="pacss">
+			<COLUMN name='srvc_hndl' title='Service Handle'/>
+			<COLUMN name='start_handle' title='Start Handle'/>
+			<COLUMN name='end_handle' title='End Handle'/>
+			<COLUMN name='data.sink_audio_source_location' title='Sink audio source location'/>
+			<COLUMN name='data.source_audio_source_location' title='source audio source location'/>
+			<COLUMN name='data.supported_audio_contexts' title='Supported audio contexts'/>
+			<COLUMN name='data.available_audio_contexts' title='Available audio contexts'/>
+			<COLUMN name='data.pacs_record_handle_mask' title='pacs record handle mask'/>
+			<COLUMN name='data.connected_clients' data_type='pacs_data' title='connected clients'/>
+		</TABLE>
+		<TABLE title='ASCS Server report' data_type='lea_data' profile_name="ascss" add_to_detailed_report='true'>
+			<COLUMN name='serviceHandle' title='Service Handle'/>
+			<COLUMN name='numConnections' title='Number of Connections'/>
+			<COLUMN name='connection' data_type='gatt_ascs_connection' title='Gatt ASCS Connection'/>
+		</TABLE>
+		<TABLE title='BASS Server report' data_type='lea_data' profile_name="bassss" add_to_detailed_report='true'>
+			<COLUMN name='srvc_hndl' title='Service Handle'/>
+			<COLUMN name='start_handle' title='Start Handle'/>
+			<COLUMN name='end_handle' title='End Handle'/>
+			<COLUMN name='data.connected_clients' data_type='gatt_bass_server_ccc_data_t' title='Connected Clients'/>
+		</TABLE>
+		<TABLE title='MICS Server report' data_type='lea_data' profile_name="mics" add_to_detailed_report='true'>
+			<COLUMN name='srvcHandle' title='Service Handle'/>
+			<COLUMN name='data.numClients' title='Number of Clients'/>
+			<COLUMN name='data.connectedClients' data_type='gatt_mics_client_data' title='Connected Clients'/>
+			<COLUMN name='gattId' title='Gatt ID'/>
+		</TABLE>
+		<TABLE title='MCP report' data_type='lea_data' profile_name="mcp" add_to_detailed_report='true'>
+			<COLUMN name='cid' title='MCP Connection id'/>
+			<COLUMN name='mcpSrvcHndl' title='MCP Service Handle'/>
+			<COLUMN name='mcsSrvcHndl' title='MCS Service Handle'/>
+			<COLUMN name='mcsCounter' title='MCS Counter'/>
+			<COLUMN name='mcsNum' title='MCS Instance Number'/>
+			<COLUMN name='firstMcsSrvcHndl' data_type='mcp_mcs_srvc_hndl' title='MCS instance Service Handle List'/>
+		</TABLE>
+		<TABLE title='CCP report' data_type='lea_data' profile_name="ccp" add_to_detailed_report='true'>
+			<COLUMN name='cid' title='Connection id'/>
+			<COLUMN name='gtbs_start_handle' title='GTBS Start Handle'/>
+			<COLUMN name='gtbs_end_handle' title='GTBS End Handle'/>
+			<COLUMN name='ccp_srvc_hdl' title='CCP Service Handle'/>
+			<COLUMN name='tbs_srvc_hdl' title='TBS Service Handle'/>
+			<COLUMN name='is_peer_device' title='Peer Device'/>
+			<COLUMN name='tbsRequired' title='TBS Server Required'/>
+			<COLUMN name='pending_op' title='Pending Operation'/>
+		</TABLE>
+	    <TABLE title='VCP report' data_type='lea_data' profile_name="vcp" add_to_detailed_report='true'>
+			<COLUMN name='cid' title='Connection id'/>
+			<COLUMN name='start_handle' title='Start handle'/>
+			<COLUMN name='end_handle' title='End Handle'/>
+		    <COLUMN name='vcp_srvc_hdl' title='VCP Handle'/>
+		    <COLUMN name='vcs_srvc_hdl' title='VCS Handle'/>
+			<COLUMN name='vcs_change_counter' title='VCS Change Counter'/>
+			<COLUMN name='retryCounter' title='Retry Counter'/>
+			<COLUMN name='pending_op' title='Pending Op'/>
+		</TABLE>
+	    <TABLE title='PACSC report' data_type='lea_data' profile_name="pacsc" add_to_detailed_report='true'>
+			<COLUMN name='startHandle' title='Start ha'/>
+			<COLUMN name='endHandle' title='End ha'/>
+			<COLUMN name='pacsSinkAudioLocationHandle' title='SNK LOC ha'/>
+			<COLUMN name='pacsSinkAudioLocationCcdHandle' title='SNK LOCCCD ha'/>
+			<COLUMN name='pacsSourceAudioLocationHandle' title='SRC ALOC ha'/>
+			<COLUMN name='pacsSourceAudioLocationCcdHandle' title='SRC ALOC ha'/>
+			<COLUMN name='pacsAvailableAudioContextHandle' title='ABLE ACON ha'/>
+			<COLUMN name='pacsAvailableAudioContextCcdHandle' title='ABLE AUCONCCD ha'/>
+			<COLUMN name='pacsSupportedAudioContextHandle' title='SUPP AUCON ha'/>
+			<COLUMN name='pacsSupportedAudioContextCcdHandle' title='SUPP AUCONCCD ha'/>
+		    <COLUMN name='sinkPacRecordCount' title='SNK RCount'/>
+			<COLUMN name='sourcePacRecordCount' title='SRC RCount'/>
+		</TABLE>
+		<TABLE title='ASCSC report' data_type='lea_data' profile_name="ascsc" add_to_detailed_report='true'>
+			<COLUMN name='startHandle' title='Start handle'/>
+			<COLUMN name='endHandle' title='End Handle'/>
+			<COLUMN name='asesAseControlPointHandle' title='ASE handle'/>
+			<COLUMN name='asesAseControlPointCcdHandle' title='ASE CCDHandle'/>
+			<COLUMN name='aseSinkCharacCount' title='Sink Count'/>
+		    <COLUMN name='aseSourceCharacCount' title='Src Count'/>
+		    <COLUMN name='readCount' title='Read Count'/>
+			<COLUMN name='writeCount' title='Write Count'/>
+			<COLUMN name='writeType' title='Write Type'/>
+		</TABLE>
+		<TABLE title='GBASSC report' data_type='lea_data' profile_name="bassc" add_to_detailed_report='true'>
+			<COLUMN name='client_data.start_handle' title='Start handle'/>
+			<COLUMN name='client_data.end_handle' title='End Handle'/>
+			<COLUMN name='client_data.broadcast_source_num' title='Src Num'/>
+			<COLUMN name='client_data.broadcast_audio_scan_control_point_handle' title='Scan CP Handle'/>
+		</TABLE>	
+		<TABLE title='TBS report' data_type='lea_data' profile_name="tbs" add_to_detailed_report='true'>
+			<COLUMN name='srvcHandle' title='service handle'/>
+			<COLUMN name='data.contentControlId' title='CCID'/>
+			<COLUMN name='data.statusFlags' title='staus flags'/>
+			<COLUMN name='data.currentCallsList' title='Current Call list'/>
+			<COLUMN name='data.numClients' title='Num  Of Clients'/>
+		</TABLE>
+		<TABLE title='TMAP report' data_type='lea_data' profile_name="tmap" add_to_detailed_report='true'>
+			<COLUMN name='tmapSrvcHndl' title='tmap service handle'/>
+		    <COLUMN name='tmasSrvcHndl' title='tmas service handle'/>
+			<COLUMN name='bcastSrcHandle' title='bcast service handle'/>
+		</TABLE>	
+		<TABLE title='TMAS Server report' data_type='lea_data' profile_name="tmas" add_to_detailed_report='true'>
+			<COLUMN name='srvcHndl' title='tmas server service handle'/>
+		    <COLUMN name='startHandle' title='tmas server start handle'/>
+			<COLUMN name='endHandle' title='tmas server end handle'/>
+		    <COLUMN name='gattId' title='Gatt id'/>
+		    <COLUMN name='data.role' title='Role'/>
+		</TABLE>
+		<TABLE title='TMAS Client report' data_type='lea_data' profile_name="tmasc" add_to_detailed_report='true'>
+			<COLUMN name='handles.startHandle' title='tmas client start handle'/>
+		    <COLUMN name='handles.endHandle' title='tmas client end handle'/>
+			<COLUMN name='handles.roleHandle' title='tmas client role handle'/>
+		</TABLE>
+		<TABLE title='PBP report' data_type='lea_data' profile_name="pbp" add_to_detailed_report='true'>
+		    <COLUMN name='cid' title='BT COnn ID'/>
+			<COLUMN name='pbpSrvcHndl' title='PBP service handle'/>
+			<COLUMN name='bcastSrcHandle' title='bcast service handle'/>
+			<COLUMN name='numSubGroup' title='Num Of SubGroup'/>
+		</TABLE>
+		<TABLE title='BAP Server report' data_type='lea_data' profile_name="bap" add_to_detailed_report='true'>
+			<COLUMN name='cid' title='Connection ID'/>
+			<COLUMN name='numConfigInstance' title='Number of config instances'/>
+			<COLUMN name='profileHandle' title='Profile Handle'/>
+			<COLUMN name='ascsHandle' title='ASCS Handle'/>
+			<COLUMN name='pacsHandle' title='PACS Handle'/>
+			<COLUMN name='bassHandle' title='BASS Handle'/>
+		</TABLE>
+	</REPORT>
+    <REPORT group='hf_report' global_name='csrBtHfInstance' title='Synergy HF Profile Report'>
+        <TABLE title='Main Instance - Local Settings' data_type='regular'>
+            <COLUMN name='appHandle' title='App Handle' data_type='TaskHandler'/>
+            <COLUMN name='hfQceCodecMask' title='QCE Codec Mask'/>
+            <COLUMN name='maxHFConnections' title='Max HF Conn'/>
+            <COLUMN name='maxHSConnections' title='Max HS Conn'/>
+            <COLUMN name='maxTotalSimultaneousConnections' title='Max Simultaneous Conn'/>
+            <COLUMN name='localSupportedFeatures' title='Supported features'/>
+            <COLUMN name='atRespWaitTime' title='AT Response TO'/>
+            <COLUMN name='hfServerChannel' title='Server Channel'/>
+        </TABLE>
+        <TABLE title='Main Instance - Current Operation Info' data_type='regular'>
+            <COLUMN name='index' title='Current Index'/>
+            <COLUMN name='currentDeviceAddress' title='Current Device Address' data_type='CsrBtDeviceAddr'/>
+            <COLUMN name='state' title='HF State'/>
+        </TABLE>
+        <TABLE title='Connection Instance - Device Details' data_type='array' name='linkData' length='2' add_to_detailed_report='true'>
+            <COLUMN name='currentDeviceAddress' title='Address' data_type='CsrBtDeviceAddr'/>
+            <COLUMN name='hfConnId' title='Connection ID'/>
+            <COLUMN name='supportedFeatures' title='Supported Features'/>
+            <COLUMN name='remoteVersion' title='Remote Version'/>
+            <COLUMN name='linkType' title='Link Type' data_type='CsrBtHfConnectionType'/>
+            <COLUMN name='incomingSlc' title='Incoming SLC ?'/>
+        </TABLE>
+        <TABLE title='Connection Instance - Current States' data_type='array' name='linkData' length='2'>
+            <COLUMN name='atSequenceState' title='AT Seq State'/>
+            <COLUMN name='serviceState' title='Service State'/>
+            <COLUMN name='searchOngoing' title='SDP Ongoing ?'/>
+            <COLUMN name='state' title='Link State' data_type='HfStates_t'/>
+        </TABLE>
+        <TABLE title='Connection Instance - Audio Status' data_type='array' name='linkData' length='2'>
+            <COLUMN name='audioPending' title='Audio Pending ?'/>
+            <COLUMN name='lastAudioReq' title='Last Audio Request'/>
+            <COLUMN name='scoHandle' title='SCO Handle'/>
+            <COLUMN name='lastAtCmdSent' title='Last AT Command Sent'/>
+        </TABLE>
+    </REPORT>
+	<REPORT group='hidd_report' global_name='csrBtHiddInstData' title='Synergy HIDD Profile Report'>
+		<TABLE title='HIDD Main Instance Report' data_type='regular'>
+			<COLUMN name='bdAddr' title='Device Address' data_type='CsrBtDeviceAddr'/>
+			<COLUMN name='ctrlCh.cid' title='Control CID' data_type='CsrBtConnId'/>
+			<COLUMN name='intrCh.cid' title='Interrupt CID' data_type='CsrBtConnId'/>
+			<COLUMN name='currentMode' title='Mode'/>
+			<COLUMN name='state' title='State'/>
+			<COLUMN name='appHandle' title='Application Handle' data_type='TaskHandler'/>
+			<COLUMN name='hidFlags' title='Flags'/>
+			<COLUMN name='hidSdp.recordHandle' title='SDP Handle'/>
+		</TABLE>
+	</REPORT>
+ 	<REPORT group='avrcp_report' global_name='csrBtAvrcpInstance' title='Synergy AVRCP Profile Report' add_to_detailed_report='true'>
+		<TABLE title='AVRCP Main Instance Report' data_type='regular'>
+			<COLUMN name='ctrlHandle' title='Application Control Handle' data_type='TaskHandler'/>
+			<COLUMN name='srAvrcpVersionHighest' title='AVRCP version'/>
+			<COLUMN name='sdpState' title='State of SDP' data_type='avrcpSdpState'/>
+			<COLUMN name='appState' title='State of application' data_type='avrcpAppState'/>
+			<COLUMN name='numActiveAvrcpConns' title='Active AVRCP connections'/>
+			<COLUMN name='searchOngoing' title='SDP Search Ongoing?'/>
+		</TABLE>
+		<TABLE title='AVRCP Instance Report' data_type='CsrCmnListSimple_t' name='connList' next_ptr='next' lvl1_element_type='AvrcpConnInstance_t' add_to_detailed_report='true'>
+			<COLUMN name='address' title='Device Address' data_type='CsrBtDeviceAddr'/>
+			<COLUMN name='appConnId' title='AVRCP App Connection ID'/>
+			<COLUMN name='control.state' title='AVRCP control channel state' data_type='avrcpChannelState'/>
+			<COLUMN name='browsing.state' title='AVRCP browsing channel state' data_type='avrcpChannelState'/>
+			<COLUMN name='sdpState' title='SDP State' data_type='avrcpSdpState'/>
+			<COLUMN name='connDirection' title='Incoming or outgoing' data_type='avrcpConnDirection'/>
+		</TABLE>
+	</REPORT>
+	
+</REPORT_DESC>

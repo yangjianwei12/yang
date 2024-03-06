@@ -1,0 +1,40 @@
+############################################################################
+# Copyright (c) 2019 - 2020 Qualcomm Technologies International, Ltd.
+############################################################################
+# Base Kalsim configuration, do not attempt to create an image directly from it.
+
+%include config.maor_rom_v20_common
+
+#Disable ISO feature flags that are currently not supported on KALSIM
+%include config.MODIFY_DISABLE_ISO_FLAGS_KALSIM
+
+#Install the VA_GRAPH_MANAGER operator
+%include config.MODIFY_VA_GRAPH_MANAGER
+
+#Install the AUDIO CONVERT capabilities
+%include config.MODIFY_CONVERT_FROM_AUDIO
+%include config.MODIFY_CONVERT_TO_AUDIO
+
+#Install the ML_BASE capability
+%include config.MODIFY_ML_BASE
+
+#Install the ML_ENGINE capability. For Kalsim we support independent ML_ENGINE capability also
+%include config.MODIFY_ML_ENGINE
+
+#Install the ML_SVAD capability.
+%include config.MODIFY_ML_EXAMPLE_SVAD
+
+#Install the ML_NNOPS capability
+%include config.MODIFY_ML_NNOPS
+
+#Install the APTX_LITE_ENCODE_SCO_ISO capability
+%include config.MODIFY_APTX_LITE_ENCODE_SCO_ISO
+
+#Install the APTX_LITE Decoder for SCO/ISO usecases
+%include config.MODIFY_APTX_LITE_DECODE_SCO_ISO
+
+
+%cpp
+# Remove QVA and VAD licensing for Kalsim. Added initially under config.MODIFY_QVA and _VAD
+-USE_VAD_QVA_CAPS_LICENSING
+

@@ -1,0 +1,31 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright (c) 2019 - 2019 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# Definitions required to build and use the audio timing trace feature
+
+%cpp
+INSTALL_TIMING_TRACE
+
+%list ALL_SRCDIRS
+components/timing_trace
+components/timing_trace_irt
+
+# List of global include paths
+%list ALL_INCDIRS
+components/timing_trace
+components/timing_trace_irt
+
+# List of libraries to build
+%list CFG_LIBS
+components/timing_trace_irt/timing_trace_irt
+
+# List of libraries to keep
+%list PM_KEEP_LIBS
+components/timing_trace_irt/timing_trace_irt
+
+%build
+BUILD_TIMING_TRACE=TRUE
+

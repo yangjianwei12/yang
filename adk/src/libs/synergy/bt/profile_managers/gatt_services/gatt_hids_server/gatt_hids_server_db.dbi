@@ -1,0 +1,180 @@
+/******************************************************************************
+ *  Copyright (c) 2023 Qualcomm Technologies International, Ltd.
+ *  %%version
+ *  %%appversion
+ *
+ *  FILE
+ *      gatt_hids_server_db.dbi
+ *
+ *  DESCRIPTION
+ *      This file defines the Human Interface Device Service in JSON format, which is
+ *      fairly human readable.  This file is included in the main
+ *      application data base file which is used to produce ATT flat data
+ *      base.
+ *
+ *****************************************************************************/
+
+#ifndef __GATT_HIDS_SERVER_DB_DBI__
+#define __GATT_HIDS_SERVER_DB_DBI__
+
+#include "gatt_hids_server_uuids.h"
+
+ /* List of implemented characteristics
+|--------------------|-------------|----------------------|----------|----------------------|
+|Characteristic Name | Requirement | Mandatory Properties | Optional | Security Permissions |
+|--------------------|-------------|----------------------|----------|----------------------|
+| Report             | O           |                      |          | None                 |
+|--------------------|-------------|----------------------|----------|----------------------|
+| Report: Input      | C.1         |Read/Notify           |          | None                 |
+| Report Type        |             |                      |          |                      |
+|--------------------|-------------|----------------------|----------|----------------------|
+| Report: Feature    | C.1         |Read/Write            |          | None                 |
+| Report Type        |             |                      |          |                      |
+|--------------------|-------------|----------------------|----------|----------------------|
+| Report Map         | M           |Read                  |          | None                 |
+|--------------------|-------------|----------------------|----------|----------------------|
+| HID Information    | M           |Read                  |          | None                 |
+|--------------------|-------------|----------------------|----------|----------------------|
+| HID Control Point  | M           |WriteWithoutResponse  |          | None                 |
+|--------------------|-------------|----------------------|----------|----------------------|
+
+C.1: Mandatory to support at least one Report Type if the Report characteristic is supported */
+
+
+/* Primary service declaration of Human Device Interface Service */
+
+primary_service {
+    uuid : UUID_HIDS_SERVICE,
+    name : "HIDS_SERVICE",
+    /* Report  characteristic - Input report 1*/
+    characteristic {
+        uuid           : UUID_REPORT,
+        flags          : [ FLAG_IRQ, FLAG_DYNLEN ],
+        value          : 0x00,
+        name           :"HIDS_REPORT_INPUT_1",
+        properties     : [ read, notify],
+        report_reference
+        {
+            name        : "HIDS_REPORT_INPUT_REF_1",
+            properties  : [ read],
+            value       : [0x01, 0x01] /*report Id, report type*/
+
+        },
+        client_config
+        {
+            name        : "HIDS_REPORT_INPUT_CLIENT_CONFIG_1",
+            flags       : [ FLAG_IRQ ]
+        }
+    },
+
+    /* Report  characteristic - Input report 2*/
+    characteristic {
+        uuid           : UUID_REPORT,
+        flags          : [ FLAG_IRQ, FLAG_DYNLEN ],
+        value          : 0x00,
+        name           :"HIDS_REPORT_INPUT_2",
+        properties     : [ read, notify],
+        report_reference
+        {
+            name        : "HIDS_REPORT_INPUT_REF_2",
+            properties  : [ read],
+            value       : [0x01, 0x01] /*report Id, report type*/
+        },
+        client_config
+        {
+            name        : "HIDS_REPORT_INPUT_CLIENT_CONFIG_2",
+            flags       : [ FLAG_IRQ ]
+        }
+    },
+    /* Report  characteristic - Feature report 1 */
+    characteristic {
+        uuid            : UUID_REPORT,
+        flags           : [ FLAG_IRQ, FLAG_DYNLEN ],
+        value           : 0x00,
+        name            :"HIDS_REPORT_FEATURE_1",
+        properties     : [ read, write],
+        report_reference
+        {
+            name        : "HIDS_REPORT_FEATURE_1_REF",
+            flags       : [ FLAG_IRQ ],
+            properties  : [ read],
+            value       : [0x09, 0x03] /*report Id, report type*/
+        }
+        /* No Client Characteristic Configuration descriptor shall exist for a Report characteristic
+           containing Output Report data or Feature Report data */
+    },
+
+     /* Report  characteristic - Feature report 2 */
+      characteristic {
+           uuid            : UUID_REPORT,
+           flags           : [ FLAG_IRQ, FLAG_DYNLEN ],
+           value           : 0x00,
+           name            :"HIDS_REPORT_FEATURE_2",
+           properties     : [ read, write],
+           report_reference
+           {
+               name        : "HIDS_REPORT_FEATURE_2_REF",
+               flags       : [ FLAG_IRQ ],
+               properties  : [ read],
+               value       : [0x09, 0x03] /*report Id, report type*/
+           }
+           /* No Client Characteristic Configuration descriptor shall exist for a Report characteristic
+          containing Output Report data or Feature Report data */
+      },
+
+      /* Report  characteristic - Feature report 3 */
+      characteristic {
+          uuid            : UUID_REPORT,
+          flags           : [ FLAG_IRQ, FLAG_DYNLEN ],
+          value           : 0x00,
+          name            :"HIDS_REPORT_FEATURE_3",
+          properties     : [ read, write],
+          report_reference
+          {
+              name        : "HIDS_REPORT_FEATURE_3_REF",
+              flags       : [ FLAG_IRQ ],
+              properties  : [ read],
+              value       : [0x09, 0x03] /*report Id, report type*/
+          }
+                         /* No Client Characteristic Configuration descriptor shall exist for a Report characteristic
+                         containing Output Report data or Feature Report data */
+                     },
+
+
+     /* Report Map characteristic */
+     characteristic {
+        uuid            : UUID_REPORT_MAP,
+        flags           : [ FLAG_IRQ, FLAG_DYNLEN ],
+        value           : 0x00,
+        name            : "REPORT_MAP",
+        properties     : [ read],
+        full_descriptor
+        {
+            name        : "EXT_REPORT_MAP",
+            uuid        :0x2907,
+            flags       : [ FLAG_IRQ ],
+            properties  : [ read],
+            value       :  0x2A19
+            }
+   },
+
+      /* HID Information characteristic */
+    characteristic {
+        uuid        : UUID_HIDS_INFORMATION,
+        name        : "HIDS_INFORMATION",
+        flags       : [ FLAG_IRQ, FLAG_DYNLEN ],
+        properties  : [ read],
+        value       : [0x00, 0x00, 0x11]
+    },
+      /* HID Control Point characteristic */
+    characteristic {
+        uuid        : UUID_HIDS_CONTROL_POINT,
+        name        : "HIDS_CONTROL_POINT",
+        flags       : [ FLAG_IRQ, FLAG_DYNLEN ],
+        properties  : [ write_cmd],
+        value       : 0x00
+    }
+
+},
+
+#endif /* __GATT_HIDS_SERVER_DB_DBI__ */

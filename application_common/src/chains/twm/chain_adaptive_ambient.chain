@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2020 - 2023 Qualcomm Technologies International, Ltd.-->
+<!--Chain for AEC reference-->
+
+<chain name="CHAIN_ADAPTIVE_AMBIENT" id="1" generate_operator_roles_enum="False" generate_endpoint_roles_enum="False">
+
+    <include_header name="app_chain_config.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+	
+        <operator name="OPR_ADV_AANC_SPLITTER" id="CAP_ID_SPLITTER">
+            <sink name="IN" terminal="0"/>
+            <source name="OUT1" terminal="0"/>
+            <source name="OUT2" terminal="1"/>
+        </operator>
+
+        <operator name="OPR_ADV_AANC_HC" id="EB_CAP_ID_HCGR">
+            <sink name="IN1" terminal="1"/>
+        </operator>
+
+        <operator name="OPR_ADV_AANC_COMPANDER" id="EB_CAP_ID_ADRC">
+            <sink name="FF_MIC" terminal="1"/>
+            <sink name="FB_MIC" terminal="2"/>
+            <source name="FF_MIC_COMP" terminal="1"/>
+            <source name="FB_MIC_COMP" terminal="2"/>
+        </operator>
+
+
+        <input sink="OPR_ADV_AANC_SPLITTER.IN" role="EPR_ADV_ANC_SPLITTER_IN"/>
+        <input sink="OPR_ADV_AANC_COMPANDER.FF_MIC" role="EPR_ADV_ANC_COMPANDER_IN"/>
+        <input sink="OPR_ADV_AANC_HC.IN1" role="EPR_ADV_ANC_HC_IN"/>
+
+        <connection source="OPR_ADV_AANC_SPLITTER.OUT1" sink="OPR_ADV_AANC_COMPANDER.FF_MIC"/>
+        <connection source="OPR_ADV_AANC_SPLITTER.OUT2" sink="OPR_ADV_AANC_HC.IN1"/>
+
+        <output source="OPR_ADV_AANC_SPLITTER.OUT1" role="EPR_ADV_ANC_SPLITTER_OUT1"/>
+        <output source="OPR_ADV_AANC_SPLITTER.OUT2" role="EPR_ADV_ANC_SPLITTER_OUT2"/>
+        <output source="OPR_ADV_AANC_COMPANDER.FF_MIC_COMP" role="EPR_ADV_ANC_COMPANDER_OUT"/>
+
+
+</chain>

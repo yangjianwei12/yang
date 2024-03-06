@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2021 Qualcomm Technologies International, Ltd.-->
+
+<chain name="CHAIN_ML" id="0" generate_endpoint_roles_enum="False" generate_operator_roles_enum="False">
+
+    <include_header name="../ml_cap_ids.h"/>
+    <include_header name="ml_chain_roles.h"/>
+    <include_header name="cap_id_prim.h"/>
+    
+    <operator name="OPR_DNLD_ML_ENGINE_LIB" id="CAP_ID_DOWNLOAD_ML_ENGINE"/>
+    <operator name="OPR_ML_EXAMPLE_SVAD" id="CAP_ID_ML_EXAMPLE_SVAD">
+        <sink name="IN" terminal="0"/>
+        <source name="OUT" terminal="0"/>
+    </operator>
+
+    <input sink="OPR_ML_EXAMPLE_SVAD.IN" role="EPR_PCM_IN"/>
+</chain>

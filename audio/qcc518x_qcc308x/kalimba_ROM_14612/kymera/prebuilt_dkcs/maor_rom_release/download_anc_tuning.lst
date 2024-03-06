@@ -1,0 +1,3274 @@
+
+/home/svc-audio-dspsw/kymera_builds/builds/2023/kymera_2312060823/kalimba/kymera/tools/KCSMaker/out/14612/maor_rom_release/download/debugbin/download_anc_tuning.elf:     file format elf32-littlekalimba
+
+Disassembly of section .text_maxim:
+
+84200000 <$_anc_tuning_processing>:
+    .VAR gen_silence_data = 0;
+
+// void anc_tuning_processing(ANC_TUNING_OP_DATA *p_ext_data,unsigned num_samples);
+$_anc_tuning_processing:
+
+   pushm <r7, r8, r9, rLink>; 
+84200000:	00 2e 00 f1 	pushm <r7, r8, r9, rLink>;
+   pushm <I0, I4>;        
+84200004:	11 00 01 f1 	pushm <I0, I4>;
+   pushm <M0, M1, M2, L0, L4>;
+84200008:	00 57 01 f1 	pushm <M0, M1, M2, L0, L4>;
+   pushm <B0,B4>;
+8420000c:	00 14 02 f1 	pushm <B0, B4>;
+
+   r9 = r0; // extra operator data
+84200010:	0f 00 b2 00 	r9 = r0 + Null;
+   r8 = r1; // samples available
+84200014:	0f 00 a3 00 	r8 = r1 + Null;
+// cycle through linked list of sinks
+// call get read address
+// cache results inside data obj (read ptr, base address, size)
+//-----------------------------------------------------------------------------
+
+   r7 = M[r9 + $anc_tuning_defs.anc_tuning_exop_struct.FIRST_SINK_FIELD];
+84200018:	88 04 9b d1 	r7 = M[r9 + 1160];
+
+8420001c <$M.anc_tuning_proc.anc_tuning_process_channels_next_sink>:
+   anc_tuning_process_channels_next_sink:
+        r0 = M[r7 + $anc_tuning_defs.anc_sink_struct.BUFFER_FIELD];
+8420001c:	08 00 29 d1 	r0 = M[r7 + 8];
+        call $cbuffer.get_read_address_and_size_and_start_address; 
+84200020:	04 00 00 fd 	call (m) 0x4df66;
+84200024:	67 df f0 e1 
+        M[r7 + $anc_tuning_defs.anc_sink_struct.READ_PTR_FIELD]     = r0;
+84200028:	10 00 29 d5 	M[r7 + 16] = r0;
+        M[r7 + $anc_tuning_defs.anc_sink_struct.BUFFER_SIZE_FIELD]  = r1;
+8420002c:	14 00 39 d5 	M[r7 + 20] = r1;
+        M[r7 + $anc_tuning_defs.anc_sink_struct.BUFFER_START_FIELD] = r2;
+84200030:	0c 00 49 d5 	M[r7 + 12] = r2;
+    r7 = M[r7 + $anc_tuning_defs.anc_sink_struct.NEXT_FIELD];
+84200034:	00 00 99 d1 	r7 = M[r7 + 0];
+    if NZ jump anc_tuning_process_channels_next_sink;
+84200038:	f9 ff 10 dd 	if NE jump $M.anc_tuning_proc.anc_tuning_process_channels_next_sink;
+// else
+//      use dummy global variable for silence
+// copy read to write
+// update write address for sources
+//-----------------------------------------------------------------------------
+    r7 = M[r9 + $anc_tuning_defs.anc_tuning_exop_struct.FIRST_SOURCE_FIELD];
+8420003c:	8c 04 9b d1 	r7 = M[r9 + 1164];
+
+84200040 <$M.anc_tuning_proc.anc_tuning_process_channels_next_source>:
+    anc_tuning_process_channels_next_source:
+        r0 = M[r7 + $anc_tuning_defs.anc_source_struct.BUFFER_FIELD];
+84200040:	08 00 29 d1 	r0 = M[r7 + 8];
+        call $cbuffer.get_write_address_and_size_and_start_address;
+84200044:	04 00 00 fd 	call (m) 0x4df98;
+84200048:	99 df f0 e1 
+        I4 = r0;
+8420004c:	2f 00 40 50 	I4 = Null + r0;
+        L4 = r1;
+84200050:	3f 00 e0 50 	L4 = Null + r1;
+        push r2;
+84200054:	00 00 40 f3 	push r2;
+        pop B4;
+84200058:	00 00 c6 f3 	pop B4;
+
+        r1 = M[r7 + $anc_tuning_defs.anc_source_struct.SINK_FIELD];
+8420005c:	0c 00 39 d1 	r1 = M[r7 + 12];
+        if Z jump transfer_silence;
+84200060:	07 00 00 dd 	if EQ jump $M.anc_tuning_proc.transfer_silence;
+            r0 = M[r1 + $anc_tuning_defs.anc_sink_struct.READ_PTR_FIELD];
+84200064:	10 00 23 d1 	r0 = M[r1 + 16];
+            I0 = r0;
+84200068:	2f 00 00 50 	I0 = Null + r0;
+            r0 = M[r1 + $anc_tuning_defs.anc_sink_struct.BUFFER_SIZE_FIELD];
+8420006c:	14 00 23 d1 	r0 = M[r1 + 20];
+            L0 = r0;
+84200070:	2f 00 c0 50 	L0 = Null + r0;
+            r0 = M[r1 + $anc_tuning_defs.anc_sink_struct.BUFFER_START_FIELD];
+84200074:	0c 00 23 d1 	r0 = M[r1 + 12];
+            jump transfer_data;
+84200078:	05 00 f0 dd 	jump $M.anc_tuning_proc.transfer_data;
+
+8420007c <$M.anc_tuning_proc.transfer_silence>:
+        transfer_silence:
+            // Dummy Silence buffer
+            r0 = &gen_silence_data;
+8420007c:	16 00 00 fd 	r0 = Null + 1441952;
+84200080:	a0 00 20 01 
+            I0 = r0;
+84200084:	2f 00 00 50 	I0 = Null + r0;
+            L0 = MK1;
+84200088:	04 00 c0 51 	L0 = Null + 4;
+
+8420008c <$M.anc_tuning_proc.transfer_data>:
+        transfer_data:
+        
+        r10 = r8-1;
+8420008c:	3f 00 ca e4 	r10 = r8 - 1;
+        push r0;
+84200090:	00 00 20 f3 	push r0;
+        pop B0;
+84200094:	00 00 a6 f3 	pop B0;
+        r0 = M[I0,MK1];    
+84200098:	00 21 00 03 	Null = Null + Null, r0 = M[I0,4];
+        r2 = M[r7 + $anc_tuning_defs.anc_source_struct.PEAK_FIELD];
+8420009c:	14 00 49 d1 	r2 = M[r7 + 20];
+        do copy_loop;
+842000a0:	04 00 f0 e5 	do $M.anc_tuning_proc.copy_loop;
+            r1 = ABS r0;
+842000a4:	4f 00 32 e4 	r1 = ABS r0;
+            r2 = MAX r1;
+842000a8:	6f 00 43 e4 	r2 = MAX r1;
+            r0=M[I0,MK1],  M[I4,MK1]=r0;
+842000ac:	a1 21 00 03 	Null = Null + Null, r0 = M[I0,4], M[I4,4] = r0;
+
+842000b0 <$M.anc_tuning_proc.copy_loop>:
+        copy_loop:
+        M[I4,MK1]=r0;    
+842000b0:	a1 00 00 03 	Null = Null + Null, M[I4,4] = r0;
+        M[r7 + $anc_tuning_defs.anc_source_struct.PEAK_FIELD]=r2;
+842000b4:	14 00 49 d5 	M[r7 + 20] = r2;
+        
+        r0 = M[r7 + $anc_tuning_defs.anc_source_struct.BUFFER_FIELD];
+842000b8:	08 00 29 d1 	r0 = M[r7 + 8];
+        r1 = I4;
+842000bc:	4f 00 30 44 	r1 = Null + I4;
+        call $cbuffer.set_write_address;
+842000c0:	04 00 00 fd 	call (m) 0x4e002;
+842000c4:	03 e0 f0 e1 
+
+    r7 = M[r7 + $anc_tuning_defs.anc_source_struct.NEXT_FIELD];
+842000c8:	00 00 99 d1 	r7 = M[r7 + 0];
+    if NZ jump anc_tuning_process_channels_next_source;
+842000cc:	dd ff 10 dd 	if NE jump $M.anc_tuning_proc.anc_tuning_process_channels_next_source;
+// setup buffer from cached values
+// advance read ptr by amount
+// update read address for sinks
+//-----------------------------------------------------------------------------
+   // r8 to octects
+   Words2Addr(r8);
+842000d0:	02 00 aa 91 	r8 = r8 ASHIFT 2;
+   M1 = r8;
+842000d4:	af 00 90 50 	M1 = Null + r8;
+
+   r7 = M[r9 + $anc_tuning_defs.anc_tuning_exop_struct.FIRST_SINK_FIELD];
+842000d8:	88 04 9b d1 	r7 = M[r9 + 1160];
+
+842000dc <$M.anc_tuning_proc.anc_tuning_process_channels_next_sink2>:
+   anc_tuning_process_channels_next_sink2:
+        r0 = M[r7 + $anc_tuning_defs.anc_sink_struct.READ_PTR_FIELD];
+842000dc:	10 00 29 d1 	r0 = M[r7 + 16];
+        I0 = r0;
+842000e0:	2f 00 00 50 	I0 = Null + r0;
+        r0 = M[r7 + $anc_tuning_defs.anc_sink_struct.BUFFER_SIZE_FIELD];
+842000e4:	14 00 29 d1 	r0 = M[r7 + 20];
+        L0 = r0;
+842000e8:	2f 00 c0 50 	L0 = Null + r0;
+        r0 = M[r7 + $anc_tuning_defs.anc_sink_struct.BUFFER_START_FIELD];
+842000ec:	0c 00 29 d1 	r0 = M[r7 + 12];
+        push r0;
+842000f0:	00 00 20 f3 	push r0;
+        pop B0;
+842000f4:	00 00 a6 f3 	pop B0;
+        // I0,L0,B0
+        r0 = M[I0,M1];
+842000f8:	00 21 00 02 	Null = Null + Null, r0 = M[I0,M1];
+        r0 = M[r7 + $anc_tuning_defs.anc_sink_struct.BUFFER_FIELD];
+842000fc:	08 00 29 d1 	r0 = M[r7 + 8];
+        r1 = I0;
+84200100:	0f 00 30 44 	r1 = Null + I0;
+        call $cbuffer.set_read_address;
+84200104:	04 00 00 fd 	call (m) 0x4dfca;
+84200108:	cb df f0 e1 
+    r7 = M[r7 + $anc_tuning_defs.anc_sink_struct.NEXT_FIELD];
+8420010c:	00 00 99 d1 	r7 = M[r7 + 0];
+    if NZ jump anc_tuning_process_channels_next_sink2;
+84200110:	f3 ff 10 dd 	if NE jump $M.anc_tuning_proc.anc_tuning_process_channels_next_sink2;
+
+   popm <B0,B4>;
+84200114:	00 14 06 f1 	popm <B0, B4>;
+   popm <M0, M1, M2, L0, L4>;
+84200118:	00 57 05 f1 	popm <M0, M1, M2, L0, L4>;
+   popm <I0, I4>; 
+8420011c:	11 00 05 f1 	popm <I0, I4>;
+   popm <r7, r8, r9, rLink>;          
+84200120:	00 2e 04 f1 	popm <r7, r8, r9, rLink>;
+   rts;
+84200124:	0f 00 0d dc 	rts;
+Disassembly of section .text_minim:
+
+84200128 <$_anc_tuning_buffer_details>:
+ *
+ * \return Whether the response_data field has been populated with a valid
+ * response
+ */
+bool anc_tuning_buffer_details(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+84200128:	c8 1c       	pushm <FP(=SP), rLink>;
+8420012a:	2b 00       	r1 = r3 + Null;
+    /* tuning capability doesn't support inplace, metadata etc. */
+    return base_op_buffer_details_lite(op_data, response_data);
+8420012c:	ff fd 03 f0 	call (m) 0x842;
+84200130:	37 e8 
+
+84200132 <Lc_anc_tuning_buffer_details_2>:
+}
+84200132:	c8 48       	popm <FP, rLink>;
+84200134:	d8 4c       	rts;
+
+84200136 <$_anc_tuning_disconnect>:
+ *
+ * \return Whether the response_data field has been populated with a valid
+ * response
+ */
+bool anc_tuning_disconnect(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+84200136:	f6 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>;
+84200138:	10 09       	r6 = r0 + Null;
+8420013a:	1f 00       	r5 = r1 + Null;
+8420013c:	2b 09       	r9 = r3 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+8420013e:	ff fd 03 f0 	call (m) 0x8ea;
+84200142:	2d ed 
+84200144:	16 00       	r4 = r0 + Null;
+ * response
+ */
+bool anc_tuning_disconnect(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+    ANC_TUNING_OP_DATA *p_ext_data = get_instance_data(op_data);
+    unsigned  terminal_id = OPMGR_GET_OP_DISCONNECT_TERMINAL_ID(message_data);
+84200146:	7a f0 00 e8 	r8 = M[r5 + Null];
+    unsigned  terminal_num = terminal_id & TERMINAL_NUM_MASK;
+8420014a:	a7 f0 3f 00 	r5 = r8 AND 0x3f;
+    unsigned  terminal_mask;
+
+   if (!base_op_build_std_response_ex(op_data, STATUS_OK, response_data))
+8420014e:	03 00       	r1 = Null + Null;
+84200150:	5c 08       	r2 = r9 + Null;
+84200152:	42 08       	r0 = r6 + Null;
+84200154:	ff fd 03 f0 	call (m) 0x8c0;
+84200158:	2d eb 
+8420015a:	10 04       	Null = r0 - Null;
+8420015c:	03 62       	if NE jump (m) Lc_anc_tuning_disconnect_3;
+
+8420015e <Lc_anc_tuning_disconnect_2>:
+   {
+        return FALSE;
+8420015e:	02 00       	r0 = Null + Null;
+84200160:	4e 6e       	jump (m) Lc_anc_tuning_disconnect_13;
+
+84200162 <Lc_anc_tuning_disconnect_3>:
+   }
+
+    terminal_mask = ~(1<<terminal_num);
+84200162:	39 00       	rMAC = r5 + Null;
+84200164:	00 f1 92 de 	r0 = 0x1 LSHIFT rMAC;
+84200168:	ff f2 59 d6 	r7 = -1 - r0;
+
+    if(terminal_id & TERMINAL_SINK_MASK)
+8420016c:	40 f0 a1 f0 	rMAC = r8 AND 0x800000;
+84200170:	00 00 
+84200172:	22 60       	if EQ jump (m) Lc_anc_tuning_disconnect_8;
+
+84200174 <Lc_anc_tuning_disconnect_4>:
+    {
+       if(terminal_num>=ANC_TUNING_MAX_SINKS)
+84200174:	38 26       	Null = r5 - 8;
+84200176:	07 64       	if NC jump (m) Lc_anc_tuning_disconnect_6;
+
+84200178 <Lc_anc_tuning_disconnect_5>:
+ * \param  response_data Pointer to the pointer to message that is allocated in the function.
+ * \param  new_status  A status ID that is to be sent in the message.
+ */
+inline static void base_op_change_response_status(void **response_data, STATUS_KYMERA new_status)
+{
+    (((OP_STD_RSP *)(*response_data))->status = new_status);
+84200178:	01 f0 00 60 	rMAC = Null + 4096;
+8420017c:	b2 f0 00 e8 	r0 = M[r9 + Null];
+84200180:	51 8e       	M[r0 + 4] = rMAC;
+84200182:	3c 6e       	jump (m) Lc_anc_tuning_disconnect_12;
+
+84200184 <Lc_anc_tuning_disconnect_6>:
+       {
+           base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+           return TRUE;
+       }
+
+       if(p_ext_data->sinks[terminal_num].buffer==NULL)
+84200184:	3a 46       	r0 = r5 * 24 (int);
+84200186:	31 00       	rMAC = r4 + Null;
+84200188:	51 00       	rMAC = r0 + rMAC;
+8420018a:	0f 00       	r5 = rMAC + Null;
+8420018c:	71 f0 dc 88 	rMAC = M[r5 + 880];
+84200190:	f4 61       	if EQ jump (m) Lc_anc_tuning_disconnect_5;
+
+84200192 <Lc_anc_tuning_disconnect_7>:
+       {
+           base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+           return TRUE;
+       }
+       opmgr_op_suspend_processing(op_data);
+84200192:	42 08       	r0 = r6 + Null;
+84200194:	ff fd 2d f0 	call (m) 0x5cb0;
+84200198:	3d e8 
+       p_ext_data->sinks[terminal_num].buffer = NULL;
+8420019a:	70 f0 dc 8e 	M[r5 + 880] = Null;
+       p_ext_data->sinks[terminal_num].ep_handle = NULL;
+8420019e:	70 f0 db 8e 	M[r5 + 876] = Null;
+       p_ext_data->connect_change       = TRUE;
+842001a2:	41 20       	rMAC = Null + 1;
+842001a4:	61 f0 29 8f 	M[r4 + 1188] = rMAC;
+       p_ext_data->connected_sinks &= terminal_mask;
+842001a8:	61 f0 24 89 	rMAC = M[r4 + 1168];
+842001ac:	00 f9 31 c8 	rMAC = rMAC AND r7;
+842001b0:	61 f0 24 8f 	M[r4 + 1168] = rMAC;
+842001b4:	1c 6e       	jump (m) Lc_anc_tuning_disconnect_11;
+
+842001b6 <Lc_anc_tuning_disconnect_8>:
+       opmgr_op_resume_processing(op_data);
+    }
+
+    else
+    {
+       if(terminal_num>=ANC_TUNING_MAX_SOURCES)
+842001b6:	38 25       	Null = r5 - 4;
+842001b8:	f2 ff c1 ef 	if C jump (m) Lc_anc_tuning_disconnect_5;
+
+842001bc <Lc_anc_tuning_disconnect_9>:
+       {
+           base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+           return TRUE;
+       }
+       if(p_ext_data->sources[terminal_num].buffer==NULL)
+842001bc:	3a 46       	r0 = r5 * 24 (int);
+842001be:	31 00       	rMAC = r4 + Null;
+842001c0:	51 00       	rMAC = r0 + rMAC;
+842001c2:	0f 00       	r5 = rMAC + Null;
+842001c4:	71 f0 0c 89 	rMAC = M[r5 + 1072];
+842001c8:	d8 61       	if EQ jump (m) Lc_anc_tuning_disconnect_5;
+
+842001ca <Lc_anc_tuning_disconnect_10>:
+       {
+           base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+           return TRUE;
+       }
+       opmgr_op_suspend_processing(op_data);
+842001ca:	42 08       	r0 = r6 + Null;
+842001cc:	ff fd 2d f0 	call (m) 0x5cb0;
+842001d0:	25 e7 
+       p_ext_data->sources[terminal_num].buffer = NULL;
+842001d2:	70 f0 0c 8f 	M[r5 + 1072] = Null;
+       p_ext_data->sources[terminal_num].ep_handle = NULL;
+842001d6:	70 f0 0b 8f 	M[r5 + 1068] = Null;
+       p_ext_data->connect_change       = TRUE;
+842001da:	41 20       	rMAC = Null + 1;
+842001dc:	61 f0 29 8f 	M[r4 + 1188] = rMAC;
+       p_ext_data->connected_sources &= terminal_mask;
+842001e0:	61 f0 25 89 	rMAC = M[r4 + 1172];
+842001e4:	00 f9 31 c8 	rMAC = rMAC AND r7;
+842001e8:	61 f0 25 8f 	M[r4 + 1172] = rMAC;
+
+842001ec <Lc_anc_tuning_disconnect_11>:
+       opmgr_op_suspend_processing(op_data);
+       p_ext_data->sinks[terminal_num].buffer = NULL;
+       p_ext_data->sinks[terminal_num].ep_handle = NULL;
+       p_ext_data->connect_change       = TRUE;
+       p_ext_data->connected_sinks &= terminal_mask;
+       opmgr_op_resume_processing(op_data);
+842001ec:	42 08       	r0 = r6 + Null;
+842001ee:	ff fd 2d f0 	call (m) 0x5ce0;
+842001f2:	33 e7 
+       p_ext_data->connected_sources &= terminal_mask;
+       opmgr_op_resume_processing(op_data);
+
+    }
+
+    anc_tuning_update_processing(op_data);
+842001f4:	42 08       	r0 = r6 + Null;
+842001f6:	02 f0 2b ea 	call (m) $_anc_tuning_update_processing;
+
+842001fa <Lc_anc_tuning_disconnect_12>:
+    if(terminal_id & TERMINAL_SINK_MASK)
+    {
+       if(terminal_num>=ANC_TUNING_MAX_SINKS)
+       {
+           base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+           return TRUE;
+842001fa:	42 20       	r0 = Null + 1;
+
+842001fc <Lc_anc_tuning_disconnect_13>:
+    }
+
+    anc_tuning_update_processing(op_data);
+    return TRUE;
+
+}
+842001fc:	f6 48       	popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+842001fe:	d8 4c       	rts;
+
+84200200 <$_anc_tuning_create>:
+ *
+ * \return Whether the response_data field has been populated with a valid
+ * response
+ */
+bool anc_tuning_create(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+84200200:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200202:	17 00       	r5 = r0 + Null;
+84200204:	28 09       	r6 = r3 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+84200206:	ff fd 03 f0 	call (m) 0x8ea;
+8420020a:	25 e7 
+8420020c:	16 00       	r4 = r0 + Null;
+{
+    ANC_TUNING_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* Call base_op create initializing operator to NOT_RUNNING state,
+       It also allocates and fills response message */
+    if (!base_op_create_lite(op_data, response_data))
+8420020e:	43 08       	r1 = r6 + Null;
+84200210:	3a 00       	r0 = r5 + Null;
+84200212:	ff fd 03 f0 	call (m) 0x850;
+84200216:	3f e1 
+84200218:	10 04       	Null = r0 - Null;
+8420021a:	03 62       	if NE jump (m) Lc_anc_tuning_create_3;
+
+8420021c <Lc_anc_tuning_create_2>:
+    {
+        return FALSE;
+8420021c:	02 00       	r0 = Null + Null;
+8420021e:	31 6e       	jump (m) Lc_anc_tuning_create_7;
+
+84200220 <Lc_anc_tuning_create_3>:
+    }
+
+    /* Initialize extended data for operator.  Assume intialized to zero */
+    p_ext_data->ReInitFlag = 1;
+84200220:	41 20       	rMAC = Null + 1;
+84200222:	61 f0 d9 8e 	M[r4 + 868] = rMAC;
+    p_ext_data->is_stereo = FALSE;
+84200226:	60 f0 26 8f 	M[r4 + 1176] = Null;
+    p_ext_data->is_two_mic = FALSE;
+8420022a:	60 f0 27 8f 	M[r4 + 1180] = Null;
+    p_ext_data->is_parallel_anc = FALSE;
+8420022e:	60 f0 28 8f 	M[r4 + 1184] = Null;
+
+    /* default sink to source mapping suitable for a plant (or S-path) recording */
+    p_ext_data->sources[ANC_TUNING_SOURCE_USB_LEFT].sink_index = ANC_TUNING_SINK_FBMON_LEFT;
+84200232:	82 20       	r0 = Null + 2;
+84200234:	62 f0 0e 8f 	M[r4 + 1080] = r0;
+    p_ext_data->sources[ANC_TUNING_SOURCE_USB_RIGHT].sink_index = ANC_TUNING_SINK_FBMON_RIGHT;
+84200238:	c2 20       	r0 = Null + 3;
+8420023a:	62 f0 14 8f 	M[r4 + 1104] = r0;
+    p_ext_data->sources[ANC_TUNING_SOURCE_DAC_LEFT].sink_index = ANC_TUNING_SINK_USB_LEFT;
+8420023e:	60 f0 1a 8f 	M[r4 + 1128] = Null;
+    p_ext_data->sources[ANC_TUNING_SOURCE_DAC_RIGHT].sink_index = ANC_TUNING_SINK_USB_RIGHT;
+84200242:	61 f0 20 8f 	M[r4 + 1152] = rMAC;
+    p_ext_data->fb_mon[0] = 1; /* Use FB signal from FB Mon mux */
+84200246:	61 f0 3b 8f 	M[r4 + 1260] = rMAC;
+    p_ext_data->fb_mon[1] = 0; /* Use FFa signal from FB Mon mux */
+8420024a:	60 f0 3c 8f 	M[r4 + 1264] = Null;
+
+    if(!cpsInitParameters(&p_ext_data->params_def,ANC_TUNING_GetDefaults(ANC_TUNING_CAP_ID),(unsigned*)&p_ext_data->anc_tuning_cap_params,sizeof(ANC_TUNING_PARAMETERS)))
+8420024e:	22 f0 b2 40 	r0 = Null + 16562;
+84200252:	05 f0 25 ee 	call (m) $_ANC_TUNING_32K_GetDefaults;
+84200256:	05 f0 50 43 	r3 = Null + 848;
+8420025a:	34 29       	r2 = r4 + 20;
+8420025c:	13 00       	r1 = r0 + Null;
+8420025e:	32 00       	r0 = r4 + Null;
+84200260:	ff fd 04 f0 	call (m) 0xb2a;
+84200264:	2b e6 
+84200266:	10 04       	Null = r0 - Null;
+84200268:	07 62       	if NE jump (m) Lc_anc_tuning_create_5;
+
+8420026a <Lc_anc_tuning_create_4>:
+8420026a:	01 f0 00 60 	rMAC = Null + 4096;
+8420026e:	82 f0 00 e8 	r0 = M[r6 + Null];
+84200272:	51 8e       	M[r0 + 4] = rMAC;
+84200274:	05 6e       	jump (m) Lc_anc_tuning_create_6;
+
+84200276 <Lc_anc_tuning_create_5>:
+       base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+       return TRUE;
+    }
+
+    /* get licenses */
+    anc_tuning_enable_wrapper(0,0);
+84200276:	03 00       	r1 = Null + Null;
+84200278:	02 00       	r0 = Null + Null;
+8420027a:	05 f0 29 ea 	call (m) $_anc_tuning_enable_wrapper;
+
+8420027e <Lc_anc_tuning_create_6>:
+    p_ext_data->fb_mon[1] = 0; /* Use FFa signal from FB Mon mux */
+
+    if(!cpsInitParameters(&p_ext_data->params_def,ANC_TUNING_GetDefaults(ANC_TUNING_CAP_ID),(unsigned*)&p_ext_data->anc_tuning_cap_params,sizeof(ANC_TUNING_PARAMETERS)))
+    {
+       base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+       return TRUE;
+8420027e:	42 20       	r0 = Null + 1;
+
+84200280 <Lc_anc_tuning_create_7>:
+
+    /* get licenses */
+    anc_tuning_enable_wrapper(0,0);
+
+    return TRUE;
+}
+84200280:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200282:	d8 4c       	rts;
+
+84200284 <$_anc_tuning_connect>:
+ *
+ * \return Whether the response_data field has been populated with a valid
+ * response
+ */
+bool anc_tuning_connect(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+84200284:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84200286:	16 00       	r4 = r0 + Null;
+84200288:	1a 09       	r8 = r1 + Null;
+8420028a:	2b 09       	r9 = r3 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+8420028c:	ff fd 03 f0 	call (m) 0x8ea;
+84200290:	3f e2 
+84200292:	11 09       	r7 = r0 + Null;
+ * response
+ */
+bool anc_tuning_connect(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+    ANC_TUNING_OP_DATA *p_ext_data = get_instance_data(op_data);
+    unsigned terminal_id = OPMGR_GET_OP_CONNECT_TERMINAL_ID(message_data);
+84200294:	a8 f0 00 e8 	r6 = M[r8 + Null];
+    unsigned  terminal_num = terminal_id & TERMINAL_NUM_MASK;
+84200298:	87 f0 3f 00 	r5 = r6 AND 0x3f;
+    unsigned  terminal_mask;
+    ENDPOINT *ep;
+    tCbuffer* buffer = OPMGR_GET_OP_CONNECT_BUFFER(message_data);
+8420029c:	a1 f0 01 88 	rMAC = M[r8 + 4];
+842002a0:	41 de       	M[FP + 32] = rMAC;
+
+    if (!base_op_build_std_response_ex(op_data, STATUS_OK, response_data))
+842002a2:	03 00       	r1 = Null + Null;
+842002a4:	5c 08       	r2 = r9 + Null;
+842002a6:	32 00       	r0 = r4 + Null;
+842002a8:	ff fd 03 f0 	call (m) 0x8c0;
+842002ac:	39 e0 
+842002ae:	10 04       	Null = r0 - Null;
+842002b0:	03 62       	if NE jump (m) Lc_anc_tuning_connect_3;
+
+842002b2 <Lc_anc_tuning_connect_2>:
+    {
+        return FALSE;
+842002b2:	02 00       	r0 = Null + Null;
+842002b4:	5a 6e       	jump (m) Lc_anc_tuning_connect_13;
+
+842002b6 <Lc_anc_tuning_connect_3>:
+    }
+
+    terminal_mask = (1<<terminal_num);
+842002b6:	39 00       	rMAC = r5 + Null;
+842002b8:	00 f1 9a de 	r8 = 0x1 LSHIFT rMAC;
+
+    if(terminal_id & TERMINAL_SINK_MASK)
+842002bc:	40 f0 81 f0 	rMAC = r6 AND 0x800000;
+842002c0:	00 00 
+842002c2:	29 60       	if EQ jump (m) Lc_anc_tuning_connect_8;
+
+842002c4 <Lc_anc_tuning_connect_4>:
+    {
+       if(terminal_num>=ANC_TUNING_MAX_SINKS)
+842002c4:	38 26       	Null = r5 - 8;
+842002c6:	07 64       	if NC jump (m) Lc_anc_tuning_connect_6;
+
+842002c8 <Lc_anc_tuning_connect_5>:
+842002c8:	01 f0 00 60 	rMAC = Null + 4096;
+842002cc:	b2 f0 00 e8 	r0 = M[r9 + Null];
+842002d0:	51 8e       	M[r0 + 4] = rMAC;
+842002d2:	4a 6e       	jump (m) Lc_anc_tuning_connect_12;
+
+842002d4 <Lc_anc_tuning_connect_6>:
+       {
+           base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+           return TRUE;
+       }
+
+       if(p_ext_data->sinks[terminal_num].buffer!=NULL)
+842002d4:	3a 46       	r0 = r5 * 24 (int);
+842002d6:	49 08       	rMAC = r7 + Null;
+842002d8:	51 00       	rMAC = r0 + rMAC;
+842002da:	0f 00       	r5 = rMAC + Null;
+842002dc:	71 f0 dc 88 	rMAC = M[r5 + 880];
+842002e0:	f4 63       	if NE jump (m) Lc_anc_tuning_connect_5;
+
+842002e2 <Lc_anc_tuning_connect_7>:
+       {
+           base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+           return TRUE;
+       }
+
+       ep = (ENDPOINT*) opmgr_override_get_endpoint(op_data, terminal_id);
+842002e2:	43 08       	r1 = r6 + Null;
+842002e4:	32 00       	r0 = r4 + Null;
+842002e6:	ff fd 2b f0 	call (m) 0x5a10;
+842002ea:	2b e9 
+842002ec:	10 09       	r6 = r0 + Null;
+
+       opmgr_op_suspend_processing(op_data);
+842002ee:	32 00       	r0 = r4 + Null;
+842002f0:	ff fd 2c f0 	call (m) 0x5cb0;
+842002f4:	21 ee 
+       p_ext_data->sinks[terminal_num].buffer = buffer;
+842002f6:	41 d8       	rMAC = M[FP + 32];
+842002f8:	71 f0 dc 8e 	M[r5 + 880] = rMAC;
+       p_ext_data->sinks[terminal_num].ep_handle = ep;
+842002fc:	78 f0 db 8e 	M[r5 + 876] = r6;
+       p_ext_data->connect_change     = TRUE;
+84200300:	41 20       	rMAC = Null + 1;
+84200302:	91 f0 29 8f 	M[r7 + 1188] = rMAC;
+       p_ext_data->connected_sinks |= terminal_mask;
+84200306:	91 f0 24 89 	rMAC = M[r7 + 1168];
+8420030a:	00 fa 71 c8 	rMAC = rMAC OR r8;
+8420030e:	91 f0 24 8f 	M[r7 + 1168] = rMAC;
+84200312:	23 6e       	jump (m) Lc_anc_tuning_connect_11;
+
+84200314 <Lc_anc_tuning_connect_8>:
+       opmgr_op_resume_processing(op_data);
+    }
+    else
+    {
+       if(terminal_num>=ANC_TUNING_MAX_SOURCES)
+84200314:	38 25       	Null = r5 - 4;
+84200316:	f2 ff b3 ef 	if C jump (m) Lc_anc_tuning_connect_5;
+
+8420031a <Lc_anc_tuning_connect_9>:
+       {
+           base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+           return TRUE;
+       }
+       if(p_ext_data->sources[terminal_num].buffer!=NULL)
+8420031a:	3a 46       	r0 = r5 * 24 (int);
+8420031c:	49 08       	rMAC = r7 + Null;
+8420031e:	51 00       	rMAC = r0 + rMAC;
+84200320:	0f 00       	r5 = rMAC + Null;
+84200322:	71 f0 0c 89 	rMAC = M[r5 + 1072];
+84200326:	d1 63       	if NE jump (m) Lc_anc_tuning_connect_5;
+
+84200328 <Lc_anc_tuning_connect_10>:
+       {
+           base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+           return TRUE;
+       }
+
+       ep = (ENDPOINT*) opmgr_override_get_endpoint(op_data, terminal_id);
+84200328:	43 08       	r1 = r6 + Null;
+8420032a:	32 00       	r0 = r4 + Null;
+8420032c:	ff fd 2b f0 	call (m) 0x5a10;
+84200330:	25 e7 
+84200332:	10 09       	r6 = r0 + Null;
+
+       opmgr_op_suspend_processing(op_data);
+84200334:	32 00       	r0 = r4 + Null;
+84200336:	ff fd 2c f0 	call (m) 0x5cb0;
+8420033a:	3b eb 
+       p_ext_data->sources[terminal_num].buffer = buffer;
+8420033c:	41 d8       	rMAC = M[FP + 32];
+8420033e:	71 f0 0c 8f 	M[r5 + 1072] = rMAC;
+       p_ext_data->sources[terminal_num].ep_handle = ep;
+84200342:	78 f0 0b 8f 	M[r5 + 1068] = r6;
+       p_ext_data->connect_change       = TRUE;
+84200346:	41 20       	rMAC = Null + 1;
+84200348:	91 f0 29 8f 	M[r7 + 1188] = rMAC;
+       p_ext_data->connected_sources |= terminal_mask;
+8420034c:	91 f0 25 89 	rMAC = M[r7 + 1172];
+84200350:	00 fa 71 c8 	rMAC = rMAC OR r8;
+84200354:	91 f0 25 8f 	M[r7 + 1172] = rMAC;
+
+84200358 <Lc_anc_tuning_connect_11>:
+       opmgr_op_suspend_processing(op_data);
+       p_ext_data->sinks[terminal_num].buffer = buffer;
+       p_ext_data->sinks[terminal_num].ep_handle = ep;
+       p_ext_data->connect_change     = TRUE;
+       p_ext_data->connected_sinks |= terminal_mask;
+       opmgr_op_resume_processing(op_data);
+84200358:	32 00       	r0 = r4 + Null;
+8420035a:	ff fd 2c f0 	call (m) 0x5ce0;
+8420035e:	27 ec 
+       p_ext_data->connect_change       = TRUE;
+       p_ext_data->connected_sources |= terminal_mask;
+       opmgr_op_resume_processing(op_data);
+    }
+
+    anc_tuning_update_processing(op_data);
+84200360:	32 00       	r0 = r4 + Null;
+84200362:	01 f0 3f ee 	call (m) $_anc_tuning_update_processing;
+
+84200366 <Lc_anc_tuning_connect_12>:
+    if(terminal_id & TERMINAL_SINK_MASK)
+    {
+       if(terminal_num>=ANC_TUNING_MAX_SINKS)
+       {
+           base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+           return TRUE;
+84200366:	42 20       	r0 = Null + 1;
+
+84200368 <Lc_anc_tuning_connect_13>:
+    }
+
+    anc_tuning_update_processing(op_data);
+    return TRUE;
+
+}
+84200368:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+8420036a:	d8 4c       	rts;
+
+8420036c <$_anc_tuning_destroy>:
+ *
+ * \return Whether the response_data field has been populated with a valid
+ * response
+ */
+bool anc_tuning_destroy(OPERATOR_DATA *op_data, void *message_data, unsigned *response_id, void **response_data)
+{
+8420036c:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+8420036e:	16 00       	r4 = r0 + Null;
+84200370:	27 00       	r5 = r2 + Null;
+84200372:	28 09       	r6 = r3 + Null;
+    /* check that we are not trying to destroy a running operator */
+    if (opmgr_op_is_running(op_data))
+84200374:	ff fd 2c f0 	call (m) 0x5ca4;
+84200378:	31 e9 
+8420037a:	10 04       	Null = r0 - Null;
+8420037c:	0b 60       	if EQ jump (m) Lc_anc_tuning_destroy_3;
+
+8420037e <Lc_anc_tuning_destroy_2>:
+    {
+        *response_id = OPCMD_DESTROY;
+8420037e:	41 20       	rMAC = Null + 1;
+84200380:	39 ee       	M[r5 + Null] = rMAC;
+
+        /* We can't destroy a running operator. */
+        return base_op_build_std_response_ex(op_data, STATUS_CMD_FAILED, response_data);
+84200382:	03 f0 00 60 	r1 = Null + 4096;
+84200386:	44 08       	r2 = r6 + Null;
+84200388:	32 00       	r0 = r4 + Null;
+8420038a:	ff fd 02 f0 	call (m) 0x8c0;
+8420038e:	37 e9 
+84200390:	06 6e       	jump (m) Lc_anc_tuning_destroy_4;
+
+84200392 <Lc_anc_tuning_destroy_3>:
+    }
+    else
+    {   /* Nothing to clean up, all allocations from framework */
+        /* call base_op destroy that creates and fills response message, too */
+        return base_op_destroy_lite(op_data, response_data);
+84200392:	43 08       	r1 = r6 + Null;
+84200394:	32 00       	r0 = r4 + Null;
+84200396:	ff fd 02 f0 	call (m) 0x834;
+8420039a:	3f e4 
+
+8420039c <Lc_anc_tuning_destroy_4>:
+    }
+ }
+8420039c:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+8420039e:	d8 4c       	rts;
+
+842003a0 <$_anc_tuning_opmsg_cps_set_control>:
+
+/* *********************Operator Message Handle functions ******************************** */
+
+/* OBPM controls for sink to source mapping */
+bool anc_tuning_opmsg_cps_set_control(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842003a0:	f6 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>;
+842003a2:	4c 4c       	SP = SP + 48;
+842003a4:	42 de       	M[FP + 32] = r0;
+842003a6:	4b de       	M[FP + 36] = r1;
+842003a8:	27 00       	r5 = r2 + Null;
+842003aa:	55 de       	M[FP + 40] = r3;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+842003ac:	ff fd 02 f0 	call (m) 0x8ea;
+842003b0:	3f e9 
+842003b2:	16 00       	r4 = r0 + Null;
+bool anc_tuning_opmsg_cps_set_control(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    ANC_TUNING_OP_DATA *p_ext_data = get_instance_data(op_data);
+    unsigned            i,num_controls,cntrl_value;
+    CPS_CONTROL_SOURCE  cntrl_src;
+    OPMSG_RESULT_STATES result = OPMSG_RESULT_STATES_NORMAL_STATE;
+842003b4:	58 de       	M[FP + 44] = Null;
+    uint16 data[2];
+    unsigned total_cmds;
+    STATUS_KYMERA cmd_status;
+#endif
+
+    if(!cps_control_setup(message_data, resp_length, resp_data,&num_controls))
+842003b6:	05 13       	r3 = FP + 48;
+842003b8:	3b 00       	r1 = r5 + Null;
+842003ba:	54 d8       	r2 = M[FP + 40];
+842003bc:	4a d8       	r0 = M[FP + 36];
+842003be:	ff fd 05 f0 	call (m) 0xe9e;
+842003c2:	21 e7 
+842003c4:	10 04       	Null = r0 - Null;
+842003c6:	03 62       	if NE jump (m) Lc_anc_tuning_opmsg_cps_set_control_3;
+
+842003c8 <Lc_anc_tuning_opmsg_cps_set_control_2>:
+    {
+       return FALSE;
+842003c8:	02 00       	r0 = Null + Null;
+842003ca:	66 6e       	jump (m) Lc_anc_tuning_opmsg_cps_set_control_25;
+
+842003cc <Lc_anc_tuning_opmsg_cps_set_control_3>:
+842003cc:	0b f0 30 40 	r9 = Null + 48;
+842003d0:	82 71       	r8 = Null + 16;
+842003d2:	09 f0 11 61 	r7 = Null + 4369;
+842003d6:	08 f0 20 40 	r6 = Null + 32;
+    }
+
+    for(i=0;i<num_controls;i++)
+842003da:	07 00       	r5 = Null + Null;
+842003dc:	07 6e       	jump (m) Lc_anc_tuning_opmsg_cps_set_control_7;
+
+842003de <Lc_anc_tuning_opmsg_cps_set_control_4>:
+            anc_config_list.key = STREAM_CONFIG_KEY_STREAM_ANC_CONTROL;
+            anc_config_list.data = (uint16*)&data;
+        }
+#endif
+
+        if(cntrl_id== ANC_TUNING_CONSTANT_SOURCE_ROUTES1_CTRL)
+842003de:	90 25       	Null = r0 - 6;
+842003e0:	31 62       	if NE jump (m) Lc_anc_tuning_opmsg_cps_set_control_16;
+
+842003e2 <Lc_anc_tuning_opmsg_cps_set_control_5>:
+        {
+            p_ext_data->sources[ANC_TUNING_SOURCE_USB_LEFT].sink_index = cntrl_value;
+842003e2:	69 d8       	rMAC = M[FP + 52];
+842003e4:	61 f0 0e 8f 	M[r4 + 1080] = rMAC;
+
+842003e8 <Lc_anc_tuning_opmsg_cps_set_control_6>:
+    if(!cps_control_setup(message_data, resp_length, resp_data,&num_controls))
+    {
+       return FALSE;
+    }
+
+    for(i=0;i<num_controls;i++)
+842003e8:	7f 20       	r5 = r5 + 1;
+
+842003ea <Lc_anc_tuning_opmsg_cps_set_control_7>:
+842003ea:	61 d8       	rMAC = M[FP + 48];
+842003ec:	78 04       	Null = r5 - rMAC;
+842003ee:	02 f0 91 e1 	if C jump (m) Lc_anc_tuning_opmsg_cps_set_control_24;
+
+842003f2 <Lc_anc_tuning_opmsg_cps_set_control_8>:
+    {
+        unsigned  cntrl_id=cps_control_get(message_data,i,&cntrl_value,&cntrl_src);
+842003f2:	85 13       	r3 = FP + 56;
+842003f4:	44 13       	r2 = FP + 52;
+842003f6:	3b 00       	r1 = r5 + Null;
+842003f8:	4a d8       	r0 = M[FP + 36];
+842003fa:	ff fd 05 f0 	call (m) 0xee2;
+842003fe:	29 e7 
+
+#ifdef INSTALL_ANC_V2P0    
+        if( (cntrl_id == ANC_TUNING_CONSTANT_INST_FLAGS0_CTRL) || (cntrl_id == ANC_TUNING_CONSTANT_INST_FLAGS1_CTRL) )
+84200400:	90 26       	Null = r0 - 10;
+84200402:	03 60       	if EQ jump (m) Lc_anc_tuning_opmsg_cps_set_control_10;
+
+84200404 <Lc_anc_tuning_opmsg_cps_set_control_9>:
+84200404:	d0 26       	Null = r0 - 11;
+84200406:	ec 63       	if NE jump (m) Lc_anc_tuning_opmsg_cps_set_control_4;
+
+84200408 <Lc_anc_tuning_opmsg_cps_set_control_10>:
+        {
+            data[0] = (uint16)(ANC_FBMON_FFA << STREAM_ANC_CONTROL_FBMON_SEL_POSITION);
+84200408:	20 dd       	MH[FP + 72] = Null;
+            data[1] = (uint16)STREAM_ANC_CONTROL_FBMON_SEL_MASK;
+8420040a:	eb f0 25 8c 	MH[FP + 74] = r9;
+
+            if(cntrl_value == ANC_FBMON_FB)
+8420040e:	69 d8       	rMAC = M[FP + 52];
+84200410:	48 24       	Null = rMAC - 1;
+84200412:	04 62       	if NE jump (m) Lc_anc_tuning_opmsg_cps_set_control_12;
+
+84200414 <Lc_anc_tuning_opmsg_cps_set_control_11>:
+            {
+               data[0] = (uint16)(ANC_FBMON_FB << STREAM_ANC_CONTROL_FBMON_SEL_POSITION);
+84200414:	ea f0 24 8c 	MH[FP + 72] = r8;
+84200418:	05 6e       	jump (m) Lc_anc_tuning_opmsg_cps_set_control_14;
+
+8420041a <Lc_anc_tuning_opmsg_cps_set_control_12>:
+            }  
+            else if(cntrl_value == ANC_FBMON_ANC_OUT)
+8420041a:	88 24       	Null = rMAC - 2;
+8420041c:	03 62       	if NE jump (m) Lc_anc_tuning_opmsg_cps_set_control_14;
+
+8420041e <Lc_anc_tuning_opmsg_cps_set_control_13>:
+            {
+               data[0] = (uint16)(ANC_FBMON_ANC_OUT << STREAM_ANC_CONTROL_FBMON_SEL_POSITION);
+8420041e:	e8 f0 24 8c 	MH[FP + 72] = r6;
+
+84200422 <Lc_anc_tuning_opmsg_cps_set_control_14>:
+            }  
+            anc_config_list.key = STREAM_CONFIG_KEY_STREAM_ANC_CONTROL;
+84200422:	e9 f0 20 8c 	MH[FP + 64] = r7;
+            anc_config_list.data = (uint16*)&data;
+84200426:	83 14       	r1 = FP + 72;
+84200428:	8b de       	M[FP + 68] = r1;
+        }
+        else if(cntrl_id== ANC_TUNING_CONSTANT_SOURCE_ROUTES4_CTRL)
+        {
+            p_ext_data->sources[ANC_TUNING_SOURCE_DAC_RIGHT].sink_index = cntrl_value;
+        }
+        else if(cntrl_id== ANC_TUNING_CONSTANT_INST_FLAGS0_CTRL)
+8420042a:	90 26       	Null = r0 - 10;
+8420042c:	1d 62       	if NE jump (m) Lc_anc_tuning_opmsg_cps_set_control_22;
+
+8420042e <Lc_anc_tuning_opmsg_cps_set_control_15>:
+        {
+            p_ext_data->fb_mon[0] = cntrl_value;
+8420042e:	61 f0 3b 8f 	M[r4 + 1260] = rMAC;
+#ifdef INSTALL_ANC_V2P0
+            total_cmds = 1;
+            stream_anc_set_param(STREAM_ANC_INSTANCE_ANC0_ID, total_cmds, &anc_config_list, &cmd_status);
+84200432:	c5 13       	r3 = FP + 60;
+84200434:	04 14       	r2 = FP + 64;
+84200436:	43 20       	r1 = Null + 1;
+84200438:	1a 00       	r0 = r1 + Null;
+8420043a:	ff fd 65 f0 	call (m) 0xcecc;
+8420043e:	33 e4 
+84200440:	d4 6f       	jump (m) Lc_anc_tuning_opmsg_cps_set_control_6;
+
+84200442 <Lc_anc_tuning_opmsg_cps_set_control_16>:
+
+        if(cntrl_id== ANC_TUNING_CONSTANT_SOURCE_ROUTES1_CTRL)
+        {
+            p_ext_data->sources[ANC_TUNING_SOURCE_USB_LEFT].sink_index = cntrl_value;
+        }
+        else if(cntrl_id== ANC_TUNING_CONSTANT_SOURCE_ROUTES2_CTRL)
+84200442:	d0 25       	Null = r0 - 7;
+84200444:	05 62       	if NE jump (m) Lc_anc_tuning_opmsg_cps_set_control_18;
+
+84200446 <Lc_anc_tuning_opmsg_cps_set_control_17>:
+        {
+            p_ext_data->sources[ANC_TUNING_SOURCE_USB_RIGHT].sink_index = cntrl_value;
+84200446:	69 d8       	rMAC = M[FP + 52];
+84200448:	61 f0 14 8f 	M[r4 + 1104] = rMAC;
+8420044c:	ce 6f       	jump (m) Lc_anc_tuning_opmsg_cps_set_control_6;
+
+8420044e <Lc_anc_tuning_opmsg_cps_set_control_18>:
+        }
+        else if(cntrl_id== ANC_TUNING_CONSTANT_SOURCE_ROUTES3_CTRL)
+8420044e:	10 26       	Null = r0 - 8;
+84200450:	05 62       	if NE jump (m) Lc_anc_tuning_opmsg_cps_set_control_20;
+
+84200452 <Lc_anc_tuning_opmsg_cps_set_control_19>:
+        {
+            p_ext_data->sources[ANC_TUNING_SOURCE_DAC_LEFT].sink_index = cntrl_value;
+84200452:	69 d8       	rMAC = M[FP + 52];
+84200454:	61 f0 1a 8f 	M[r4 + 1128] = rMAC;
+84200458:	c8 6f       	jump (m) Lc_anc_tuning_opmsg_cps_set_control_6;
+
+8420045a <Lc_anc_tuning_opmsg_cps_set_control_20>:
+        }
+        else if(cntrl_id== ANC_TUNING_CONSTANT_SOURCE_ROUTES4_CTRL)
+8420045a:	50 26       	Null = r0 - 9;
+8420045c:	0f 62       	if NE jump (m) Lc_anc_tuning_opmsg_cps_set_control_23;
+
+8420045e <Lc_anc_tuning_opmsg_cps_set_control_21>:
+        {
+            p_ext_data->sources[ANC_TUNING_SOURCE_DAC_RIGHT].sink_index = cntrl_value;
+8420045e:	69 d8       	rMAC = M[FP + 52];
+84200460:	61 f0 20 8f 	M[r4 + 1152] = rMAC;
+84200464:	c2 6f       	jump (m) Lc_anc_tuning_opmsg_cps_set_control_6;
+
+84200466 <Lc_anc_tuning_opmsg_cps_set_control_22>:
+            stream_anc_set_param(STREAM_ANC_INSTANCE_ANC0_ID, total_cmds, &anc_config_list, &cmd_status);
+#endif
+        }
+        else if(cntrl_id== ANC_TUNING_CONSTANT_INST_FLAGS1_CTRL)
+        {
+            p_ext_data->fb_mon[1] = cntrl_value;
+84200466:	61 f0 3c 8f 	M[r4 + 1264] = rMAC;
+#ifdef INSTALL_ANC_V2P0
+            total_cmds = 1;
+            stream_anc_set_param(STREAM_ANC_INSTANCE_ANC1_ID, total_cmds, &anc_config_list, &cmd_status);
+8420046a:	c5 13       	r3 = FP + 60;
+8420046c:	04 14       	r2 = FP + 64;
+8420046e:	43 20       	r1 = Null + 1;
+84200470:	82 20       	r0 = Null + 2;
+84200472:	ff fd 65 f0 	call (m) 0xcecc;
+84200476:	3b e2 
+84200478:	b8 6f       	jump (m) Lc_anc_tuning_opmsg_cps_set_control_6;
+
+8420047a <Lc_anc_tuning_opmsg_cps_set_control_23>:
+#endif
+        }
+        else
+        {
+            result = OPMSG_RESULT_STATES_UNSUPPORTED_CONTROL;
+8420047a:	01 21       	rMAC = Null + 4;
+8420047c:	59 de       	M[FP + 44] = rMAC;
+
+8420047e <Lc_anc_tuning_opmsg_cps_set_control_24>:
+            break;
+        }
+    }
+
+    cps_response_set_result(resp_data,result);
+8420047e:	5b d8       	r1 = M[FP + 44];
+84200480:	52 d8       	r0 = M[FP + 40];
+84200482:	ff fd 05 f0 	call (m) 0xf30;
+84200486:	2f e5 
+
+    p_ext_data->connect_change  = TRUE;
+84200488:	41 20       	rMAC = Null + 1;
+8420048a:	61 f0 29 8f 	M[r4 + 1188] = rMAC;
+    anc_tuning_update_processing(op_data);
+8420048e:	42 d8       	r0 = M[FP + 32];
+84200490:	01 f0 31 e5 	call (m) $_anc_tuning_update_processing;
+
+    return TRUE;
+84200494:	42 20       	r0 = Null + 1;
+
+84200496 <Lc_anc_tuning_opmsg_cps_set_control_25>:
+}
+84200496:	74 4c       	SP = SP + -48;
+84200498:	f6 48       	popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+8420049a:	d8 4c       	rts;
+
+8420049c <$_anc_tuning_opmsg_cps_get_params>:
+
+bool anc_tuning_opmsg_cps_get_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+8420049c:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+8420049e:	1e 00       	r4 = r1 + Null;
+842004a0:	27 00       	r5 = r2 + Null;
+842004a2:	28 09       	r6 = r3 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+842004a4:	ff fd 02 f0 	call (m) 0x8ea;
+842004a8:	27 e2 
+
+bool anc_tuning_opmsg_cps_get_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    ANC_TUNING_OP_DATA *op_extra_data = get_instance_data(op_data);
+
+    return cpsGetParameterMsgHandler(&op_extra_data->params_def,message_data,resp_length,resp_data);
+842004aa:	45 08       	r3 = r6 + Null;
+842004ac:	3c 00       	r2 = r5 + Null;
+842004ae:	33 00       	r1 = r4 + Null;
+842004b0:	ff fd 03 f0 	call (m) 0xb7c;
+842004b4:	2d e6 
+
+842004b6 <Lc_anc_tuning_opmsg_cps_get_params_2>:
+}
+842004b6:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842004b8:	d8 4c       	rts;
+
+842004ba <$_anc_tuning_opmsg_cps_get_defaults>:
+
+bool anc_tuning_opmsg_cps_get_defaults(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842004ba:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842004bc:	1e 00       	r4 = r1 + Null;
+842004be:	27 00       	r5 = r2 + Null;
+842004c0:	28 09       	r6 = r3 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+842004c2:	ff fd 02 f0 	call (m) 0x8ea;
+842004c6:	29 e1 
+
+bool anc_tuning_opmsg_cps_get_defaults(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    ANC_TUNING_OP_DATA *op_extra_data = get_instance_data(op_data);
+
+    return cpsGetDefaultsMsgHandler(&op_extra_data->params_def,message_data,resp_length,resp_data);
+842004c8:	45 08       	r3 = r6 + Null;
+842004ca:	3c 00       	r2 = r5 + Null;
+842004cc:	33 00       	r1 = r4 + Null;
+842004ce:	ff fd 03 f0 	call (m) 0xc2c;
+842004d2:	3f ea 
+
+842004d4 <Lc_anc_tuning_opmsg_cps_get_defaults_2>:
+}
+842004d4:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842004d6:	d8 4c       	rts;
+
+842004d8 <$_anc_tuning_opmsg_cps_set_params>:
+
+bool anc_tuning_opmsg_cps_set_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842004d8:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+842004da:	18 09       	r6 = r1 + Null;
+842004dc:	26 00       	r4 = r2 + Null;
+842004de:	29 09       	r7 = r3 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+842004e0:	ff fd 02 f0 	call (m) 0x8ea;
+842004e4:	2b e0 
+842004e6:	17 00       	r5 = r0 + Null;
+bool anc_tuning_opmsg_cps_set_params(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    ANC_TUNING_OP_DATA *op_extra_data = get_instance_data(op_data);
+    bool retval;
+
+    retval = cpsSetParameterMsgHandler(&op_extra_data->params_def,message_data,resp_length,resp_data);
+842004e8:	4d 08       	r3 = r7 + Null;
+842004ea:	34 00       	r2 = r4 + Null;
+842004ec:	43 08       	r1 = r6 + Null;
+842004ee:	ff fd 04 f0 	call (m) 0xd00;
+842004f2:	33 e0 
+
+    /* Set the Reinit flag after setting the paramters */
+    op_extra_data->ReInitFlag = 1;
+842004f4:	41 20       	rMAC = Null + 1;
+842004f6:	71 f0 d9 8e 	M[r5 + 868] = rMAC;
+
+842004fa <Lc_anc_tuning_opmsg_cps_set_params_2>:
+
+    return retval;
+842004fa:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+842004fc:	d8 4c       	rts;
+
+842004fe <$_anc_tuning_opmsg_cps_get_status>:
+}
+
+/* OBPM statistics */
+bool anc_tuning_opmsg_cps_get_status(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842004fe:	f4 1d       	pushm <FP(=SP), r4, r5, r6, r7, rLink>, SP = SP + 0x10;
+84200500:	19 09       	r7 = r1 + Null;
+84200502:	27 00       	r5 = r2 + Null;
+84200504:	28 09       	r6 = r3 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+84200506:	ff fd 01 f0 	call (m) 0x8ea;
+8420050a:	25 ef 
+8420050c:	16 00       	r4 = r0 + Null;
+bool anc_tuning_opmsg_cps_get_status(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    ANC_TUNING_OP_DATA *op_extra_data = get_instance_data(op_data);
+    unsigned  *resp;
+
+    if(!common_obpm_status_helper(message_data,resp_length,resp_data,sizeof(ANC_TUNING_STATISTICS),&resp))
+8420050e:	81 11       	rMAC = FP + 24;
+84200510:	09 1c       	pushm <rMAC>;
+84200512:	05 32       	r3 = Null + 40;
+84200514:	44 08       	r2 = r6 + Null;
+84200516:	3b 00       	r1 = r5 + Null;
+84200518:	4a 08       	r0 = r7 + Null;
+8420051a:	ff fd 05 f0 	call (m) 0xf46;
+8420051e:	2d e1 
+84200520:	7f 4c       	SP = SP + -4;
+84200522:	10 04       	Null = r0 - Null;
+84200524:	03 62       	if NE jump (m) Lc_anc_tuning_opmsg_cps_get_status_3;
+
+84200526 <Lc_anc_tuning_opmsg_cps_get_status_2>:
+    {
+          return FALSE;
+84200526:	02 00       	r0 = Null + Null;
+84200528:	37 6e       	jump (m) Lc_anc_tuning_opmsg_cps_get_status_6;
+
+8420052a <Lc_anc_tuning_opmsg_cps_get_status_3>:
+    }
+
+    if(resp)
+8420052a:	34 d8       	r2 = M[FP + 24];
+8420052c:	34 60       	if EQ jump (m) Lc_anc_tuning_opmsg_cps_get_status_5;
+
+8420052e <Lc_anc_tuning_opmsg_cps_get_status_4>:
+    {
+        unsigned val1,val2;
+        val1 = op_extra_data->sources[0].sink_index;
+8420052e:	62 f0 0e 89 	r0 = M[r4 + 1080];
+        val2 = op_extra_data->sources[1].sink_index;
+84200532:	63 f0 14 89 	r1 = M[r4 + 1104];
+        resp = cpsPack2Words(val1, val2, resp);
+84200536:	ff fd 6a f2 	call (m) 0x4da2c;
+8420053a:	37 e7 
+8420053c:	32 de       	M[FP + 24] = r0;
+        val1 = op_extra_data->sources[2].sink_index;
+8420053e:	62 f0 1a 89 	r0 = M[r4 + 1128];
+        val2 = op_extra_data->sources[3].sink_index;
+84200542:	63 f0 20 89 	r1 = M[r4 + 1152];
+        resp = cpsPack2Words(val1, val2, resp);
+84200546:	34 d8       	r2 = M[FP + 24];
+84200548:	ff fd 6a f2 	call (m) 0x4da2c;
+8420054c:	25 e7 
+8420054e:	32 de       	M[FP + 24] = r0;
+        val1 = op_extra_data->fb_mon[0];
+84200550:	62 f0 3b 89 	r0 = M[r4 + 1260];
+        val2 = op_extra_data->fb_mon[1];
+84200554:	63 f0 3c 89 	r1 = M[r4 + 1264];
+        resp = cpsPack2Words(val1, val2, resp);
+84200558:	34 d8       	r2 = M[FP + 24];
+8420055a:	ff fd 6a f2 	call (m) 0x4da2c;
+8420055e:	33 e6 
+84200560:	32 de       	M[FP + 24] = r0;
+
+        /* Peak statistics */
+        val1 = op_extra_data->sources[0].peak;
+84200562:	62 f0 0f 89 	r0 = M[r4 + 1084];
+        val2 = op_extra_data->sources[1].peak;
+84200566:	63 f0 15 89 	r1 = M[r4 + 1108];
+        resp = cpsPack2Words(val1, val2, resp);
+8420056a:	34 d8       	r2 = M[FP + 24];
+8420056c:	ff fd 6a f2 	call (m) 0x4da2c;
+84200570:	21 e6 
+84200572:	32 de       	M[FP + 24] = r0;
+        op_extra_data->sources[0].peak=0;
+84200574:	60 f0 0f 8f 	M[r4 + 1084] = Null;
+        op_extra_data->sources[1].peak=0;
+84200578:	60 f0 15 8f 	M[r4 + 1108] = Null;
+        val1 = op_extra_data->sources[2].peak;
+8420057c:	62 f0 1b 89 	r0 = M[r4 + 1132];
+        val2 = op_extra_data->sources[3].peak;
+84200580:	63 f0 21 89 	r1 = M[r4 + 1156];
+        cpsPack2Words(val1, val2, resp);
+84200584:	34 d8       	r2 = M[FP + 24];
+84200586:	ff fd 6a f2 	call (m) 0x4da2c;
+8420058a:	27 e5 
+        op_extra_data->sources[2].peak=0;
+8420058c:	60 f0 1b 8f 	M[r4 + 1132] = Null;
+        op_extra_data->sources[3].peak=0;
+84200590:	60 f0 21 8f 	M[r4 + 1156] = Null;
+
+84200594 <Lc_anc_tuning_opmsg_cps_get_status_5>:
+    }
+
+    return TRUE;
+84200594:	42 20       	r0 = Null + 1;
+
+84200596 <Lc_anc_tuning_opmsg_cps_get_status_6>:
+}
+84200596:	f4 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, rLink>;
+84200598:	d8 4c       	rts;
+
+8420059a <$_anc_tuning_opmsg_cps_set_ucid>:
+
+    return(TRUE);
+}
+
+bool anc_tuning_opmsg_cps_set_ucid(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+8420059a:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+8420059c:	12 09       	r8 = r0 + Null;
+8420059e:	18 09       	r6 = r1 + Null;
+842005a0:	26 00       	r4 = r2 + Null;
+842005a2:	29 09       	r7 = r3 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+842005a4:	ff fd 01 f0 	call (m) 0x8ea;
+842005a8:	27 ea 
+842005aa:	17 00       	r5 = r0 + Null;
+{
+    ANC_TUNING_OP_DATA *p_ext_data = get_instance_data(op_data);
+    PS_KEY_TYPE key;
+    bool retval;
+
+    retval = cpsSetUcidMsgHandler(&p_ext_data->params_def,message_data,resp_length,resp_data);
+842005ac:	4d 08       	r3 = r7 + Null;
+842005ae:	34 00       	r2 = r4 + Null;
+842005b0:	43 08       	r1 = r6 + Null;
+842005b2:	ff fd 03 f0 	call (m) 0xd92;
+842005b6:	21 ef 
+842005b8:	16 00       	r4 = r0 + Null;
+    key = MAP_CAPID_UCID_SBID_TO_PSKEYID(ANC_TUNING_CAP_ID,p_ext_data->params_def.ucid,OPMSG_P_STORE_PARAMETER_SUB_ID);
+842005ba:	39 89       	rMAC = M[r5 + 16];
+842005bc:	8a c2       	r0 = rMAC AND 0x3f;
+842005be:	12 54       	r0 = r0 LSHIFT 1;
+842005c0:	02 f0 59 f0 	r1 = r0 OR 0x205900;
+842005c4:	00 f2 53 c8 
+    ps_entry_read((void*)op_data,key,PERSIST_ANY,ups_params_anc_tuning);
+842005c8:	42 f0 05 f0 	r3 = Null + 69209587;
+842005cc:	f3 59 
+842005ce:	04 00       	r2 = Null + Null;
+842005d0:	52 08       	r0 = r8 + Null;
+842005d2:	ff fd 3e f0 	call (m) 0x8370;
+842005d6:	3f ec 
+
+    return retval;
+842005d8:	32 00       	r0 = r4 + Null;
+
+842005da <Lc_anc_tuning_opmsg_cps_set_ucid_2>:
+}
+842005da:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+842005dc:	d8 4c       	rts;
+
+842005de <$_anc_tuning_opmsg_cps_get_psid>:
+
+bool anc_tuning_opmsg_cps_get_psid(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842005de:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842005e0:	1e 00       	r4 = r1 + Null;
+842005e2:	27 00       	r5 = r2 + Null;
+842005e4:	28 09       	r6 = r3 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+842005e6:	ff fd 01 f0 	call (m) 0x8ea;
+842005ea:	25 e8 
+
+bool anc_tuning_opmsg_cps_get_psid(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    ANC_TUNING_OP_DATA *op_extra_data = get_instance_data(op_data);
+
+    return cpsGetUcidMsgHandler(&op_extra_data->params_def,ANC_TUNING_CAP_ID,message_data,resp_length,resp_data);
+842005ec:	10 1c       	pushm <r6>;
+842005ee:	23 f0 b2 40 	r1 = Null + 16562;
+842005f2:	3d 00       	r3 = r5 + Null;
+842005f4:	34 00       	r2 = r4 + Null;
+842005f6:	ff fd 03 f0 	call (m) 0xdb4;
+842005fa:	3f ed 
+842005fc:	7f 4c       	SP = SP + -4;
+
+842005fe <Lc_anc_tuning_opmsg_cps_get_psid_2>:
+}
+842005fe:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200600:	d8 4c       	rts;
+
+84200602 <$_anc_tuning_opmsg_frontend_config>:
+
+bool anc_tuning_opmsg_frontend_config(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200602:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200604:	16 00       	r4 = r0 + Null;
+84200606:	1f 00       	r5 = r1 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+84200608:	ff fd 01 f0 	call (m) 0x8ea;
+8420060c:	23 e7 
+8420060e:	10 09       	r6 = r0 + Null;
+
+bool anc_tuning_opmsg_frontend_config(OPERATOR_DATA *op_data, void *message_data, unsigned *resp_length, OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    ANC_TUNING_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    if (opmgr_op_is_running(op_data))
+84200610:	32 00       	r0 = r4 + Null;
+84200612:	ff fd 2b f0 	call (m) 0x5ca4;
+84200616:	33 e4 
+84200618:	10 04       	Null = r0 - Null;
+8420061a:	03 60       	if EQ jump (m) Lc_anc_tuning_opmsg_frontend_config_3;
+
+8420061c <Lc_anc_tuning_opmsg_frontend_config_2>:
+    {
+       return FALSE;
+8420061c:	02 00       	r0 = Null + Null;
+8420061e:	13 6e       	jump (m) Lc_anc_tuning_opmsg_frontend_config_4;
+
+84200620 <Lc_anc_tuning_opmsg_frontend_config_3>:
+    }
+
+    p_ext_data->is_stereo = OPMSG_FIELD_GET(message_data,OPMSG_ANC_TUNING_FRONTEND_CONFIG,IS_STEREO);
+84200620:	f9 88       	rMAC = M[r5 + 12];
+84200622:	89 c6       	rMAC = rMAC AND 0xffff;
+84200624:	81 f0 26 8f 	M[r6 + 1176] = rMAC;
+    p_ext_data->is_two_mic = OPMSG_FIELD_GET(message_data,OPMSG_ANC_TUNING_FRONTEND_CONFIG,IS_TWO_MIC);
+84200628:	39 89       	rMAC = M[r5 + 16];
+8420062a:	89 c6       	rMAC = rMAC AND 0xffff;
+8420062c:	81 f0 27 8f 	M[r6 + 1180] = rMAC;
+    p_ext_data->is_parallel_anc = OPMSG_FIELD_GET(message_data,OPMSG_ANC_TUNING_FRONTEND_CONFIG,IS_PARALLEL_ANC);
+84200630:	79 89       	rMAC = M[r5 + 20];
+84200632:	89 c6       	rMAC = rMAC AND 0xffff;
+84200634:	81 f0 28 8f 	M[r6 + 1184] = rMAC;
+
+    p_ext_data->connect_change  = TRUE;
+84200638:	41 20       	rMAC = Null + 1;
+8420063a:	81 f0 29 8f 	M[r6 + 1188] = rMAC;
+    anc_tuning_update_processing(op_data);
+8420063e:	32 00       	r0 = r4 + Null;
+84200640:	80 4e       	call (m) $_anc_tuning_update_processing;
+
+    return TRUE;
+84200642:	42 20       	r0 = Null + 1;
+
+84200644 <Lc_anc_tuning_opmsg_frontend_config_4>:
+}
+84200644:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200646:	d8 4c       	rts;
+
+84200648 <$_anc_tuning_process_data>:
+ *
+ * \return Whether the response_data field has been populated with a valid
+ * response
+ */
+void anc_tuning_process_data(OPERATOR_DATA *op_data, TOUCHED_TERMINALS *touched)
+{
+84200648:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+8420064a:	19 09       	r7 = r1 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+8420064c:	ff fd 01 f0 	call (m) 0x8ea;
+84200650:	3f e4 
+84200652:	16 00       	r4 = r0 + Null;
+    ANC_TUNING_OP_DATA *p_ext_data = get_instance_data(op_data);
+    anc_source_t *lp_source=NULL;
+    anc_sink_t   *lp_sink=NULL;
+    unsigned      available, amount;
+
+    if (p_ext_data->connect_change)
+84200654:	60 f0 29 89 	Null = M[r4 + 1188];
+84200658:	04 60       	if EQ jump (m) Lc_anc_tuning_process_data_3;
+
+8420065a <Lc_anc_tuning_process_data_2>:
+    {
+        p_ext_data->connect_change = FALSE;
+8420065a:	60 f0 29 8f 	M[r4 + 1188] = Null;
+        anc_tuning_channel_setup(p_ext_data);
+8420065e:	7e 4e       	call (m) $_anc_tuning_channel_setup;
+
+84200660 <Lc_anc_tuning_process_data_3>:
+    }
+
+    if(!p_ext_data->first_sink || !p_ext_data->first_source)
+84200660:	61 f0 22 89 	rMAC = M[r4 + 1160];
+84200664:	6c 60       	if EQ jump (m) Lc_anc_tuning_process_data_26;
+
+84200666 <Lc_anc_tuning_process_data_4>:
+84200666:	61 f0 23 89 	rMAC = M[r4 + 1164];
+8420066a:	69 60       	if EQ jump (m) Lc_anc_tuning_process_data_26;
+
+8420066c <Lc_anc_tuning_process_data_5>:
+        return ;
+    }
+
+    /* when a parameter is changed, disable ANC, change parameter
+       and then re-enable ANC. */
+    if(p_ext_data->ReInitFlag && blicenceComp)
+8420066c:	60 f0 d9 88 	Null = M[r4 + 868];
+84200670:	37 60       	if EQ jump (m) Lc_anc_tuning_process_data_15;
+
+84200672 <Lc_anc_tuning_process_data_6>:
+84200672:	2c f0 00 f0 	Null = M[Null + $_blicenceComp];
+84200676:	2a 88 
+84200678:	33 60       	if EQ jump (m) Lc_anc_tuning_process_data_15;
+
+8420067a <Lc_anc_tuning_process_data_7>:
+    {
+        /* Disable ANC. A value of zero ensures ANC is completely shut off */
+        uint16 inst0_ena=0,inst1_ena=0;
+8420067a:	00 09       	r6 = Null + Null;
+
+        p_ext_data->ReInitFlag = 0;
+8420067c:	60 f0 d9 8e 	M[r4 + 868] = Null;
+
+        /* disable ANC */
+        anc_tuning_enable_wrapper(inst0_ena,inst1_ena);
+84200680:	03 00       	r1 = Null + Null;
+84200682:	02 00       	r0 = Null + Null;
+84200684:	03 f0 3f e9 	call (m) $_anc_tuning_enable_wrapper;
+        L2_DBG_MSG2("anc_tuning_cap: disabling top level anc with %d and %d \n",inst0_ena,inst1_ena);
+84200688:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420068c:	88 24       	Null = rMAC - 2;
+8420068e:	09 68       	if LT jump (m) Lc_anc_tuning_process_data_9;
+
+84200690 <Lc_anc_tuning_process_data_8>:
+84200690:	55 f1 02 f0 	r0 = Null + 357564416;
+84200694:	00 40 
+84200696:	04 00       	r2 = Null + Null;
+84200698:	03 00       	r1 = Null + Null;
+8420069a:	ff fd 05 f0 	call (m) 0x10d6;
+8420069e:	3d e1 
+
+842006a0 <Lc_anc_tuning_process_data_9>:
+
+        inst0_ena = anc_tuning_set_parameters(p_ext_data,STREAM_ANC_INSTANCE_ANC0_ID);
+842006a0:	43 20       	r1 = Null + 1;
+842006a2:	32 00       	r0 = r4 + Null;
+842006a4:	b7 4e       	call (m) $_anc_tuning_set_parameters;
+842006a6:	17 00       	r5 = r0 + Null;
+        if(p_ext_data->is_stereo)
+842006a8:	60 f0 26 89 	Null = M[r4 + 1176];
+842006ac:	05 60       	if EQ jump (m) Lc_anc_tuning_process_data_11;
+
+842006ae <Lc_anc_tuning_process_data_10>:
+        {
+            inst1_ena = anc_tuning_set_parameters(p_ext_data,STREAM_ANC_INSTANCE_ANC1_ID);
+842006ae:	83 20       	r1 = Null + 2;
+842006b0:	32 00       	r0 = r4 + Null;
+842006b2:	b0 4e       	call (m) $_anc_tuning_set_parameters;
+842006b4:	10 09       	r6 = r0 + Null;
+
+842006b6 <Lc_anc_tuning_process_data_11>:
+        }
+
+        /* enable ANC */
+        if(p_ext_data->is_parallel_anc)
+842006b6:	60 f0 28 89 	Null = M[r4 + 1184];
+842006ba:	02 60       	if EQ jump (m) Lc_anc_tuning_process_data_13;
+
+842006bc <Lc_anc_tuning_process_data_12>:
+        {
+          inst1_ena = inst0_ena; 
+842006bc:	38 09       	r6 = r5 + Null;
+
+842006be <Lc_anc_tuning_process_data_13>:
+        }
+        anc_tuning_enable_wrapper(inst0_ena,inst1_ena);
+842006be:	43 08       	r1 = r6 + Null;
+842006c0:	3a 00       	r0 = r5 + Null;
+842006c2:	03 f0 21 e8 	call (m) $_anc_tuning_enable_wrapper;
+        L2_DBG_MSG2("anc_tuning_cap: enabling top level anc with %d and %d \n",inst0_ena,inst1_ena);
+842006c6:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842006ca:	88 24       	Null = rMAC - 2;
+842006cc:	09 68       	if LT jump (m) Lc_anc_tuning_process_data_15;
+
+842006ce <Lc_anc_tuning_process_data_14>:
+842006ce:	55 f1 02 f0 	r0 = Null + 357564473;
+842006d2:	39 40 
+842006d4:	44 08       	r2 = r6 + Null;
+842006d6:	3b 00       	r1 = r5 + Null;
+842006d8:	ff fd 04 f0 	call (m) 0x10d6;
+842006dc:	3f ef 
+
+842006de <Lc_anc_tuning_process_data_15>:
+    }
+
+    available = MAXINT;
+842006de:	ff f7 f7 f7 	r5 = Null + 2147483647;
+842006e2:	ff 7b 
+    lp_source=p_ext_data->first_source;
+842006e4:	68 f0 23 89 	r6 = M[r4 + 1164];
+
+842006e8 <Lc_anc_tuning_process_data_16>:
+
+    do
+    {
+        /* Minimum Space */
+        amount = cbuffer_calc_amount_space_in_words(lp_source->buffer);
+842006e8:	82 f0 02 88 	r0 = M[r6 + 8];
+842006ec:	ff fd 6a f2 	call (m) 0x4db14;
+842006f0:	29 e1 
+        if(amount<ANC_TUNING_DEFAULT_BLOCK_SIZE)
+842006f2:	10 04       	Null = r0 - Null;
+842006f4:	24 60       	if EQ jump (m) Lc_anc_tuning_process_data_26;
+
+842006f6 <Lc_anc_tuning_process_data_17>:
+        {
+            return;
+        }
+        if(available>amount)
+842006f6:	b8 04       	Null = r5 - r0;
+842006f8:	09 f0 87 e0 	if LS jump (m) Lc_anc_tuning_process_data_19;
+
+842006fc <Lc_anc_tuning_process_data_18>:
+        {
+            available = amount;
+842006fc:	17 00       	r5 = r0 + Null;
+
+842006fe <Lc_anc_tuning_process_data_19>:
+        }
+        lp_source = lp_source->next;
+    }while(lp_source);
+842006fe:	88 f0 00 e8 	r6 = M[r6 + Null];
+84200702:	f3 63       	if NE jump (m) Lc_anc_tuning_process_data_16;
+
+84200704 <Lc_anc_tuning_process_data_20>:
+
+    lp_sink = p_ext_data->first_sink;
+84200704:	68 f0 22 89 	r6 = M[r4 + 1160];
+
+84200708 <Lc_anc_tuning_process_data_21>:
+
+    do
+    {
+        /* Minimum Data */
+        amount = cbuffer_calc_amount_data_in_words(lp_sink->buffer);
+84200708:	82 f0 02 88 	r0 = M[r6 + 8];
+8420070c:	ff fd 6a f2 	call (m) 0x4db5a;
+84200710:	2f e2 
+        if(amount<ANC_TUNING_DEFAULT_BLOCK_SIZE)
+84200712:	10 04       	Null = r0 - Null;
+84200714:	14 60       	if EQ jump (m) Lc_anc_tuning_process_data_26;
+
+84200716 <Lc_anc_tuning_process_data_22>:
+        {
+            return;
+        }
+        if(available>amount)
+84200716:	b8 04       	Null = r5 - r0;
+84200718:	09 f0 87 e0 	if LS jump (m) Lc_anc_tuning_process_data_24;
+
+8420071c <Lc_anc_tuning_process_data_23>:
+        {
+            available = amount;
+8420071c:	17 00       	r5 = r0 + Null;
+
+8420071e <Lc_anc_tuning_process_data_24>:
+        }
+        lp_sink = lp_sink->next;
+    }while(lp_sink);
+8420071e:	88 f0 00 e8 	r6 = M[r6 + Null];
+84200722:	f3 63       	if NE jump (m) Lc_anc_tuning_process_data_21;
+
+84200724 <Lc_anc_tuning_process_data_25>:
+
+    /* call asm processing */
+    anc_tuning_processing(p_ext_data,available);
+84200724:	3b 00       	r1 = r5 + Null;
+84200726:	32 00       	r0 = r4 + Null;
+84200728:	fc ff 38 e6 	call $_anc_tuning_processing;
+
+    /* touched output */
+    touched->sources = p_ext_data->connected_sources;
+8420072c:	61 f0 25 89 	rMAC = M[r4 + 1172];
+84200730:	91 f0 00 ee 	M[r7 + Null] = rMAC;
+    /* touched input */
+    touched->sinks = p_ext_data->connected_sinks;
+84200734:	61 f0 24 89 	rMAC = M[r4 + 1168];
+84200738:	91 f0 01 8e 	M[r7 + 4] = rMAC;
+
+8420073c <Lc_anc_tuning_process_data_26>:
+
+}
+8420073c:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+8420073e:	d8 4c       	rts;
+
+84200740 <$_anc_tuning_update_processing>:
+
+/* ********************************** Misc functions ************************************* */
+
+void anc_tuning_update_processing(OPERATOR_DATA *op_data)
+{
+84200740:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200742:	16 00       	r4 = r0 + Null;
+    if (opmgr_op_is_running(op_data))
+84200744:	ff fd 2a f0 	call (m) 0x5ca4;
+84200748:	21 eb 
+8420074a:	10 04       	Null = r0 - Null;
+8420074c:	05 60       	if EQ jump (m) Lc_anc_tuning_update_processing_3;
+
+8420074e <Lc_anc_tuning_update_processing_2>:
+    {
+        /* Raise a bg int to process */
+        opmgr_kick_operator(op_data);
+8420074e:	32 00       	r0 = r4 + Null;
+84200750:	ff fd 1b f0 	call (m) 0x3f30;
+84200754:	21 ef 
+
+84200756 <Lc_anc_tuning_update_processing_3>:
+    }
+}
+84200756:	f1 48       	popm <FP, r4, rLink>;
+84200758:	d8 4c       	rts;
+
+8420075a <$_anc_tuning_channel_setup>:
+
+void anc_tuning_channel_setup(ANC_TUNING_OP_DATA *p_ext_data)
+{
+8420075a:	72 1c       	pushm <FP(=SP), r4, r5>;
+    unsigned valid_sinks=0;
+8420075c:	01 00       	rMAC = Null + Null;
+    unsigned i,temp_mask;
+    anc_source_t *lp_source=NULL;
+8420075e:	04 00       	r2 = Null + Null;
+    anc_sink_t   *lp_sink=NULL;
+84200760:	05 00       	r3 = Null + Null;
+
+    p_ext_data->first_sink=NULL;
+84200762:	20 f0 22 8f 	M[r0 + 1160] = Null;
+    p_ext_data->first_source=NULL;
+84200766:	20 f0 23 8f 	M[r0 + 1164] = Null;
+
+    /* USB - Input */
+    if((p_ext_data->connected_sinks&USB_SINK_MASK)==USB_SINK_MASK)
+8420076a:	26 f0 24 89 	r4 = M[r0 + 1168];
+8420076e:	b3 c0       	r1 = r4 AND 0x3;
+84200770:	d8 24       	Null = r1 - 3;
+84200772:	02 62       	if NE jump (m) Lc_anc_tuning_channel_setup_3;
+
+84200774 <Lc_anc_tuning_channel_setup_2>:
+    {
+        valid_sinks |= USB_SINK_MASK;
+84200774:	c1 20       	rMAC = Null + 3;
+
+84200776 <Lc_anc_tuning_channel_setup_3>:
+    }
+    /* Left Stream */
+    temp_mask = (p_ext_data->is_two_mic) ? ANC_SINK_MASK_2MIC : ANC_SINK_MASK_1MIC;
+84200776:	03 29       	r1 = Null + 20;
+84200778:	07 f0 54 40 	r5 = Null + 84;
+8420077c:	20 f0 27 89 	Null = M[r0 + 1180];
+84200780:	01 f7 03 c0 	if NE r1 = r5 + Null;
+    if((p_ext_data->connected_sinks&temp_mask)==temp_mask)
+84200784:	f7 10       	r5 = r4 AND r1;
+84200786:	f8 04       	Null = r5 - r1;
+84200788:	02 62       	if NE jump (m) Lc_anc_tuning_channel_setup_5;
+
+8420078a <Lc_anc_tuning_channel_setup_4>:
+    {
+        valid_sinks |= temp_mask;
+8420078a:	c9 12       	rMAC = rMAC OR r1;
+
+8420078c <Lc_anc_tuning_channel_setup_5>:
+    }
+    /* Right Stream */
+    temp_mask <<= 1;
+8420078c:	1b 54       	r1 = r1 LSHIFT 1;
+    if((p_ext_data->connected_sinks&temp_mask)==temp_mask)
+8420078e:	f6 10       	r4 = r4 AND r1;
+84200790:	f0 04       	Null = r4 - r1;
+84200792:	2f 62       	if NE jump (m) Lc_anc_tuning_channel_setup_16;
+
+84200794 <Lc_anc_tuning_channel_setup_6>:
+    {
+        valid_sinks |= temp_mask;
+84200794:	c9 12       	rMAC = rMAC OR r1;
+
+84200796 <Lc_anc_tuning_channel_setup_7>:
+    if(valid_sinks ==0)
+    {
+        return;
+    }
+
+    temp_mask = p_ext_data->is_stereo ? 0xF : 0x7;
+84200796:	c3 21       	r1 = Null + 7;
+84200798:	c6 23       	r4 = Null + 15;
+8420079a:	20 f0 26 89 	Null = M[r0 + 1176];
+8420079e:	01 f6 03 c0 	if NE r1 = r4 + Null;
+    if((temp_mask & p_ext_data->connected_sources)!=temp_mask)
+842007a2:	26 f0 25 89 	r4 = M[r0 + 1172];
+842007a6:	f6 10       	r4 = r4 AND r1;
+842007a8:	f0 04       	Null = r4 - r1;
+842007aa:	2c 62       	if NE jump (m) Lc_anc_tuning_channel_setup_20;
+
+842007ac <Lc_anc_tuning_channel_setup_8>:
+    {
+        return;
+    }
+
+    /* build sink list */
+    for (i=0;i<ANC_TUNING_MAX_SINKS;i++)
+842007ac:	03 00       	r1 = Null + Null;
+842007ae:	26 f0 68 23 	r4 = r0 + 872;
+842007b2:	44 71       	r10 = Null + 8;
+842007b4:	0a 4c       	do (m) Lc__loop0;
+
+842007b6 <Lc_anc_tuning_channel_setup_9>:
+    {
+        if(valid_sinks & (1<<i))
+842007b6:	1f 00       	r5 = r1 + Null;
+842007b8:	00 f7 97 de 	r5 = 0x1 LSHIFT r5;
+842007bc:	7f 10       	r5 = r5 AND rMAC;
+842007be:	03 60       	if EQ jump (m) Lc_anc_tuning_channel_setup_11;
+
+842007c0 <Lc_anc_tuning_channel_setup_10>:
+        {
+            anc_sink_t *lp_ptr=&p_ext_data->sinks[i];
+
+            lp_ptr->next = lp_sink;
+842007c0:	35 ee       	M[r4 + Null] = r3;
+            lp_sink = lp_ptr;
+842007c2:	35 00       	r3 = r4 + Null;
+
+842007c4 <Lc_anc_tuning_channel_setup_11>:
+    {
+        return;
+    }
+
+    /* build sink list */
+    for (i=0;i<ANC_TUNING_MAX_SINKS;i++)
+842007c4:	5b 20       	r1 = r1 + 1;
+842007c6:	36 2a       	r4 = r4 + 24;
+
+842007c8 <Lc__loop0>:
+842007c8:	23 f0 28 28 	r1 = r0 + 1064;
+            lp_sink = lp_ptr;
+        }
+    }
+
+    /* build source list */
+    for (i=0;i<ANC_TUNING_MAX_SOURCES;i++)
+842007cc:	24 71       	r10 = Null + 4;
+842007ce:	16 4c       	do (m) Lc__loop1;
+
+842007d0 <Lc_anc_tuning_channel_setup_13>:
+    {
+        anc_source_t *lp_ptr=&p_ext_data->sources[i];
+
+        if(lp_ptr->buffer)
+842007d0:	9e 88       	r4 = M[r1 + 8];
+842007d2:	13 60       	if EQ jump (m) Lc_anc_tuning_channel_setup_18;
+
+842007d4 <Lc_anc_tuning_channel_setup_14>:
+        {
+            lp_ptr->next = lp_source;
+842007d4:	1c ee       	M[r1 + Null] = r2;
+            lp_source = lp_ptr;
+842007d6:	1c 00       	r2 = r1 + Null;
+
+            /* link a sink with the source */
+            if(valid_sinks & (1<<lp_ptr->sink_index))
+842007d8:	1e 89       	r4 = M[r1 + 16];
+842007da:	37 00       	r5 = r4 + Null;
+842007dc:	00 f7 97 de 	r5 = 0x1 LSHIFT r5;
+842007e0:	7f 10       	r5 = r5 AND rMAC;
+842007e2:	0a 60       	if EQ jump (m) Lc_anc_tuning_channel_setup_17;
+
+842007e4 <Lc_anc_tuning_channel_setup_15>:
+            {
+                lp_ptr->sink = &p_ext_data->sinks[lp_ptr->sink_index];
+842007e4:	27 f0 68 23 	r5 = r0 + 872;
+842007e8:	36 46       	r4 = r4 * 24 (int);
+842007ea:	f7 01       	r5 = r4 + r5;
+842007ec:	df 8e       	M[r1 + 12] = r5;
+842007ee:	05 6e       	jump (m) Lc_anc_tuning_channel_setup_18;
+
+842007f0 <Lc_anc_tuning_channel_setup_16>:
+    if((p_ext_data->connected_sinks&temp_mask)==temp_mask)
+    {
+        valid_sinks |= temp_mask;
+    }
+
+    if(valid_sinks ==0)
+842007f0:	08 04       	Null = rMAC - Null;
+842007f2:	08 60       	if EQ jump (m) Lc_anc_tuning_channel_setup_20;
+
+842007f4 <Lc__ite_9>:
+842007f4:	d1 6f       	jump (m) Lc_anc_tuning_channel_setup_7;
+
+842007f6 <Lc_anc_tuning_channel_setup_17>:
+            {
+                lp_ptr->sink = &p_ext_data->sinks[lp_ptr->sink_index];
+            }
+            else
+            {
+                lp_ptr->sink = NULL;
+842007f6:	d8 8e       	M[r1 + 12] = Null;
+
+842007f8 <Lc_anc_tuning_channel_setup_18>:
+842007f8:	1b 2a       	r1 = r1 + 24;
+
+842007fa <Lc__loop1>:
+            lp_sink = lp_ptr;
+        }
+    }
+
+    /* build source list */
+    for (i=0;i<ANC_TUNING_MAX_SOURCES;i++)
+842007fa:	24 f0 23 8f 	M[r0 + 1164] = r2;
+            }
+        }
+    }
+
+    p_ext_data->first_source=lp_source;
+    p_ext_data->first_sink=lp_sink;
+842007fe:	25 f0 22 8f 	M[r0 + 1160] = r3;
+
+84200802 <Lc_anc_tuning_channel_setup_20>:
+
+}
+84200802:	72 48       	popm <FP, r4, r5>;
+84200804:	d8 4c       	rts;
+
+84200806 <$_anc_tuning_set_monitor>:
+ *
+ * \return None
+ */
+void anc_tuning_set_monitor(STREAM_ANC_INSTANCE anc_instance,
+                            unsigned decimation_chain_input)
+{
+84200806:	c8 1c       	pushm <FP(=SP), rLink>;
+            params.bit_enable = 0;
+            break;
+    }
+    stream_anc_user2((void*)&params);
+#else
+    stream_anc_set_anc_tune(anc_instance, decimation_chain_input);
+84200808:	ff fd 62 f0 	call (m) 0xccfc;
+8420080c:	35 e7 
+
+8420080e <Lc_anc_tuning_set_monitor_2>:
+#endif
+}
+8420080e:	c8 48       	popm <FP, rLink>;
+84200810:	d8 4c       	rts;
+
+84200812 <$_anc_tuning_set_parameters>:
+ *
+ * \return Bitfields specifying which Filter paths are enabled (=1) and disabled (=0)
+ */
+uint16 anc_tuning_set_parameters(ANC_TUNING_OP_DATA *p_ext_data,
+                                 STREAM_ANC_INSTANCE instance_id)
+{
+84200812:	f6 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>;
+84200814:	4c 4c       	SP = SP + 48;
+84200816:	12 09       	r8 = r0 + Null;
+84200818:	1f 00       	r5 = r1 + Null;
+    ENDPOINT *ep_ffa=NULL,*ep_ffb=NULL,*ep_fb=NULL;
+    unsigned i,inst_off = instance_id - STREAM_ANC_INSTANCE_ANC0_ID;
+8420081a:	79 24       	rMAC = r5 - 1;
+    uint16 num_anc_instances;
+    unsigned nb_coeffs, dec_chain, con_id;
+    unsigned dac_hw_params[2];
+    bool is_two_mic,is_ffa_en,is_ffb_en,is_fb_en,is_ff_out_en,status_check,is_parallel_anc;
+
+    if(inst_off)
+8420081c:	41 de       	M[FP + 32] = rMAC;
+8420081e:	04 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_3;
+
+84200820 <Lc_anc_tuning_set_parameters_2>:
+    {
+        anc_inst_ptr = (ANC_INST_PARAMS*)(&p_ext_data->
+                       anc_tuning_cap_params.OFFSET_ANC_USECASE_R);
+84200820:	a6 f0 bc 21 	r4 = r8 + 444;
+84200824:	03 6e       	jump (m) Lc_anc_tuning_set_parameters_4;
+
+84200826 <Lc_anc_tuning_set_parameters_3>:
+    }
+    else
+    {
+        anc_inst_ptr = (ANC_INST_PARAMS*)(&p_ext_data->
+                        anc_tuning_cap_params.OFFSET_ANC_USECASE_L);
+84200826:	a6 f0 14 20 	r4 = r8 + 20;
+
+8420082a <Lc_anc_tuning_set_parameters_4>:
+    }
+
+    /* setup config flags */
+    is_two_mic   = p_ext_data->is_two_mic;
+    is_ffa_en    = anc_inst_ptr->OFFSET_FF_A_ENABLE;
+8420082a:	32 98       	r0 = M[r4 + 32];
+8420082c:	4a de       	M[FP + 36] = r0;
+    is_ffb_en    = anc_inst_ptr->OFFSET_FF_B_ENABLE;
+8420082e:	72 98       	r0 = M[r4 + 36];
+84200830:	52 de       	M[FP + 40] = r0;
+    is_fb_en     = anc_inst_ptr->OFFSET_FB_ENABLE;
+84200832:	b2 98       	r0 = M[r4 + 40];
+84200834:	5a de       	M[FP + 44] = r0;
+    is_ff_out_en = anc_inst_ptr->OFFSET_FF_OUT_ENABLE;
+84200836:	68 f0 12 88 	r6 = M[r4 + 72];
+    is_parallel_anc = p_ext_data->is_parallel_anc;
+8420083a:	a2 f0 28 89 	r0 = M[r8 + 1184];
+8420083e:	62 de       	M[FP + 48] = r0;
+
+    if(!is_two_mic)
+84200840:	a1 f0 27 89 	rMAC = M[r8 + 1180];
+84200844:	0c 62       	if NE jump (m) Lc_anc_tuning_set_parameters_8;
+
+84200846 <Lc_anc_tuning_set_parameters_5>:
+    {
+        L2_DBG_MSG("anc_tuning_cap: enable more microphones to use FFb filter \n");
+84200846:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420084a:	88 24       	Null = rMAC - 2;
+8420084c:	07 68       	if LT jump (m) Lc_anc_tuning_set_parameters_7;
+
+8420084e <Lc_anc_tuning_set_parameters_6>:
+8420084e:	55 f1 02 f0 	r0 = Null + 357564529;
+84200852:	71 40 
+84200854:	ff fd 04 f0 	call (m) 0x10b0;
+84200858:	3d e2 
+
+8420085a <Lc_anc_tuning_set_parameters_7>:
+        is_ffb_en = FALSE;
+8420085a:	50 de       	M[FP + 40] = Null;
+
+8420085c <Lc_anc_tuning_set_parameters_8>:
+
+    /* setup enable flag */
+    anc_enable_flag = (uint16)((is_ffa_en << 0)
+                      |(is_ffb_en << 1)
+                      |(is_fb_en << 2)
+                      |(is_ff_out_en << 3));
+8420085c:	01 f8 d2 d8 	r0 = r6 LSHIFT 3;
+84200860:	5b d8       	r1 = M[FP + 44];
+84200862:	5b 54       	r1 = r1 LSHIFT 2;
+84200864:	d1 12       	rMAC = r0 OR r1;
+84200866:	52 d8       	r0 = M[FP + 40];
+84200868:	12 54       	r0 = r0 LSHIFT 1;
+8420086a:	89 12       	rMAC = rMAC OR r0;
+8420086c:	4a d8       	r0 = M[FP + 36];
+8420086e:	89 12       	rMAC = rMAC OR r0;
+84200870:	89 c6       	rMAC = rMAC AND 0xffff;
+84200872:	69 de       	M[FP + 52] = rMAC;
+
+    L2_DBG_MSG1("anc_tuning_cap: anc enable flag has value %d \n",anc_enable_flag);
+84200874:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200878:	88 24       	Null = rMAC - 2;
+8420087a:	08 68       	if LT jump (m) Lc_anc_tuning_set_parameters_10;
+
+8420087c <Lc_anc_tuning_set_parameters_9>:
+8420087c:	55 f1 02 f0 	r0 = Null + 357564589;
+84200880:	ad 40 
+84200882:	6b d8       	r1 = M[FP + 52];
+84200884:	ff fd 04 f0 	call (m) 0x10c2;
+84200888:	3f e1 
+
+8420088a <Lc_anc_tuning_set_parameters_10>:
+
+    /* ANC OFF - exit */
+    if(!is_ff_out_en)
+8420088a:	0f f8 00 c2 	Null = r6 - Null;
+8420088e:	0e 62       	if NE jump (m) Lc_anc_tuning_set_parameters_14;
+
+84200890 <Lc_anc_tuning_set_parameters_11>:
+    {
+        L2_DBG_MSG("anc_tuning_cap: ff out not enabled, so ANC OFF\n");
+84200890:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200894:	88 24       	Null = rMAC - 2;
+84200896:	07 68       	if LT jump (m) Lc_anc_tuning_set_parameters_13;
+
+84200898 <Lc_anc_tuning_set_parameters_12>:
+84200898:	55 f1 02 f0 	r0 = Null + 357564636;
+8420089c:	dc 40 
+8420089e:	ff fd 04 f0 	call (m) 0x10b0;
+842008a2:	33 e0 
+
+842008a4 <Lc_anc_tuning_set_parameters_13>:
+        return 0;
+842008a4:	02 00       	r0 = Null + Null;
+842008a6:	0f f0 97 ea 	jump (m) Lc_anc_tuning_set_parameters_92;
+
+842008aa <Lc_anc_tuning_set_parameters_14>:
+
+    /* Get FB mon endpoints by checking the endpoint connected to sink terminal 2,3 */
+    ENDPOINT *ep_fb_mon;
+    ENDPOINT *ep_fb_mon_audio;
+    ep_fb_mon = p_ext_data->
+                sinks[ANC_TUNING_SINK_FBMON_LEFT+inst_off].ep_handle;
+842008aa:	41 d8       	rMAC = M[FP + 32];
+842008ac:	0a 46       	r0 = rMAC * 24 (int);
+842008ae:	51 08       	rMAC = r8 + Null;
+842008b0:	51 00       	rMAC = r0 + rMAC;
+842008b2:	71 de       	M[FP + 56] = rMAC;
+842008b4:	1b f0 e7 88 	r9 = M[rMAC + 924];
+     * ep_fb_mon is an endpoint of anc_tuning capability.
+     * ep_fb_mon->connected_to is an audio endpoint which is a source endpoint*/
+
+    /* Set instance id of the (ep_fb_mon->connected_to) endpoint
+     * For more details look at implementation of stream_anc_configure_instance */
+    stream_anc_configure_instance(ep_fb_mon, instance_id);
+842008b8:	3b 00       	r1 = r5 + Null;
+842008ba:	5a 08       	r0 = r9 + Null;
+842008bc:	ff fd 60 f0 	call (m) 0xca3e;
+842008c0:	23 ec 
+
+    /* Enable SDM of the (ep_fb_mon->connected_to) endpoint which is a source endpoint
+     * For more details look at implementation of stream_anc_enable_sdm */
+    (void)stream_anc_enable_sdm(ep_fb_mon);
+842008c2:	5a 08       	r0 = r9 + Null;
+842008c4:	ff fd 62 f0 	call (m) 0xceae;
+842008c8:	2b ef 
+
+    /* Restore instance id of the (ep_fb_mon->connected_to) endpoint */
+    stream_anc_configure_instance(ep_fb_mon, STREAM_ANC_INSTANCE_NONE_ID);
+842008ca:	03 00       	r1 = Null + Null;
+842008cc:	5a 08       	r0 = r9 + Null;
+842008ce:	ff fd 60 f0 	call (m) 0xca3e;
+842008d2:	31 eb 
+
+    /* ep_fb_mon->connected_to is an audio endpoint which is a source endpoint*/
+    ep_fb_mon_audio = stream_get_endpoint_connected_to(ep_fb_mon);
+842008d4:	5a 08       	r0 = r9 + Null;
+842008d6:	ff fd 3e f0 	call (m) 0x85b6;
+842008da:	21 e7 
+
+    if (ep_fb_mon_audio != NULL)
+842008dc:	10 04       	Null = r0 - Null;
+842008de:	11 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_19;
+
+842008e0 <Lc_anc_tuning_set_parameters_15>:
+         * If ANC uses digital mic, FB mon uses instance 0.
+         * FB mon mic's are only setup so their decimators can be re-purposed
+         * to stream data from the ANC path.
+         */
+
+        if (stream_get_device_type(ep_fb_mon_audio) == STREAM_DEVICE_DIGITAL_MIC)
+842008e0:	ff fd 46 f0 	call (m) 0x95b0;
+842008e4:	31 e6 
+842008e6:	90 25       	Null = r0 - 6;
+842008e8:	06 62       	if NE jump (m) Lc_anc_tuning_set_parameters_17;
+
+842008ea <Lc_anc_tuning_set_parameters_16>:
+        {
+            /* MON1 = DIG_MIC_INST1_LEFT, MON2 = DIG_MIC_INST1_RIGHT */
+            if(inst_off)
+            {
+                /* LOW_LATENCY_ANC_DECIMATION_INPUT_EN_3_FBTUNEOUT1 */
+                dec_chain = DEC_CHAIN_3;
+842008ea:	c3 20       	r1 = Null + 3;
+842008ec:	41 d8       	rMAC = M[FP + 32];
+842008ee:	a0 f0 43 ce 	if EQ r1 = Null + 2;
+842008f2:	05 6e       	jump (m) Lc_anc_tuning_set_parameters_18;
+
+842008f4 <Lc_anc_tuning_set_parameters_17>:
+        {
+            /* MON1 = ADC_LEFT, MON2=ADC_RIGHT */
+            if(inst_off)
+            {
+                /* LOW_LATENCY_ANC_DECIMATION_INPUT_EN_1_FBTUNEOUT1 */
+                dec_chain = DEC_CHAIN_1;
+842008f4:	03 00       	r1 = Null + Null;
+842008f6:	41 d8       	rMAC = M[FP + 32];
+842008f8:	21 f0 43 ce 	if NE r1 = Null + 1;
+
+842008fc <Lc_anc_tuning_set_parameters_18>:
+            {
+                /* LOW_LATENCY_ANC_DECIMATION_INPUT_EN_0_FBTUNEOUT0 */
+               dec_chain = DEC_CHAIN_0;
+            }
+       }
+       anc_tuning_set_monitor(instance_id, dec_chain);
+842008fc:	3a 00       	r0 = r5 + Null;
+842008fe:	84 4f       	call (m) $_anc_tuning_set_monitor;
+
+84200900 <Lc_anc_tuning_set_parameters_19>:
+    }
+
+    /* Get FFa endpoints by checking the endpoint connected to terminal sink 4,5 */
+    ep_ffa = p_ext_data->
+             sinks[ANC_TUNING_SINK_MIC1_LEFT+inst_off].ep_handle;
+84200900:	71 d8       	rMAC = M[FP + 56];
+
+    /* FB mon set control. Now that the decimators are re-purposed,
+     * associate a specific signal from within the ANC block for streaming */
+
+    if (ep_ffa != NULL)
+84200902:	18 f0 f3 88 	r6 = M[rMAC + 972];
+84200906:	1c 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_25;
+
+84200908 <Lc_anc_tuning_set_parameters_20>:
+    {
+        if(p_ext_data->fb_mon[inst_off] == ANC_FBMON_FB)
+84200908:	42 d8       	r0 = M[FP + 32];
+8420090a:	51 08       	rMAC = r8 + Null;
+8420090c:	52 54       	r0 = r0 LSHIFT 2;
+8420090e:	51 00       	rMAC = r0 + rMAC;
+84200910:	11 f0 3b 89 	rMAC = M[rMAC + 1260];
+84200914:	48 24       	Null = rMAC - 1;
+84200916:	07 62       	if NE jump (m) Lc_anc_tuning_set_parameters_22;
+
+84200918 <Lc_anc_tuning_set_parameters_21>:
+        {
+            (void) stream_anc_connect_feedback_monitor(ep_ffa, ANC_FBMON_FB);
+84200918:	43 20       	r1 = Null + 1;
+8420091a:	42 08       	r0 = r6 + Null;
+8420091c:	ff fd 63 f0 	call (m) 0xcfbe;
+84200920:	23 e5 
+84200922:	0e 6e       	jump (m) Lc_anc_tuning_set_parameters_25;
+
+84200924 <Lc_anc_tuning_set_parameters_22>:
+        }
+#ifdef INSTALL_ANC_V2P0
+        else if(p_ext_data->fb_mon[inst_off] == ANC_FBMON_ANC_OUT)
+84200924:	88 24       	Null = rMAC - 2;
+84200926:	07 62       	if NE jump (m) Lc_anc_tuning_set_parameters_24;
+
+84200928 <Lc_anc_tuning_set_parameters_23>:
+        {
+            (void) stream_anc_connect_feedback_monitor(ep_ffa, ANC_FBMON_ANC_OUT);
+84200928:	83 20       	r1 = Null + 2;
+8420092a:	42 08       	r0 = r6 + Null;
+8420092c:	ff fd 63 f0 	call (m) 0xcfbe;
+84200930:	33 e4 
+84200932:	06 6e       	jump (m) Lc_anc_tuning_set_parameters_25;
+
+84200934 <Lc_anc_tuning_set_parameters_24>:
+        }
+#endif
+        else
+        {
+            (void) stream_anc_connect_feedback_monitor(ep_ffa, ANC_FBMON_FFA);
+84200934:	03 00       	r1 = Null + Null;
+84200936:	42 08       	r0 = r6 + Null;
+84200938:	ff fd 63 f0 	call (m) 0xcfbe;
+8420093c:	27 e4 
+
+8420093e <Lc_anc_tuning_set_parameters_25>:
+    }
+
+    /* Get FFb endpoints by checking the endpoint connected
+     * to sink terminal 6,7
+     */
+    ep_ffb = p_ext_data->sinks[ANC_TUNING_SINK_MIC2_LEFT+inst_off].ep_handle;
+8420093e:	71 d8       	rMAC = M[FP + 56];
+84200940:	19 f0 ff 88 	r7 = M[rMAC + 1020];
+
+    if(is_parallel_anc)
+84200944:	61 d8       	rMAC = M[FP + 48];
+84200946:	11 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_27;
+
+84200948 <Lc_anc_tuning_set_parameters_26>:
+    {
+      /*dac_hw_params - First value and second values are Instance id and channel id respectively*/ 
+       dac_hw_params[0] = AUDIO_INSTANCE_0;
+84200948:	88 de       	M[FP + 68] = Null;
+       dac_hw_params[1] = AUDIO_CHANNEL_A;
+8420094a:	90 de       	M[FP + 72] = Null;
+       con_id = 0;
+      /*Get FB endpoints by calling the same function again, we get same ID for a particular DAC*/
+       ep_fb = stream_audio_get_endpoint(con_id, SINK, STREAM_DEVICE_CODEC, 
+                                         sizeof(dac_hw_params)/sizeof(dac_hw_params[0]), dac_hw_params, NULL);
+8420094c:	00 f0 30 cf 	push Null;
+84200950:	41 14       	rMAC = FP + 68;
+84200952:	09 1c       	pushm <rMAC>;
+84200954:	85 20       	r3 = Null + 2;
+84200956:	c4 20       	r2 = Null + 3;
+84200958:	43 20       	r1 = Null + 1;
+8420095a:	02 00       	r0 = Null + Null;
+8420095c:	ff fd 63 f0 	call (m) 0xd0ee;
+84200960:	33 ec 
+84200962:	7e 4c       	SP = SP + -8;
+84200964:	7a de       	M[FP + 60] = r0;
+84200966:	05 6e       	jump (m) Lc_anc_tuning_set_parameters_28;
+
+84200968 <Lc_anc_tuning_set_parameters_27>:
+    else
+    {
+      /* Get FB endpoints by checking the endpoint connected
+       * to source terminal.
+       */
+       ep_fb  = p_ext_data->sources[ANC_TUNING_SOURCE_DAC_LEFT+inst_off].ep_handle;
+84200968:	71 d8       	rMAC = M[FP + 56];
+8420096a:	11 f0 17 89 	rMAC = M[rMAC + 1116];
+8420096e:	79 de       	M[FP + 60] = rMAC;
+
+84200970 <Lc_anc_tuning_set_parameters_28>:
+    }
+
+    L2_DBG_MSG4("anc_tuning_cap: \
+    eps are ffa:0x%x  ffb:0x%x  fb:0x%x  fb_mon:0x%x\n",ep_ffa,ep_ffb,ep_fb,ep_fb_mon);
+84200970:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200974:	88 24       	Null = rMAC - 2;
+84200976:	0c 68       	if LT jump (m) Lc_anc_tuning_set_parameters_30;
+
+84200978 <Lc_anc_tuning_set_parameters_29>:
+84200978:	28 1c       	pushm <r9>;
+8420097a:	55 f1 02 f0 	r0 = Null + 357564684;
+8420097e:	0c 41 
+84200980:	4c 08       	r2 = r7 + Null;
+84200982:	43 08       	r1 = r6 + Null;
+84200984:	7d d8       	r3 = M[FP + 60];
+84200986:	ff fd 03 f0 	call (m) 0x1104;
+8420098a:	3f eb 
+8420098c:	7f 4c       	SP = SP + -4;
+
+8420098e <Lc_anc_tuning_set_parameters_30>:
+
+    /* Remove endpoints from instance.
+     * Remove endpoints from paths done internally.
+     * Done for each parameter change
+     */
+    (void) stream_anc_configure_instance(ep_ffa, STREAM_ANC_INSTANCE_NONE_ID);
+8420098e:	03 00       	r1 = Null + Null;
+84200990:	42 08       	r0 = r6 + Null;
+84200992:	ff fd 60 f0 	call (m) 0xca3e;
+84200996:	2d e5 
+    if (ep_ffb)
+84200998:	0f f9 00 c2 	Null = r7 - Null;
+8420099c:	06 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_32;
+
+8420099e <Lc_anc_tuning_set_parameters_31>:
+    {
+        (void) stream_anc_configure_instance(ep_ffb,
+                                             STREAM_ANC_INSTANCE_NONE_ID);
+8420099e:	03 00       	r1 = Null + Null;
+842009a0:	4a 08       	r0 = r7 + Null;
+842009a2:	ff fd 60 f0 	call (m) 0xca3e;
+842009a6:	3d e4 
+
+842009a8 <Lc_anc_tuning_set_parameters_32>:
+    }
+    if(is_parallel_anc)
+842009a8:	61 d8       	rMAC = M[FP + 48];
+842009aa:	09 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_34;
+
+842009ac <Lc_anc_tuning_set_parameters_33>:
+    {
+       (void) stream_anc_sink_configure(ep_fb,STREAM_CONFIG_KEY_STREAM_ANC_INSTANCE , STREAM_ANC_INSTANCE_NONE_ID);
+842009ac:	03 f0 00 61 	r1 = Null + 4352;
+842009b0:	04 00       	r2 = Null + Null;
+842009b2:	7a d8       	r0 = M[FP + 60];
+842009b4:	ff fd 5f f0 	call (m) 0xc9ac;
+842009b8:	39 ef 
+842009ba:	06 6e       	jump (m) Lc_anc_tuning_set_parameters_35;
+
+842009bc <Lc_anc_tuning_set_parameters_34>:
+    }
+    else
+    {
+       (void) stream_anc_configure_instance(ep_fb, STREAM_ANC_INSTANCE_NONE_ID);
+842009bc:	03 00       	r1 = Null + Null;
+842009be:	7a d8       	r0 = M[FP + 60];
+842009c0:	ff fd 60 f0 	call (m) 0xca3e;
+842009c4:	3f e3 
+
+842009c6 <Lc_anc_tuning_set_parameters_35>:
+    }
+
+    /* Associate endpoints with ANC instances */
+    (void) stream_anc_configure_instance(ep_ffa, instance_id);
+842009c6:	3b 00       	r1 = r5 + Null;
+842009c8:	42 08       	r0 = r6 + Null;
+842009ca:	ff fd 60 f0 	call (m) 0xca3e;
+842009ce:	35 e3 
+    if (is_ffb_en)
+842009d0:	51 d8       	rMAC = M[FP + 40];
+842009d2:	06 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_37;
+
+842009d4 <Lc_anc_tuning_set_parameters_36>:
+    {
+        (void) stream_anc_configure_instance(ep_ffb, instance_id);
+842009d4:	3b 00       	r1 = r5 + Null;
+842009d6:	4a 08       	r0 = r7 + Null;
+842009d8:	ff fd 60 f0 	call (m) 0xca3e;
+842009dc:	27 e3 
+
+842009de <Lc_anc_tuning_set_parameters_37>:
+    }
+    if(is_parallel_anc)
+842009de:	61 d8       	rMAC = M[FP + 48];
+842009e0:	0a 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_39;
+
+842009e2 <Lc_anc_tuning_set_parameters_38>:
+    {
+         (void) stream_anc_sink_configure(ep_fb, STREAM_CONFIG_KEY_STREAM_ANC_INSTANCE, instance_id);
+842009e2:	03 f0 00 61 	r1 = Null + 4352;
+842009e6:	3c 00       	r2 = r5 + Null;
+842009e8:	7a d8       	r0 = M[FP + 60];
+842009ea:	ff fd 5f f0 	call (m) 0xc9ac;
+842009ee:	23 ee 
+         num_anc_instances = 2;
+842009f0:	13 71       	r9 = Null + 2;
+842009f2:	07 6e       	jump (m) Lc_anc_tuning_set_parameters_40;
+
+842009f4 <Lc_anc_tuning_set_parameters_39>:
+    }
+    else
+    {
+         num_anc_instances = 1;
+842009f4:	0b 71       	r9 = Null + 1;
+         (void) stream_anc_configure_instance(ep_fb, instance_id);
+842009f6:	3b 00       	r1 = r5 + Null;
+842009f8:	7a d8       	r0 = M[FP + 60];
+842009fa:	ff fd 60 f0 	call (m) 0xca3e;
+842009fe:	25 e2 
+
+84200a00 <Lc_anc_tuning_set_parameters_40>:
+    }
+
+    /* Associate endpoints with filter paths */
+    if (is_ffa_en)
+84200a00:	49 d8       	rMAC = M[FP + 36];
+84200a02:	06 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_42;
+
+84200a04 <Lc_anc_tuning_set_parameters_41>:
+    {
+        (void) stream_anc_configure_input(ep_ffa, STREAM_ANC_PATH_FFA_ID);
+84200a04:	43 20       	r1 = Null + 1;
+84200a06:	42 08       	r0 = r6 + Null;
+84200a08:	ff fd 60 f0 	call (m) 0xca2e;
+84200a0c:	27 e1 
+
+84200a0e <Lc_anc_tuning_set_parameters_42>:
+    }
+    if (is_ffb_en)
+84200a0e:	51 d8       	rMAC = M[FP + 40];
+84200a10:	06 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_44;
+
+84200a12 <Lc_anc_tuning_set_parameters_43>:
+    {
+        (void) stream_anc_configure_input(ep_ffb, STREAM_ANC_PATH_FFB_ID);
+84200a12:	83 20       	r1 = Null + 2;
+84200a14:	4a 08       	r0 = r7 + Null;
+84200a16:	ff fd 60 f0 	call (m) 0xca2e;
+84200a1a:	39 e0 
+
+84200a1c <Lc_anc_tuning_set_parameters_44>:
+84200a1c:	42 d8       	r0 = M[FP + 32];
+84200a1e:	51 08       	rMAC = r8 + Null;
+84200a20:	52 54       	r0 = r0 LSHIFT 2;
+84200a22:	51 00       	rMAC = r0 + rMAC;
+84200a24:	01 f0 ec 4c 	rMAC = rMAC + 1260;
+84200a28:	81 de       	M[FP + 64] = rMAC;
+84200a2a:	84 6e       	jump (m) Lc_anc_tuning_set_parameters_62;
+
+84200a2c <Lc_anc_tuning_set_parameters_45>:
+        {
+            stream_anc_configure_control(ep_ffa, FBMON_SEL_MASK);
+        }
+        else
+        {
+            stream_anc_configure_control(ep_ffa, FBMON_SEL_DISABLE_MASK);
+84200a2c:	03 f0 03 f0 	r1 = Null + 3145728;
+84200a30:	00 40 
+84200a32:	42 08       	r0 = r6 + Null;
+84200a34:	ff fd 60 f0 	call (m) 0xca4e;
+84200a38:	3b e0 
+
+84200a3a <Lc_anc_tuning_set_parameters_46>:
+        }
+
+        if(is_parallel_anc && (instance_id == STREAM_ANC_INSTANCE_ANC0_ID))
+84200a3a:	61 d8       	rMAC = M[FP + 48];
+84200a3c:	74 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_61;
+
+84200a3e <Lc_anc_tuning_set_parameters_47>:
+84200a3e:	78 24       	Null = r5 - 1;
+84200a40:	72 62       	if NE jump (m) Lc_anc_tuning_set_parameters_61;
+
+84200a42 <Lc_anc_tuning_set_parameters_48>:
+        {
+            /*Outmix enable*/
+            status_check = stream_anc_configure_control(ep_ffa, OUTMIX_ENABLE_MASK);
+84200a42:	04 f0 03 f0 	r1 = Null + 4194368;
+84200a46:	40 40 
+84200a48:	42 08       	r0 = r6 + Null;
+84200a4a:	ff fd 60 f0 	call (m) 0xca4e;
+84200a4e:	25 e0 
+84200a50:	13 00       	r1 = r0 + Null;
+            L2_DBG_MSG1("anc_tuning_cap: outmix enable flag has value %d \n", status_check);
+84200a52:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200a56:	88 24       	Null = rMAC - 2;
+84200a58:	07 68       	if LT jump (m) Lc_anc_tuning_set_parameters_50;
+
+84200a5a <Lc_anc_tuning_set_parameters_49>:
+84200a5a:	55 f1 02 f0 	r0 = Null + 357564754;
+84200a5e:	52 41 
+84200a60:	ff fd 03 f0 	call (m) 0x10c2;
+84200a64:	23 e3 
+
+84200a66 <Lc_anc_tuning_set_parameters_50>:
+
+#ifdef INSTALL_ANC_V2P0
+            /*ANC1_USES_ANC0_RX_PCM_INPUT enable*/
+            status_check = stream_anc_set_anc_control_1(STREAM_ANC_INSTANCE_ANC1_ID, ANC1_USES_ANC0_ENABLE_MASK);
+84200a66:	03 f2 04 40 	r1 = Null + 262148;
+84200a6a:	82 20       	r0 = Null + 2;
+84200a6c:	ff fd 62 f0 	call (m) 0xcfee;
+84200a70:	23 ec 
+84200a72:	13 00       	r1 = r0 + Null;
+            L2_DBG_MSG1("anc_tuning_cap: ANC1_USES_ANC0_RX_PCM_INPUT enable flag has value %d \n", status_check);
+84200a74:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200a78:	88 24       	Null = rMAC - 2;
+84200a7a:	07 68       	if LT jump (m) Lc_anc_tuning_set_parameters_52;
+
+84200a7c <Lc_anc_tuning_set_parameters_51>:
+84200a7c:	55 f1 02 f0 	r0 = Null + 357564804;
+84200a80:	84 41 
+84200a82:	ff fd 03 f0 	call (m) 0x10c2;
+84200a86:	21 e2 
+
+84200a88 <Lc_anc_tuning_set_parameters_52>:
+            con_id = 0;
+            ep_fb = stream_audio_get_endpoint(con_id, SINK, STREAM_DEVICE_CODEC,
+            sizeof(dac_hw_params)/sizeof(dac_hw_params[0]), dac_hw_params, NULL);
+#endif
+
+            (void) stream_anc_configure_instance(ep_ffa, STREAM_ANC_INSTANCE_NONE_ID);
+84200a88:	03 00       	r1 = Null + Null;
+84200a8a:	42 08       	r0 = r6 + Null;
+84200a8c:	ff fd 5f f0 	call (m) 0xca3e;
+84200a90:	33 ed 
+            if (ep_ffb)
+84200a92:	0f f9 00 c2 	Null = r7 - Null;
+84200a96:	06 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_54;
+
+84200a98 <Lc_anc_tuning_set_parameters_53>:
+            {
+                (void) stream_anc_configure_instance(ep_ffb,
+                                                     STREAM_ANC_INSTANCE_NONE_ID);
+84200a98:	03 00       	r1 = Null + Null;
+84200a9a:	4a 08       	r0 = r7 + Null;
+84200a9c:	ff fd 5f f0 	call (m) 0xca3e;
+84200aa0:	23 ed 
+
+84200aa2 <Lc_anc_tuning_set_parameters_54>:
+            }
+            (void) stream_anc_sink_configure(ep_fb, STREAM_CONFIG_KEY_STREAM_ANC_INSTANCE, STREAM_ANC_INSTANCE_NONE_ID);
+84200aa2:	03 f0 00 61 	r1 = Null + 4352;
+84200aa6:	04 00       	r2 = Null + Null;
+84200aa8:	7a d8       	r0 = M[FP + 60];
+84200aaa:	ff fd 5f f0 	call (m) 0xc9ac;
+84200aae:	23 e8 
+            instance_id = STREAM_ANC_INSTANCE_ANC1_ID;
+84200ab0:	87 20       	r5 = Null + 2;
+            /* Associate endpoints with ANC instances */
+            (void) stream_anc_configure_instance(ep_ffa, instance_id);
+84200ab2:	3b 00       	r1 = r5 + Null;
+84200ab4:	42 08       	r0 = r6 + Null;
+84200ab6:	ff fd 5f f0 	call (m) 0xca3e;
+84200aba:	29 ec 
+            if (is_ffb_en)
+84200abc:	51 d8       	rMAC = M[FP + 40];
+84200abe:	06 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_56;
+
+84200ac0 <Lc_anc_tuning_set_parameters_55>:
+            {
+                (void) stream_anc_configure_instance(ep_ffb, instance_id);
+84200ac0:	3b 00       	r1 = r5 + Null;
+84200ac2:	4a 08       	r0 = r7 + Null;
+84200ac4:	ff fd 5f f0 	call (m) 0xca3e;
+84200ac8:	3b eb 
+
+84200aca <Lc_anc_tuning_set_parameters_56>:
+            }
+            (void) stream_anc_sink_configure(ep_fb, STREAM_CONFIG_KEY_STREAM_ANC_INSTANCE, instance_id);
+84200aca:	03 f0 00 61 	r1 = Null + 4352;
+84200ace:	3c 00       	r2 = r5 + Null;
+84200ad0:	7a d8       	r0 = M[FP + 60];
+84200ad2:	ff fd 5f f0 	call (m) 0xc9ac;
+84200ad6:	3b e6 
+
+            /* Associate endpoints with filter paths */
+            /* FFa Mic end point is connected to FFa path in ANC 0 and ANC 1*/
+            if (is_ffa_en)
+84200ad8:	49 d8       	rMAC = M[FP + 36];
+84200ada:	11 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_58;
+
+84200adc <Lc_anc_tuning_set_parameters_57>:
+            {
+                stream_configure_connected_to_endpoint(ep_ffa, STREAM_CONFIG_KEY_STREAM_ANC_INPUT, (INSTANCE_0_MASK|STREAM_ANC_PATH_FFA_ID));
+84200adc:	84 f0 01 40 	r2 = Null + 65537;
+84200ae0:	03 f0 01 61 	r1 = Null + 4353;
+84200ae4:	42 08       	r0 = r6 + Null;
+84200ae6:	ff fd 3d f0 	call (m) 0x8672;
+84200aea:	2d ec 
+                stream_configure_connected_to_endpoint(ep_ffa, STREAM_CONFIG_KEY_STREAM_ANC_INPUT, (INSTANCE_1_MASK|STREAM_ANC_PATH_FFA_ID));
+84200aec:	04 f1 01 40 	r2 = Null + 131073;
+84200af0:	03 f0 01 61 	r1 = Null + 4353;
+84200af4:	42 08       	r0 = r6 + Null;
+84200af6:	ff fd 3d f0 	call (m) 0x8672;
+84200afa:	3d eb 
+
+84200afc <Lc_anc_tuning_set_parameters_58>:
+            }
+            if (is_ffb_en)
+84200afc:	51 d8       	rMAC = M[FP + 40];
+84200afe:	11 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_60;
+
+84200b00 <Lc_anc_tuning_set_parameters_59>:
+            {
+            /* FFb Mic end point is connected to FFb path in ANC 0 and ANC 1*/
+                stream_configure_connected_to_endpoint(ep_ffb, STREAM_CONFIG_KEY_STREAM_ANC_INPUT, (INSTANCE_0_MASK|STREAM_ANC_PATH_FFB_ID));
+84200b00:	84 f0 02 40 	r2 = Null + 65538;
+84200b04:	03 f0 01 61 	r1 = Null + 4353;
+84200b08:	4a 08       	r0 = r7 + Null;
+84200b0a:	ff fd 3d f0 	call (m) 0x8672;
+84200b0e:	29 eb 
+                stream_configure_connected_to_endpoint(ep_ffb, STREAM_CONFIG_KEY_STREAM_ANC_INPUT, (INSTANCE_1_MASK|STREAM_ANC_PATH_FFB_ID));
+84200b10:	04 f1 02 40 	r2 = Null + 131074;
+84200b14:	03 f0 01 61 	r1 = Null + 4353;
+84200b18:	4a 08       	r0 = r7 + Null;
+84200b1a:	ff fd 3d f0 	call (m) 0x8672;
+84200b1e:	39 ea 
+
+84200b20 <Lc_anc_tuning_set_parameters_60>:
+             * configure a connected_to endpoint and
+             * using a shim layer that provides an interface between the ANC hardware
+             * and this capability.
+             */
+            anc_inst_ptr = (ANC_INST_PARAMS*)(&p_ext_data->
+                           anc_tuning_cap_params.OFFSET_ANC_USECASE_R);
+84200b20:	a6 f0 bc 21 	r4 = r8 + 444;
+
+84200b24 <Lc_anc_tuning_set_parameters_61>:
+    {
+        (void) stream_anc_configure_input(ep_ffb, STREAM_ANC_PATH_FFB_ID);
+    }
+    while(num_anc_instances)
+    {
+         num_anc_instances--;
+84200b24:	03 f0 b1 f3 	rMAC = r9 + 65535;
+84200b28:	ff 3b 
+    }
+    if (is_ffb_en)
+    {
+        (void) stream_anc_configure_input(ep_ffb, STREAM_ANC_PATH_FFB_ID);
+    }
+    while(num_anc_instances)
+84200b2a:	1b f7 ff 1f 	r9 = rMAC AND 0xffff;
+84200b2e:	00 f0 8d e5 	if EQ jump (m) Lc_anc_tuning_set_parameters_91;
+
+84200b32 <Lc_anc_tuning_set_parameters_62>:
+         * Uses two methods to reach the ANC hardware:
+         * configure a connected_to endpoint and
+         * using a shim layer that provides an interface between the ANC hardware
+         * and this capability.
+        */
+        if (is_ffa_en)
+84200b32:	49 d8       	rMAC = M[FP + 36];
+84200b34:	6c 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_68;
+
+84200b36 <Lc_anc_tuning_set_parameters_63>:
+        {
+            (void) stream_anc_configure_dmic_x2_enable(ep_ffa,
+                                           STREAM_ANC_PATH_FFA_ID,
+                                           anc_inst_ptr->OFFSET_DMIC_X2_FF_A_ENABLE);
+84200b36:	34 b9       	r2 = M[r4 + 112];
+84200b38:	43 20       	r1 = Null + 1;
+84200b3a:	42 08       	r0 = r6 + Null;
+84200b3c:	ff fd 60 f0 	call (m) 0xcb56;
+84200b40:	3b e0 
+            (void) stream_anc_configure_dc_filter_enable(ep_ffa,
+                                           STREAM_ANC_PATH_FFA_ID,
+                                           anc_inst_ptr->OFFSET_FF_A_DCFLT_ENABLE);
+84200b42:	b4 b8       	r2 = M[r4 + 104];
+84200b44:	43 20       	r1 = Null + 1;
+84200b46:	42 08       	r0 = r6 + Null;
+84200b48:	ff fd 5f f0 	call (m) 0xcada;
+84200b4c:	33 ec 
+            (void) stream_anc_configure_dc_filter_shift(ep_ffa,
+                                           STREAM_ANC_PATH_FFA_ID,
+                                           anc_inst_ptr->OFFSET_FF_A_DCFLT_SHIFT);
+84200b4e:	64 f0 67 88 	r2 = M[r4 + 412];
+84200b52:	43 20       	r1 = Null + 1;
+84200b54:	42 08       	r0 = r6 + Null;
+84200b56:	ff fd 5f f0 	call (m) 0xcb18;
+84200b5a:	23 ee 
+            (void) stream_anc_configure_gain(ep_ffa,
+                                           STREAM_ANC_PATH_FFA_ID,
+                                           anc_inst_ptr->OFFSET_ANC_FF_A_GAIN);
+84200b5c:	64 f0 36 88 	r2 = M[r4 + 216];
+84200b60:	43 20       	r1 = Null + 1;
+84200b62:	42 08       	r0 = r6 + Null;
+84200b64:	ff fd 5f f0 	call (m) 0xca5e;
+84200b68:	3b e7 
+            (void) stream_anc_configure_gain_shift(ep_ffa,
+                                           STREAM_ANC_PATH_FFA_ID,
+                                           (uint16)anc_inst_ptr->OFFSET_ANC_FF_A_SHIFT);
+84200b6a:	b1 b9       	rMAC = M[r4 + 120];
+84200b6c:	43 20       	r1 = Null + 1;
+84200b6e:	8c c6       	r2 = rMAC AND 0xffff;
+84200b70:	42 08       	r0 = r6 + Null;
+84200b72:	ff fd 5f f0 	call (m) 0xca9c;
+84200b76:	2b e9 
+#ifdef INSTALL_ANC_V2P0
+            (void) stream_anc_config(instance_id,
+                                    STREAM_ANC_PATH_FFA_ID,
+                                    STREAM_CONFIG_KEY_STREAM_ANC_RX_MIX_FFA_GAIN,
+                                    anc_inst_ptr->OFFSET_ANC_RX_MIX_FF_A_GAIN);
+84200b78:	65 f0 37 88 	r3 = M[r4 + 220];
+84200b7c:	04 f0 13 61 	r2 = Null + 4371;
+84200b80:	43 20       	r1 = Null + 1;
+84200b82:	3a 00       	r0 = r5 + Null;
+84200b84:	ff fd 60 f0 	call (m) 0xcbca;
+84200b88:	27 e2 
+            (void) stream_anc_config(instance_id,
+                                    STREAM_ANC_PATH_FFA_ID,
+                                    STREAM_CONFIG_KEY_STREAM_ANC_RX_MIX_FFA_SHIFT,
+                                    (uint16)anc_inst_ptr->OFFSET_ANC_RX_MIX_FFa_SHIFT);
+84200b8a:	61 f0 21 88 	rMAC = M[r4 + 132];
+84200b8e:	04 f0 14 61 	r2 = Null + 4372;
+84200b92:	43 20       	r1 = Null + 1;
+84200b94:	8d c6       	r3 = rMAC AND 0xffff;
+84200b96:	3a 00       	r0 = r5 + Null;
+84200b98:	ff fd 60 f0 	call (m) 0xcbca;
+84200b9c:	33 e1 
+#endif
+
+            /* Configure smLPF parameters */
+            (void) stream_anc_configure_dc_filter_enable(ep_ffa,
+                                           STREAM_ANC_PATH_SM_LPF_ID,
+                                           anc_inst_ptr->OFFSET_SMLPF_ENABLE);
+84200b9e:	f4 a8       	r2 = M[r4 + 76];
+84200ba0:	03 21       	r1 = Null + 4;
+84200ba2:	42 08       	r0 = r6 + Null;
+84200ba4:	ff fd 5f f0 	call (m) 0xcada;
+84200ba8:	37 e9 
+            (void) stream_anc_configure_dc_filter_shift(ep_ffa,
+                                           STREAM_ANC_PATH_SM_LPF_ID,
+                                           anc_inst_ptr->OFFSET_SM_LPF_SHIFT);
+84200baa:	64 f0 69 88 	r2 = M[r4 + 420];
+84200bae:	03 21       	r1 = Null + 4;
+84200bb0:	42 08       	r0 = r6 + Null;
+84200bb2:	ff fd 5f f0 	call (m) 0xcb18;
+84200bb6:	27 eb 
+
+            /* Set LPF and IIR filter coefficients for FFa path */
+            stream_anc_set_anc_lpf_coeffs(instance_id,
+                            STREAM_ANC_PATH_FFA_ID,
+                            (uint16)(anc_inst_ptr->OFFSET_ANC_FF_A_LPF_SHIFT0),
+                            (uint16)(anc_inst_ptr->OFFSET_ANC_FF_A_LPF_SHIFT1));
+84200bb8:	61 f0 62 88 	rMAC = M[r4 + 392];
+84200bbc:	43 20       	r1 = Null + 1;
+84200bbe:	8d c6       	r3 = rMAC AND 0xffff;
+84200bc0:	61 f0 61 88 	rMAC = M[r4 + 388];
+84200bc4:	8c c6       	r2 = rMAC AND 0xffff;
+84200bc6:	3a 00       	r0 = r5 + Null;
+84200bc8:	ff fd 60 f0 	call (m) 0xcd8e;
+84200bcc:	27 ee 
+
+            nb_coeffs = stream_anc_get_filters_coeff_number(STREAM_ANC_PATH_FFA_ID);
+84200bce:	42 20       	r0 = Null + 1;
+84200bd0:	ff fd 5f f0 	call (m) 0xcba4;
+84200bd4:	35 ee 
+
+            for (i=0; i < nb_coeffs; i++)
+84200bd6:	01 00       	rMAC = Null + Null;
+84200bd8:	a3 f0 a8 28 	r1 = r8 + 1192;
+84200bdc:	64 f0 8c 20 	r2 = r4 + 140;
+84200be0:	88 04       	Null = rMAC - r0;
+84200be2:	02 f0 91 e0 	if C jump (m) Lc__loop2;
+
+84200be6 <Lc_anc_tuning_set_parameters_64>:
+84200be6:	14 09       	r10 = r0 + Null;
+84200be8:	05 4c       	do (m) Lc__loop2;
+
+84200bea <Lc_anc_tuning_set_parameters_65>:
+                 * utility is expecting a Q19.13, so >> 20 and << 16
+                 * (rounded instead of floored) for coefficients to end up being
+                 * shaped correctly for the ANC hardware
+                */
+#ifdef INSTALL_ANC_V2P0
+                p_ext_data->coeffs[i] = (STREAM_ANC_IIR_COEFF_TYPE) anc_inst_ptr->OFFSET_ANC_FF_A_COEFF[i]; 
+84200bea:	21 e8       	rMAC = M[r2 + Null];
+84200bec:	19 ee       	M[r1 + Null] = rMAC;
+84200bee:	24 21       	r2 = r2 + 4;
+84200bf0:	1b 21       	r1 = r1 + 4;
+
+84200bf2 <Lc__loop2>:
+                            (uint16)(anc_inst_ptr->OFFSET_ANC_FF_A_LPF_SHIFT0),
+                            (uint16)(anc_inst_ptr->OFFSET_ANC_FF_A_LPF_SHIFT1));
+
+            nb_coeffs = stream_anc_get_filters_coeff_number(STREAM_ANC_PATH_FFA_ID);
+
+            for (i=0; i < nb_coeffs; i++)
+84200bf2:	a5 f0 a8 28 	r3 = r8 + 1192;
+84200bf6:	43 20       	r1 = Null + 1;
+84200bf8:	14 00       	r2 = r0 + Null;
+84200bfa:	3a 00       	r0 = r5 + Null;
+84200bfc:	ff fd 60 f0 	call (m) 0xcc76;
+84200c00:	3b e3 
+#endif
+            }
+            stream_anc_set_anc_iir_coeffs(instance_id, STREAM_ANC_PATH_FFA_ID,
+                                          nb_coeffs, p_ext_data->coeffs);
+
+            opmgr_override_set_ep_gain(ep_ffa, anc_inst_ptr->OFFSET_FF_A_FE_GAIN);
+84200c02:	f3 88       	r1 = M[r4 + 12];
+84200c04:	42 08       	r0 = r6 + Null;
+84200c06:	ff fd 27 f0 	call (m) 0x5ac2;
+84200c0a:	3d e5 
+
+84200c0c <Lc_anc_tuning_set_parameters_68>:
+         * Uses two methods to reach the ANC hardware:
+         * configure a connected_to endpoint and
+         * using a shim layer that provides an interface between the
+         * ANC hardware and this capability.
+        */
+        if (is_ffb_en)
+84200c0c:	51 d8       	rMAC = M[FP + 40];
+84200c0e:	8e 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_83;
+
+84200c10 <Lc_anc_tuning_set_parameters_69>:
+        {
+            (void) stream_anc_configure_dmic_x2_enable(ep_ffb,
+                                           STREAM_ANC_PATH_FFB_ID,
+                                           anc_inst_ptr->OFFSET_DMIC_X2_FF_B_ENABLE);
+84200c10:	74 b9       	r2 = M[r4 + 116];
+84200c12:	83 20       	r1 = Null + 2;
+84200c14:	4a 08       	r0 = r7 + Null;
+84200c16:	ff fd 5f f0 	call (m) 0xcb56;
+84200c1a:	21 ea 
+            (void) stream_anc_configure_dc_filter_enable(ep_ffb,
+                                           STREAM_ANC_PATH_FFB_ID,
+                                           anc_inst_ptr->OFFSET_FF_B_DCFLT_ENABLE);
+84200c1c:	f4 b8       	r2 = M[r4 + 108];
+84200c1e:	83 20       	r1 = Null + 2;
+84200c20:	4a 08       	r0 = r7 + Null;
+84200c22:	ff fd 5f f0 	call (m) 0xcada;
+84200c26:	39 e5 
+            (void) stream_anc_configure_dc_filter_shift(ep_ffb,
+                                           STREAM_ANC_PATH_FFB_ID,
+                                           anc_inst_ptr->OFFSET_FF_B_DCFLT_SHIFT);
+84200c28:	64 f0 68 88 	r2 = M[r4 + 416];
+84200c2c:	83 20       	r1 = Null + 2;
+84200c2e:	4a 08       	r0 = r7 + Null;
+84200c30:	ff fd 5f f0 	call (m) 0xcb18;
+84200c34:	29 e7 
+            (void) stream_anc_configure_gain(ep_ffb,
+                                           STREAM_ANC_PATH_FFB_ID,
+                                           anc_inst_ptr->OFFSET_ANC_FF_B_GAIN);
+84200c36:	64 f0 4b 88 	r2 = M[r4 + 300];
+84200c3a:	83 20       	r1 = Null + 2;
+84200c3c:	4a 08       	r0 = r7 + Null;
+84200c3e:	ff fd 5f f0 	call (m) 0xca5e;
+84200c42:	21 e1 
+            (void) stream_anc_configure_gain_shift(ep_ffb,
+                                           STREAM_ANC_PATH_FFB_ID,
+                                           (uint16)anc_inst_ptr->OFFSET_ANC_FF_B_SHIFT);
+84200c44:	f1 b9       	rMAC = M[r4 + 124];
+84200c46:	83 20       	r1 = Null + 2;
+84200c48:	8c c6       	r2 = rMAC AND 0xffff;
+84200c4a:	4a 08       	r0 = r7 + Null;
+84200c4c:	ff fd 5f f0 	call (m) 0xca9c;
+84200c50:	31 e2 
+#ifdef INSTALL_ANC_V2P0
+            (void) stream_anc_config(instance_id,
+                                    STREAM_ANC_PATH_FFB_ID,
+                                    STREAM_CONFIG_KEY_STREAM_ANC_RX_MIX_FFB_GAIN,
+                                    anc_inst_ptr->OFFSET_ANC_RX_MIX_FF_B_GAIN);
+84200c52:	65 f0 4c 88 	r3 = M[r4 + 304];
+84200c56:	04 f0 15 61 	r2 = Null + 4373;
+84200c5a:	83 20       	r1 = Null + 2;
+84200c5c:	3a 00       	r0 = r5 + Null;
+84200c5e:	ff fd 5f f0 	call (m) 0xcbca;
+84200c62:	2d eb 
+            (void) stream_anc_config(instance_id,
+                                    STREAM_ANC_PATH_FFB_ID,
+                                    STREAM_CONFIG_KEY_STREAM_ANC_RX_MIX_FFB_SHIFT,
+                                    (uint16)anc_inst_ptr->OFFSET_ANC_RX_MIX_FFb_SHIFT);
+84200c64:	61 f0 22 88 	rMAC = M[r4 + 136];
+84200c68:	04 f0 16 61 	r2 = Null + 4374;
+84200c6c:	83 20       	r1 = Null + 2;
+84200c6e:	8d c6       	r3 = rMAC AND 0xffff;
+84200c70:	3a 00       	r0 = r5 + Null;
+84200c72:	ff fd 5f f0 	call (m) 0xcbca;
+84200c76:	39 ea 
+            /* Configure RXMIX Self, Cross and FLEX enable */ 
+            if (anc_inst_ptr->OFFSET_SELF_RXMIX_ENABLE)
+84200c78:	30 a9       	Null = M[r4 + 80];
+84200c7a:	08 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_71;
+
+84200c7c <Lc_anc_tuning_set_parameters_70>:
+            {
+                stream_anc_set_anc_control_1(instance_id, SELF_RXMIX_ENABLE_MASK);
+84200c7c:	83 f0 01 40 	r1 = Null + 65537;
+84200c80:	3a 00       	r0 = r5 + Null;
+84200c82:	ff fd 61 f0 	call (m) 0xcfee;
+84200c86:	2d eb 
+84200c88:	07 6e       	jump (m) Lc_anc_tuning_set_parameters_72;
+
+84200c8a <Lc_anc_tuning_set_parameters_71>:
+            }
+            else
+            {
+                stream_anc_set_anc_control_1(instance_id, SELF_RXMIX_DISABLE_MASK);
+84200c8a:	83 f0 00 40 	r1 = Null + 65536;
+84200c8e:	3a 00       	r0 = r5 + Null;
+84200c90:	ff fd 61 f0 	call (m) 0xcfee;
+84200c94:	3f ea 
+
+84200c96 <Lc_anc_tuning_set_parameters_72>:
+            }
+            if (anc_inst_ptr->OFFSET_CROSS_RXMIX_ENABLE)
+84200c96:	70 a9       	Null = M[r4 + 84];
+84200c98:	08 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_74;
+
+84200c9a <Lc_anc_tuning_set_parameters_73>:
+            {
+                stream_anc_set_anc_control_1(instance_id, CROSS_RXMIX_ENABLE_MASK);
+84200c9a:	03 f1 02 40 	r1 = Null + 131074;
+84200c9e:	3a 00       	r0 = r5 + Null;
+84200ca0:	ff fd 61 f0 	call (m) 0xcfee;
+84200ca4:	2f ea 
+84200ca6:	07 6e       	jump (m) Lc_anc_tuning_set_parameters_75;
+
+84200ca8 <Lc_anc_tuning_set_parameters_74>:
+            }
+            else
+            {
+                stream_anc_set_anc_control_1(instance_id, CROSS_RXMIX_DISABLE_MASK);
+84200ca8:	03 f1 00 40 	r1 = Null + 131072;
+84200cac:	3a 00       	r0 = r5 + Null;
+84200cae:	ff fd 61 f0 	call (m) 0xcfee;
+84200cb2:	21 ea 
+
+84200cb4 <Lc_anc_tuning_set_parameters_75>:
+            }            
+            if (anc_inst_ptr->OFFSET_FF_FLEX_ENABLE)
+84200cb4:	b0 a9       	Null = M[r4 + 88];
+84200cb6:	09 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_77;
+
+84200cb8 <Lc_anc_tuning_set_parameters_76>:
+            {
+                stream_anc_set_anc_control_1(instance_id, FFLE_ENABLE_MASK);
+84200cb8:	00 f0 03 f4 	r1 = Null + 524296;
+84200cbc:	08 40 
+84200cbe:	3a 00       	r0 = r5 + Null;
+84200cc0:	ff fd 61 f0 	call (m) 0xcfee;
+84200cc4:	2f e9 
+84200cc6:	08 6e       	jump (m) Lc_anc_tuning_set_parameters_78;
+
+84200cc8 <Lc_anc_tuning_set_parameters_77>:
+            }
+            else
+            {
+                stream_anc_set_anc_control_1(instance_id, FFLE_DISABLE_MASK);
+84200cc8:	00 f0 03 f4 	r1 = Null + 524288;
+84200ccc:	00 40 
+84200cce:	3a 00       	r0 = r5 + Null;
+84200cd0:	ff fd 61 f0 	call (m) 0xcfee;
+84200cd4:	3f e8 
+
+84200cd6 <Lc_anc_tuning_set_parameters_78>:
+#endif
+
+            /* Set LPF and IIR filter coefficients for FFb path */
+            stream_anc_set_anc_lpf_coeffs(instance_id, STREAM_ANC_PATH_FFB_ID,
+                                (uint16)(anc_inst_ptr->OFFSET_ANC_FF_B_LPF_SHIFT0),
+                                (uint16)(anc_inst_ptr->OFFSET_ANC_FF_B_LPF_SHIFT1));
+84200cd6:	61 f0 64 88 	rMAC = M[r4 + 400];
+84200cda:	83 20       	r1 = Null + 2;
+84200cdc:	8d c6       	r3 = rMAC AND 0xffff;
+84200cde:	61 f0 63 88 	rMAC = M[r4 + 396];
+84200ce2:	8c c6       	r2 = rMAC AND 0xffff;
+84200ce4:	3a 00       	r0 = r5 + Null;
+84200ce6:	ff fd 60 f0 	call (m) 0xcd8e;
+84200cea:	29 e5 
+
+            nb_coeffs = stream_anc_get_filters_coeff_number(STREAM_ANC_PATH_FFB_ID);
+84200cec:	82 20       	r0 = Null + 2;
+84200cee:	ff fd 5f f0 	call (m) 0xcba4;
+84200cf2:	37 e5 
+            
+            for (i=0; i<nb_coeffs; i++)
+84200cf4:	01 00       	rMAC = Null + Null;
+84200cf6:	a3 f0 a8 28 	r1 = r8 + 1192;
+84200cfa:	64 f0 e0 20 	r2 = r4 + 224;
+84200cfe:	88 04       	Null = rMAC - r0;
+84200d00:	02 f0 91 e0 	if C jump (m) Lc__loop3;
+
+84200d04 <Lc_anc_tuning_set_parameters_79>:
+84200d04:	14 09       	r10 = r0 + Null;
+84200d06:	05 4c       	do (m) Lc__loop3;
+
+84200d08 <Lc_anc_tuning_set_parameters_80>:
+                 * utility is expecting a Q19.13, so >> 20 and << 16 
+                 * (rounded instead of floored) for coefficients to end up being 
+                 * shaped correctly for the ANC hardware 
+                 */
+#ifdef INSTALL_ANC_V2P0
+                p_ext_data->coeffs[i] = (STREAM_ANC_IIR_COEFF_TYPE) anc_inst_ptr->OFFSET_ANC_FF_B_COEFF[i];
+84200d08:	21 e8       	rMAC = M[r2 + Null];
+84200d0a:	19 ee       	M[r1 + Null] = rMAC;
+84200d0c:	24 21       	r2 = r2 + 4;
+84200d0e:	1b 21       	r1 = r1 + 4;
+
+84200d10 <Lc__loop3>:
+                                (uint16)(anc_inst_ptr->OFFSET_ANC_FF_B_LPF_SHIFT0),
+                                (uint16)(anc_inst_ptr->OFFSET_ANC_FF_B_LPF_SHIFT1));
+
+            nb_coeffs = stream_anc_get_filters_coeff_number(STREAM_ANC_PATH_FFB_ID);
+            
+            for (i=0; i<nb_coeffs; i++)
+84200d10:	a5 f0 a8 28 	r3 = r8 + 1192;
+84200d14:	83 20       	r1 = Null + 2;
+84200d16:	14 00       	r2 = r0 + Null;
+84200d18:	3a 00       	r0 = r5 + Null;
+84200d1a:	ff fd 5f f0 	call (m) 0xcc76;
+84200d1e:	3d ea 
+#endif
+            }
+            stream_anc_set_anc_iir_coeffs(instance_id, STREAM_ANC_PATH_FFB_ID,
+                                          nb_coeffs, p_ext_data->coeffs);
+
+            opmgr_override_set_ep_gain(ep_ffb, anc_inst_ptr->OFFSET_FF_B_FE_GAIN);
+84200d20:	33 89       	r1 = M[r4 + 16];
+84200d22:	4a 08       	r0 = r7 + Null;
+84200d24:	ff fd 26 f0 	call (m) 0x5ac2;
+84200d28:	3f ec 
+
+84200d2a <Lc_anc_tuning_set_parameters_83>:
+         * Uses two methods to reach the ANC hardware:
+         * configure a connected_to endpoint and
+         * using a shim layer that provides an interface between the 
+         * ANC hardware and this capability 
+         */
+        if (is_fb_en)
+84200d2a:	59 d8       	rMAC = M[FP + 44];
+84200d2c:	3a 60       	if EQ jump (m) Lc_anc_tuning_set_parameters_89;
+
+84200d2e <Lc_anc_tuning_set_parameters_84>:
+        {
+            /* Really wants a DAC sink association, but the audio layer is
+             * expecting an ADC source association on the same instance
+             */
+            (void) stream_anc_configure_gain(ep_ffa, STREAM_ANC_PATH_FB_ID,
+                                             anc_inst_ptr->OFFSET_ANC_FB_GAIN);
+84200d2e:	64 f0 60 88 	r2 = M[r4 + 384];
+84200d32:	c3 20       	r1 = Null + 3;
+84200d34:	42 08       	r0 = r6 + Null;
+84200d36:	ff fd 5e f0 	call (m) 0xca5e;
+84200d3a:	29 e9 
+            (void) stream_anc_configure_gain_shift(ep_ffa, STREAM_ANC_PATH_FB_ID,
+                                             (uint16)anc_inst_ptr->OFFSET_ANC_FB_SHIFT);
+84200d3c:	61 f0 20 88 	rMAC = M[r4 + 128];
+84200d40:	c3 20       	r1 = Null + 3;
+84200d42:	8c c6       	r2 = rMAC AND 0xffff;
+84200d44:	42 08       	r0 = r6 + Null;
+84200d46:	ff fd 5e f0 	call (m) 0xca9c;
+84200d4a:	37 ea 
+
+            /* set LPF and IIR filter coefficients for FB path */
+            stream_anc_set_anc_lpf_coeffs(instance_id,STREAM_ANC_PATH_FB_ID,
+                                  (uint16)(anc_inst_ptr->OFFSET_ANC_FB_LPF_SHIFT0),
+                                  (uint16)(anc_inst_ptr->OFFSET_ANC_FB_LPF_SHIFT1));
+84200d4c:	61 f0 66 88 	rMAC = M[r4 + 408];
+84200d50:	c3 20       	r1 = Null + 3;
+84200d52:	8d c6       	r3 = rMAC AND 0xffff;
+84200d54:	61 f0 65 88 	rMAC = M[r4 + 404];
+84200d58:	8c c6       	r2 = rMAC AND 0xffff;
+84200d5a:	3a 00       	r0 = r5 + Null;
+84200d5c:	ff fd 60 f0 	call (m) 0xcd8e;
+84200d60:	33 e1 
+
+            nb_coeffs = stream_anc_get_filters_coeff_number(STREAM_ANC_PATH_FFA_ID);
+84200d62:	42 20       	r0 = Null + 1;
+84200d64:	ff fd 5f f0 	call (m) 0xcba4;
+84200d68:	21 e2 
+            for (i=0; i<nb_coeffs; i++)
+84200d6a:	01 00       	rMAC = Null + Null;
+84200d6c:	a3 f0 a8 28 	r1 = r8 + 1192;
+84200d70:	64 f0 34 21 	r2 = r4 + 308;
+84200d74:	88 04       	Null = rMAC - r0;
+84200d76:	02 f0 91 e0 	if C jump (m) Lc__loop4;
+
+84200d7a <Lc_anc_tuning_set_parameters_85>:
+84200d7a:	14 09       	r10 = r0 + Null;
+84200d7c:	05 4c       	do (m) Lc__loop4;
+
+84200d7e <Lc_anc_tuning_set_parameters_86>:
+                 * utility is expecting a Q19.13, so >> 20 and << 16 
+                 * (rounded instead of floored) for coefficients to end up being 
+                 * shaped correctly for the ANC hardware 
+                 */
+#ifdef INSTALL_ANC_V2P0
+                p_ext_data->coeffs[i] = (STREAM_ANC_IIR_COEFF_TYPE) anc_inst_ptr->OFFSET_ANC_FB_COEFF[i];
+84200d7e:	21 e8       	rMAC = M[r2 + Null];
+84200d80:	19 ee       	M[r1 + Null] = rMAC;
+84200d82:	24 21       	r2 = r2 + 4;
+84200d84:	1b 21       	r1 = r1 + 4;
+
+84200d86 <Lc__loop4>:
+            stream_anc_set_anc_lpf_coeffs(instance_id,STREAM_ANC_PATH_FB_ID,
+                                  (uint16)(anc_inst_ptr->OFFSET_ANC_FB_LPF_SHIFT0),
+                                  (uint16)(anc_inst_ptr->OFFSET_ANC_FB_LPF_SHIFT1));
+
+            nb_coeffs = stream_anc_get_filters_coeff_number(STREAM_ANC_PATH_FFA_ID);
+            for (i=0; i<nb_coeffs; i++)
+84200d86:	a5 f0 a8 28 	r3 = r8 + 1192;
+84200d8a:	c3 20       	r1 = Null + 3;
+84200d8c:	14 00       	r2 = r0 + Null;
+84200d8e:	3a 00       	r0 = r5 + Null;
+84200d90:	ff fd 5f f0 	call (m) 0xcc76;
+84200d94:	27 e7 
+#endif
+            }
+            stream_anc_set_anc_iir_coeffs(instance_id, STREAM_ANC_PATH_FB_ID,
+                                          nb_coeffs, p_ext_data->coeffs);
+
+            opmgr_override_set_ep_gain(ep_fb, anc_inst_ptr->OFFSET_SPKR_RECEIVER_PA_GAIN);
+84200d96:	f3 89       	r1 = M[r4 + 28];
+84200d98:	7a d8       	r0 = M[FP + 60];
+84200d9a:	ff fd 26 f0 	call (m) 0x5ac2;
+84200d9e:	29 e9 
+
+84200da0 <Lc_anc_tuning_set_parameters_89>:
+        }
+
+        if (p_ext_data->fb_mon[inst_off])
+84200da0:	81 d8       	rMAC = M[FP + 64];
+84200da2:	08 e8       	Null = M[rMAC + Null];
+84200da4:	f0 ff 89 e9 	if EQ jump (m) Lc_anc_tuning_set_parameters_45;
+
+84200da8 <Lc_anc_tuning_set_parameters_90>:
+        {
+            stream_anc_configure_control(ep_ffa, FBMON_SEL_MASK);
+84200da8:	03 f0 03 f0 	r1 = Null + 3145744;
+84200dac:	10 40 
+84200dae:	42 08       	r0 = r6 + Null;
+84200db0:	ff fd 5e f0 	call (m) 0xca4e;
+84200db4:	3f e4 
+84200db6:	ff ff 85 e9 	jump (m) Lc_anc_tuning_set_parameters_46;
+
+84200dba <Lc_anc_tuning_set_parameters_91>:
+                           anc_tuning_cap_params.OFFSET_ANC_USECASE_R);
+         } 
+
+    }
+ 
+    return anc_enable_flag;
+84200dba:	6a d8       	r0 = M[FP + 52];
+
+84200dbc <Lc_anc_tuning_set_parameters_92>:
+}
+84200dbc:	74 4c       	SP = SP + -48;
+84200dbe:	f6 48       	popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200dc0:	d8 4c       	rts;
+
+84200dc2 <$_anc_tuning_enable_wrapper>:
+    stream_anc_set_anc_tune(anc_instance, decimation_chain_input);
+#endif
+}
+
+void anc_tuning_enable_wrapper(uint16 inst0, uint16 inst1)
+{
+84200dc2:	c8 1d       	pushm <FP(=SP), rLink>, SP = SP + 0x10;
+    uint16 anc_enable[STREAM_ANC_INSTANCE_NUMBER];
+    anc_enable[0] = inst0;
+84200dc4:	22 dc       	MH[FP + 8] = r0;
+    anc_enable[1] = inst1;
+84200dc6:	2b dc       	MH[FP + 10] = r1;
+    if (!stream_anc_enable_pending_status()){
+84200dc8:	ff fd 5f f0 	call (m) 0xcd7e;
+84200dcc:	37 ed 
+84200dce:	10 04       	Null = r0 - Null;
+84200dd0:	09 62       	if NE jump (m) Lc_anc_tuning_enable_wrapper_3;
+
+84200dd2 <Lc_anc_tuning_enable_wrapper_2>:
+       stream_anc_enable(STREAM_ANC_INSTANCE_NUMBER, anc_enable, anc_tuning_dummy_callback);
+84200dd2:	42 f0 04 f0 	r2 = Null + 69209575;
+84200dd6:	e7 59 
+84200dd8:	83 10       	r1 = FP + 8;
+84200dda:	82 20       	r0 = Null + 2;
+84200ddc:	ff fd 5f f0 	call (m) 0xcd4a;
+84200de0:	2f eb 
+
+84200de2 <Lc_anc_tuning_enable_wrapper_3>:
+    }
+}
+84200de2:	c8 49       	SP = SP - 0x10, popm <FP, rLink>;
+84200de4:	d8 4c       	rts;
+
+84200de6 <Lc_anc_tuning_dummy_callback_1>:
+ */
+bool blicenceComp=FALSE;
+
+static bool anc_tuning_dummy_callback(void)
+{
+    blicenceComp = TRUE;
+84200de6:	41 20       	rMAC = Null + 1;
+84200de8:	2c f0 01 f0 	M[Null + $_blicenceComp] = rMAC;
+84200dec:	2a 8e 
+    return TRUE;
+84200dee:	0a 00       	r0 = rMAC + Null;
+
+84200df0 <Lc_anc_tuning_dummy_callback_2>:
+84200df0:	d8 4c       	rts;
+
+84200df2 <Lc_ups_params_anc_tuning_1>:
+    return TRUE;
+}
+
+static bool ups_params_anc_tuning(void* instance_data,PS_KEY_TYPE key,PERSISTENCE_RANK rank,
+                 uint16 length, unsigned* data, STATUS_KYMERA status,uint16 extra_status_info)
+{
+84200df2:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200df4:	2e 00       	r4 = r3 + Null;
+/****************************************************************************
+Private Function Declarations
+*/
+static inline ANC_TUNING_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (ANC_TUNING_OP_DATA *) base_op_get_instance_data(op_data);
+84200df6:	ef fd fd ff 	call (m) 0x8ea;
+84200dfa:	35 e7 
+84200dfc:	17 00       	r5 = r0 + Null;
+static bool ups_params_anc_tuning(void* instance_data,PS_KEY_TYPE key,PERSISTENCE_RANK rank,
+                 uint16 length, unsigned* data, STATUS_KYMERA status,uint16 extra_status_info)
+{
+    ANC_TUNING_OP_DATA *p_ext_data = get_instance_data((OPERATOR_DATA*)instance_data);
+
+    cpsSetParameterFromPsStore(&p_ext_data->params_def,length,data,status);
+84200dfe:	e5 d5       	r3 = MHS[FP + -8];
+84200e00:	fc d9       	r2 = M[FP + -4];
+84200e02:	33 00       	r1 = r4 + Null;
+84200e04:	ef fd ff ff 	call (m) 0xdf6;
+84200e08:	33 ef 
+
+    /* Set the Reinit flag after setting the paramters */
+    p_ext_data->ReInitFlag = 1;
+84200e0a:	41 20       	rMAC = Null + 1;
+84200e0c:	71 f0 d9 8e 	M[r5 + 868] = rMAC;
+
+    return(TRUE);
+84200e10:	0a 00       	r0 = rMAC + Null;
+
+84200e12 <Lc_ups_params_anc_tuning_2>:
+}
+84200e12:	f2 48       	popm <FP, r4, r5, rLink>;
+84200e14:	d8 4c       	rts;
+
+84200e16 <$_ANC_TUNING_32K_GetDefaults>:
+   0x00000000u,			// FF_B_DCFLT_SHIFT_R
+   0x00000000u			// SM_LPF_SHIFT_R
+};
+
+unsigned *ANC_TUNING_32K_GetDefaults(unsigned capid){
+	switch(capid){
+84200e16:	20 f0 d4 24 	Null = r0 - 212;
+84200e1a:	05 60       	if EQ jump (m) Lc_ANC_TUNING_32K_GetDefaults_3;
+
+84200e1c <Lc_ANC_TUNING_32K_GetDefaults_2>:
+84200e1c:	01 f0 20 f0 	Null = r0 - 16562;
+84200e20:	b2 24 
+84200e22:	05 62       	if NE jump (m) Lc_ANC_TUNING_32K_GetDefaults_4;
+
+84200e24 <Lc_ANC_TUNING_32K_GetDefaults_3>:
+		case 0x00D4: return defaults_anc_tuning_32kANC_TUNING;
+84200e24:	f1 ff 02 f3 	r0 = Null + -15335424;
+84200e28:	00 40 
+84200e2a:	02 6e       	jump (m) Lc_ANC_TUNING_32K_GetDefaults_5;
+
+84200e2c <Lc_ANC_TUNING_32K_GetDefaults_4>:
+		case 0x40B2: return defaults_anc_tuning_32kANC_TUNING;
+	}
+	return((unsigned *)0);
+84200e2c:	02 00       	r0 = Null + Null;
+
+84200e2e <Lc_ANC_TUNING_32K_GetDefaults_5>:
+84200e2e:	d8 4c       	rts;
+
+84200e30 <$kdc_start>:
+.MODULE $M.kdc_start;
+.CODESEGMENT PM;
+.DATASEGMENT DM;
+
+$kdc_start:
+r0 = $_anc_tuning_cap_data;
+84200e30:	01 f0 02 f3 	r0 = Null + 1441792;
+84200e34:	00 40 
+    /* Force this symbol to be exported in ELF */
+    Null = $___kymera_debug_map_addr;
+84200e36:	00 f0 4c 5a 	Null = Null + 3660;

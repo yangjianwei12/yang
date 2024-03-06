@@ -1,0 +1,21 @@
+############################################################################
+# Copyright (c) 2021 Qualcomm Technologies International, Ltd.
+############################################################################
+# Definitions required to build the ML_EXAMPLE_SVAD capability
+
+%include config.MODIFY_ML_COMMON
+
+# Capabilities to include in the build
+%list CFG_CAPABILITIES
+ML_EXAMPLE_SVAD
+
+%list ALL_SRCDIRS
+capabilities/ml_example_svad
+
+%list ALL_INCDIRS
+capabilities/ml_example_svad
+
+%list CFG_LIBS
+capabilities/ml_example_svad/ml_example_svad
+../lib/ml_algos/ml_algos
+

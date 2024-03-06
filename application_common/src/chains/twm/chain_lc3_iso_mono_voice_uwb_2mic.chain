@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2021 - 2023 Qualcomm Technologies International, Ltd.-->
+<!--24Khz Chain for LE Unicast Voice -->
+
+<chain name="CHAIN_LC3_ISO_MONO_VOICE_UWB_2MIC" id="1" generate_operator_roles_enum="False" generate_endpoint_roles_enum="False">
+
+    <include_header name="app_chain_config.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+
+    <operator name="OPR_LC3_DECODE_SCO_ISO" id="CAP_ID_LC3_SCO_ISO_DEC" priority="low">
+        <sink name="SCO_IN" terminal="0"/>
+        <source name="OUT" terminal="0"/>
+    </operator>
+
+    <operator name="OPR_LC3_ENCODE_SCO_ISO" id="CAP_ID_LC3_SCO_ISO_ENC" priority="medium">
+        <sink name="IN" terminal="0"/>
+        <source name="SCO_OUT" terminal="0"/>
+    </operator>
+
+    <operator name="OPR_CVC_RECEIVE" id="CAP_ID_CVC_RECEIVE_UWB" priority="low">
+        <sink name="IN" terminal="0"/>
+        <source name="OUT" terminal="0"/>
+    </operator>
+
+    <operator name="OPR_RATE_ADJUST" id="CAP_ID_RATE_ADJUST" priority="medium">
+        <sink name="REFERENCE" terminal="0"/>
+        <sink name="IN1" terminal="1"/>
+        <sink name="IN2" terminal="2"/>
+        <source name="OUT1" terminal="0"/>
+        <source name="OUT2" terminal="1"/>
+        <source name="OUT3" terminal="2"/>
+    </operator>
+
+    <operator name="OPR_CVC_SEND" id="CAP_ID_CVCHS2MIC_MONO_SEND_UWB" priority="medium">
+        <sink name="REFERENCE" terminal="0"/>
+        <sink name="IN1" terminal="1"/>
+        <sink name="IN2" terminal="2"/>
+        <source name="OUT" terminal="0"/>
+    </operator>
+
+    <input sink="OPR_LC3_DECODE_SCO_ISO.SCO_IN" role="EPR_ISO_FROM_AIR_LEFT"/>
+    <output source="OPR_CVC_RECEIVE.OUT" role="EPR_SCO_SPEAKER"/>
+    <input sink="OPR_RATE_ADJUST.REFERENCE" role="EPR_RATE_ADJUST_REF_IN"/>
+    <input sink="OPR_RATE_ADJUST.IN1" role="EPR_RATE_ADJUST_IN1"/>
+    <input sink="OPR_RATE_ADJUST.IN2" role="EPR_RATE_ADJUST_IN2"/>
+    <output source="OPR_LC3_ENCODE_SCO_ISO.SCO_OUT" role="EPR_ISO_TO_AIR_LEFT"/>
+
+    <connection source="OPR_LC3_DECODE_SCO_ISO.OUT" sink="OPR_CVC_RECEIVE.IN"/>
+    <connection source="OPR_RATE_ADJUST.OUT1" sink="OPR_CVC_SEND.REFERENCE"/>
+    <connection source="OPR_RATE_ADJUST.OUT2" sink="OPR_CVC_SEND.IN1"/>
+    <connection source="OPR_RATE_ADJUST.OUT3" sink="OPR_CVC_SEND.IN2"/>    
+    <connection source="OPR_CVC_SEND.OUT" sink="OPR_LC3_ENCODE_SCO_ISO.IN"/>
+
+</chain>

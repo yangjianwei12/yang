@@ -1,0 +1,20 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright (c) 2018 - 2020 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# definitions for ISO builds
+
+%cpp
+#
+# Build ISO channels
+INSTALL_ISO_CHANNELS
+
+# Validate the SDU number received in the sco record header
+ACTIVATE_SDU_NUMBERING
+
+# Unlike SCO, records in the to-air direction are framed like those
+# in the from-air direction
+# (XXX: remove this conditionalisation entirely)
+ISO_TO_AIR_FRAMING_ENABLED

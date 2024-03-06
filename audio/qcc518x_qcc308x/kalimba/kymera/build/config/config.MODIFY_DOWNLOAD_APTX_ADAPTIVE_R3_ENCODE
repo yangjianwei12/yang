@@ -1,0 +1,54 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright 2017 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+
+%cpp
+ENABLE_R3_CMFB_ASSEMBLY
+#ENABLE_R3_QUAN_ASSEMBLY
+#ENABLE_R3_BIT_ASSEMBLY
+#ENABLE_R3_COMP_08_ASSEMPLY
+AX_CONFIG_H
+
+
+#
+# Which components do we want to include on this chip?
+#
+
+#
+# Capabilities we want to include on the chip
+# This list gets turned into a set of defines of the form INSTALL_OPERATOR_XXXX
+#
+%list CFG_CAPABILITIES
+APTX_ADAPTIVE_R3_ENCODE
+
+
+# List of global include paths
+%list ALL_INCDIRS
+../lib_private/aptx_adaptive_r3_common
+../lib_private/aptx_adaptive_r3_encode
+../lib_private/aptx_adaptive_r3_decode
+../lib/codec
+capabilities/aptx_adaptive_r3_encode
+
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/aptx_adaptive_r3_encode/aptx_adaptive_r3_encode
+
+#required to build
+../lib_private/aptx_adaptive_r3_common/aptx_adaptive_r3_common
+../lib_private/aptx_adaptive_r3_encode/aptx_adaptive_r3_encode
+
+%list MAXIM_LIBS
+../lib_private/aptx_adaptive_r3_common/aptx_adaptive_r3_common
+../lib_private/aptx_adaptive_r3_encode/aptx_adaptive_r3_encode
+
+%list PRIVATE_LIBS
+../lib_private/
+capabilities/aptx_adaptive_r3_encode/
+
+%build
+REL_EXT_BUILD=TRUE

@@ -1,0 +1,149 @@
+/******************************************************************************
+ *  Copyright (c) 2019-2022 Qualcomm Technologies International, Ltd.
+ *  %%version
+ *  %%appversion
+ *
+ *  FILE
+ *      gatt_ascs_server_db.dbi
+ *
+ *  DESCRIPTION
+ *      This file defines the Audio Stream Control Service in JSON format, which is 
+ *      fairly human readable.  This file is included in the main 
+ *      application data base file which is used to produce ATT flat data 
+ *      base. 
+ *
+ *****************************************************************************/
+
+#ifndef __GATT_ASCS_SERVER_DB_DBI__
+#define __GATT_ASCS_SERVER_DB_DBI__
+
+#include "gatt_ascs_server_uuids.h"
+#include "csr_bt_config_global.h"
+ 
+/* Primary service declaration of Audio Stream Control Service */
+
+primary_service {
+    uuid : UUID_ASCS_SERVICE,
+    name : "ASCS_SERVICE",
+    /* Audio Stream Endpoint (ASE) characteristic - variable octets. */
+    characteristic {
+        uuid        : UUID_ASCS_ASE_SINK_CHAR,
+        name        : "ASCS_ASE_CHAR_1",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify],
+        value       : 0x00,
+        client_config
+        {
+            name : "ASE_CHAR_CLIENT_CONFIG_1",
+            flags : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+    /* Audio Stream Endpoint (ASE) characteristic - variable octets. */
+    characteristic {
+        uuid        : UUID_ASCS_ASE_SINK_CHAR,
+        name        : "ASCS_ASE_CHAR_2",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify],
+        value       : 0x00,
+        client_config
+        {
+            name : "ASE_CHAR_CLIENT_CONFIG_2",
+            flags : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+    /* Audio Stream Endpoint (ASE) characteristic - variable octets. */
+    characteristic {
+        uuid        : UUID_ASCS_ASE_SINK_CHAR,
+        name        : "ASCS_ASE_CHAR_3",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify],
+        value       : 0x00,
+        client_config
+        {
+            name : "ASE_CHAR_CLIENT_CONFIG_3",
+            flags : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+    /* Audio Stream Endpoint (ASE) characteristic - variable octets. */
+    characteristic {
+        uuid        : UUID_ASCS_ASE_SINK_CHAR,
+        name        : "ASCS_ASE_CHAR_4",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify],
+        value       : 0x00,
+        client_config
+        {
+            name : "ASE_CHAR_CLIENT_CONFIG_4",
+            flags : [ FLAG_IRQ, FLAG_DYNLEN , FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+    /* Audio Stream Endpoint (ASE) characteristic - variable octets. */
+    characteristic {
+        uuid        : UUID_ASCS_ASE_SOURCE_CHAR,
+        name        : "ASCS_ASE_CHAR_5",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify],
+        value       : 0x00,
+        client_config
+        {
+            name : "ASE_CHAR_CLIENT_CONFIG_5",
+            flags : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+    /* Audio Stream Endpoint (ASE) characteristic - variable octets. */
+    characteristic {
+        uuid        : UUID_ASCS_ASE_SOURCE_CHAR,
+        name        : "ASCS_ASE_CHAR_6",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify],
+        value       : 0x00,
+        client_config
+        {
+            name : "ASE_CHAR_CLIENT_CONFIG_6",
+            flags : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+#if defined(ASCS_SUPPORT_8_ASES)
+    /* Audio Stream Endpoint (ASE) characteristic - variable octets. */
+    characteristic {
+        uuid        : UUID_ASCS_ASE_SOURCE_CHAR,
+        name        : "ASCS_ASE_CHAR_7",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify],
+        value       : 0x00,
+        client_config
+        {
+            name : "ASE_CHAR_CLIENT_CONFIG_7",
+            flags : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+    /* Audio Stream Endpoint (ASE) characteristic - variable octets. */
+    characteristic {
+        uuid        : UUID_ASCS_ASE_SOURCE_CHAR,
+        name        : "ASCS_ASE_CHAR_8",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify],
+        value       : 0x00,
+        client_config
+        {
+            name : "ASE_CHAR_CLIENT_CONFIG_8",
+            flags : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+#endif
+    /* Audio Stream Endpoint (ASE) Control Point characteristic - variable octets. */
+    characteristic {
+        uuid       : UUID_ASCS_ASE_CONTROL_POINT_CHAR,
+        name       : "ASCS_ASE_CONTROL_POINT_CHAR",
+        flags       : [ FLAG_IRQ,  FLAG_ENCR_W, FLAG_DYNLEN ],
+        properties  : [ write_cmd, write, notify],
+        size_value       : 0x00,
+        client_config
+        {
+            name : "ASCS_ASE_CONTROL_POINT_CHAR_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    }
+},
+
+#endif /* __GATT_ASCS_SERVER_DB_DBI__ */

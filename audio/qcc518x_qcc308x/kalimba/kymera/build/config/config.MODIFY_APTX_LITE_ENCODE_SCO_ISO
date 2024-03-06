@@ -1,0 +1,27 @@
+############################################################################
+# CONFIDENTIAL
+# Copyright 2022 Qualcomm Technologies International, Ltd.
+############################################################################
+# definitions required to build aptX Lite Encode SCO ISO
+# This list gets turned into a set of defines of the form INSTALL_OPERATOR_XXXX
+
+%list CFG_CAPABILITIES
+APTX_LITE_ENCODE_SCO_ISO
+
+%list ALL_INCDIRS
+../lib/codec
+../lib/sbc
+
+%list CFG_LIBS
+capabilities/aptx_lite_encode/aptx_lite_encode
+
+# Libraries needed by sbc capabilities
+../lib/codec/codec
+../lib/sbc/sbc
+capabilities/encoder/encoder
+
+%list MAXIM_LIBS
+../lib/sbc/sbc
+
+%build
+# Include the SCO_ISO version of the aptX Lite Encoder.

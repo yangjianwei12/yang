@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project path="">
+    <file path="../../../../../os/qcc518x_qcc308x/freeRTOS/bin/image/apps_p0_firmware.xuv"/>
+    <configurations>
+        <configuration name="prebuilt_image" options="deploy">
+            <devkitGroup>kitres://{32D72C9E-F2CE-45FC-847C-4562B2C4E485}</devkitGroup>
+            <deployProject>deploy</deployProject>
+            <devkitConfiguration>prebuilt_image</devkitConfiguration>
+            <property name="SUBSYSTEM_NAME">apps0</property>
+            <property name="CHIP_TYPE">qcc518x_qcc308x</property>
+        </configuration>
+    </configurations>
+</project>

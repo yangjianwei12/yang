@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2019-2022 Qualcomm Technologies International, Ltd.-->
+
+<types name="a2dp">
+    <include_header name="marshal_common.h"/>
+    <include_header name="audio_sync.h"/>
+    <include_header name="audio_sources_audio_interface.h"/>
+
+    <typedef_header_source>
+#define MARSHAL_TYPE_source_state_t MARSHAL_TYPE_uint8
+    </typedef_header_source>
+
+    <source>
+#include "domain_marshal_types.h"
+
+#ifndef HOSTED_TEST_ENVIRONMENT
+COMPILE_TIME_ASSERT(sizeof(source_state_t) == sizeof(uint8), source_state_t_is_not_the_same_size_as_uint8);
+#endif
+extern uint32 marshalA2dpBlockHdr_cb(const void *parent,
+                                     const marshal_member_descriptor_t *member_descriptor,
+                                     uint32 array_element);
+    </source>
+
+    <typedef_header_source>
+    /*! Number of SEPs */    
+    #define APP_A2DP_NUM_SEP        1
+    
+    /*! Index for a2dp sink sep configuration*/
+    #define APP_A2DP_SEP_SINK       0
+    
+    /*! Index for a2dp source sep configuration*/
+    #define APP_A2DP_SEP_SRC        1
+
+/*! A2DP Data Block Info */
+typedef struct 
+{
+    /*! Not Padded For Alignment */
+    unsigned blockSize:9;
+    /*! Element Size */
+    unsigned elementSize:7;
+    /*! Current Element */
+    unsigned currentElement:6;
+    /*! Aligned Offset */
+    unsigned offset:10;
+} a2dpDataBlockInfo;
+
+/*! A2DP Data Block Header */
+typedef struct 
+{
+    /*! Data Block Size Padded */
+    uint16 blockSizePadded;
+    /*! Data Blocks */
+    a2dpDataBlockInfo block[4];
+} a2dpDataBlockHeader;
+
+    </typedef_header_source>
+
+    <typedef_struct name="a2dpTaskDataBitfields" basic="true" doc="A2DP task bitfields data structure">
+        <member marshal="true" doc="General connection flags">unsigned flags:6</member>
+        <member marshal="false" doc="Number of supported SEIDs">unsigned num_seids:3</member>
+        <member marshal="false" doc="Number of connection retries">unsigned connect_retries:3</member>
+        <member marshal="false" doc="Flag to indicate if connection was locally initiated">unsigned local_initiated:1</member>
+        <member marshal="false" doc="Reason for disconnect">unsigned disconnect_reason:4</member>
+        <member marshal="false" doc="Flag to indicate if media channel is locally configured">unsigned local_configured:1</member>
+        <member marshal="false" doc="Flag to indicate if audio-sync for locally-initiated media-start is complete">unsigned local_media_start_audio_sync_complete:1</member>
+    </typedef_struct>
+
+<typedef_enum name="avA2dpState" basic="true" doc="AV suspend reason enum">
+    /*! Initial state */
+    A2DP_STATE_NULL = 0x00,
+    /*! No A2DP connection */
+    A2DP_STATE_DISCONNECTED = 0x01,
+    /*! Locally initiated connection in progress */
+    A2DP_STATE_CONNECTING_LOCAL = 0x02,
+    /*! Signalling channel connected */
+    A2DP_STATE_CONNECTED_SIGNALLING = 0x10,
+    /*! Locally initiated media channel connection in progress */
+    A2DP_STATE_CONNECTING_MEDIA_LOCAL = 0x11,
+    /*! Remotely initiated media channel connection in progress */
+    A2DP_STATE_CONNECTING_MEDIA_REMOTE = 0x12,
+    /*! Remotely initiated media channel connection in progress */
+    A2DP_STATE_CONNECTING_MEDIA_REMOTE_SYNC = 0x13,
+    /*! Media channel connected (parent-pseudo state) */
+    A2DP_STATE_CONNECTED_MEDIA = 0x30,
+    /*! Media channel streaming */
+    A2DP_STATE_CONNECTED_MEDIA_STREAMING = 0x31,
+    /*! Media channel streaming but muted (suspend failed) */
+    A2DP_STATE_CONNECTED_MEDIA_STREAMING_MUTED = 0x32,
+    /* Locally initiated media channel suspend in progress */
+    A2DP_STATE_CONNECTED_MEDIA_SUSPENDING_LOCAL = 0x33,
+    /*! Media channel suspended */
+    A2DP_STATE_CONNECTED_MEDIA_SUSPENDED = 0x34,
+    /*! Media channel suspended, reconfiguring the codec */
+    A2DP_STATE_CONNECTED_MEDIA_RECONFIGURING = 0x35,
+    /*! Locally initiated media channel start in progress, syncing slave */
+    A2DP_STATE_CONNECTED_MEDIA_STARTING_LOCAL_SYNC = 0x70,
+    /*! Remotely initiated media channel start in progress, syncing slave */
+    A2DP_STATE_CONNECTED_MEDIA_STARTING_REMOTE_SYNC = 0x71,
+    /*! Locally initiated media channel disconnection in progress */
+    A2DP_STATE_DISCONNECTING_MEDIA = 0x14,
+    /*! Disconnecting signalling and media channels */
+    A2DP_STATE_DISCONNECTING = 0x0A
+</typedef_enum>
+
+<typedef_enum name="avSuspendReason" basic="true" doc="AV suspend reason enum">
+    /*! Suspend AV due to local request */
+    AV_SUSPEND_REASON_LOCAL = (1 &lt;&lt; 0),
+    /*! Suspend AV due to remote request */
+    AV_SUSPEND_REASON_REMOTE = (1 &lt;&lt; 1),
+    /*! This can be used to clear or set all suspend reason bits*/
+    AV_SUSPEND_REASON_ALL = ((1 &lt;&lt; 2) - 1)
+</typedef_enum>
+
+<typedef_enum name="a2dpChannelMode" basic="true" doc="A2DP Stream Channel Mode">
+    /*! Mono channel mode */
+    A2DP_CHANNEL_MODE_MONO = 0x00,
+    /*! Dual channel mode */
+    A2DP_CHANNEL_MODE_DUAL = 0x01,
+    /*! Stereo channel mode */
+    A2DP_CHANNEL_MODE_STEREO = 0x02,
+    /*! Joint stereo channel mode */
+    A2DP_CHANNEL_MODE_JOINT_STEREO = 0x03,
+</typedef_enum>
+
+<typedef_enum name="a2dpContentProtection" basic="true" doc="A2DP Content Protection">
+    /*! No content protection in use */
+    A2DP_NO_CONTENT_PROTECTION = 0x00,
+    /*! SCMS-T content protection in use */
+    A2DP_SCMS_CONTENT_PROTECTION = 0x01,
+</typedef_enum>
+
+<typedef_struct name="a2dpSepInfo" basic="true" doc="A2dp SEP Info">
+    <member marshal="true" doc="Stream Endpoint ID">unsigned seid:6</member>
+    <member marshal="true" doc="Role (Source(0) or Sink(1))">unsigned role:2</member>
+    <member marshal="true" doc="Media Codec Type">unsigned codec:8</member>
+</typedef_struct>
+
+#ifndef A2DP_SBC_ONLY
+<typedef_struct name="a2dpAptxAdaptiveTtpLatencies" basic="true" doc="A2dp APTX Adaptive TTP Latencies">
+    <member marshal="true" doc="TTP latency to use in low latency mode 0 ">unsigned low_latency_0_in_ms:8</member>
+    <member marshal="true" doc="TTP latency to use in low latency mode 1 ">unsigned low_latency_1_in_ms:8</member>
+    <member marshal="true" doc="TTP latency to use in high quality mode ">unsigned high_quality_in_2ms:8</member>
+    <member marshal="true" doc="TTP latency to use in TWS mode (Legacy Stereo or mono) ">unsigned tws_legacy_in_2ms:8</member>
+</typedef_struct>
+
+<typedef_struct name="a2dpAptxAdaptiveParams" basic="true" doc="A2dp APTX Adaptive Params">
+    <member marshal="true" doc="Source supports the custom AVRCP command for aptX Adaptive">unsigned avrcp_cmd_supported:1</member>
+    <member marshal="true" doc="If source is compatible Q2Q mode is used">unsigned q2q_enabled:1</member>
+    <member marshal="true" doc="If CODEC is in TWS+ mode ">unsigned is_twsp_mode:1</member>
+    <member marshal="true" doc="Target TTP latencies used for NQ2Q mode">a2dpAptxAdaptiveTtpLatencies nq2q_ttp</member>
+</typedef_struct>
+#endif
+
+<typedef_struct name="a2dpCodecDataType" basic="true" doc="A2dp Codec Data Type">
+    <member marshal="true" doc="content protection">unsigned content_protection:1</member>
+    <member marshal="true" doc="Latency (delay) reporting in use">unsigned latency_reporting:1</member>
+    <member marshal="true" doc="bitpool info">unsigned bitpool:8</member>
+    <member marshal="true" doc="format">unsigned format:8</member>
+    <member marshal="true" doc="packet size">uint16 packet_size</member>
+#ifndef A2DP_SBC_ONLY
+    <member marshal="true" doc="Codec parameters specific to aptX adaptive">a2dpAptxAdaptiveParams aptx_ad_params</member>
+#endif
+</typedef_struct>
+
+<typedef_struct name="a2dpCodecSettings" basic="true" doc="A2DP Codec Settings">
+    <member marshal="true" doc="The sampling Rate for The PCM Hardware">uint32 rate</member>
+    <member marshal="true" doc="Channel Mode for The Audio Being Streamed">a2dpChannelMode channel_mode</member>
+    <member marshal="true" doc="Local SEP ID In Use">uint8 seid</member>
+    <member marshal="true" doc="Sink for A2DP media (streaming)">Sink sink</member>
+    <member marshal="true" doc="Codec data information">a2dpCodecDataType codecData</member>
+    <member marshal="true" doc="size of the configured capabilities">uint16 size_configured_codec_caps</member>
+    <member marshal="true" doc="Configured Capabilities">uint8 configured_codec_caps[1]</member>
+</typedef_struct>
+
+<typedef_enum name="a2dpDataBlockId" basic="true" doc="A2DP Data Block Ids">
+    /*! data_block_sep_list */
+    DATA_BLOCK_SEP_LIST = 0x00,
+    /*! data_block_list_preferred_local_seids */
+    DATA_BLOCK_PREFERRED_LOCAL_SEIDS = 0x01,
+    /*! data_block_list_discovered_remote_seids */
+    DATA_BLOCK_DISCOVERED_REMOTE_SEIDS = 0x02,
+    /*! data_block_configured_service_caps */
+    DATA_BLOCK_CONFIGURED_SERVICE_CAPS = 0x03,
+    /*! max_data_blocks */
+    DATA_BLOCK_MAX = 0x04,
+</typedef_enum>
+
+<typedef_struct name="a2dpSepConfigType" basic="true" doc="A2DP SEP Configuration Type">
+    <member marshal="false" doc="Unique ID for the SEP">uint8 seid</member>
+    <member marshal="false" doc="The media type of the SEP">uint8 media_type</member>
+    <member marshal="false" doc="The role of the SEP">uint8 sep_type</member>
+    <member marshal="false" doc="The size of the capabilities for the SEP">uint16 size_caps</member>
+    <member marshal="false" doc="The capabilities for the SEP. These can be taken from one of the default codec capability header files that are supplied by CSR. The service capabilities section of the AVDTP specification details the format of these capabilities">const uint8 *caps</member>
+</typedef_struct>
+
+<typedef_struct name="a2dpSepDataType" basic="true" doc="A2DP SEP Data Type">
+    <member marshal="false" doc="Pointer to the constant details of the SEP">const a2dpSepConfigType *sep_config</member>
+    <member marshal="false" doc="Used to indicate if the SEP is initially in use">unsigned in_use:2</member>
+</typedef_struct>
+
+<typedef_struct standalone="true" name="marshalA2dpBlockInf" basic="true" doc="Marshal A2DP Data Block Info">
+    <member marshal="true" doc="Not Padded For Alignment">unsigned blockSize:9</member>
+    <member marshal="true" doc="Element Size">unsigned elementSize:7</member>
+    <member marshal="true" doc="Current Element">unsigned currentElement:6</member>
+    <member marshal="true" doc="Aligned Offset">unsigned offset:10</member>
+</typedef_struct>
+
+<typedef_struct standalone="true" name="marshalA2dpBlockHdr" has="dynamic_array" array_elements_cb="marshalA2dpBlockHdr_cb" doc="Marshal A2DP Data Block Header">
+    <member marshal="true" doc="Data Block Size Padded">uint16 blockSizePadded</member>
+    <member marshal="true" doc="Data Blocks">uint8 block[1]</member>
+</typedef_struct>
+
+<typedef_enum name="avA2dpPreferredSampleRate" basic="true" doc="Preferred sample rates to negotiate during codec configuration">
+    /*! No preferred sample rate, choose best available */
+    A2DP_PREFERRED_RATE_NONE = 0,
+    /*! Prefer 44.1 kHz, even if higher rates available */
+    A2DP_PREFERRED_RATE_44K1,
+    /*! Prefer 48 kHz, even if higher rates available */
+    A2DP_PREFERRED_RATE_48K,
+    /*! Prefer 96 kHz, if supported by both sides (otherwise fall back to lower rate) */
+    A2DP_PREFERRED_RATE_96K,
+</typedef_enum>
+
+    <typedef_struct name="a2dpTaskData" doc="A2DP task data structure">
+        <member marshal="false" doc="A2DP operation lock, used to serialise A2DP operations">uint16 lock</member>
+        <member marshal="false" doc="A2DP sync flags">uint16 sync_flags</member>
+        <member marshal="true" doc="Current state of A2DP state machine">avA2dpState state</member>
+        <member marshal="false" doc="A2DP device identifier from A2DP library">uint8 device_id</member>
+        <member marshal="false" doc="A2DP stream identifier from A2DP library">uint8 stream_id</member>
+        <member marshal="true" doc="Currently active SEID">uint8 current_seid</member>
+        <member marshal="true" doc="Used as sync counter and provides sync ids">uint8 sync_counter</member>
+        <member marshal="true" doc="Last known SEID, unlike current_seid this doesn't get cleared on disconnect">uint8 last_known_seid</member>
+        <member marshal="true" doc="Bitmap of active suspend reasons">avSuspendReason suspend_state</member>
+        <member marshal="true" doc="Routing state of this source">source_state_t source_state</member>
+        <member marshal="true" doc="A2DP bitfields data">a2dpTaskDataBitfields bitfields</member>
+        <member marshal="false" doc="The interface a client populates to sync with this instance">audio_sync_t sync_if</member>
+        <member marshal="false" doc="Sink for A2DP media (streaming)">Sink media_sink</member>
+        <member marshal="true" doc="A2DP Transaction Label">uint8 tLabel</member>
+        <member marshal="true" doc="MTU">uint16 mtu</member>
+        <member marshal="true" doc="Bluetooth Media Connection Id">uint32 mBtConnId</member>
+        <member marshal="true" doc="Bluetooth Global Connection Id">uint32 btConnId</member>
+        <member marshal="false" doc="Data Blocks">a2dpDataBlockHeader *data_blocks[1]</member>
+        <member marshal="true" doc="Holds current remote stream endpoint info">a2dpSepInfo remote_sep</member>
+        <member marshal="true" doc="Holds current local stream endpoint info">a2dpSepInfo local_sep</member>
+        <member marshal="false" doc="Bitfield of sample rates supported by both local and remote device, for current SEID">uint8 supported_sample_rates</member>
+        <member marshal="false" doc="Preferred sample rate to negotiate, if codec allows">avA2dpPreferredSampleRate preferred_sample_rate</member>
+    </typedef_struct>
+</types>

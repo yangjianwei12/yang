@@ -1,0 +1,7 @@
+############################################################################
+# Copyright (c) 2020 Qualcomm Technologies International, Ltd.
+############################################################################
+# Lightweight hardware lock based on READANDSET instruction
+
+%build
+BUILD_HW_LOCK = True

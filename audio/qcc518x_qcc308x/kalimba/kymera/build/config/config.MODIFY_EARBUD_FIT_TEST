@@ -1,0 +1,29 @@
+############################################################################
+#  Copyright (c) 2015 Qualcomm Technologies International, Ltd.
+#  All Rights Reserved.
+#  Qualcomm Technologies International, Ltd. Confidential and Proprietary.
+#  Notifications and licenses are retained for attribution purposes only
+############################################################################
+
+# Definitions required to build the EFT
+%cpp
+# define to use optimized kalimba functions
+KALIMBA_OPT
+# define to use optimized kalimba intrinsics
+USE_KAL_INTRINSICS
+
+#
+# Capabilities to include in the build
+#
+%list CFG_CAPABILITIES
+EARBUD_FIT_TEST_16K
+
+# List of global include paths
+%list ALL_INCDIRS
+../lib_private/aanc/aanc_afb
+../lib_private/aanc/fit100
+../lib_private/qc_common/basic_op
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/earbud_fit_test/earbud_fit_test

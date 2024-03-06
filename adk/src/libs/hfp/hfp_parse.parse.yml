@@ -1,0 +1,545 @@
+######################################################################################
+#
+# Copyright (c) 2005 - 2019 Qualcomm Technologies International, Ltd.
+# %%version
+#
+# This file contains all AT commands as specified in the Headset and Hands Free specs.
+#
+######################################################################################
+
+# ------------------------------------------------------------------------------------
+# AT Commands
+#
+# Format specified in spec AT<cmd>=<value><cr>
+#-------------------------------------------------------------------------------------
+
+# The Hands-Free device is not sent any AT commands by the Audio Gateway
+
+
+
+# -------------------------------------------------------------------
+# AT Result Codes
+#
+# Format specified in spec <cr><lf><Result Code><cr><lf>
+# -------------------------------------------------------------------
+
+# Banners
++MBAN = <str>:
+  description: Banners
+  c_handle: hfpHandleNull
+  parameters:
+    str:
+     type: complex
+
+# Command processed successfully
+OK:
+  description: Command processed successfully
+  c_handle: hfpHandleOk
+
+# Command not processed successfully
+ERROR:
+  description: Command not processed successfully
+  c_handle: hfpHandleError
+
+# Extended audio gateway error result code response.  +CME ERROR: <err>
++CME ERROR = <err>:
+  c_handle:  hfpHandleExtendedError
+  parameters:
+    err:
+      type: decimal
+
+# Incoming call indication
+RING:
+  description: Incoming call indication
+  c_handle: hfpHandleRing
+
+# Connection terminated
+NO CARRIER:
+  description: Connection terminated
+  c_handle: hfpHandleNoCarrierInd
+
+# Notification of the AG's supported features
++BRSF = <supportedfeat>:
+  c_handle:  hfpHandleSupportedFeaturesInd
+  parameters:
+    supportedfeat:
+      type: decimal
+
+# Response from AG to AT+QAC from HF, if QCE Mode is supported.
++%QAC=<codecs>:
+  description: Call hold and multiparty settings
+  c_handle: hfpHandleQacResponse
+  parameters:
+    codecs:
+      loop: true
+      separator: ","
+      min: 1
+      max: 10
+      pattern: "<codec>"
+      parameters:
+        codec:
+          type: decimal
+
+# Qualcomm Codec Selected indication from AG, if QCE mode is supported.
++%QCS = <codec>:
+  c_handle:  hfpHandleQcsNotification
+  parameters:
+    codec:
+      type: decimal
+
+# Response containing current values of indicators
++CIND=<d>:
+  description: "Response containing current values of indicators"
+  c_handle: hfpHandleIndicatorStatus
+  parameters:
+    d:
+      separator: ","
+      loop: true
+      min: 2
+      max: 99
+      pattern: "<n>"
+      parameters:
+        n:
+          type: decimal
+
++CIND = <str>:
+  c_handle:  hfpHandleIndicatorList
+  parameters:
+    str:
+      type: complex
+
+# Call hold and multiparty settings
++CHLD=<p>:
+  description: Call hold and multiparty settings
+  c_handle: hfpHandleCallHoldInfoRange
+  parameters:
+    p:
+      loop: true
+      min: 1
+      max: 99
+      pattern: "<lower> - <upper>"
+      parameters:
+        lower:
+          type: decimal
+        upper:
+          type: decimal
+
++CHLD=<z>:
+  description: Call hold and multiparty settings
+  c_handle: hfpHandleCallHoldInfo
+  parameters:
+    z:
+      loop: true
+      min: 1
+      max: 99
+      pattern: "<n>"
+      parameters:
+        n:
+          type: string
+
+# Indicator event reporting +CIEV: <ind>, <value>
++CIEV = <index>, <value>:
+  c_handle:  hfpHandleIndicatorStatusUpdate
+  parameters:
+    index:
+      type: decimal
+    value:
+      type: decimal
+
+# HF Indicator event reporting +BIND: <assignedId>, <state>
++BIND = <assignedId>, <state>:
+  description: "HF Indicator event reporting +BIND: <assignedId>, <state>"
+  c_handle:  hfpHandleBindIndicatorStatus
+  parameters:
+    assignedId:
+      type: decimal
+    state:
+      type: decimal
+
+# HF Indicators response from AG +BIND:(<a>,<b>,..<n>)
++BIND=<indicators>:
+  description:  "HF Indicators response from AG +BIND:(<a>,<b>,..<n>)"
+  c_handle: hfpHandleBindInfo
+  parameters:
+    indicators:
+      loop: true
+      min: 1
+      max: 10
+      pattern: "<indicator>"
+      parameters:
+        indicator:
+          type: decimal
+
+# Notify the in band ring tone has been enabled or disabled
++BSIR = <enable>:
+  c_handle:  hfpHandleInBandRingTone
+  parameters:
+    enable:
+      type: decimal
+
+# Notify that voice recognition function has been disabled (allowed value: 0)
++BVRA = <enable>, <vrecState>, <textId>, <textType>, <textOperation>, <textStr>:
+  c_handle:  hfpHandleVoiceRecognitionStatusText
+  parameters:
+    enable:
+      type: decimal
+    vrecState:
+      type: decimal
+    textId:
+      type: decimal
+    textType:
+      type: decimal
+    textOperation:
+      type: decimal
+    textStr:
+      type: string
+
++BVRA = <enable>, <vrecState>:
+  c_handle:  hfpHandleVoiceRecognitionStatusState
+  parameters:
+    enable:
+      type: decimal
+    vrecState:
+      type: decimal
+
++BVRA = <enable>:
+  c_handle:  hfpHandleVoiceRecognitionStatus
+  parameters:
+    enable:
+      type: decimal
+
+# Set speaker gain indication (allowed values: 0-15)
++VGS = <gain>:
+  c_handle:  hfpHandleSpeakerGain
+  parameters:
+    gain:
+      type: decimal
+
+# Set microphone gain indication (allowed values: 0-15)
++VGM = <gain>:
+  c_handle:  hfpHandleMicrophoneGain
+  parameters:
+    gain:
+      type: decimal
+
+# Calling Line Identification result code +CLIP: <num>, <type>[, <subaddr>, <satype>[, [<alpha>][, <CLI validity>]]]
+# <num>= calling number, <type>= type of number (i.e. international). Any other args are ignored.
++CLIP = <num>, <type>, <saddr>, <satype>, <name>, <ignore>:
+  c_handle:  hfpHandleCallerIdWithName
+  parameters:
+    num:
+      type: string
+    type:
+      type: decimal
+    saddr:
+      type: string
+    satype:
+      type: string
+    name:
+      type: string
+    ignore:
+      type: complex
+
++CLIP = <num>, <type>, <ignore>:
+  c_handle:  hfpHandleCallerId
+  parameters:
+    num:
+      type: string
+    type:
+      type: decimal
+    ignore:
+      type: complex
+
++CLIP = <num>, <ignore>:
+  c_handle:  hfpHandleCallerIdIllegal
+  parameters:
+    num:
+      type: string
+    ignore:
+      type: complex
+
+# Response by AG to a data request from HF
+# Currently only phone number request supported so the response is a number
+# sequence with max 32 digits
++BINP = <num>:
+  c_handle:  hfpHandleDataResponse
+  parameters:
+    num:
+      type: string
+
++BINP = <num>, <ignore>:
+  c_handle:  hfpHandleDataResponseExtended
+  parameters:
+    num:
+      type: string
+    ignore:
+      type: complex
+
+# Call waiting notification. +CCWA= <num>, <type>, <class>,[ <alpha>][, <CLI validity>[, <subaddr>, <satype> [, <priority>]]]
+# <num>=calling phone number, <type>= type of number (i.e. international), all other args are ignored
+
++CCWA = <num>, <type>, <class>, <name>, <ignore>:
+  c_handle:  hfpHandleCallWaitingNotificationWithName
+  parameters:
+    num:
+      type: string
+    type:
+      type: decimal
+    class:
+      type: decimal
+    name:
+      type: string
+    ignore:
+      type: complex
+
++CCWA = <num>, <type>, <ignore>:
+  c_handle:  hfpHandleCallWaitingNotification
+  parameters:
+    num:
+      type: string
+    type:
+      type: decimal
+    ignore:
+      type: complex
+
++CCWA = <num>, <ignore>:
+  c_handle:  hfpHandleCallWaitingNotificationIllegal
+  parameters:
+    num:
+      type: string
+    ignore:
+      type: complex
+
+# Subscriber number notification. +CNUM= [<alpha>], <number>, <type>, [<speed>], <service>
+# <alpha>=ignored, <number>=subscriber number, <type>=type of number, <speed>=ignored, <service>=service relating to number
++CNUM = <alpha>, <number>, <type>, <speed>, <service>:
+  c_handle:  hfpHandleSubscriberNumber
+  parameters:
+    alpha:
+      type: string
+    number:
+      type: string
+    type:
+      type: decimal
+    speed:
+      type: string
+    service:
+      type: decimal
+
+# Response hold notification. +BTRH= <num>
++BTRH = <state>:
+  c_handle:  hfpHandleResponseHold
+  parameters:
+    state:
+      type: decimal
+
+# Current Calls notification. +CLCC= <idx>, <dir>, <status>, <mode>, <mprty>[, <number>, <type>[, [<alpha> [, <priority>] ] ]
++CLCC = <idx>, <dir>, <status>, <mode>, <mprty>, <number>, <type>, <ignore>:
+  c_handle:  hfpHandleCurrentCallsWithNumber
+  parameters:
+    idx:
+      type: decimal
+    dir:
+      type: decimal
+    status:
+      type: decimal
+    mode:
+      type: decimal
+    mprty:
+      type: decimal
+    number:
+      type: string
+    type:
+      type: decimal
+    ignore:
+      type: complex
+
++CLCC = <idx>, <dir>, <status>, <mode>, <mprty>, <ignore>:
+  c_handle:  hfpHandleCurrentCalls
+  parameters:
+    idx:
+      type: decimal
+    dir:
+      type: decimal
+    status:
+      type: decimal
+    mode:
+      type: decimal
+    mprty:
+      type: decimal
+    ignore:
+      type: complex
+
++CLCC = <idx>, <dir>, <status>, <mode>, <mprty>, <number>, <type>, <ignore>:
+  c_handle:  hfpHandleCurrentCallsWithNumber
+  parameters:
+    idx:
+      type: decimal
+    dir:
+      type: decimal
+    status:
+      type: decimal
+    mode:
+      type: decimal
+    mprty:
+      type: decimal
+    number:
+      type: string
+    type:
+      type: decimal
+    ignore:
+      type: complex
+
++CLCC = <idx>, <dir>, <status>, <mode>, <mprty>, <ignore>:
+  c_handle:  hfpHandleCurrentCalls
+  parameters:
+    idx:
+      type: decimal
+    dir:
+      type: decimal
+    status:
+      type: decimal
+    mode:
+      type: decimal
+    mprty:
+      type: decimal
+    ignore:
+      type: complex
+
+# Network operator mode and name notification. +COPS: <mode>[,<format>,<operator>]
++COPS = <mode>, <format>, <operator>:
+  c_handle:  hfpHandleNetworkOperatorModeName
+  parameters:
+    mode:
+      type: decimal
+    format:
+      type: decimal
+    operator:
+      type: string
+
++COPS = <mode>, <ignore>:
+  c_handle:  hfpHandleNetworkOperatorMode
+  parameters:
+    mode:
+      type: decimal
+    ignore:
+      type: complex
+
+#################################
+# CSR Extended Features
+
+# Response to a Supported Features Request
++CSRSF = <callername>, <rawtext>, <sms>, <battlevel>, <pwrsource>, <codecs>, <codecbandwidths>, <ignore>:
+  c_handle:  hfpCsrFeaturesHandleBandwidthCodecRes
+  parameters:
+    callername:
+      type: decimal
+    rawtext:
+      type: decimal
+    sms:
+      type: decimal
+    battlevel:
+      type: decimal
+    pwrsource:
+      type: decimal
+    codecs:
+      type: decimal
+    codecbandwidths:
+      type: decimal
+    ignore:
+      type: complex
+
++CSRSF = <callername>, <rawtext>, <sms>, <battlevel>, <pwrsource>, <codecs>, <ignore>:
+  c_handle:  hfpCsrFeaturesHandleCodecRes
+  parameters:
+    callername:
+      type: decimal
+    rawtext:
+      type: decimal
+    sms:
+      type: decimal
+    battlevel:
+      type: decimal
+    pwrsource:
+      type: decimal
+    codecs:
+      type: decimal
+    ignore:
+      type: complex
+
++CSRSF = <callername>, <rawtext>, <sms>, <battlevel>, <pwrsource>, <ignore>:
+  c_handle:  hfpCsrFeaturesHandleNormalRes
+  parameters:
+    callername:
+      type: decimal
+    rawtext:
+      type: decimal
+    sms:
+      type: decimal
+    battlevel:
+      type: decimal
+    pwrsource:
+      type: decimal
+    ignore:
+      type: complex
+
+# Unsolicited Text
++CSRTXT = <text>:
+  c_handle:  hfpCsrFeaturesHandleTextInd
+  parameters:
+    text:
+      type: string
+
+# New SMS Message has arrived
++CSRSMS = <smsIndex>, <senderNum>, <senderName>, <ignore>:
+  c_handle:  hfpCsrFeaturesHandleSmsInd
+  parameters:
+    smsIndex:
+      type: decimal
+    senderNum:
+      type: string
+    senderName:
+      type: string
+    ignore:
+      type: complex
+
+# Contents of requested SMS message
++CSRGETSMS = <sms>:
+  c_handle:  hfpCsrFeaturesHandleGetSmsRes
+  parameters:
+    sms:
+      type: string
+
+# AG wishes to change the supported indicators
+# format - +CSR=(ind,val),(ind,val)...(ind,val)
++CSR = <p>:
+  c_handle:  hfpCsrFeaturesHandleModifyIndicatorsInd
+  parameters:
+    p:
+      separator: ","
+      loop: true
+      min: 1
+      max: 99
+      pattern: "<ind>, <val>"
+      parameters:
+        ind:
+          type: decimal
+        val:
+          type: decimal
+
++CSR = 0:
+  c_handle: hfpCsrFeaturesHandleDisableIndicatorsInd
+
+# AG is requesting a battery report
++CSRBATT ?:
+  c_handle: hfpCsrFeaturesHandleBatteryLevelRequestInd
+
+###########################
+# WB-Speech At Responses
+
+# Response codec negotiate. +BCS= <num>
++BCS = <codec>:
+  c_handle:  hfpHandleResponseWbsCodec
+  parameters:
+    codec:
+      type: decimal

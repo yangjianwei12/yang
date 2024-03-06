@@ -1,0 +1,6 @@
+var structfeature__license__key__override__mapping__t =
+[
+    [ "license_key_override", "structfeature__license__key__override__mapping__t.html#a0b2b6f6d3c07a5757fe2031ec728176d", null ],
+    [ "max_addr", "structfeature__license__key__override__mapping__t.html#a2b7a307eb18fb20472f574f53a5cc1c5", null ],
+    [ "min_addr", "structfeature__license__key__override__mapping__t.html#ad6a510da841be7605f1ce80f7da5948c", null ]
+];

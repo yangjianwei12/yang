@@ -1,0 +1,7 @@
+import imp
+import os
+cap_list = imp.load_source("mod", os.path.abspath(os.path.join(os.path.curdir,"bundle/config/capabilities.cfg")))
+
+# List of capabilites to be bundled up in KDCs
+KDCs = {}
+KDCs["download_cvc_send"] = [dnld_cvchs1mic_send_nb, dnld_cvchs1mic_send_wb, dnld_cvchs1mic_send_swb, dnld_cvchs2mic_mono_send_nb, dnld_cvchs2mic_mono_send_wb, dnld_cvchs2mic_mono_send_swb, dnld_cvchs2mic_binaural_send_nb, dnld_cvchs2mic_binaural_send_wb, dnld_cvchs2mic_binaural_send_swb, dnld_cvcspkr1mic_send_nb, dnld_cvcspkr1mic_send_wb, dnld_cvcspkr1mic_send_swb, dnld_cvcspkr2mic_send_nb, dnld_cvcspkr2mic_send_wb, dnld_cvcspkr2mic_send_swb, dnld_cvceb3mic_mono_ie_send_nb, dnld_cvceb3mic_mono_ie_send_wb, dnld_cvceb3mic_mono_ie_send_swb, dnld_cvceb2mic_mono_ie_send_nb, dnld_cvceb2mic_mono_ie_send_wb,dnld_cvceb3mic_hybrid_send_wb,dnld_cvceb3mic_hybrid_send_swb,dnld_cvchs2mic_hybrid_send_wb,dnld_cvchs2mic_hybrid_send_swb,dnld_cvchs1mic_hybrid_send_wb,dnld_cvchs1mic_hybrid_send_swb]

@@ -1,0 +1,18 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright 2020 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# CLK_MGR_FSM Requires Clock Manager. Without clock manager finite state machine 
+# cannot be used.
+# Flag INSTALL_CLK_MGR_FSM has been used to guard the FSM related code.
+
+%build
+BUILD_CLK_MGR_FSM = TRUE
+
+%cpp
+INSTALL_CLK_MGR_FSM
+
+%list TASKS
+components/clk_mgr/clk_mgr_task_sched.xml

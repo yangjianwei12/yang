@@ -1,0 +1,29 @@
+###########################################################################
+# Copyright (c) 2021 Qualcomm Technologies, Inc. and/or its subsidiaries
+############################################################################
+# Definitions for Machine Learning (ML) private library.
+#
+%cpp
+
+%list ALL_INCDIRS
+components/ml_modules/common
+components/ml_modules/ml_runtime
+components/ml_modules/ml_engine
+
+../lib_private/mlfe100
+
+# List of libraries to build
+%list CFG_LIBS
+../lib_private/eai/eai
+components/ml_modules/ml_modules
+
+../lib_private/mlfe100/mlfe100
+
+%list MAXIM_C_LIBS
+../lib_private/eai/eai
+
+%list PRIVATE_LIBS
+components/ml_modules
+
+
+%build

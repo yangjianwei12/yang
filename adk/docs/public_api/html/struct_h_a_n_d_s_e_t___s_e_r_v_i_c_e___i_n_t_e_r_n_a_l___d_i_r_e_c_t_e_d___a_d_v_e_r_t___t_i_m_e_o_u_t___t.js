@@ -1,0 +1,4 @@
+var struct_h_a_n_d_s_e_t___s_e_r_v_i_c_e___i_n_t_e_r_n_a_l___d_i_r_e_c_t_e_d___a_d_v_e_r_t___t_i_m_e_o_u_t___t =
+[
+    [ "device", "struct_h_a_n_d_s_e_t___s_e_r_v_i_c_e___i_n_t_e_r_n_a_l___d_i_r_e_c_t_e_d___a_d_v_e_r_t___t_i_m_e_o_u_t___t.html#abfd409de79429d75fcadfe71a5b1afb8", null ]
+];

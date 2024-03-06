@@ -1,0 +1,37 @@
+###############################################################################
+# Copyright (c) 2012-2018 Qualcomm Technologies International, Ltd.
+# All Rights Reserved.
+# Qualcomm Technologies International, Ltd. Confidential and Proprietary.
+#
+# REVISION:      $Revision: #  $
+###############################################################################
+
+set(SRCS
+    csr_bt_hidd_main.c
+    csr_bt_hidd_sef.c
+    csr_bt_hidd_local_lib.c
+    csr_bt_hidd_free_down.c)
+
+set(SRCS_API
+    csr_bt_hidd_lib.c
+    csr_bt_hidd_free_up.c)
+
+set(HDRS
+    csr_bt_hidd_local_lib.h
+    csr_bt_hidd_main.h
+    csr_bt_hidd_sef.h)
+
+set(PUBLIC_HDRS
+    ../../../../inc/csr_bt_hidd_lib.h
+    ../../../../inc/csr_bt_hidd_prim.h)
+
+csr_add_library(csr_bt_hidd
+                COMPONENT CSR_COMPONENT_BT_HIDD
+                CONDITIONAL NOT EXCLUDE_CSR_BT_HIDD_MODULE PURGE_DEFINES EXCLUDE_CSR_BT_HIDD_MODULE SOURCES ${SRCS}
+                HEADERS ${HDRS}
+                PUBLIC_HEADERS ${PUBLIC_HDRS} )
+
+csr_add_library(csr_bt_hidd_lib
+                COMPONENT CSR_COMPONENT_BT_HIDD
+                CONDITIONAL NOT EXCLUDE_CSR_BT_HIDD_MODULE PURGE_DEFINES EXCLUDE_CSR_BT_HIDD_MODULE SOURCES ${SRCS_API}
+                PUBLIC_HEADERS ${PUBLIC_HDRS})

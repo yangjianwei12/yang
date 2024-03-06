@@ -1,0 +1,5 @@
+Download Capability BUILD ID = 32113
+ELF File ID = 0xAD33AE0F
+Base Build ID = 32095
+Python tools version = kal_python_tools_linux64_external_1.1.11
+KCC version = kcc-80-linux

@@ -1,0 +1,34 @@
+############################################################################
+# Copyright (c) 2019 - 2020 Qualcomm Technologies International, Ltd.
+############################################################################
+# Base configuration, do not attempt to create an image directly from it.
+
+%include config.maor_rom_v20_common
+
+# Enable boot-time switchable cache support. Default is direct-mapped unless 
+# any higher-level configs define CACHE_MIB_DEFAULT_2WAY
+%include config.MODIFY_MAOR_PM_RAM_SWITCHABLE_CACHE
+
+# Enable mapping of SQIF_FLASH into NVMEM Window 1 of the DM and PM
+%include config.MODIFY_MAOR_RUN_CAPABILITIES_FROM_SQIF
+
+# Modification for things that are not kalsim (ie: emulator and chip)
+%include config.MODIFY_HW_MAOR
+
+# Remove cvc ml variants from rom build
+
+%list CFG_CAPABILITIES
+-CVC_EARBUD_3MIC_HYBRID
+-CVC_HEADSET_2MIC_MONO_HYBRID
+-CVC_HEADSET_1MIC_HYBRID
+
+
+%build
+-BUILD_CVC_EARBUD_3MIC_HYBRID = true
+-BUILD_CVC_HEADSET_2MIC_MONO_HYBRID = true
+-BUILD_CVC_HEADSET_1MIC_HYBRID = true
+
+# Include AANC Lite autogen files
+%list AUTOGEN_ONLY_LIBS
+$(KYMERA_ROOT)/capabilities/aanc_lite/aanc_lite
+$(KYMERA_ROOT)/capabilities/secure_basic_passthrough/secure_basic_passthrough

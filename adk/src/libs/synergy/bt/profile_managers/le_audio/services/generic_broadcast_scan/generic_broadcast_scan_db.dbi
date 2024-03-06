@@ -1,0 +1,105 @@
+/******************************************************************************
+ *  Copyright (c) 2022-2023 Qualcomm Technologies International, Ltd.
+ *  %%version
+ *  %%appversion
+ *
+ *  FILE
+ *      generic_broadcast_scan_db.dbi
+ *
+ *  DESCRIPTION
+ *      This file defines the GENERIC Broadcast Scan Service in JSON format,
+ *      which is fairly human readable.  This file is included in the main 
+ *      application data base file which is used to produce ATT flat data 
+ *      base. 
+ *
+ *****************************************************************************/
+
+#ifndef __GENERIC_BROADCAST_SCAN_DB_DBI__
+#define __GENERIC_BROADCAST_SCAN_DB_DBI__
+
+#include "generic_broadcast_scan_uuids.h"
+
+primary_service {
+    uuid : UUID_GENERIC_BROADCAST_SCAN_SERVICE,
+    name : "GENERIC_BROADCAST_SCAN_SERVICE",
+
+    characteristic {
+        uuid        : UUID_GENERIC_BROADCAST_SCAN_CONTROL_POINT,
+        name        : "GENERIC_BROADCAST_SCAN_CONTROL_POINT",
+        flags       : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_W, FLAG_ENCR_R ],
+        properties  : [ write, read, notify],
+        value       : [ 0x00 ],
+        client_config
+        {
+            name : "GENERIC_BROADCAST_SCAN_CONTROL_POINT_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+
+    characteristic {
+        uuid        : UUID_GENERIC_BROADCAST_SCAN_REPORT,
+        name        : "GENERIC_BROADCAST_SCAN_REPORT",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00 ],
+
+        client_config {
+            name : "GENERIC_BROADCAST_SCAN_REPORT_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+
+    characteristic {
+        uuid        : UUID_GENERIC_BROADCAST_RECEIVER_STATE,
+        name        : "GENERIC_BROADCAST_RECEIVE_STATE_1",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00 ],
+
+        client_config {
+            name : "GENERIC_BROADCAST_RECEIVE_STATE_CLIENT_CONFIG_1",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+
+    characteristic {
+        uuid        : UUID_GENERIC_BROADCAST_RECEIVER_STATE,
+        name        : "GENERIC_BROADCAST_RECEIVE_STATE_2",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_DYNLEN ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00 ],
+
+        client_config {
+            name : "GENERIC_BROADCAST_RECEIVE_STATE_CLIENT_CONFIG_2",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+
+    characteristic {
+        uuid        : UUID_GENERIC_BROADCAST_VOLUME_STATE,
+        name        : "GENERIC_BROADCAST_VOLUME_STATE",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R ],
+        properties  : [ read, notify ],
+
+        value       : [ 0x00, 0x00, 0x00 ],
+        
+        client_config {
+            name : "GENERIC_BROADCAST_VOLUME_STATE_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+        }
+    },
+
+    characteristic {
+        uuid        : UUID_GENERIC_BROADCAST_VOLUME_CONTROL_POINT,
+        name        : "GENERIC_BROADCAST_VOLUME_CONTROL_POINT",
+        flags       : [ FLAG_IRQ, FLAG_DYNLEN, FLAG_ENCR_W ],
+        properties  : [ write],
+        value       : [ 0x00 ]
+    }
+},
+
+#endif /* __GENERIC_BROADCAST_SCAN_DB_DBI__ */
+

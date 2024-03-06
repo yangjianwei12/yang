@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2021 - 2023 Qualcomm Technologies International, Ltd.-->
+<!--Chain for Adaptive ANC version2 -->
+
+<chain name="CHAIN_AANCV2" id="1" generate_operator_roles_enum="False" generate_endpoint_roles_enum="False">
+
+    <include_header name="app_chain_config.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+
+    <operator name="OPR_AANCV2" id="EB_CAP_ID_ADAPTIVE_ANCV2_REF">
+        <sink name="PLAYBACK_IN" terminal="0"/>
+        <sink name="EXT_FF_MIC" terminal="3"/>
+        <sink name="INT_ERR_MIC" terminal="2"/>
+        <source name="FF_MIC_OUT" terminal="3"/>
+        <source name="ERR_MIC_OUT" terminal="2"/>
+    </operator>	
+	
+    <input sink="OPR_AANCV2.PLAYBACK_IN" role="EPR_AANCV2_PLAYBACK"/>
+    <input sink="OPR_AANCV2.EXT_FF_MIC" role="EPR_AANCV2_FF_MIC_IN"/>
+    <input sink="OPR_AANCV2.INT_ERR_MIC" role="EPR_AANCV2_ERR_MIC_IN"/>
+    <output source="OPR_AANCV2.FF_MIC_OUT" role="EPR_AANCV2_FF_MIC_OUT"/>
+    <output source="OPR_AANCV2.ERR_MIC_OUT" role="EPR_AANCV2_ERR_MIC_OUT"/>
+
+</chain>

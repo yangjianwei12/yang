@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2023 Qualcomm Technologies International, Ltd.-->
+
+<types name="le_broadcast_manager_self_scan">
+    <include_header name="marshal_common.h"/>
+    <include_header name="le_broadcast_manager_self_scan.h"/>
+    <include_header name="le_broadcast_manager_periodic_scan.h"/>
+
+
+    <typedef_header_source>
+/* Maximum number of concurrent self-scan clients that can be handled. */
+#define LE_BROADCAST_SELF_SCAN_CLIENT_MAX_CLIENTS   2
+
+#define MARSHAL_TYPE_Task MARSHAL_TYPE_uint32
+    </typedef_header_source>
+
+    <source>
+<![CDATA[
+#include "domain_marshal_types.h"
+
+
+#ifndef HOSTED_TEST_ENVIRONMENT
+COMPILE_TIME_ASSERT(sizeof(Task) == sizeof(uint32), Task_uint32_mismatched);
+#endif
+
+#if !defined(INCLUDE_LE_AUDIO_BROADCAST_LOCAL_SCAN)
+/*
+    If INCLUDE_LE_AUDIO_BROADCAST_LOCAL_SCAN is not defined but the
+    le_broadcast_manager dir is included in the app project then something
+    needs to define enum values for the self-scan marshal types.
+
+    The table below does this if INCLUDE_LE_AUDIO_BROADCAST_LOCAL_SCAN is not
+    defined. Otherwise the self-scan marshal types are included in the
+    global enum in domain_marshal_types.h.
+*/
+
+/* X-Macro generate enumeration of all marshal types */
+#define EXPAND_AS_ENUMERATION(type) MARSHAL_TYPE(type),
+enum MARSHAL_TYPES
+{
+    /* common types must be placed at the start of the enum */
+    DUMMY = NUMBER_OF_COMMON_MARSHAL_OBJECT_TYPES-1,
+    /* now expand the marshal types specific to this component. */
+    LE_BROADCAST_MANAGER_SELF_SCAN_MARSHAL_TYPES_TABLE(EXPAND_AS_ENUMERATION)
+    NUMBER_OF_MARSHAL_OBJECT_TYPES
+};
+#undef EXPAND_AS_ENUMERATION
+#endif
+]]>
+    </source>
+
+<typedef_enum name="le_bm_self_scan_state_t" basic="true" doc="self-scan state">
+    /* Client exists but no scanning is active. */
+    LE_BM_SELF_SCAN_STATE_IDLE = 0,
+
+    /* Periodic scan start request sent; waiting for cfm. */
+    LE_BM_SELF_SCAN_STATE_STARTING,
+
+    /* Periodic scan is active. */
+    LE_BM_SELF_SCAN_STATE_SCANNING,
+
+    /* Periodic scan stop request sent; waiting for cfm. */
+    LE_BM_SELF_SCAN_STATE_TERMINATING
+</typedef_enum>
+
+    <typedef_struct name="le_bm_self_scan_params_t" basic="true" doc="Structure used to hold the self-scan parameters.">
+        <member marshal="true" doc="Timeout for the self-scan.">uint32 timeout</member>
+        <member marshal="true" doc="Should the self-scan sync to the periodic train of each source.">bool sync_to_pa</member>
+        <member marshal="true" doc="Parameters used to filter received adverts.">filter_params_t filter</member>
+    </typedef_struct>
+
+    <typedef_struct name="le_bm_self_scan_client_t" doc="Structure used to hold client state for a self-scan instance.">
+        <member marshal="true" doc="Client Task for this instance">Task task</member>
+        <member marshal="true" doc="Current client state">le_bm_self_scan_state_t state</member>
+        <member marshal="true" doc="Client scan parameters">le_bm_self_scan_params_t params</member>
+        <member marshal="false" doc="Handle for periodic scan">le_bm_periodic_scan_handle periodic_handle</member>
+        <member marshal="true" doc="Timeout wallclock end time">marshal_rtime_t timeout_end</member>
+    </typedef_struct>
+
+    <typedef_struct name="le_bm_self_scan_task_data_t" doc="Structure used to hold the self-scan module state.">
+        <member marshal="false" doc="Task for the self-scan module">TaskData task</member>
+        <member marshal="false" doc="Task requesting Stop All of the self-scan module">Task stop_task</member>
+        <member marshal="true" doc="Array of self-scan clients">le_bm_self_scan_client_t clients[LE_BROADCAST_SELF_SCAN_CLIENT_MAX_CLIENTS]</member>
+    </typedef_struct>
+
+</types>

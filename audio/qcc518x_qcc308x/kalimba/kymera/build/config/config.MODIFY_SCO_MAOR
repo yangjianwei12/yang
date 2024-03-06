@@ -1,0 +1,12 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright (c) 2020 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# definitions for Maor sco builds
+
+%include config.MODIFY_SCO_HYDRA
+#%include config.MODIFY_SCO_APTX_COMMON
+# For aptX R1.1 firmare build comment out line below and uncomment line above
+%include config.MODIFY_SCO_APTX_R2_COMMON

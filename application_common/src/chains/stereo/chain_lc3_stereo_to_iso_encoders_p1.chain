@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2023 Qualcomm Technologies International, Ltd.-->
+<!--Chain for ISO Concurrency(Stereo to ISO and LC3 encoder configured to run on P1) -->
+
+<chain name="CHAIN_LC3_STEREO_TO_ISO_ENCODERS_P1" id="0" generate_endpoint_roles_enum="False" generate_operator_roles_enum="False">
+
+    <include_header name="app_chain_config.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+
+    <operator name="OPR_RATE_ADJUST" id="CAP_ID_RATE_ADJUST">
+        <sink name="IN" terminal="0"/>
+        <source name="OUT" terminal="0"/>
+    </operator>
+
+    <operator name="OPR_RATE_ADJUST_RIGHT" id="CAP_ID_RATE_ADJUST">
+        <sink name="IN" terminal="0"/>
+        <source name="OUT" terminal="0"/>
+    </operator>
+
+    <operator name="OPR_LC3_ENCODE_SCO_ISO" id="CAP_ID_LC3_SCO_ISO_ENC" processor="P1">
+        <sink name="IN" terminal="0"/>
+        <source name="OUT" terminal="0"/>
+    </operator>
+
+    <operator name="OPR_LC3_ENCODE_SCO_ISO_RIGHT" id="CAP_ID_LC3_SCO_ISO_ENC" processor="P1">
+        <sink name="IN" terminal="0"/>
+        <source name="OUT" terminal="0"/>
+    </operator>
+
+    <input sink="OPR_RATE_ADJUST.IN" role="EPR_ISO_FROM_AIR_LEFT"/>
+    <input sink="OPR_RATE_ADJUST_RIGHT.IN" role="EPR_ISO_FROM_AIR_RIGHT"/>
+
+    <connection source="OPR_RATE_ADJUST.OUT" sink="OPR_LC3_ENCODE_SCO_ISO.IN"/>
+    <connection source="OPR_RATE_ADJUST_RIGHT.OUT" sink="OPR_LC3_ENCODE_SCO_ISO_RIGHT.IN"/>
+
+    <output source="OPR_LC3_ENCODE_SCO_ISO.OUT" role="EPR_ISO_TO_AIR_LEFT"/>
+    <output source="OPR_LC3_ENCODE_SCO_ISO_RIGHT.OUT" role="EPR_ISO_TO_AIR_RIGHT"/>
+
+</chain>

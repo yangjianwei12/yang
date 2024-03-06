@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2023 Qualcomm Technologies International, Ltd.-->
+<!--Chain for Wired (Analog) to ISO -->
+
+<chain name="CHAIN_INPUT_WIRED_ISO" id="0" generate_operator_roles_enum="False" generate_endpoint_roles_enum="False">
+
+    <include_header name="../usb_dongle_cap_ids.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+
+    <operator name="OPR_LATENCY_BUFFER" id="CAP_ID_TTP_PASS">
+        <sink name="IN_L" terminal="0"/>
+        <sink name="IN_R" terminal="1"/>
+        <source name="OUT_L" terminal="0"/>
+        <source name="OUT_R" terminal="1"/>
+    </operator>
+    
+    <operator name="OPR_SPEAKER_RESAMPLER" id="CAP_ID_IIR_RESAMPLER">
+        <sink name="IN_0" terminal="0"/>
+        <sink name="IN_1" terminal="1"/>
+        <source name="OUT_0" terminal="0"/>
+        <source name="OUT_1" terminal="1"/>
+    </operator>
+
+    <operator name="OPR_LC3_ENCODE_SCO_ISO" id="CAP_ID_LC3_SCO_ISO_ENC" priority="medium">
+        <sink name="IN_L" terminal="0"/>
+        <source name="ISO_OUT_L" terminal="0"/>
+    </operator>
+
+    <operator name="OPR_LC3_ENCODE_SCO_ISO_RIGHT" id="CAP_ID_LC3_SCO_ISO_ENC" priority="medium">
+        <sink name="IN_R" terminal="0"/>
+        <source name="ISO_OUT_R" terminal="0"/>
+    </operator>
+
+    <input sink="OPR_LATENCY_BUFFER.IN_L" role="EPR_WIRED_STEREO_INPUT_L"/>
+    <input sink="OPR_LATENCY_BUFFER.IN_R" role="EPR_WIRED_STEREO_INPUT_R"/>
+
+    <connection source="OPR_LATENCY_BUFFER.OUT_L" sink="OPR_SPEAKER_RESAMPLER.IN_0"/>
+    <connection source="OPR_LATENCY_BUFFER.OUT_R" sink="OPR_SPEAKER_RESAMPLER.IN_1"/>
+    
+    <connection source="OPR_SPEAKER_RESAMPLER.OUT_0" sink="OPR_LC3_ENCODE_SCO_ISO.IN_L"/>
+    <connection source="OPR_SPEAKER_RESAMPLER.OUT_1" sink="OPR_LC3_ENCODE_SCO_ISO_RIGHT.IN_R"/>
+
+    <output source="OPR_LC3_ENCODE_SCO_ISO.ISO_OUT_L" role="EPR_ISO_TO_AIR_LEFT"/>
+    <output source="OPR_LC3_ENCODE_SCO_ISO_RIGHT.ISO_OUT_R" role="EPR_ISO_TO_AIR_RIGHT"/>
+
+
+</chain>
+
+

@@ -1,0 +1,28 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright (c) 2021 - 2021 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# Definitions required for KSP to support event-based sniffing
+
+%cpp
+INSTALL_EVENT_BASED_SNIFF
+
+%list ALL_SRCDIRS
+components/event_based_sniff
+
+# List of global include paths
+%list ALL_INCDIRS
+components/event_based_sniff
+
+# List of libraries to build
+%list CFG_LIBS
+components/event_based_sniff/event_based_sniff
+
+# List of libraries to keep
+%list PM_KEEP_LIBS
+components/event_based_sniff/event_based_sniff
+
+%build
+BUILD_EVENT_BASED_SNIFF=TRUE

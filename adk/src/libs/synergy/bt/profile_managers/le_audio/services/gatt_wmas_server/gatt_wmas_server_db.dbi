@@ -1,0 +1,31 @@
+/******************************************************************************
+*  Copyright (c) 2021 Qualcomm Technologies International, Ltd.
+*  %%version
+*  %%appversion
+*
+*  FILE
+*      gatt_wmas_server_db.dbi
+*
+*  DESCRIPTION
+*
+*      This file defines the Wireless Microphone Audio Service in JSON format. This file is
+*      included in the main application data base file which is used to
+*      produce ATT flat data base.
+*
+*****************************************************************************/
+
+#ifndef __GATT_WMAS_SERVER_DB_DBI__
+#define __GATT_WMAS_SERVER_DB_DBI__
+
+#include "gatt_wmas_server_uuids.h"
+
+/* Primary service declaration of Wireless Microphone Audio Service */
+
+primary_service {
+    uuid : UUID_WIRELESS_MICROPHONE_AUDIO_SERVICE,
+    name : "WIRELESS_MICROPHONE_AUDIO_SERVICE",
+    sdp  : true
+
+    /* There are no characteristics in this service. */
+},
+#endif /* __GATT_WMAS_SERVER_DB_DBI__ */

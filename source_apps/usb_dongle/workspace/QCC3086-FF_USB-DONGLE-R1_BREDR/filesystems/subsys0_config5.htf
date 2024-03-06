@@ -1,0 +1,17 @@
+file=curator5
+
+# PIO 4 needs to be pulled down to enable the audio amplifier in the CH084 and CH128 modules
+# This is only the initial configuration. The application can change this at runtime
+
+# Assign PIOs to respective subsystems (Apps, BTSS)
+PioSubsystemAllocationElements = [04 04  ]
+
+# Set PIO 4 to be an output
+PioDirectionElements = [04 01]
+
+# Set PIO 4 to be low
+PioDriveElements = [04 00]
+
+# Set the apps processor to boot at 80Mhz to reduce boot time.
+# Once application has booted the processor clock is reduce again to save power.
+AppsProcsClkRate = 1

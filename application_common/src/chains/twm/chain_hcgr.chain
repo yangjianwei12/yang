@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2022 - 2023 Qualcomm Technologies International, Ltd.-->
+<!--Chain for HCGR-->
+
+<chain name="CHAIN_HCGR" id="1" generate_operator_roles_enum="False" generate_endpoint_roles_enum="False">
+
+    <include_header name="app_chain_config.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+
+        <operator name="OPR_HCGR" id="EB_CAP_ID_HCGR">
+            <sink name="IN1" terminal="1"/>
+            <source name="OUT1" terminal="1"/>
+        </operator>
+
+        <input sink="OPR_HCGR.IN1" role="EPR_HCGR_IN"/>
+        <output source="OPR_HCGR.OUT1" role="EPR_HCGR_OUT"/>
+</chain>

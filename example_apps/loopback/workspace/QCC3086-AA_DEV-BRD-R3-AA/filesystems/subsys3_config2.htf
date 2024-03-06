@@ -1,0 +1,44 @@
+file=audio2
+
+# Select PIOs for I2S interface 1: SCK, WS, MCLK, SD_OUT, SD_IN.
+Pcm1PioConfig = [ 10 14 0F FF 13 ]
+
+DigMic0G722FilterEnable = true
+DigMic0G722FirEnable = true
+DigMic0ChanSwap = false
+DigMic0ClockRate = 4000
+DigMic0PioConfig = [ff ff]
+
+DigMic1G722FilterEnable = true
+DigMic1G722FirEnable = true
+DigMic1ChanSwap = false
+DigMic1ClockRate = 4000
+DigMic1PioConfig = [ff ff]
+
+DigMic2G722FilterEnable = true
+DigMic2G722FirEnable = true
+DigMic2ChanSwap = false
+DigMic2ClockRate = 4000
+DigMic2PioConfig = [ff ff]
+
+CodecOutputDisableTimeout = 28000000
+
+AncEnableDelay = 300
+
+# By default ANC IIR filter sample rate set to 32kHz (for QCC308x devices) in both ANC instances
+AncIIRFilterSampleRate = 32000
+
+# MIB key to differentiate QCC308x having lower memory footprint 1024KB
+# DM 544kB, Extra 384kB, DM as PM 32kB
+HeapAllocationEx = [20 02 80 01 20 00 00 00 00 00 00 00]
+
+MetadataTagsArraySize = 328
+
+#Disable the dual-core mode
+CoreEnable=[00]
+
+# Use Class AB mode
+Codec0OutAmpQualityMode = false
+Codec0UseClassABAmplifier = true
+
+PMNumShutDownBanks = 27

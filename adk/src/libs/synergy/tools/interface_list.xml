@@ -1,0 +1,51 @@
+<MACRO_INTERFACES>
+	<FILES>
+		<FILE group='cm' path='csr_bt_cm_prim.h'/>
+		<FILE group='av' path='csr_bt_av_prim.h'/>
+		<FILE group='avrcp' path='csr_bt_avrcp_prim.h'/>
+		<FILE group='hf' path='csr_bt_hf_prim.h'/>
+		<FILE group='hf' path='csr_bt_hf.h'/>
+		<FILE group='gatt' path='csr_bt_gatt_prim.h'/>
+		<FILE group='mapc' path='csr_bt_mapc_prim.h'/>
+		<FILE group='spp' path='csr_bt_spp_prim.h'/>
+		<FILE group='hidd' path='csr_bt_hidd_prim.h'/>
+		<FILE group='pac' path='csr_bt_pac_prim.h'/>
+		<FILE group='result' path='csr_bt_result.h'/>
+		<FILE group='obex' path='csr_bt_obex.h'/>
+		<FILE group='bap' path='bap_client_prim.h'/>
+		<FILE group='bap' path='bap_server_prim.h'/>
+		<FILE group='cap' path='cap_client_prim.h'/>
+		<FILE group='profiles' path='csr_bt_profiles.h'/>
+		<FILE group='ccp' path='ccp.h'/>
+		<FILE group='csip' path='csip.h'/>
+		<FILE group='ascs' path='gatt_ascs_server.h'/>
+		<FILE group='bass' path='gatt_bass_server.h'/>
+		<FILE group='csis' path='gatt_csis_server.h'/>
+		<FILE group='pacs' path='gatt_pacs_server.h'/>
+		<FILE group='mcp' path='mcp.h'/>
+		<FILE group='mcp_mcs' path='mcp_mcs_common.h'/>
+		<FILE group='vcp' path='vcp.h'/>
+		<FILE group='av' path='../profile_managers/av/code/csr_bt_av_signal.h'/>
+		<FILE group='td_db' path='csr_bt_td_db.h'/>
+		<!--<FILE group='tmap' path='tmap_client_prim.h'/> some ascii chars in the file-->
+	</FILES>
+	<BLACKLIST>
+		<TYPE name='CsrBtHfConnectionId' category='LARGE'/>
+		<TYPE name='CsrBtAvrcpPlaybackPos' category='LARGE'/>
+		<TYPE name='CsrBtAvrcpItemMediaAttributeId' category='LARGE'/>
+		<TYPE name='CsrBtAvrcpItemAttMask' category='NON_DISTINCT'/>
+		<TYPE name='CsrBtConnId' category='NON_DISTINCT'/>
+		<TYPE name='CsrBtMapTagIdLength' category='NON_DISTINCT'/>
+		<TYPE name='CsrBtGattSecurityFlags' category='NON_DISTINCT'/>
+		<TYPE name='CsrUint8' category='COMMON'/>
+		<TYPE name='CsrUint16' category='COMMON'/>
+		<TYPE name='CsrUint32' category='COMMON'/>
+		<TYPE name='uint8' category='COMMON'/>
+		<TYPE name='uint16' category='COMMON'/>
+		<TYPE name='uint32' category='COMMON'/>
+		<TYPE name='uint8_t' category='COMMON'/>
+		<TYPE name='uint16_t' category='COMMON'/>
+		<TYPE name='uint32_t' category='COMMON'/>
+		<TYPE name='CapClientSreamCapability' category='LARGE'/>
+	</BLACKLIST>
+</MACRO_INTERFACES>

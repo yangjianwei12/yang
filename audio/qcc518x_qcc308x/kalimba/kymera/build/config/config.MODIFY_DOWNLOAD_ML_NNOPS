@@ -1,0 +1,31 @@
+############################################################################
+# Copyright (c) 2021 Qualcomm Technologies International, Ltd.
+############################################################################
+
+%list CFG_CAPABILITIES
+ML_NNOPS
+
+%list ALL_SRCDIRS
+capabilities/ml_nnops
+
+%list ALL_INCDIRS
+capabilities/ml_nnops
+# Include public header file paths for ML NN operator library
+../lib/ml/nnops
+# Include common headers for ML NN operator library
+../lib/ml/common
+# Include headers for the ML Operator interface
+capabilities/ml_engine
+
+%list CFG_LIBS
+capabilities/ml_nnops/ml_nnops
+
+# Prebuilt libraries are required for QCC517x under
+# \kalimba\kymera\lib_release\($CONFIG)
+%list PREBUILT_LIBS
+# Add the prebuilt library for accessing kalimba NN
+# operators.
+libeai.a
+# Add the ML operator interface prebuilt library
+libml_op_interface.a
+

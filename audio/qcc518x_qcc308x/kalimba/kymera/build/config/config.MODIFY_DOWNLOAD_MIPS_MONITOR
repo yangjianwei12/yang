@@ -1,0 +1,27 @@
+############################################################################
+# CONFIDENTIAL
+#
+# Copyright (c) 2022 - 23 Qualcomm Technologies International, Ltd.
+#
+############################################################################
+# Definitions required to build the DELAY
+
+
+#
+# Capabilities to include in the build
+#
+%list CFG_CAPABILITIES
+MIPS_MONITOR
+
+%list ALL_SRCDIRS
+capabilities/mips_monitor
+
+
+# List of global include paths
+%list ALL_INCDIRS
+
+
+# List of libraries to build
+%list CFG_LIBS
+capabilities/mips_monitor/mips_monitor
+

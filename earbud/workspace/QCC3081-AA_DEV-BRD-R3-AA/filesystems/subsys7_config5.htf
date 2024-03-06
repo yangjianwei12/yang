@@ -1,0 +1,14 @@
+file=app5
+
+DeviceName = "QCC3081"
+
+# ApplicationReadOnlyKey0 - This key is used to set Fast Pair Model ID for an audio sink device. Stored in Little Endian format.
+ApplicationReadOnlyKey0 = [ 79 02 B5 00 ]
+
+# ApplicationReadOnlyKey1 - This key is used to set Fast Pair ASPK for an audio sink device. Stored in Little Endian format.
+ApplicationReadOnlyKey1 = [ ca 0b cd 08 a5 08 26 45 ce 15 4f 2f c6 80 e4 de 05 36 38 4e 7a 5f 44 4d 2d 29 9e 01 ce f3 3e 29 ]
+
+# ApplicationReadOnlyKey2 - GAA model ID: A 32-bit unsigned number assigned by Google to identify the device to the Google Assistant Accessory (GAA).
+# The bytes in each 16-bit pair are reversed, so for example, for the Qualcomm ADK earbuds GAA model ID of 0xB50279 the sequence
+# is [ B5 00 79 02 ].
+ApplicationReadOnlyKey2 = [ B5 00 79 02 ]

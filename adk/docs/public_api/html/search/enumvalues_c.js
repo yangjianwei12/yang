@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['number_5fof_5fanc_5fcommands_17251',['number_of_anc_commands',['../group__anc__gaia__plugin.html#gga9ad2ef3c7d59b608c12570a2568f9e6ca7596229653293d5d59cefb3227b756d8',1,'anc_gaia_plugin.h']]],
+  ['number_5fof_5fanc_5fnotifications_17252',['number_of_anc_notifications',['../group__anc__gaia__plugin.html#gga0d334046113b610e5b47bfbd94e0caf0acc7de493b2454bcb5a98fd38deee41b3',1,'anc_gaia_plugin.h']]],
+  ['number_5fof_5fbattery_5fcommands_17253',['number_of_battery_commands',['../group__battery__gaia__plugin.html#gga663efd67729dc40b64d0cbb36ffa44ffa1b6335eb9ea7b2f8a97797c92cfc70f3',1,'battery_gaia_plugin.h']]],
+  ['number_5fof_5fcore_5fcommands_17254',['number_of_core_commands',['../group__gaia__framework.html#gga4a19b541b43fb4ac19076cf268e286e3abe5834951116bfa61a63dd11379c1702',1,'gaia_core_plugin.h']]],
+  ['number_5fof_5fcore_5fnotifications_17255',['number_of_core_notifications',['../group__gaia__framework.html#gga302598c838d738e58938a1a5976f0b38aa2074e386b57065c12d669b10fbd3002',1,'gaia_core_plugin.h']]],
+  ['number_5fof_5fcore_5ftransport_17256',['number_of_core_transport',['../group__gaia__framework.html#gga157d907611e662cbe0ba2badcf4dbdeea77b32ec248f0b04d3e5dffd1bb39df43',1,'gaia_framework_data_channel.h']]],
+  ['number_5fof_5fdata_5fch_5fstate_17257',['number_of_data_ch_state',['../gaia__framework__data__channel_8c.html#afe5e28bfd3b3251d974ea9bba1d70f27ae2848396ecf928068df33ab43abb5d00',1,'gaia_framework_data_channel.c']]],
+  ['number_5fof_5fdata_5ftransfer_5fstatus_5fcode_17258',['number_of_data_transfer_status_code',['../group__gaia__framework.html#gga0632b436f18a4b321785db4d1d7e27b6ab32af814e03182b347d865198308bba0',1,'gaia_framework_data_channel.h']]],
+  ['number_5fof_5fdebug_5fcommands_17259',['number_of_debug_commands',['../group__gaia__debug__plugin.html#ggaf4823e192372ce2fde04f3bab27c6a53a1041fb8eba93bb0179286073c336e895',1,'gaia_debug_plugin.h']]],
+  ['number_5fof_5fdebug_5ferror_5fcodes_17260',['number_of_debug_error_codes',['../group__gaia__debug__plugin.html#ggaf88087c5dbea01c9f2b1ef941aff1730a69e66ad50ea584b1e21afd1b90e1aafa',1,'gaia_debug_plugin.h']]],
+  ['number_5fof_5fdebug_5fnotifications_17261',['number_of_debug_notifications',['../group__gaia__debug__plugin.html#gga2312593c628cbcd88a06443e981f9973a08220873e0ee19d0f25acd05fcde3c91',1,'gaia_debug_plugin.h']]],
+  ['number_5fof_5ffit_5ftest_5fcommands_17262',['number_of_fit_test_commands',['../group__fit__test__gaia__plugin.html#ggaa0ec47efdc54e4b8c798a3389190f0b9aa0a5694741ee92daf9ed31150197222f',1,'fit_test_gaia_plugin.h']]],
+  ['number_5fof_5ffit_5ftest_5fnotifications_17263',['number_of_fit_test_notifications',['../group__fit__test__gaia__plugin.html#ggaf2a77967666def6f5d4ff2ce948bd6bbae95ff50cd6a949b6d45c061c3ba6a9b8',1,'fit_test_gaia_plugin.h']]],
+  ['number_5fof_5fhandset_5fservice_5fcommands_17264',['number_of_handset_service_commands',['../group__handset__service__gaia__plugin.html#ggad5992101e10442776217bc0baf19a1ada5fb7bcdee4f8ba1aaad13761567769e2',1,'handset_service_gaia_plugin.h']]],
+  ['number_5fof_5fhandset_5fservice_5fnotifications_17265',['number_of_handset_service_notifications',['../group__handset__service__gaia__plugin.html#gga69a46a923161e39ae90552e88194dd0aa6634482bfb69dcf6e7e6199c0d3a1d2e',1,'handset_service_gaia_plugin.h']]],
+  ['number_5fof_5fmusic_5fprocessing_5fcommands_17266',['number_of_music_processing_commands',['../group__music__processing__gaia__plugin.html#gga20c136d68687e64dcd3cc614bb2c5386aa25d2a03df5439744e1ea5080d2acf0e',1,'music_processing_gaia_plugin.h']]],
+  ['number_5fof_5fmusic_5fprocessing_5fnotifications_17267',['number_of_music_processing_notifications',['../group__music__processing__gaia__plugin.html#gga5533bba042ea00f46615a5a87b576d60a39fab691ebee25f5ab1810e10558d1a9',1,'music_processing_gaia_plugin.h']]],
+  ['number_5fof_5fstatistics_5fcommands_17268',['number_of_statistics_commands',['../group__statistics__gaia__plugin.html#gga61ddc094391d06a4bada6b679f0195feab17f1ec14b21eaef6ce82122c0c222e1',1,'statistics_gaia_plugin.h']]],
+  ['number_5fof_5ftimestamp_5fevents_17269',['NUMBER_OF_TIMESTAMP_EVENTS',['../group__timestamp__event.html#gga81d4e5be466e8a127c01d233d6b1830aa2eb261df7090e39a3d2c0086838822f9',1,'timestamp_event.h']]],
+  ['number_5fof_5fui_5fuser_5fconfig_5fcommands_17270',['number_of_ui_user_config_commands',['../group__ui__user__config__gaia__plugin.html#ggac7f9600704c87ce614a9fcd1ab2ccf69afba1609bc6de4c0fc2b643eb1b21689b',1,'ui_user_config_gaia_plugin.h']]],
+  ['number_5fof_5fui_5fuser_5fconfig_5fnotifications_17271',['number_of_ui_user_config_notifications',['../group__ui__user__config__gaia__plugin.html#ggab223edf2fc11d892092f76172625897aaa0b96600dbdca485b70a6ad2fa57ed9c',1,'ui_user_config_gaia_plugin.h']]],
+  ['number_5fof_5fupgrade_5fcommands_17272',['number_of_upgrade_commands',['../group__upgrade__gaia__plugin.html#gga26dc9c4d51492bb814d8a0e9f693346aa8dfa1326178a7ecf6720f9db11e58b89',1,'upgrade_gaia_plugin.h']]],
+  ['number_5fof_5fupgrade_5fnotifications_17273',['number_of_upgrade_notifications',['../group__upgrade__gaia__plugin.html#gga9f9bcbf5b7ed82305cea7fe507c4c6fcad88e6f578347d044c45c5fc9eb9be862',1,'upgrade_gaia_plugin.h']]],
+  ['number_5fof_5fvoice_5fenhancement_5fcommands_17274',['number_of_voice_enhancement_commands',['../group__voice__enhancement__gaia__plugin.html#gga52502e3cb48430e8e705a4a523b94037a231e8fea4055959af63be66e87143210',1,'voice_enhancement_gaia_plugin.h']]],
+  ['number_5fof_5fvoice_5fenhancement_5fnotifications_17275',['number_of_voice_enhancement_notifications',['../group__voice__enhancement__gaia__plugin.html#gga22297c2ec10609dcb37dd403a4756bb6ab0f814ade02288dc1ba8a8a8d459238e',1,'voice_enhancement_gaia_plugin.h']]]
+];

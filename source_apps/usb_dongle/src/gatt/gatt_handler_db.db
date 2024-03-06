@@ -1,0 +1,24 @@
+/*
+ *   Copyright (c) 2008 - 2022 Qualcomm Technologies International, Ltd.
+ *   All Rights Reserved.
+ *   Qualcomm Technologies International, Ltd. Confidential and Proprietary.
+*/
+
+/* do not remove the following two lines, even if the GATT DB is empty */
+#include "gatt_server_db.dbi"
+#include "gatt_gap_server_db.dbi"
+
+/* add GATT servers below */
+#ifdef INCLUDE_LE_AUDIO_UNICAST_SOURCE
+#include "gatt_mcs_server_db.dbi"
+#include "gatt_telephone_bearer_server_db.dbi"
+
+#ifdef ENABLE_TMAP_PROFILE
+#include "gatt_tmas_server_db.dbi"
+#endif
+
+#include "gatt_cas_server_db.dbi"
+/* Open and Close Common audio service */
+OPEN_COMMON_AUDIO_SERVICE
+CLOSE_COMMON_AUDIO_SERVICE
+#endif

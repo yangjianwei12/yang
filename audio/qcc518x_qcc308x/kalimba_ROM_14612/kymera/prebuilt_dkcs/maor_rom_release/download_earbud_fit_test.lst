@@ -1,0 +1,5250 @@
+
+/home/svc-audio-dspsw/kymera_builds/builds/2023/kymera_2312060823/kalimba/kymera/tools/KCSMaker/out/14612/maor_rom_release/download/debugbin/download_earbud_fit_test_external.elf:     file format elf32-littlekalimba
+
+Disassembly of section .text_minim:
+
+84200000 <$_eft_create>:
+Capability API Handlers
+*/
+
+bool eft_create(OPERATOR_DATA *op_data, void *message_data,
+                      unsigned *response_id, void **resp_data)
+{
+84200000:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200002:	17 00       	r5 = r0 + Null;
+84200004:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+84200006:	ff fd 04 f0 	call (m) 0x8ea;
+8420000a:	25 e7 
+8420000c:	16 00       	r4 = r0 + Null;
+
+    /* NB: create is passed a zero-initialized structure so any fields not
+     * explicitly initialized are 0.
+     */
+
+    L5_DBG_MSG1("EFT Create: p_ext_data at %p", p_ext_data);
+8420000e:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200012:	48 25       	Null = rMAC - 5;
+84200014:	08 68       	if LT jump (m) Lc_eft_create_3;
+
+84200016 <Lc_eft_create_2>:
+84200016:	55 f1 02 f0 	r0 = Null + 357565138;
+8420001a:	d2 42 
+8420001c:	33 00       	r1 = r4 + Null;
+8420001e:	ff fd 08 f0 	call (m) 0x10c2;
+84200022:	25 e5 
+
+84200024 <Lc_eft_create_3>:
+
+    if (!base_op_create_lite(op_data, resp_data))
+84200024:	43 08       	r1 = r6 + Null;
+84200026:	3a 00       	r0 = r5 + Null;
+84200028:	ff fd 04 f0 	call (m) 0x850;
+8420002c:	29 e1 
+8420002e:	10 04       	Null = r0 - Null;
+84200030:	45 60       	if EQ jump (m) Lc_eft_create_12;
+
+84200032 <Lc_eft_create_4>:
+ * \param  response_data Pointer to the pointer to message that is allocated in the function.
+ * \param  new_status  A status ID that is to be sent in the message.
+ */
+inline static void base_op_change_response_status(void **response_data, STATUS_KYMERA new_status)
+{
+    (((OP_STD_RSP *)(*response_data))->status = new_status);
+84200032:	01 f0 00 60 	rMAC = Null + 4096;
+84200036:	82 f0 00 e8 	r0 = M[r6 + Null];
+8420003a:	51 8e       	M[r0 + 4] = rMAC;
+8420003c:	31 00       	rMAC = r4 + Null;
+     * termination point in create then change it to STATUS_OK.
+     */
+    base_op_change_response_status(resp_data, STATUS_CMD_FAILED);
+
+    /* Initialize buffers */
+    for (i = 0; i < EFT_MAX_SINKS; i++)
+8420003e:	14 71       	r10 = Null + 2;
+84200040:	03 4c       	do (m) Lc__loop0;
+
+84200042 <Lc_eft_create_5>:
+    {
+        p_ext_data->inputs[i] = NULL;
+84200042:	08 ee       	M[rMAC + Null] = Null;
+84200044:	09 21       	rMAC = rMAC + 4;
+
+84200046 <Lc__loop0>:
+     * termination point in create then change it to STATUS_OK.
+     */
+    base_op_change_response_status(resp_data, STATUS_CMD_FAILED);
+
+    /* Initialize buffers */
+    for (i = 0; i < EFT_MAX_SINKS; i++)
+84200046:	31 22       	rMAC = r4 + 8;
+    {
+        p_ext_data->inputs[i] = NULL;
+    }
+
+    for (i = 0; i < EFT_NUM_METADATA_CHANNELS; i++)
+84200048:	14 71       	r10 = Null + 2;
+8420004a:	03 4c       	do (m) Lc__loop1;
+
+8420004c <Lc_eft_create_7>:
+    {
+        p_ext_data->metadata_ip[i] = NULL;
+8420004c:	08 ee       	M[rMAC + Null] = Null;
+8420004e:	09 21       	rMAC = rMAC + 4;
+
+84200050 <Lc__loop1>:
+    for (i = 0; i < EFT_MAX_SINKS; i++)
+    {
+        p_ext_data->inputs[i] = NULL;
+    }
+
+    for (i = 0; i < EFT_NUM_METADATA_CHANNELS; i++)
+84200050:	21 f0 a2 40 	rMAC = Null + 16546;
+84200054:	f1 8f       	M[r4 + 28] = rMAC;
+    }
+
+    /* Initialize capid and sample rate fields */
+    p_ext_data->cap_id = EARBUD_FIT_TEST_16K_CAP_ID;
+
+    p_ext_data->sample_rate = 16000;
+84200056:	11 f0 80 7a 	rMAC = Null + 16000;
+8420005a:	b1 8f       	M[r4 + 24] = rMAC;
+    /* Initialize parameters */
+    p_default_params = (unsigned*) EARBUD_FIT_TEST_GetDefaults(p_ext_data->cap_id);
+8420005c:	22 f0 a2 40 	r0 = Null + 16546;
+84200060:	0b f0 31 e5 	call (m) $_EARBUD_FIT_TEST_GetDefaults;
+84200064:	13 00       	r1 = r0 + Null;
+    p_cap_params = (unsigned*) &p_ext_data->eft_cap_params;
+84200066:	34 30       	r2 = r4 + 32;
+    if(!cpsInitParameters(&p_ext_data->params_def,
+                          p_default_params,
+                          p_cap_params,
+                          sizeof(EARBUD_FIT_TEST_PARAMETERS)))
+84200068:	05 f0 64 40 	r3 = Null + 100;
+8420006c:	42 f0 b0 21 	r0 = r2 + 432;
+84200070:	ff fd 05 f0 	call (m) 0xb2a;
+84200074:	3b e5 
+84200076:	10 04       	Null = r0 - Null;
+84200078:	30 60       	if EQ jump (m) Lc_eft_create_15;
+
+8420007a <Lc_eft_create_9>:
+    {
+       return TRUE;
+    }
+
+    /* Initialize system mode */
+    p_ext_data->cur_mode = EARBUD_FIT_TEST_SYSMODE_FULL;
+8420007a:	41 20       	rMAC = Null + 1;
+8420007c:	61 f0 21 8e 	M[r4 + 132] = rMAC;
+    p_ext_data->host_mode = EARBUD_FIT_TEST_SYSMODE_FULL;
+84200080:	61 f0 23 8e 	M[r4 + 140] = rMAC;
+    p_ext_data->qact_mode = EARBUD_FIT_TEST_SYSMODE_FULL;
+84200084:	61 f0 24 8e 	M[r4 + 144] = rMAC;
+
+    /* Trigger re-initialization at start */
+    p_ext_data->re_init_flag = TRUE;
+84200088:	0f 00       	r5 = rMAC + Null;
+8420008a:	67 f0 97 8a 	MB[r4 + 151] = r5;
+
+    p_ext_data->p_tmp_ref_ip = cbuffer_create_with_malloc(
+                                EFT_INTERNAL_BUFFER_SIZE, BUF_DESC_SW_BUFFER);
+8420008e:	02 f0 41 40 	r0 = Null + 65;
+84200092:	03 00       	r1 = Null + Null;
+84200094:	ff fd a0 f0 	call (m) 0x1421e;
+84200098:	2b ec 
+8420009a:	32 8f       	M[r4 + 16] = r0;
+    if (p_ext_data->p_tmp_ref_ip == NULL)
+8420009c:	31 89       	rMAC = M[r4 + 16];
+8420009e:	1f 62       	if NE jump (m) Lc_eft_create_16;
+
+842000a0 <Lc_eft_create_10>:
+    {
+        eft_proc_destroy(p_ext_data);
+842000a0:	32 00       	r0 = r4 + Null;
+842000a2:	07 f0 39 ed 	call (m) Lc_eft_proc_destroy_1;
+        L2_DBG_MSG("EFT failed to allocate reference input buffer");
+842000a6:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842000aa:	88 24       	Null = rMAC - 2;
+842000ac:	07 68       	if LT jump (m) Lc_eft_create_12;
+
+842000ae <Lc_eft_create_11>:
+842000ae:	55 f1 02 f0 	r0 = Null + 357565167;
+842000b2:	ef 42 
+842000b4:	ff fd 07 f0 	call (m) 0x10b0;
+842000b8:	3d ef 
+
+842000ba <Lc_eft_create_12>:
+
+    L5_DBG_MSG1("EFT Create: p_ext_data at %p", p_ext_data);
+
+    if (!base_op_create_lite(op_data, resp_data))
+    {
+        return FALSE;
+842000ba:	02 00       	r0 = Null + Null;
+842000bc:	db 6e       	jump (m) Lc_eft_create_45;
+
+842000be <Lc_eft_create_13>:
+842000be:	81 f0 00 e8 	rMAC = M[r6 + Null];
+842000c2:	48 8e       	M[rMAC + 4] = Null;
+    }
+
+    /* Operator creation was succesful, change respone to STATUS_OK*/
+    base_op_change_response_status(resp_data, STATUS_OK);
+
+    L4_DBG_MSG("EFT: Created");
+842000c4:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842000c8:	08 25       	Null = rMAC - 4;
+842000ca:	07 68       	if LT jump (m) Lc_eft_create_15;
+
+842000cc <Lc_eft_create_14>:
+842000cc:	55 f1 02 f0 	r0 = Null + 357565497;
+842000d0:	39 48 
+842000d2:	ff fd 07 f0 	call (m) 0x10b0;
+842000d6:	3f ee 
+
+842000d8 <Lc_eft_create_15>:
+    if(!cpsInitParameters(&p_ext_data->params_def,
+                          p_default_params,
+                          p_cap_params,
+                          sizeof(EARBUD_FIT_TEST_PARAMETERS)))
+    {
+       return TRUE;
+842000d8:	42 20       	r0 = Null + 1;
+842000da:	cc 6e       	jump (m) Lc_eft_create_45;
+
+842000dc <Lc_eft_create_16>:
+        L2_DBG_MSG("EFT failed to allocate reference input buffer");
+        return FALSE;
+    }
+
+    p_ext_data->p_tmp_int_ip = cbuffer_create_with_malloc(
+                                EFT_INTERNAL_BUFFER_SIZE, BUF_DESC_SW_BUFFER);
+842000dc:	02 f0 41 40 	r0 = Null + 65;
+842000e0:	03 00       	r1 = Null + Null;
+842000e2:	ff fd a0 f0 	call (m) 0x1421e;
+842000e6:	3d e9 
+842000e8:	72 8f       	M[r4 + 20] = r0;
+    if (p_ext_data->p_tmp_int_ip == NULL)
+842000ea:	71 89       	rMAC = M[r4 + 20];
+842000ec:	0f 62       	if NE jump (m) Lc_eft_create_19;
+
+842000ee <Lc_eft_create_17>:
+    {
+        eft_proc_destroy(p_ext_data);
+842000ee:	32 00       	r0 = r4 + Null;
+842000f0:	07 f0 2b eb 	call (m) Lc_eft_proc_destroy_1;
+        L2_DBG_MSG("EFT failed to allocate int mic input buffer");
+842000f4:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842000f8:	88 24       	Null = rMAC - 2;
+842000fa:	e0 69       	if LT jump (m) Lc_eft_create_12;
+
+842000fc <Lc_eft_create_18>:
+842000fc:	55 f1 02 f0 	r0 = Null + 357565213;
+84200100:	1d 43 
+84200102:	ff fd 07 f0 	call (m) 0x10b0;
+84200106:	2f ed 
+84200108:	d9 6f       	jump (m) Lc_eft_create_12;
+
+8420010a <Lc_eft_create_19>:
+        return FALSE;
+    }
+
+    /* Allocate twiddle factor for AFB */
+    if (!math_fft_twiddle_alloc(AANC_FILTER_BANK_WINDOW_SIZE))
+8420010a:	02 f0 80 40 	r0 = Null + 128;
+8420010e:	ff fd 87 f4 	call 0x91054;
+84200112:	26 ea 
+84200114:	10 04       	Null = r0 - Null;
+84200116:	0f 62       	if NE jump (m) Lc_eft_create_22;
+
+84200118 <Lc_eft_create_20>:
+    {
+        eft_proc_destroy(p_ext_data);
+84200118:	32 00       	r0 = r4 + Null;
+8420011a:	07 f0 21 ea 	call (m) Lc_eft_proc_destroy_1;
+        L2_DBG_MSG("EFT failed to allocate twiddle factors");
+8420011e:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200122:	88 24       	Null = rMAC - 2;
+84200124:	cb 69       	if LT jump (m) Lc_eft_create_12;
+
+84200126 <Lc_eft_create_21>:
+84200126:	55 f1 02 f0 	r0 = Null + 357565257;
+8420012a:	49 43 
+8420012c:	ff fd 07 f0 	call (m) 0x10b0;
+84200130:	25 ec 
+84200132:	c4 6f       	jump (m) Lc_eft_create_12;
+
+84200134 <Lc_eft_create_22>:
+        return FALSE;
+    }
+    p_ext_data->twiddle_registered = TRUE;
+84200134:	67 f0 01 9a 	MB[r4 + 513] = r5;
+
+    /* Register scratch memory for AFB & allocate object */
+    if (!scratch_register())
+84200138:	ff fd 0f f0 	call (m) 0x1f5a;
+8420013c:	23 e1 
+8420013e:	10 04       	Null = r0 - Null;
+84200140:	0f 62       	if NE jump (m) Lc_eft_create_25;
+
+84200142 <Lc_eft_create_23>:
+    {
+        eft_proc_destroy(p_ext_data);
+84200142:	32 00       	r0 = r4 + Null;
+84200144:	07 f0 37 e8 	call (m) Lc_eft_proc_destroy_1;
+        L2_DBG_MSG("EFT failed to register scratch memory");
+84200148:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420014c:	88 24       	Null = rMAC - 2;
+8420014e:	b6 69       	if LT jump (m) Lc_eft_create_12;
+
+84200150 <Lc_eft_create_24>:
+84200150:	55 f1 02 f0 	r0 = Null + 357565296;
+84200154:	70 43 
+84200156:	ff fd 07 f0 	call (m) 0x10b0;
+8420015a:	3b ea 
+8420015c:	af 6f       	jump (m) Lc_eft_create_12;
+
+8420015e <Lc_eft_create_25>:
+        return FALSE;
+    }
+
+    p_ext_data->scratch_registered = TRUE;
+8420015e:	67 f0 00 9a 	MB[r4 + 512] = r5;
+
+    if (!scratch_reserve(AANC_AFB_SCRATCH_MEMORY, MALLOC_PREFERENCE_DM1) ||
+        !scratch_reserve(AANC_AFB_SCRATCH_MEMORY, MALLOC_PREFERENCE_DM2) ||
+        !scratch_reserve(AANC_AFB_SCRATCH_MEMORY, MALLOC_PREFERENCE_DM2))
+84200162:	3b 00       	r1 = r5 + Null;
+84200164:	02 f0 00 42 	r0 = Null + 512;
+84200168:	ff fd 0f f0 	call (m) 0x204c;
+8420016c:	25 e7 
+8420016e:	10 04       	Null = r0 - Null;
+84200170:	11 60       	if EQ jump (m) Lc_eft_create_28;
+
+84200172 <Lc_eft_create_26>:
+84200172:	83 20       	r1 = Null + 2;
+84200174:	02 f0 00 42 	r0 = Null + 512;
+84200178:	ff fd 0f f0 	call (m) 0x204c;
+8420017c:	35 e6 
+8420017e:	10 04       	Null = r0 - Null;
+84200180:	09 60       	if EQ jump (m) Lc_eft_create_28;
+
+84200182 <Lc_eft_create_27>:
+84200182:	83 20       	r1 = Null + 2;
+84200184:	02 f0 00 42 	r0 = Null + 512;
+84200188:	ff fd 0f f0 	call (m) 0x204c;
+8420018c:	25 e6 
+8420018e:	10 04       	Null = r0 - Null;
+84200190:	0f 62       	if NE jump (m) Lc_eft_create_30;
+
+84200192 <Lc_eft_create_28>:
+    {
+        eft_proc_destroy(p_ext_data);
+84200192:	32 00       	r0 = r4 + Null;
+84200194:	07 f0 27 e6 	call (m) Lc_eft_proc_destroy_1;
+        L2_DBG_MSG("EFT failed to reserve scratch memory");
+84200198:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420019c:	88 24       	Null = rMAC - 2;
+8420019e:	8e 69       	if LT jump (m) Lc_eft_create_12;
+
+842001a0 <Lc_eft_create_29>:
+842001a0:	55 f1 02 f0 	r0 = Null + 357565334;
+842001a4:	96 43 
+842001a6:	ff fd 07 f0 	call (m) 0x10b0;
+842001aa:	2b e8 
+842001ac:	87 6f       	jump (m) Lc_eft_create_12;
+
+842001ae <Lc_eft_create_30>:
+        return FALSE;
+    }
+
+    p_ext_data->p_afb_ref = xzpmalloc(aanc_afb_bytes());
+842001ae:	0b f0 33 e0 	call (m) $_aanc_afb_bytes;
+842001b2:	c3 20       	r1 = Null + 3;
+842001b4:	ff fd 36 f0 	call (m) 0x6f8e;
+842001b8:	3b ee 
+    if (p_ext_data->p_afb_ref == NULL)
+842001ba:	62 f0 7c 8e 	M[r4 + 496] = r0;
+842001be:	0e 62       	if NE jump (m) Lc_eft_create_34;
+
+842001c0 <Lc_eft_create_31>:
+    {
+        L2_DBG_MSG("EFT failed to allocate AFB ref");
+842001c0:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842001c4:	88 24       	Null = rMAC - 2;
+842001c6:	07 68       	if LT jump (m) Lc_eft_create_33;
+
+842001c8 <Lc_eft_create_32>:
+842001c8:	55 f1 02 f0 	r0 = Null + 357565371;
+842001cc:	bb 43 
+842001ce:	ff fd 07 f0 	call (m) 0x10b0;
+842001d2:	23 e7 
+
+842001d4 <Lc_eft_create_33>:
+        eft_proc_destroy(p_ext_data);
+842001d4:	32 00       	r0 = r4 + Null;
+842001d6:	07 f0 25 e4 	call (m) Lc_eft_proc_destroy_1;
+
+842001da <Lc_eft_create_34>:
+    }
+    aanc_afb_create(p_ext_data->p_afb_ref);
+842001da:	62 f0 7c 88 	r0 = M[r4 + 496];
+842001de:	0a f0 29 ef 	call (m) $_aanc_afb_create;
+
+    p_ext_data->p_afb_int = xzpmalloc(aanc_afb_bytes());
+842001e2:	0a f0 3f ee 	call (m) $_aanc_afb_bytes;
+842001e6:	c3 20       	r1 = Null + 3;
+842001e8:	ff fd 36 f0 	call (m) 0x6f8e;
+842001ec:	27 ed 
+    if (p_ext_data->p_afb_int == NULL)
+842001ee:	62 f0 7d 8e 	M[r4 + 500] = r0;
+842001f2:	0e 62       	if NE jump (m) Lc_eft_create_38;
+
+842001f4 <Lc_eft_create_35>:
+    {
+        L2_DBG_MSG("EFT failed to allocate AFB int");
+842001f4:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842001f8:	88 24       	Null = rMAC - 2;
+842001fa:	07 68       	if LT jump (m) Lc_eft_create_37;
+
+842001fc <Lc_eft_create_36>:
+842001fc:	55 f1 02 f0 	r0 = Null + 357565402;
+84200200:	da 43 
+84200202:	ff fd 07 f0 	call (m) 0x10b0;
+84200206:	2f e5 
+
+84200208 <Lc_eft_create_37>:
+        eft_proc_destroy(p_ext_data);
+84200208:	32 00       	r0 = r4 + Null;
+8420020a:	07 f0 31 e2 	call (m) Lc_eft_proc_destroy_1;
+
+8420020e <Lc_eft_create_38>:
+    }
+    aanc_afb_create(p_ext_data->p_afb_int);
+8420020e:	62 f0 7d 88 	r0 = M[r4 + 500];
+84200212:	0a f0 35 ed 	call (m) $_aanc_afb_create;
+
+    p_ext_data->p_fit = xzpmalloc(aanc_fit100_bytes());
+84200216:	0b f0 2b e9 	call (m) $_aanc_fit100_bytes;
+8420021a:	c3 20       	r1 = Null + 3;
+8420021c:	ff fd 36 f0 	call (m) 0x6f8e;
+84200220:	33 eb 
+    if (p_ext_data->p_fit == NULL)
+84200222:	62 f0 7e 8e 	M[r4 + 504] = r0;
+84200226:	0e 62       	if NE jump (m) Lc_eft_create_42;
+
+84200228 <Lc_eft_create_39>:
+    {
+        L2_DBG_MSG("EFT failed to allocate fit100");
+84200228:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420022c:	88 24       	Null = rMAC - 2;
+8420022e:	07 68       	if LT jump (m) Lc_eft_create_41;
+
+84200230 <Lc_eft_create_40>:
+84200230:	55 f1 02 f0 	r0 = Null + 357565433;
+84200234:	f9 43 
+84200236:	ff fd 07 f0 	call (m) 0x10b0;
+8420023a:	3b e3 
+
+8420023c <Lc_eft_create_41>:
+        eft_proc_destroy(p_ext_data);
+8420023c:	32 00       	r0 = r4 + Null;
+8420023e:	07 f0 3d e0 	call (m) Lc_eft_proc_destroy_1;
+
+84200242 <Lc_eft_create_42>:
+    }
+    aanc_fit100_create(p_ext_data->p_fit);
+84200242:	62 f0 7e 88 	r0 = M[r4 + 504];
+84200246:	0b f0 21 e8 	call (m) $_aanc_fit100_create;
+
+    if (!load_aanc_handle(&p_ext_data->f_handle))
+8420024a:	62 f0 fc 21 	r0 = r4 + 508;
+8420024e:	0a f0 27 e7 	call (m) .L0;
+84200252:	10 04       	Null = r0 - Null;
+84200254:	35 63       	if NE jump (m) Lc_eft_create_13;
+
+84200256 <Lc_eft_create_43>:
+    {
+        eft_proc_destroy(p_ext_data);
+84200256:	32 00       	r0 = r4 + Null;
+84200258:	07 f0 23 e0 	call (m) Lc_eft_proc_destroy_1;
+        L2_DBG_MSG("EFT failed to load feature handle");
+8420025c:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200260:	88 24       	Null = rMAC - 2;
+84200262:	2c 69       	if LT jump (m) Lc_eft_create_12;
+
+84200264 <Lc_eft_create_44>:
+84200264:	55 f1 02 f0 	r0 = Null + 357565463;
+84200268:	17 48 
+8420026a:	ff fd 07 f0 	call (m) 0x10b0;
+8420026e:	27 e2 
+84200270:	25 6f       	jump (m) Lc_eft_create_12;
+
+84200272 <Lc_eft_create_45>:
+    /* Operator creation was succesful, change respone to STATUS_OK*/
+    base_op_change_response_status(resp_data, STATUS_OK);
+
+    L4_DBG_MSG("EFT: Created");
+    return TRUE;
+}
+84200272:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200274:	d8 4c       	rts;
+
+84200276 <$_eft_destroy>:
+
+bool eft_destroy(OPERATOR_DATA *op_data, void *message_data,
+                  unsigned *response_id, void **resp_data)
+{
+84200276:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200278:	16 00       	r4 = r0 + Null;
+8420027a:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+8420027c:	ff fd 03 f0 	call (m) 0x8ea;
+84200280:	2f e3 
+84200282:	17 00       	r5 = r0 + Null;
+                  unsigned *response_id, void **resp_data)
+{
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* call base_op destroy that creates and fills response message, too */
+    if (!base_op_destroy_lite(op_data, resp_data))
+84200284:	43 08       	r1 = r6 + Null;
+84200286:	32 00       	r0 = r4 + Null;
+84200288:	ff fd 02 f0 	call (m) 0x834;
+8420028c:	2d ed 
+8420028e:	10 04       	Null = r0 - Null;
+84200290:	03 62       	if NE jump (m) Lc_eft_destroy_3;
+
+84200292 <Lc_eft_destroy_2>:
+    {
+        return FALSE;
+84200292:	02 00       	r0 = Null + Null;
+84200294:	1b 6e       	jump (m) Lc_eft_destroy_9;
+
+84200296 <Lc_eft_destroy_3>:
+    }
+
+    /* TODO: patch functions */
+
+    if (p_ext_data != NULL)
+84200296:	38 04       	Null = r5 - Null;
+84200298:	0e 60       	if EQ jump (m) Lc_eft_destroy_6;
+
+8420029a <Lc_eft_destroy_4>:
+    {
+        eft_proc_destroy(p_ext_data);
+8420029a:	3a 00       	r0 = r5 + Null;
+8420029c:	06 f0 3f ed 	call (m) Lc_eft_proc_destroy_1;
+        L4_DBG_MSG("EFT: Cleanup complete.");
+842002a0:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842002a4:	08 25       	Null = rMAC - 4;
+842002a6:	11 68       	if LT jump (m) Lc_eft_destroy_8;
+
+842002a8 <Lc_eft_destroy_5>:
+842002a8:	55 f1 02 f0 	r0 = Null + 357565510;
+842002ac:	46 48 
+842002ae:	ff fd 07 f0 	call (m) 0x10b0;
+842002b2:	23 e0 
+
+842002b4 <Lc_eft_destroy_6>:
+    }
+
+    L4_DBG_MSG("EFT: Destroyed");
+842002b4:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842002b8:	08 25       	Null = rMAC - 4;
+842002ba:	07 68       	if LT jump (m) Lc_eft_destroy_8;
+
+842002bc <Lc_eft_destroy_7>:
+842002bc:	55 f1 02 f0 	r0 = Null + 357565533;
+842002c0:	5d 48 
+842002c2:	ff fd 06 f0 	call (m) 0x10b0;
+842002c6:	2f ef 
+
+842002c8 <Lc_eft_destroy_8>:
+    return TRUE;
+842002c8:	42 20       	r0 = Null + 1;
+
+842002ca <Lc_eft_destroy_9>:
+}
+842002ca:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842002cc:	d8 4c       	rts;
+
+842002ce <$_eft_start>:
+
+bool eft_start(OPERATOR_DATA *op_data, void *message_data,
+                     unsigned *response_id, void **resp_data)
+{
+842002ce:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842002d0:	10 09       	r6 = r0 + Null;
+842002d2:	2e 00       	r4 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+842002d4:	ff fd 03 f0 	call (m) 0x8ea;
+842002d8:	37 e0 
+842002da:	17 00       	r5 = r0 + Null;
+{
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    /* TODO: patch functions */
+
+    /* Start with the assumption that we fail and change later if we succeed */
+    if (!base_op_build_std_response_ex(op_data, STATUS_CMD_FAILED, resp_data))
+842002dc:	03 f0 00 60 	r1 = Null + 4096;
+842002e0:	34 00       	r2 = r4 + Null;
+842002e2:	42 08       	r0 = r6 + Null;
+842002e4:	ff fd 02 f0 	call (m) 0x8c0;
+842002e8:	3d ee 
+842002ea:	10 04       	Null = r0 - Null;
+842002ec:	03 62       	if NE jump (m) Lc_eft_start_3;
+
+842002ee <Lc_eft_start_2>:
+    {
+        return FALSE;
+842002ee:	02 00       	r0 = Null + Null;
+842002f0:	21 6e       	jump (m) Lc_eft_start_10;
+
+842002f2 <Lc_eft_start_3>:
+    }
+
+    /* Check that we have a minimum number of terminals connected */
+    if (p_ext_data->inputs[EFT_PLAYBACK_TERMINAL_ID] == NULL ||
+        p_ext_data->inputs[EFT_MIC_INT_TERMINAL_ID] == NULL)
+842002f2:	39 e8       	rMAC = M[r5 + Null];
+842002f4:	03 60       	if EQ jump (m) Lc_eft_start_5;
+
+842002f6 <Lc_eft_start_4>:
+842002f6:	79 88       	rMAC = M[r5 + 4];
+842002f8:	0d 62       	if NE jump (m) Lc_eft_start_8;
+
+842002fa <Lc_eft_start_5>:
+    {
+        L4_DBG_MSG("EFT start failure: inputs not connected");
+842002fa:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842002fe:	08 25       	Null = rMAC - 4;
+84200300:	07 68       	if LT jump (m) Lc_eft_start_7;
+
+84200302 <Lc_eft_start_6>:
+84200302:	55 f1 02 f0 	r0 = Null + 357565548;
+84200306:	6c 48 
+84200308:	ff fd 06 f0 	call (m) 0x10b0;
+8420030c:	29 ed 
+
+8420030e <Lc_eft_start_7>:
+        return TRUE;
+8420030e:	42 20       	r0 = Null + 1;
+84200310:	11 6e       	jump (m) Lc_eft_start_10;
+
+84200312 <Lc_eft_start_8>:
+    }
+
+    /* Set reinitialization flags to ensure first run behavior */
+    p_ext_data->re_init_flag = TRUE;
+84200312:	41 20       	rMAC = Null + 1;
+84200314:	71 f0 97 8a 	MB[r5 + 151] = rMAC;
+84200318:	31 e8       	rMAC = M[r4 + Null];
+8420031a:	48 8e       	M[rMAC + 4] = Null;
+
+    /* All good */
+    base_op_change_response_status(resp_data, STATUS_OK);
+
+    L4_DBG_MSG("EFT Started");
+8420031c:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200320:	08 25       	Null = rMAC - 4;
+84200322:	f6 69       	if LT jump (m) Lc_eft_start_7;
+
+84200324 <Lc_eft_start_9>:
+84200324:	55 f1 02 f0 	r0 = Null + 357565588;
+84200328:	94 48 
+8420032a:	ff fd 06 f0 	call (m) 0x10b0;
+8420032e:	27 ec 
+84200330:	ef 6f       	jump (m) Lc_eft_start_7;
+
+84200332 <Lc_eft_start_10>:
+    return TRUE;
+}
+84200332:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200334:	d8 4c       	rts;
+
+84200336 <$_eft_reset>:
+
+bool eft_reset(OPERATOR_DATA *op_data, void *message_data,
+                     unsigned *response_id, void **resp_data)
+{
+84200336:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200338:	16 00       	r4 = r0 + Null;
+8420033a:	1a 09       	r8 = r1 + Null;
+8420033c:	27 00       	r5 = r2 + Null;
+8420033e:	29 09       	r7 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+84200340:	ff fd 02 f0 	call (m) 0x8ea;
+84200344:	2b ed 
+84200346:	10 09       	r6 = r0 + Null;
+bool eft_reset(OPERATOR_DATA *op_data, void *message_data,
+                     unsigned *response_id, void **resp_data)
+{
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    if (!base_op_reset(op_data, message_data, response_id, resp_data))
+84200348:	4d 08       	r3 = r7 + Null;
+8420034a:	3c 00       	r2 = r5 + Null;
+8420034c:	53 08       	r1 = r8 + Null;
+8420034e:	32 00       	r0 = r4 + Null;
+84200350:	ff fd 01 f0 	call (m) 0x724;
+84200354:	35 ee 
+84200356:	10 04       	Null = r0 - Null;
+84200358:	03 62       	if NE jump (m) Lc_eft_reset_3;
+
+8420035a <Lc_eft_reset_2>:
+    {
+        return FALSE;
+8420035a:	02 00       	r0 = Null + Null;
+8420035c:	0f 6e       	jump (m) Lc_eft_reset_6;
+
+8420035e <Lc_eft_reset_3>:
+    }
+
+    p_ext_data->re_init_flag = TRUE;
+8420035e:	41 20       	rMAC = Null + 1;
+84200360:	81 f0 97 8a 	MB[r6 + 151] = rMAC;
+
+    L4_DBG_MSG("EFT: Reset");
+84200364:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200368:	08 25       	Null = rMAC - 4;
+8420036a:	07 68       	if LT jump (m) Lc_eft_reset_5;
+
+8420036c <Lc_eft_reset_4>:
+8420036c:	55 f1 02 f0 	r0 = Null + 357565600;
+84200370:	a0 48 
+84200372:	ff fd 06 f0 	call (m) 0x10b0;
+84200376:	3f e9 
+
+84200378 <Lc_eft_reset_5>:
+    return TRUE;
+84200378:	42 20       	r0 = Null + 1;
+
+8420037a <Lc_eft_reset_6>:
+}
+8420037a:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+8420037c:	d8 4c       	rts;
+
+8420037e <$_eft_connect>:
+
+bool eft_connect(OPERATOR_DATA *op_data, void *message_data,
+                       unsigned *response_id, void **resp_data)
+{
+8420037e:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+84200380:	16 00       	r4 = r0 + Null;
+84200382:	18 09       	r6 = r1 + Null;
+84200384:	2f 00       	r5 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+84200386:	ff fd 02 f0 	call (m) 0x8ea;
+8420038a:	25 eb 
+8420038c:	11 09       	r7 = r0 + Null;
+    unsigned terminal_id, terminal_num;
+    tCbuffer* pterminal_buf;
+
+    /* Create the response. If there aren't sufficient resources for this fail
+     * early. */
+    if (!base_op_build_std_response_ex(op_data, STATUS_OK, resp_data))
+8420038e:	03 00       	r1 = Null + Null;
+84200390:	3c 00       	r2 = r5 + Null;
+84200392:	32 00       	r0 = r4 + Null;
+84200394:	ff fd 02 f0 	call (m) 0x8c0;
+84200398:	2d e9 
+8420039a:	10 04       	Null = r0 - Null;
+8420039c:	03 62       	if NE jump (m) Lc_eft_connect_3;
+
+8420039e <Lc_eft_connect_2>:
+    {
+        return FALSE;
+8420039e:	02 00       	r0 = Null + Null;
+842003a0:	43 6e       	jump (m) Lc_eft_connect_17;
+
+842003a2 <Lc_eft_connect_3>:
+    }
+
+    /* Only sink terminal can be connected */
+    terminal_id = OPMGR_GET_OP_CONNECT_TERMINAL_ID(message_data);
+842003a2:	81 f0 00 e8 	rMAC = M[r6 + Null];
+    terminal_num = terminal_id & TERMINAL_NUM_MASK;
+842003a6:	8e c2       	r4 = rMAC AND 0x3f;
+    L4_DBG_MSG1("EFT connect: sink terminal %u", terminal_num);
+842003a8:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842003ac:	08 25       	Null = rMAC - 4;
+842003ae:	08 68       	if LT jump (m) Lc_eft_connect_5;
+
+842003b0 <Lc_eft_connect_4>:
+842003b0:	55 f1 02 f0 	r0 = Null + 357565611;
+842003b4:	ab 48 
+842003b6:	33 00       	r1 = r4 + Null;
+842003b8:	ff fd 06 f0 	call (m) 0x10c2;
+842003bc:	2b e8 
+
+842003be <Lc_eft_connect_5>:
+
+    /* Can't use invalid ID */
+    if (terminal_num >= EFT_MAX_SINKS)
+842003be:	b0 24       	Null = r4 - 2;
+842003c0:	12 64       	if NC jump (m) Lc_eft_connect_10;
+
+842003c2 <Lc_eft_connect_6>:
+    {
+        /* invalid terminal id */
+        L4_DBG_MSG1("EFT connect failed: invalid terminal %u", terminal_num);
+842003c2:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842003c6:	08 25       	Null = rMAC - 4;
+842003c8:	08 68       	if LT jump (m) Lc_eft_connect_8;
+
+842003ca <Lc_eft_connect_7>:
+842003ca:	55 f1 02 f0 	r0 = Null + 357565641;
+842003ce:	c9 48 
+842003d0:	33 00       	r1 = r4 + Null;
+842003d2:	ff fd 06 f0 	call (m) 0x10c2;
+842003d6:	31 e7 
+
+842003d8 <Lc_eft_connect_8>:
+842003d8:	01 f0 03 60 	rMAC = Null + 4099;
+842003dc:	3a e8       	r0 = M[r5 + Null];
+842003de:	51 8e       	M[r0 + 4] = rMAC;
+
+842003e0 <Lc_eft_connect_9>:
+        buff_has_metadata(pterminal_buf))
+    {
+        p_ext_data->metadata_ip[terminal_num] = pterminal_buf;
+    }
+
+    return TRUE;
+842003e0:	42 20       	r0 = Null + 1;
+842003e2:	22 6e       	jump (m) Lc_eft_connect_17;
+
+842003e4 <Lc_eft_connect_10>:
+        base_op_change_response_status(resp_data, STATUS_INVALID_CMD_PARAMS);
+        return TRUE;
+    }
+
+    /* Can't connect if already connected */
+    if (p_ext_data->inputs[terminal_num] != NULL)
+842003e4:	72 54       	r0 = r4 LSHIFT 2;
+842003e6:	11 0d       	r7 = r0 + r7;
+842003e8:	91 f0 00 e8 	rMAC = M[r7 + Null];
+842003ec:	11 60       	if EQ jump (m) Lc_eft_connect_14;
+
+842003ee <Lc_eft_connect_11>:
+    {
+        L4_DBG_MSG1("EFT connect failed: terminal %u already connected",
+                    terminal_num);
+842003ee:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842003f2:	08 25       	Null = rMAC - 4;
+842003f4:	08 68       	if LT jump (m) Lc_eft_connect_13;
+
+842003f6 <Lc_eft_connect_12>:
+842003f6:	55 f1 02 f0 	r0 = Null + 357565681;
+842003fa:	f1 48 
+842003fc:	33 00       	r1 = r4 + Null;
+842003fe:	ff fd 06 f0 	call (m) 0x10c2;
+84200402:	25 e6 
+
+84200404 <Lc_eft_connect_13>:
+84200404:	01 f0 00 60 	rMAC = Null + 4096;
+84200408:	3a e8       	r0 = M[r5 + Null];
+8420040a:	51 8e       	M[r0 + 4] = rMAC;
+8420040c:	ea 6f       	jump (m) Lc_eft_connect_9;
+
+8420040e <Lc_eft_connect_14>:
+        base_op_change_response_status(resp_data, STATUS_CMD_FAILED);
+        return TRUE;
+    }
+
+    pterminal_buf = OPMGR_GET_OP_CONNECT_BUFFER(message_data);
+8420040e:	81 f0 01 88 	rMAC = M[r6 + 4];
+    p_ext_data->inputs[terminal_num] = pterminal_buf;
+84200412:	91 f0 00 ee 	M[r7 + Null] = rMAC;
+
+    if (p_ext_data->metadata_ip[terminal_num] == NULL &&
+        buff_has_metadata(pterminal_buf))
+84200416:	92 f0 02 88 	r0 = M[r7 + 8];
+8420041a:	e3 63       	if NE jump (m) Lc_eft_connect_9;
+
+8420041c <Lc_eft_connect_15>:
+ *
+ * \return TRUE if the buffer supports metadata. FALSE if it doesn't.
+ */
+static inline bool buff_has_metadata(const tCbuffer *buff)
+{
+    if (buff->metadata != NULL)
+8420041c:	8a 89       	r0 = M[rMAC + 24];
+8420041e:	e1 61       	if EQ jump (m) Lc_eft_connect_9;
+
+84200420 <Lc_eft_connect_16>:
+    {
+        p_ext_data->metadata_ip[terminal_num] = pterminal_buf;
+84200420:	91 f0 02 8e 	M[r7 + 8] = rMAC;
+84200424:	de 6f       	jump (m) Lc_eft_connect_9;
+
+84200426 <Lc_eft_connect_17>:
+    }
+
+    return TRUE;
+}
+84200426:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+84200428:	d8 4c       	rts;
+
+8420042a <$_eft_disconnect>:
+
+bool eft_disconnect(OPERATOR_DATA *op_data, void *message_data,
+                          unsigned *response_id, void **resp_data)
+{
+8420042a:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+8420042c:	16 00       	r4 = r0 + Null;
+8420042e:	19 09       	r7 = r1 + Null;
+84200430:	2f 00       	r5 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+84200432:	ff fd 02 f0 	call (m) 0x8ea;
+84200436:	39 e5 
+84200438:	10 09       	r6 = r0 + Null;
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    unsigned terminal_id, terminal_num;
+
+    /* Create the response. If there aren't sufficient resources for this fail
+     * early. */
+    if (!base_op_build_std_response_ex(op_data, STATUS_OK, resp_data))
+8420043a:	03 00       	r1 = Null + Null;
+8420043c:	3c 00       	r2 = r5 + Null;
+8420043e:	32 00       	r0 = r4 + Null;
+84200440:	ff fd 02 f0 	call (m) 0x8c0;
+84200444:	21 e4 
+84200446:	10 04       	Null = r0 - Null;
+84200448:	03 62       	if NE jump (m) Lc_eft_disconnect_3;
+
+8420044a <Lc_eft_disconnect_2>:
+    {
+        return FALSE;
+8420044a:	02 00       	r0 = Null + Null;
+8420044c:	3c 6e       	jump (m) Lc_eft_disconnect_15;
+
+8420044e <Lc_eft_disconnect_3>:
+    }
+
+    /* Only sink terminal can be disconnected */
+    terminal_id = OPMGR_GET_OP_CONNECT_TERMINAL_ID(message_data);
+8420044e:	91 f0 00 e8 	rMAC = M[r7 + Null];
+    terminal_num = terminal_id & TERMINAL_NUM_MASK;
+84200452:	8e c2       	r4 = rMAC AND 0x3f;
+    L4_DBG_MSG1("EFT disconnect: sink terminal %u", terminal_num);
+84200454:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200458:	08 25       	Null = rMAC - 4;
+8420045a:	08 68       	if LT jump (m) Lc_eft_disconnect_5;
+
+8420045c <Lc_eft_disconnect_4>:
+8420045c:	55 f1 02 f0 	r0 = Null + 357565731;
+84200460:	23 49 
+84200462:	33 00       	r1 = r4 + Null;
+84200464:	ff fd 06 f0 	call (m) 0x10c2;
+84200468:	3f e2 
+
+8420046a <Lc_eft_disconnect_5>:
+
+    /* Can't use invalid ID */
+    if (terminal_num >= EFT_MAX_SINKS)
+8420046a:	b0 24       	Null = r4 - 2;
+8420046c:	11 64       	if NC jump (m) Lc_eft_disconnect_9;
+
+8420046e <Lc_eft_disconnect_6>:
+    {
+        /* invalid terminal id */
+        L4_DBG_MSG1("EFT disconnect failed: invalid terminal %u",
+                    terminal_num);
+8420046e:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200472:	08 25       	Null = rMAC - 4;
+84200474:	08 68       	if LT jump (m) Lc_eft_disconnect_8;
+
+84200476 <Lc_eft_disconnect_7>:
+84200476:	55 f1 02 f0 	r0 = Null + 357565764;
+8420047a:	44 49 
+8420047c:	33 00       	r1 = r4 + Null;
+8420047e:	ff fd 06 f0 	call (m) 0x10c2;
+84200482:	25 e2 
+
+84200484 <Lc_eft_disconnect_8>:
+84200484:	01 f0 03 60 	rMAC = Null + 4099;
+84200488:	3a e8       	r0 = M[r5 + Null];
+8420048a:	51 8e       	M[r0 + 4] = rMAC;
+8420048c:	15 6e       	jump (m) Lc_eft_disconnect_13;
+
+8420048e <Lc_eft_disconnect_9>:
+        base_op_change_response_status(resp_data, STATUS_INVALID_CMD_PARAMS);
+        return TRUE;
+    }
+
+    /* Can't disconnect if not connected */
+    if (p_ext_data->inputs[terminal_num] == NULL)
+8420048e:	72 54       	r0 = r4 LSHIFT 2;
+84200490:	10 0d       	r6 = r0 + r6;
+84200492:	81 f0 00 e8 	rMAC = M[r6 + Null];
+84200496:	12 62       	if NE jump (m) Lc_eft_disconnect_14;
+
+84200498 <Lc_eft_disconnect_10>:
+    {
+        L4_DBG_MSG1("EFT disconnect failed: terminal %u not connected",
+                    terminal_num);
+84200498:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420049c:	08 25       	Null = rMAC - 4;
+8420049e:	08 68       	if LT jump (m) Lc_eft_disconnect_12;
+
+842004a0 <Lc_eft_disconnect_11>:
+842004a0:	55 f1 02 f0 	r0 = Null + 357565807;
+842004a4:	6f 49 
+842004a6:	33 00       	r1 = r4 + Null;
+842004a8:	ff fd 06 f0 	call (m) 0x10c2;
+842004ac:	3b e0 
+
+842004ae <Lc_eft_disconnect_12>:
+842004ae:	01 f0 00 60 	rMAC = Null + 4096;
+842004b2:	3a e8       	r0 = M[r5 + Null];
+842004b4:	51 8e       	M[r0 + 4] = rMAC;
+
+842004b6 <Lc_eft_disconnect_13>:
+
+    /*  Disconnect the existing metadata and input channel. */
+    p_ext_data->metadata_ip[terminal_num] = NULL;
+    p_ext_data->inputs[terminal_num] = NULL;
+
+    return TRUE;
+842004b6:	42 20       	r0 = Null + 1;
+842004b8:	06 6e       	jump (m) Lc_eft_disconnect_15;
+
+842004ba <Lc_eft_disconnect_14>:
+        base_op_change_response_status(resp_data, STATUS_CMD_FAILED);
+        return TRUE;
+    }
+
+    /*  Disconnect the existing metadata and input channel. */
+    p_ext_data->metadata_ip[terminal_num] = NULL;
+842004ba:	80 f0 02 8e 	M[r6 + 8] = Null;
+    p_ext_data->inputs[terminal_num] = NULL;
+842004be:	80 f0 00 ee 	M[r6 + Null] = Null;
+842004c2:	fa 6f       	jump (m) Lc_eft_disconnect_13;
+
+842004c4 <Lc_eft_disconnect_15>:
+
+    return TRUE;
+}
+842004c4:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+842004c6:	d8 4c       	rts;
+
+842004c8 <$_eft_buffer_details>:
+
+bool eft_buffer_details(OPERATOR_DATA *op_data, void *message_data,
+                              unsigned *response_id, void **resp_data)
+{
+842004c8:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+842004ca:	11 09       	r7 = r0 + Null;
+842004cc:	1f 00       	r5 = r1 + Null;
+842004ce:	2e 00       	r4 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+842004d0:	ff fd 02 f0 	call (m) 0x8ea;
+842004d4:	3b e0 
+842004d6:	10 09       	r6 = r0 + Null;
+
+bool eft_buffer_details(OPERATOR_DATA *op_data, void *message_data,
+                              unsigned *response_id, void **resp_data)
+{
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    unsigned terminal_id = OPMGR_GET_OP_CONNECT_TERMINAL_ID(message_data);
+842004d8:	39 e8       	rMAC = M[r5 + Null];
+    /* Response pointer */
+    OP_BUF_DETAILS_RSP *p_resp;
+
+#ifndef DISABLE_IN_PLACE
+    unsigned terminal_num = terminal_id & TERMINAL_NUM_MASK;
+842004da:	8f c2       	r5 = rMAC AND 0x3f;
+#endif
+
+    if (!base_op_buffer_details_lite(op_data, resp_data))
+842004dc:	33 00       	r1 = r4 + Null;
+842004de:	4a 08       	r0 = r7 + Null;
+842004e0:	ff fd 01 f0 	call (m) 0x842;
+842004e4:	23 eb 
+842004e6:	10 04       	Null = r0 - Null;
+842004e8:	03 62       	if NE jump (m) Lc_eft_buffer_details_3;
+
+842004ea <Lc_eft_buffer_details_2>:
+    {
+        return FALSE;
+842004ea:	02 00       	r0 = Null + Null;
+842004ec:	24 6e       	jump (m) Lc_eft_buffer_details_11;
+
+842004ee <Lc_eft_buffer_details_3>:
+    }
+
+    /* Response pointer */
+    p_resp = (OP_BUF_DETAILS_RSP*) *resp_data;
+842004ee:	31 e8       	rMAC = M[r4 + Null];
+    p_resp->runs_in_place = FALSE;
+    p_resp->b.buffer_size = EFT_DEFAULT_BUFFER_SIZE;
+#else
+
+    /* Can't use invalid ID */
+    if (terminal_num >= EFT_MAX_SINKS)
+842004f0:	b8 24       	Null = r5 - 2;
+842004f2:	11 64       	if NC jump (m) Lc_eft_buffer_details_7;
+
+842004f4 <Lc_eft_buffer_details_4>:
+    {
+        /* invalid terminal id */
+        L4_DBG_MSG1("EFT buffer details failed: invalid terminal %d",
+                    terminal_num);
+842004f4:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842004f8:	08 25       	Null = rMAC - 4;
+842004fa:	08 68       	if LT jump (m) Lc_eft_buffer_details_6;
+
+842004fc <Lc_eft_buffer_details_5>:
+842004fc:	55 f1 02 f0 	r0 = Null + 357565856;
+84200500:	a0 49 
+84200502:	3b 00       	r1 = r5 + Null;
+84200504:	ff fd 05 f0 	call (m) 0x10c2;
+84200508:	3f ed 
+
+8420050a <Lc_eft_buffer_details_6>:
+8420050a:	01 f0 03 60 	rMAC = Null + 4099;
+8420050e:	32 e8       	r0 = M[r4 + Null];
+84200510:	51 8e       	M[r0 + 4] = rMAC;
+84200512:	10 6e       	jump (m) Lc_eft_buffer_details_10;
+
+84200514 <Lc_eft_buffer_details_7>:
+        base_op_change_response_status(resp_data, STATUS_INVALID_CMD_PARAMS);
+        return TRUE;
+    }
+    /* Operator does not run in place */
+    p_resp->runs_in_place = FALSE;
+84200514:	c8 9a       	MB[rMAC + 11] = Null;
+    p_resp->b.buffer_size = EFT_DEFAULT_BUFFER_SIZE;
+84200516:	02 f0 80 40 	r0 = Null + 128;
+8420051a:	4a 8f       	M[rMAC + 20] = r0;
+    p_resp->supports_metadata = TRUE;
+8420051c:	42 20       	r0 = Null + 1;
+8420051e:	0a 9b       	MB[rMAC + 12] = r0;
+
+    if (terminal_num == EFT_PLAYBACK_TERMINAL_ID)
+84200520:	38 04       	Null = r5 - Null;
+84200522:	05 62       	if NE jump (m) Lc_eft_buffer_details_9;
+
+84200524 <Lc_eft_buffer_details_8>:
+    {
+        p_resp->metadata_buffer = p_ext_data->metadata_ip[EFT_METADATA_PLAYBACK_ID];
+84200524:	82 f0 02 88 	r0 = M[r6 + 8];
+84200528:	0a 8f       	M[rMAC + 16] = r0;
+8420052a:	04 6e       	jump (m) Lc_eft_buffer_details_10;
+
+8420052c <Lc_eft_buffer_details_9>:
+    }
+    else
+    {
+        p_resp->metadata_buffer = p_ext_data->metadata_ip[EFT_METADATA_INT_ID];
+8420052c:	82 f0 03 88 	r0 = M[r6 + 12];
+84200530:	0a 8f       	M[rMAC + 16] = r0;
+
+84200532 <Lc_eft_buffer_details_10>:
+    }
+#endif /* DISABLE_IN_PLACE */
+    return TRUE;
+84200532:	42 20       	r0 = Null + 1;
+
+84200534 <Lc_eft_buffer_details_11>:
+}
+84200534:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+84200536:	d8 4c       	rts;
+
+84200538 <$_eft_get_sched_info>:
+
+bool eft_get_sched_info(OPERATOR_DATA *op_data, void *message_data,
+                              unsigned *response_id, void **resp_data)
+{
+84200538:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+8420053a:	17 00       	r5 = r0 + Null;
+8420053c:	2e 00       	r4 = r3 + Null;
+    OP_SCHED_INFO_RSP* resp;
+
+    resp = base_op_get_sched_info_ex(op_data, message_data, response_id);
+8420053e:	ff fd 01 f0 	call (m) 0x7f6;
+84200542:	39 e5 
+    if (resp == NULL)
+84200544:	10 04       	Null = r0 - Null;
+84200546:	09 62       	if NE jump (m) Lc_eft_get_sched_info_3;
+
+84200548 <Lc_eft_get_sched_info_2>:
+    {
+        return base_op_build_std_response_ex(op_data, STATUS_CMD_FAILED,
+                                             resp_data);
+84200548:	03 f0 00 60 	r1 = Null + 4096;
+8420054c:	34 00       	r2 = r4 + Null;
+8420054e:	3a 00       	r0 = r5 + Null;
+84200550:	ff fd 01 f0 	call (m) 0x8c0;
+84200554:	31 eb 
+84200556:	05 6e       	jump (m) Lc_eft_get_sched_info_4;
+
+84200558 <Lc_eft_get_sched_info_3>:
+    }
+
+    *resp_data = resp;
+84200558:	32 ee       	M[r4 + Null] = r0;
+    resp->block_size = EFT_DEFAULT_BLOCK_SIZE;
+8420055a:	01 30       	rMAC = Null + 32;
+8420055c:	91 8e       	M[r0 + 8] = rMAC;
+
+    return TRUE;
+8420055e:	42 20       	r0 = Null + 1;
+
+84200560 <Lc_eft_get_sched_info_4>:
+}
+84200560:	f2 48       	popm <FP, r4, r5, rLink>;
+84200562:	d8 4c       	rts;
+
+84200564 <$_eft_opmsg_set_control>:
+Opmsg handlers
+*/
+bool eft_opmsg_set_control(OPERATOR_DATA *op_data, void *message_data,
+                                 unsigned *resp_length,
+                                 OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200564:	f6 1e       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x20;
+84200566:	42 de       	M[FP + 32] = r0;
+84200568:	4b de       	M[FP + 36] = r1;
+8420056a:	27 00       	r5 = r2 + Null;
+8420056c:	55 de       	M[FP + 40] = r3;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+8420056e:	ff fd 01 f0 	call (m) 0x8ea;
+84200572:	3d eb 
+84200574:	16 00       	r4 = r0 + Null;
+{
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    unsigned i;
+    unsigned num_controls;
+    bool mode_update = FALSE;
+84200576:	03 09       	r9 = Null + Null;
+
+    OPMSG_RESULT_STATES result = OPMSG_RESULT_STATES_NORMAL_STATE;
+84200578:	58 de       	M[FP + 44] = Null;
+
+    if(!cps_control_setup(message_data, resp_length, resp_data, &num_controls))
+8420057a:	05 13       	r3 = FP + 48;
+8420057c:	3b 00       	r1 = r5 + Null;
+8420057e:	54 d8       	r2 = M[FP + 40];
+84200580:	4a d8       	r0 = M[FP + 36];
+84200582:	ff fd 04 f0 	call (m) 0xe9e;
+84200586:	3d e8 
+84200588:	10 04       	Null = r0 - Null;
+8420058a:	03 62       	if NE jump (m) Lc_eft_opmsg_set_control_3;
+
+8420058c <Lc_eft_opmsg_set_control_2>:
+    {
+       return FALSE;
+8420058c:	02 00       	r0 = Null + Null;
+8420058e:	6f 6e       	jump (m) Lc_eft_opmsg_set_control_29;
+
+84200590 <Lc_eft_opmsg_set_control_3>:
+84200590:	0a 71       	r8 = Null + 1;
+84200592:	11 71       	r7 = Null + 2;
+84200594:	18 71       	r6 = Null + 3;
+    }
+
+    /* Iterate through the control messages looking for mode and gain override
+     * messages */
+    for (i=0; i<num_controls; i++)
+84200596:	07 00       	r5 = Null + Null;
+
+84200598 <Lc_eft_opmsg_set_control_4>:
+84200598:	61 d8       	rMAC = M[FP + 48];
+8420059a:	78 04       	Null = r5 - rMAC;
+8420059c:	02 f0 9d e1 	if C jump (m) Lc_eft_opmsg_set_control_23;
+
+842005a0 <Lc_eft_opmsg_set_control_5>:
+    {
+        unsigned ctrl_value, ctrl_id;
+        CPS_CONTROL_SOURCE  ctrl_src;
+
+        ctrl_id = cps_control_get(message_data, i, &ctrl_value, &ctrl_src);
+842005a0:	85 13       	r3 = FP + 56;
+842005a2:	44 13       	r2 = FP + 52;
+842005a4:	3b 00       	r1 = r5 + Null;
+842005a6:	4a d8       	r0 = M[FP + 36];
+842005a8:	ff fd 04 f0 	call (m) 0xee2;
+842005ac:	3b e9 
+
+        /* Mode override */
+        if (ctrl_id == OPMSG_CONTROL_MODE_ID)
+842005ae:	50 24       	Null = r0 - 1;
+842005b0:	3a 62       	if NE jump (m) Lc_eft_opmsg_set_control_20;
+
+842005b2 <Lc_eft_opmsg_set_control_6>:
+        {
+            /* Check for valid mode */
+            ctrl_value &= EFT_SYSMODE_MASK;
+842005b2:	69 d8       	rMAC = M[FP + 52];
+842005b4:	89 c0       	rMAC = rMAC AND 0x3;
+842005b6:	69 de       	M[FP + 52] = rMAC;
+            {
+                result = OPMSG_RESULT_STATES_INVALID_CONTROL_VALUE;
+                break;
+            }
+
+            eft_initialize_events(op_data, p_ext_data);
+842005b8:	33 00       	r1 = r4 + Null;
+842005ba:	42 d8       	r0 = M[FP + 32];
+842005bc:	03 f0 3d e9 	call (m) Lc_eft_initialize_events_1;
+
+            /* Gain update logic */
+            switch (ctrl_value)
+842005c0:	69 d8       	rMAC = M[FP + 52];
+842005c2:	12 60       	if EQ jump (m) Lc_eft_opmsg_set_control_14;
+
+842005c4 <Lc_eft_opmsg_set_control_7>:
+842005c4:	48 24       	Null = rMAC - 1;
+842005c6:	13 60       	if EQ jump (m) Lc_eft_opmsg_set_control_15;
+
+842005c8 <Lc_eft_opmsg_set_control_8>:
+842005c8:	88 24       	Null = rMAC - 2;
+842005ca:	14 60       	if EQ jump (m) Lc_eft_opmsg_set_control_16;
+
+842005cc <Lc_eft_opmsg_set_control_9>:
+842005cc:	c8 24       	Null = rMAC - 3;
+842005ce:	03 62       	if NE jump (m) Lc_eft_opmsg_set_control_11;
+
+842005d0 <Lc_eft_opmsg_set_control_10>:
+                    p_ext_data->cur_mode = EARBUD_FIT_TEST_SYSMODE_AUTO_FIT_ON;
+                    break;
+
+                case EARBUD_FIT_TEST_SYSMODE_AUTO_FIT_FROZEN:
+                    /* Set current mode to AUTO_FIT_FROZEN */
+                    p_ext_data->cur_mode = EARBUD_FIT_TEST_SYSMODE_AUTO_FIT_FROZEN;
+842005d0:	68 f0 21 8e 	M[r4 + 132] = r6;
+
+842005d4 <Lc_eft_opmsg_set_control_11>:
+                default:
+                    /* Handled by early exit above */
+                    break;
+            }
+
+            mode_update = TRUE; /* indicate that mode has changed */
+842005d4:	53 09       	r9 = r8 + Null;
+
+            /* Determine control mode source and set override flags for mode */
+            if (ctrl_src == CPS_SOURCE_HOST)
+842005d6:	e1 f0 38 80 	rMAC = MBS[FP + 56];
+842005da:	0f 62       	if NE jump (m) Lc_eft_opmsg_set_control_17;
+
+842005dc <Lc_eft_opmsg_set_control_12>:
+            {
+                p_ext_data->host_mode = ctrl_value;
+842005dc:	69 d8       	rMAC = M[FP + 52];
+842005de:	61 f0 23 8e 	M[r4 + 140] = rMAC;
+
+842005e2 <Lc_eft_opmsg_set_control_13>:
+       return FALSE;
+    }
+
+    /* Iterate through the control messages looking for mode and gain override
+     * messages */
+    for (i=0; i<num_controls; i++)
+842005e2:	7f 20       	r5 = r5 + 1;
+842005e4:	da 6f       	jump (m) Lc_eft_opmsg_set_control_4;
+
+842005e6 <Lc_eft_opmsg_set_control_14>:
+            /* Gain update logic */
+            switch (ctrl_value)
+            {
+                case EARBUD_FIT_TEST_SYSMODE_STANDBY:
+                    /* Set current mode to Standby */
+                    p_ext_data->cur_mode = EARBUD_FIT_TEST_SYSMODE_STANDBY;
+842005e6:	60 f0 21 8e 	M[r4 + 132] = Null;
+                    break;
+842005ea:	f5 6f       	jump (m) Lc_eft_opmsg_set_control_11;
+
+842005ec <Lc_eft_opmsg_set_control_15>:
+                case EARBUD_FIT_TEST_SYSMODE_FULL:
+                    /* Set current mode to Full */
+                    p_ext_data->cur_mode = EARBUD_FIT_TEST_SYSMODE_FULL;
+842005ec:	6a f0 21 8e 	M[r4 + 132] = r8;
+                    break;
+842005f0:	f2 6f       	jump (m) Lc_eft_opmsg_set_control_11;
+
+842005f2 <Lc_eft_opmsg_set_control_16>:
+
+                case EARBUD_FIT_TEST_SYSMODE_AUTO_FIT_ON:
+                    /* Set current mode to AUTO_FIT_ON */
+                    p_ext_data->cur_mode = EARBUD_FIT_TEST_SYSMODE_AUTO_FIT_ON;
+842005f2:	69 f0 21 8e 	M[r4 + 132] = r7;
+                    break;
+842005f6:	ef 6f       	jump (m) Lc_eft_opmsg_set_control_11;
+
+842005f8 <Lc_eft_opmsg_set_control_17>:
+            {
+                p_ext_data->host_mode = ctrl_value;
+            }
+            else
+            {
+                p_ext_data->qact_mode = ctrl_value;
+842005f8:	69 d8       	rMAC = M[FP + 52];
+842005fa:	61 f0 24 8e 	M[r4 + 144] = rMAC;
+                /* Set or clear the QACT override flag.
+                * &= is used to preserve the state of the
+                * override word.
+                */
+                if (ctrl_src == CPS_SOURCE_OBPM_ENABLE)
+842005fe:	e1 f0 38 80 	rMAC = MBS[FP + 56];
+84200602:	88 24       	Null = rMAC - 2;
+84200604:	09 62       	if NE jump (m) Lc_eft_opmsg_set_control_19;
+
+84200606 <Lc_eft_opmsg_set_control_18>:
+                {
+                    p_ext_data->ovr_control |= EARBUD_FIT_TEST_CONTROL_MODE_OVERRIDE;
+84200606:	61 f0 22 88 	rMAC = M[r4 + 136];
+8420060a:	20 f0 00 f1 	rMAC = rMAC OR 0x2000;
+8420060e:	51 d8 
+84200610:	61 f0 22 8e 	M[r4 + 136] = rMAC;
+84200614:	e7 6f       	jump (m) Lc_eft_opmsg_set_control_13;
+
+84200616 <Lc_eft_opmsg_set_control_19>:
+                }
+                else
+                {
+                    p_ext_data->ovr_control &= EFT_OVERRIDE_MODE_MASK;
+84200616:	61 f0 22 88 	rMAC = M[r4 + 136];
+8420061a:	11 f6 ff 1f 	rMAC = rMAC AND 0xdfff;
+8420061e:	61 f0 22 8e 	M[r4 + 136] = rMAC;
+84200622:	e0 6f       	jump (m) Lc_eft_opmsg_set_control_13;
+
+84200624 <Lc_eft_opmsg_set_control_20>:
+                }
+            }
+
+        }
+        /* In/Out of Ear control */
+        else if (ctrl_id == EARBUD_FIT_TEST_CONSTANT_IN_OUT_EAR_CTRL)
+84200624:	d0 24       	Null = r0 - 3;
+84200626:	07 62       	if NE jump (m) Lc_eft_opmsg_set_control_22;
+
+84200628 <Lc_eft_opmsg_set_control_21>:
+        {
+            ctrl_value &= 0x01;
+84200628:	69 d8       	rMAC = M[FP + 52];
+8420062a:	09 c0       	rMAC = rMAC AND 0x1;
+8420062c:	69 de       	M[FP + 52] = rMAC;
+            p_ext_data->in_out_status = ctrl_value;
+8420062e:	61 f0 94 8a 	MB[r4 + 148] = rMAC;
+84200632:	d8 6f       	jump (m) Lc_eft_opmsg_set_control_13;
+
+84200634 <Lc_eft_opmsg_set_control_22>:
+        }
+        else
+        {
+            result = OPMSG_RESULT_STATES_UNSUPPORTED_CONTROL;
+84200634:	01 21       	rMAC = Null + 4;
+84200636:	59 de       	M[FP + 44] = rMAC;
+
+84200638 <Lc_eft_opmsg_set_control_23>:
+            break;
+        }
+    }
+
+    /* Set current operating mode based on override */
+    if ((p_ext_data->ovr_control & EARBUD_FIT_TEST_CONTROL_MODE_OVERRIDE) != 0)
+84200638:	61 f0 22 88 	rMAC = M[r4 + 136];
+8420063c:	11 f1 00 00 	rMAC = rMAC AND 0x2000;
+84200640:	06 60       	if EQ jump (m) Lc_eft_opmsg_set_control_25;
+
+84200642 <Lc_eft_opmsg_set_control_24>:
+    {
+        p_ext_data->cur_mode = p_ext_data->qact_mode;
+84200642:	61 f0 24 88 	rMAC = M[r4 + 144];
+84200646:	61 f0 21 8e 	M[r4 + 132] = rMAC;
+8420064a:	05 6e       	jump (m) Lc_eft_opmsg_set_control_26;
+
+8420064c <Lc_eft_opmsg_set_control_25>:
+    }
+    else
+    {
+        p_ext_data->cur_mode = p_ext_data->host_mode;
+8420064c:	61 f0 23 88 	rMAC = M[r4 + 140];
+84200650:	61 f0 21 8e 	M[r4 + 132] = rMAC;
+
+84200654 <Lc_eft_opmsg_set_control_26>:
+    }
+
+    /* set auto fit state */
+    if (mode_update == TRUE) {
+84200654:	b0 f0 01 24 	Null = r9 - 1;
+84200658:	04 62       	if NE jump (m) Lc_eft_opmsg_set_control_28;
+
+8420065a <Lc_eft_opmsg_set_control_27>:
+        eft_opmsg_auto_fit_set_state(p_ext_data);
+8420065a:	32 00       	r0 = r4 + Null;
+8420065c:	04 f0 33 e6 	call (m) Lc_eft_opmsg_auto_fit_set_state_1;
+
+84200660 <Lc_eft_opmsg_set_control_28>:
+    }
+
+    cps_response_set_result(resp_data, result);
+84200660:	5b d8       	r1 = M[FP + 44];
+84200662:	52 d8       	r0 = M[FP + 40];
+84200664:	ff fd 04 f0 	call (m) 0xf30;
+84200668:	2d e6 
+
+    return TRUE;
+8420066a:	52 08       	r0 = r8 + Null;
+
+8420066c <Lc_eft_opmsg_set_control_29>:
+}
+8420066c:	f6 4a       	SP = SP - 0x20, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+8420066e:	d8 4c       	rts;
+
+84200670 <$_eft_opmsg_get_params>:
+
+bool eft_opmsg_get_params(OPERATOR_DATA *op_data, void *message_data,
+                                unsigned *resp_length,
+                                OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200670:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200672:	1f 00       	r5 = r1 + Null;
+84200674:	26 00       	r4 = r2 + Null;
+84200676:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+84200678:	ff fd 01 f0 	call (m) 0x8ea;
+8420067c:	33 e3 
+                                unsigned *resp_length,
+                                OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    return cpsGetParameterMsgHandler(&p_ext_data->params_def, message_data,
+                                     resp_length, resp_data);
+8420067e:	02 f0 d0 45 	r0 = r0 + 464;
+84200682:	45 08       	r3 = r6 + Null;
+84200684:	34 00       	r2 = r4 + Null;
+84200686:	3b 00       	r1 = r5 + Null;
+84200688:	ff fd 02 f0 	call (m) 0xb7c;
+8420068c:	35 e7 
+
+8420068e <Lc_eft_opmsg_get_params_2>:
+}
+8420068e:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200690:	d8 4c       	rts;
+
+84200692 <$_eft_opmsg_get_defaults>:
+
+bool eft_opmsg_get_defaults(OPERATOR_DATA *op_data, void *message_data,
+                                  unsigned *resp_length,
+                                  OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200692:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200694:	1f 00       	r5 = r1 + Null;
+84200696:	26 00       	r4 = r2 + Null;
+84200698:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+8420069a:	ff fd 01 f0 	call (m) 0x8ea;
+8420069e:	31 e2 
+                                  unsigned *resp_length,
+                                  OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    return cpsGetDefaultsMsgHandler(&p_ext_data->params_def, message_data,
+                                    resp_length, resp_data);
+842006a0:	02 f0 d0 45 	r0 = r0 + 464;
+842006a4:	45 08       	r3 = r6 + Null;
+842006a6:	34 00       	r2 = r4 + Null;
+842006a8:	3b 00       	r1 = r5 + Null;
+842006aa:	ff fd 02 f0 	call (m) 0xc2c;
+842006ae:	23 ec 
+
+842006b0 <Lc_eft_opmsg_get_defaults_2>:
+}
+842006b0:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842006b2:	d8 4c       	rts;
+
+842006b4 <$_eft_opmsg_set_params>:
+
+bool eft_opmsg_set_params(OPERATOR_DATA *op_data, void *message_data,
+                                unsigned *resp_length,
+                                OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842006b4:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+842006b6:	19 09       	r7 = r1 + Null;
+842006b8:	27 00       	r5 = r2 + Null;
+842006ba:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+842006bc:	ff fd 01 f0 	call (m) 0x8ea;
+842006c0:	2f e1 
+842006c2:	16 00       	r4 = r0 + Null;
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    bool success;
+    /* patch_fn TODO */
+
+    success = cpsSetParameterMsgHandler(&p_ext_data->params_def, message_data,
+                                       resp_length, resp_data);
+842006c4:	62 f0 d0 21 	r0 = r4 + 464;
+842006c8:	45 08       	r3 = r6 + Null;
+842006ca:	3c 00       	r2 = r5 + Null;
+842006cc:	4b 08       	r1 = r7 + Null;
+842006ce:	ff fd 03 f0 	call (m) 0xd00;
+842006d2:	33 e1 
+842006d4:	17 00       	r5 = r0 + Null;
+
+    if (success)
+842006d6:	05 60       	if EQ jump (m) Lc_eft_opmsg_set_params_3;
+
+842006d8 <Lc_eft_opmsg_set_params_2>:
+    {
+        /* Set re-initialization flag for capability */
+        p_ext_data->re_init_flag = TRUE;
+842006d8:	41 20       	rMAC = Null + 1;
+842006da:	61 f0 97 8a 	MB[r4 + 151] = rMAC;
+842006de:	0b 6e       	jump (m) Lc_eft_opmsg_set_params_5;
+
+842006e0 <Lc_eft_opmsg_set_params_3>:
+    }
+    else
+    {
+        L2_DBG_MSG("EFT Set Parameters Failed");
+842006e0:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842006e4:	88 24       	Null = rMAC - 2;
+842006e6:	07 68       	if LT jump (m) Lc_eft_opmsg_set_params_5;
+
+842006e8 <Lc_eft_opmsg_set_params_4>:
+842006e8:	55 f1 02 f0 	r0 = Null + 357565903;
+842006ec:	cf 49 
+842006ee:	ff fd 04 f0 	call (m) 0x10b0;
+842006f2:	23 ee 
+
+842006f4 <Lc_eft_opmsg_set_params_5>:
+    }
+
+    return success;
+842006f4:	3a 00       	r0 = r5 + Null;
+
+842006f6 <Lc_eft_opmsg_set_params_6>:
+}
+842006f6:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+842006f8:	d8 4c       	rts;
+
+842006fa <$_eft_opmsg_get_status>:
+
+bool eft_opmsg_get_status(OPERATOR_DATA *op_data, void *message_data,
+                                unsigned *resp_length,
+                                OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842006fa:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+842006fc:	4c 4c       	SP = SP + 48;
+842006fe:	19 09       	r7 = r1 + Null;
+84200700:	27 00       	r5 = r2 + Null;
+84200702:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+84200704:	ff fd 00 f0 	call (m) 0x8ea;
+84200708:	27 ef 
+8420070a:	16 00       	r4 = r0 + Null;
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    /* TODO: patch functions */
+    int i;
+
+    /* Build the response */
+    unsigned *resp = NULL;
+8420070c:	30 de       	M[FP + 24] = Null;
+    if(!common_obpm_status_helper(message_data, resp_length, resp_data,
+                                  sizeof(EARBUD_FIT_TEST_STATISTICS), &resp))
+8420070e:	81 11       	rMAC = FP + 24;
+84200710:	09 1c       	pushm <rMAC>;
+84200712:	05 31       	r3 = Null + 36;
+84200714:	44 08       	r2 = r6 + Null;
+84200716:	3b 00       	r1 = r5 + Null;
+84200718:	4a 08       	r0 = r7 + Null;
+8420071a:	ff fd 04 f0 	call (m) 0xf46;
+8420071e:	2d e1 
+84200720:	7f 4c       	SP = SP + -4;
+84200722:	10 04       	Null = r0 - Null;
+84200724:	03 62       	if NE jump (m) Lc_eft_opmsg_get_status_3;
+
+84200726 <Lc_eft_opmsg_get_status_2>:
+    {
+         return FALSE;
+84200726:	02 00       	r0 = Null + Null;
+84200728:	3a 6e       	jump (m) Lc_eft_opmsg_get_status_8;
+
+8420072a <Lc_eft_opmsg_get_status_3>:
+    }
+
+    if (resp)
+8420072a:	31 d8       	rMAC = M[FP + 24];
+8420072c:	37 60       	if EQ jump (m) Lc_eft_opmsg_get_status_7;
+
+8420072e <Lc_eft_opmsg_get_status_4>:
+    {
+        EARBUD_FIT_TEST_STATISTICS stats;
+        EARBUD_FIT_TEST_STATISTICS *pstats = &stats;
+        ParamType *pparam = (ParamType*)pstats;
+
+        pstats->OFFSET_CUR_MODE         = p_ext_data->cur_mode;
+8420072e:	61 f0 21 88 	rMAC = M[r4 + 132];
+84200732:	39 de       	M[FP + 28] = rMAC;
+        pstats->OFFSET_OVR_CONTROL      = p_ext_data->ovr_control;
+84200734:	61 f0 22 88 	rMAC = M[r4 + 136];
+84200738:	41 de       	M[FP + 32] = rMAC;
+        pstats->OFFSET_IN_OUT_EAR_CTRL  = p_ext_data->in_out_status;
+8420073a:	61 f0 94 82 	rMAC = MBU[r4 + 148];
+8420073e:	49 de       	M[FP + 36] = rMAC;
+
+        pstats->OFFSET_FIT_QUALITY_FLAG = p_ext_data->fit_quality;
+84200740:	61 f0 95 82 	rMAC = MBU[r4 + 149];
+84200744:	51 de       	M[FP + 40] = rMAC;
+
+        pstats->OFFSET_FIT_EVENT        = p_ext_data->fit_event_detect.running;
+84200746:	61 f0 ec 81 	rMAC = MBS[r4 + 492];
+8420074a:	59 de       	M[FP + 44] = rMAC;
+        pstats->OFFSET_FIT_TIMER        = (p_ext_data->fit_event_detect.frame_counter
+                                           << EFT_TIMER_PARAM_SHIFT)/EFT_FRAME_RATE;
+8420074c:	62 f0 79 88 	r0 = M[r4 + 484];
+84200750:	03 f0 fa 40 	r1 = Null + 250;
+84200754:	d2 56       	r0 = r0 LSHIFT 20;
+84200756:	ff fd cc f0 	call (m) 0x1a136;
+8420075a:	21 ef 
+8420075c:	62 de       	M[FP + 48] = r0;
+        pstats->OFFSET_POWER_REF        = p_ext_data->p_fit->pwr_reference;
+8420075e:	61 f0 7e 88 	rMAC = M[r4 + 504];
+84200762:	49 89       	rMAC = M[rMAC + 20];
+84200764:	69 de       	M[FP + 52] = rMAC;
+        pstats->OFFSET_POWER_INT_MIC    = p_ext_data->p_fit->pwr_internal;
+84200766:	61 f0 7e 88 	rMAC = M[r4 + 504];
+8420076a:	09 89       	rMAC = M[rMAC + 16];
+8420076c:	71 de       	M[FP + 56] = rMAC;
+        pstats->OFFSET_POWER_RATIO      = p_ext_data->p_fit->pwr_ratio;
+8420076e:	61 f0 7e 88 	rMAC = M[r4 + 504];
+84200772:	89 89       	rMAC = M[rMAC + 24];
+84200774:	79 de       	M[FP + 60] = rMAC;
+
+        for (i=0; i<EFT_N_STAT/2; i++)
+84200776:	06 00       	r4 = Null + Null;
+84200778:	c7 11       	r5 = FP + 28;
+
+8420077a <Lc_eft_opmsg_get_status_5>:
+        {
+            resp = cpsPack2Words(pparam[2*i], pparam[2*i+1], resp);
+8420077a:	34 d8       	r2 = M[FP + 24];
+8420077c:	7b 88       	r1 = M[r5 + 4];
+8420077e:	3a e8       	r0 = M[r5 + Null];
+84200780:	ff fd 69 f2 	call (m) 0x4da2c;
+84200784:	2d e5 
+84200786:	32 de       	M[FP + 24] = r0;
+                                           << EFT_TIMER_PARAM_SHIFT)/EFT_FRAME_RATE;
+        pstats->OFFSET_POWER_REF        = p_ext_data->p_fit->pwr_reference;
+        pstats->OFFSET_POWER_INT_MIC    = p_ext_data->p_fit->pwr_internal;
+        pstats->OFFSET_POWER_RATIO      = p_ext_data->p_fit->pwr_ratio;
+
+        for (i=0; i<EFT_N_STAT/2; i++)
+84200788:	76 20       	r4 = r4 + 1;
+8420078a:	3f 22       	r5 = r5 + 8;
+8420078c:	30 25       	Null = r4 - 4;
+8420078e:	f6 69       	if LT jump (m) Lc_eft_opmsg_get_status_5;
+
+84200790 <Lc_eft_opmsg_get_status_6>:
+        {
+            resp = cpsPack2Words(pparam[2*i], pparam[2*i+1], resp);
+        }
+        if ((EFT_N_STAT % 2) == 1) // last one
+        {
+            cpsPack1Word(pparam[EFT_N_STAT-1], resp);
+84200790:	33 d8       	r1 = M[FP + 24];
+84200792:	7a d8       	r0 = M[FP + 60];
+84200794:	ff fd 69 f2 	call (m) 0x4da5e;
+84200798:	2b e6 
+
+8420079a <Lc_eft_opmsg_get_status_7>:
+        }
+    }
+
+    return TRUE;
+8420079a:	42 20       	r0 = Null + 1;
+
+8420079c <Lc_eft_opmsg_get_status_8>:
+}
+8420079c:	74 4c       	SP = SP + -48;
+8420079e:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+842007a0:	d8 4c       	rts;
+
+842007a2 <$_eft_opmsg_set_ucid>:
+}
+
+bool eft_opmsg_set_ucid(OPERATOR_DATA *op_data, void *message_data,
+                              unsigned *resp_length,
+                              OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842007a2:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+842007a4:	12 09       	r8 = r0 + Null;
+842007a6:	19 09       	r7 = r1 + Null;
+842007a8:	27 00       	r5 = r2 + Null;
+842007aa:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+842007ac:	ff fd 00 f0 	call (m) 0x8ea;
+842007b0:	3f e9 
+842007b2:	16 00       	r4 = r0 + Null;
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    PS_KEY_TYPE key;
+    bool retval;
+
+    retval = cpsSetUcidMsgHandler(&p_ext_data->params_def, message_data,
+                                  resp_length, resp_data);
+842007b4:	62 f0 d0 21 	r0 = r4 + 464;
+842007b8:	45 08       	r3 = r6 + Null;
+842007ba:	3c 00       	r2 = r5 + Null;
+842007bc:	4b 08       	r1 = r7 + Null;
+842007be:	ff fd 02 f0 	call (m) 0xd92;
+842007c2:	35 ee 
+842007c4:	17 00       	r5 = r0 + Null;
+    L5_DBG_MSG1("EFT cpsSetUcidMsgHandler Return Value %u", retval);
+842007c6:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842007ca:	48 25       	Null = rMAC - 5;
+842007cc:	08 68       	if LT jump (m) Lc_eft_opmsg_set_ucid_3;
+
+842007ce <Lc_eft_opmsg_set_ucid_2>:
+842007ce:	55 f1 02 f0 	r0 = Null + 357565929;
+842007d2:	e9 49 
+842007d4:	3b 00       	r1 = r5 + Null;
+842007d6:	ff fd 04 f0 	call (m) 0x10c2;
+842007da:	2d e7 
+
+842007dc <Lc_eft_opmsg_set_ucid_3>:
+    key = MAP_CAPID_UCID_SBID_TO_PSKEYID(p_ext_data->cap_id,
+                                         p_ext_data->params_def.ucid,
+                                         OPMSG_P_STORE_PARAMETER_SUB_ID);
+842007dc:	f1 89       	rMAC = M[r4 + 28];
+842007de:	8a c6       	r0 = rMAC AND 0xffff;
+842007e0:	92 55       	r0 = r0 LSHIFT 7;
+842007e2:	61 f0 78 88 	rMAC = M[r4 + 480];
+842007e6:	8b c2       	r1 = rMAC AND 0x3f;
+842007e8:	1b 54       	r1 = r1 LSHIFT 1;
+842007ea:	9b 12       	r1 = r1 OR r0;
+
+    ps_entry_read((void*)op_data, key, PERSIST_ANY, ups_params_eft);
+842007ec:	42 f0 05 f0 	r3 = Null + 69208859;
+842007f0:	1b 53 
+842007f2:	04 00       	r2 = Null + Null;
+842007f4:	52 08       	r0 = r8 + Null;
+842007f6:	ff fd 3d f0 	call (m) 0x8370;
+842007fa:	3b eb 
+
+    L5_DBG_MSG1("EFT UCID Set to %u", p_ext_data->params_def.ucid);
+842007fc:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200800:	48 25       	Null = rMAC - 5;
+84200802:	09 68       	if LT jump (m) Lc_eft_opmsg_set_ucid_5;
+
+84200804 <Lc_eft_opmsg_set_ucid_4>:
+84200804:	63 f0 78 88 	r1 = M[r4 + 480];
+84200808:	55 f1 02 f0 	r0 = Null + 357565970;
+8420080c:	12 4a 
+8420080e:	ff fd 04 f0 	call (m) 0x10c2;
+84200812:	35 e5 
+
+84200814 <Lc_eft_opmsg_set_ucid_5>:
+
+    p_ext_data->re_init_flag = TRUE;
+84200814:	41 20       	rMAC = Null + 1;
+84200816:	61 f0 97 8a 	MB[r4 + 151] = rMAC;
+
+    return retval;
+8420081a:	3a 00       	r0 = r5 + Null;
+
+8420081c <Lc_eft_opmsg_set_ucid_6>:
+}
+8420081c:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+8420081e:	d8 4c       	rts;
+
+84200820 <$_eft_opmsg_get_ps_id>:
+
+bool eft_opmsg_get_ps_id(OPERATOR_DATA *op_data, void *message_data,
+                               unsigned *resp_length,
+                               OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200820:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200822:	1f 00       	r5 = r1 + Null;
+84200824:	26 00       	r4 = r2 + Null;
+84200826:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+84200828:	ff fd 00 f0 	call (m) 0x8ea;
+8420082c:	23 e6 
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    return cpsGetUcidMsgHandler(&p_ext_data->params_def,
+                                p_ext_data->cap_id,
+                                message_data,
+                                resp_length,
+                                resp_data);
+8420082e:	10 1c       	pushm <r6>;
+84200830:	d3 89       	r1 = M[r0 + 28];
+84200832:	35 00       	r3 = r4 + Null;
+84200834:	02 f0 d0 45 	r0 = r0 + 464;
+84200838:	3c 00       	r2 = r5 + Null;
+8420083a:	ff fd 02 f0 	call (m) 0xdb4;
+8420083e:	3b eb 
+84200840:	7f 4c       	SP = SP + -4;
+
+84200842 <Lc_eft_opmsg_get_ps_id_2>:
+}
+84200842:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200844:	d8 4c       	rts;
+
+84200846 <$_eft_process_data>:
+
+/****************************************************************************
+Data processing function
+*/
+void eft_process_data(OPERATOR_DATA *op_data, TOUCHED_TERMINALS *touched)
+{
+84200846:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84200848:	13 09       	r9 = r0 + Null;
+8420084a:	43 de       	M[FP + 32] = r1;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+8420084c:	ff fd 00 f0 	call (m) 0x8ea;
+84200850:	3f e4 
+84200852:	11 09       	r7 = r0 + Null;
+     */
+    bool exit_early, discard_data;
+    unsigned b4idx, afteridx;
+    metadata_tag *mtag_ip_list;
+
+    EFT_CAPTURE *p_shot = &p_ext_data->one_shot;
+84200854:	98 f0 98 20 	r6 = r7 + 152;
+     * Early exit testing
+     *********************/
+
+    /* Without adequate data we can just return */
+    samples_to_process = INT_MAX;
+    samples_to_process = eft_calc_samples_to_process(p_ext_data);
+84200858:	01 f0 39 ef 	call (m) Lc_eft_calc_samples_to_process_1;
+8420085c:	13 00       	r1 = r0 + Null;
+
+    /* Return early if playback and int mic input terminals are not connected */
+    if (samples_to_process == INT_MAX)
+8420085e:	1f f0 ff ff 	Null = r1 - 2147483647;
+84200862:	30 f3 ff 3f 
+84200866:	0e 62       	if NE jump (m) Lc_eft_process_data_4;
+
+84200868 <Lc_eft_process_data_2>:
+    {
+        L5_DBG_MSG("Minimum number of ports (ref and int mic) not connected");
+84200868:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420086c:	48 25       	Null = rMAC - 5;
+8420086e:	0b f0 a9 e5 	if LT jump (m) Lc_eft_process_data_37;
+
+84200872 <Lc_eft_process_data_3>:
+84200872:	55 f1 02 f0 	r0 = Null + 357566798;
+84200876:	4e 51 
+84200878:	ff fd 04 f0 	call (m) 0x10b0;
+8420087c:	39 e1 
+8420087e:	0f f0 99 e5 	jump (m) Lc_eft_process_data_37;
+
+84200882 <Lc_eft_process_data_4>:
+        return;
+    }
+
+     /* Return early if not enough data to process */
+    if (samples_to_process < EFT_DEFAULT_FRAME_SIZE)
+84200882:	30 f0 40 24 	Null = r1 - 64;
+84200886:	0e 66       	if GE jump (m) Lc_eft_process_data_7;
+
+84200888 <Lc_eft_process_data_5>:
+    {
+        L5_DBG_MSG1("Not enough data to process (%d)", samples_to_process);
+84200888:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420088c:	48 25       	Null = rMAC - 5;
+8420088e:	0b f0 89 e5 	if LT jump (m) Lc_eft_process_data_37;
+
+84200892 <Lc_eft_process_data_6>:
+84200892:	55 f1 02 f0 	r0 = Null + 357566854;
+84200896:	86 51 
+84200898:	ff fd 04 f0 	call (m) 0x10c2;
+8420089c:	2b e1 
+8420089e:	0f f0 f9 e4 	jump (m) Lc_eft_process_data_37;
+
+842008a2 <Lc_eft_process_data_7>:
+
+    /* Other conditions that are invalid for running EFT need to discard
+     * input data if it exists.
+     */
+
+    exit_early = FALSE;
+842008a2:	01 00       	rMAC = Null + Null;
+    /* Don't do any processing in standby */
+    if (p_ext_data->cur_mode == EARBUD_FIT_TEST_SYSMODE_STANDBY)
+842008a4:	90 f0 21 88 	Null = M[r7 + 132];
+842008a8:	02 62       	if NE jump (m) Lc_eft_process_data_9;
+
+842008aa <Lc_eft_process_data_8>:
+    {
+        exit_early = TRUE;
+842008aa:	41 20       	rMAC = Null + 1;
+
+842008ac <Lc_eft_process_data_9>:
+    }
+
+    if (p_ext_data->in_out_status != EFT_IN_EAR)
+842008ac:	92 f0 94 82 	r0 = MBU[r7 + 148];
+842008b0:	50 24       	Null = r0 - 1;
+842008b2:	32 60       	if EQ jump (m) Lc_eft_process_data_20;
+
+842008b4 <Lc_eft_process_data_10>:
+    {
+        exit_early = TRUE;
+    }
+
+    sample_count = 0;
+842008b4:	02 09       	r8 = Null + Null;
+
+842008b6 <Lc_eft_process_data_11>:
+    if (exit_early)
+    {
+        discard_data = TRUE;
+842008b6:	08 71       	r6 = Null + 1;
+
+842008b8 <Lc_eft_process_data_12>:
+
+        /* There is at least 1 frame to process */
+        do {
+            sample_count += EFT_DEFAULT_FRAME_SIZE;
+842008b8:	0a f0 40 44 	r8 = r8 + 64;
+            /* Iterate through all sinks */
+            for (i = 0; i < EFT_MAX_SINKS; i++)
+842008bc:	06 00       	r4 = Null + Null;
+842008be:	4f 08       	r5 = r7 + Null;
+
+842008c0 <Lc_eft_process_data_13>:
+            {
+                if (p_ext_data->inputs[i] != NULL)
+842008c0:	3a e8       	r0 = M[r5 + Null];
+842008c2:	0e 60       	if EQ jump (m) Lc_eft_process_data_16;
+
+842008c4 <Lc_eft_process_data_14>:
+                {
+                    /* Discard a frame of data */
+                    cbuffer_discard_data(p_ext_data->inputs[i],
+                                         EFT_DEFAULT_FRAME_SIZE);
+842008c4:	03 f0 40 40 	r1 = Null + 64;
+842008c8:	ff fd 69 f2 	call (m) 0x4dc8c;
+842008cc:	25 ee 
+
+                    /* If there isn't a frame worth of data left then don't
+                     * iterate through the input terminals again.
+                     */
+                    samples_to_process = cbuffer_calc_amount_data_in_words(
+                        p_ext_data->inputs[i]);
+842008ce:	3a e8       	r0 = M[r5 + Null];
+842008d0:	ff fd 69 f2 	call (m) 0x4db5a;
+842008d4:	2b e4 
+
+                    if (samples_to_process < EFT_DEFAULT_FRAME_SIZE)
+842008d6:	20 f0 40 24 	Null = r0 - 64;
+842008da:	02 66       	if GE jump (m) Lc_eft_process_data_16;
+
+842008dc <Lc_eft_process_data_15>:
+                    {
+                        discard_data = FALSE;
+842008dc:	00 09       	r6 = Null + Null;
+
+842008de <Lc_eft_process_data_16>:
+
+        /* There is at least 1 frame to process */
+        do {
+            sample_count += EFT_DEFAULT_FRAME_SIZE;
+            /* Iterate through all sinks */
+            for (i = 0; i < EFT_MAX_SINKS; i++)
+842008de:	76 20       	r4 = r4 + 1;
+842008e0:	3f 21       	r5 = r5 + 4;
+842008e2:	b0 24       	Null = r4 - 2;
+842008e4:	ee 69       	if LT jump (m) Lc_eft_process_data_13;
+
+842008e6 <Lc_eft_process_data_17>:
+842008e6:	0f f8 00 c2 	Null = r6 - Null;
+842008ea:	e7 63       	if NE jump (m) Lc_eft_process_data_12;
+
+842008ec <Lc_eft_process_data_18>:
+842008ec:	01 fa d8 c8 	r6 = r8 LSHIFT 2;
+                    }
+                }
+            }
+        } while (discard_data);
+
+        for (i=0; i < EFT_NUM_METADATA_CHANNELS; i++)
+842008f0:	07 00       	r5 = Null + Null;
+842008f2:	96 f0 08 20 	r4 = r7 + 8;
+
+842008f6 <Lc_eft_process_data_19>:
+        {
+            /* Extract metadata tag from input */
+            mtag_ip_list = buff_metadata_remove(p_ext_data->metadata_ip[i],
+                            sample_count * OCTETS_PER_SAMPLE, &b4idx, &afteridx);
+842008f6:	85 12       	r3 = FP + 40;
+842008f8:	44 12       	r2 = FP + 36;
+842008fa:	32 e8       	r0 = M[r4 + Null];
+842008fc:	43 08       	r1 = r6 + Null;
+842008fe:	ff fd 9f f0 	call (m) 0x147c0;
+84200902:	23 e6 
+
+            /* Free all the incoming tags */
+            buff_metadata_tag_list_delete(mtag_ip_list);
+84200904:	ff fd 9e f0 	call (m) 0x14512;
+84200908:	2f e0 
+                    }
+                }
+            }
+        } while (discard_data);
+
+        for (i=0; i < EFT_NUM_METADATA_CHANNELS; i++)
+8420090a:	7f 20       	r5 = r5 + 1;
+8420090c:	36 21       	r4 = r4 + 4;
+8420090e:	b8 24       	Null = r5 - 2;
+84200910:	f3 69       	if LT jump (m) Lc_eft_process_data_19;
+
+84200912 <Lc__ite_58>:
+84200912:	0f f0 85 e4 	jump (m) Lc_eft_process_data_37;
+
+84200916 <Lc_eft_process_data_20>:
+    if (p_ext_data->in_out_status != EFT_IN_EAR)
+    {
+        exit_early = TRUE;
+    }
+
+    sample_count = 0;
+84200916:	02 09       	r8 = Null + Null;
+    if (exit_early)
+84200918:	08 04       	Null = rMAC - Null;
+8420091a:	ce 63       	if NE jump (m) Lc_eft_process_data_11;
+
+8420091c <Lc_eft_process_data_21>:
+
+        /* Exit early */
+        return;
+    }
+
+    if (p_ext_data->re_init_flag == TRUE)
+8420091c:	91 f0 97 82 	rMAC = MBU[r7 + 151];
+84200920:	48 24       	Null = rMAC - 1;
+84200922:	35 62       	if NE jump (m) Lc_eft_process_data_23;
+
+84200924 <Lc_eft_process_data_22>:
+    {
+        p_ext_data->re_init_flag = FALSE;
+84200924:	90 f0 97 8a 	MB[r7 + 151] = Null;
+
+        /* Initialize events*/
+        eft_initialize_events(op_data, p_ext_data);
+84200928:	4b 08       	r1 = r7 + Null;
+8420092a:	5a 08       	r0 = r9 + Null;
+8420092c:	01 f0 2d ee 	call (m) Lc_eft_initialize_events_1;
+
+        /* Initialize afb and fit100 */
+        aanc_afb_initialize(p_ext_data->f_handle,
+                            p_ext_data->p_afb_ref);
+84200930:	93 f0 7c 88 	r1 = M[r7 + 496];
+84200934:	92 f0 7f 88 	r0 = M[r7 + 508];
+84200938:	07 f0 39 ea 	call (m) $_aanc_afb_initialize;
+        aanc_afb_initialize(p_ext_data->f_handle,
+                            p_ext_data->p_afb_int);
+8420093c:	93 f0 7d 88 	r1 = M[r7 + 500];
+84200940:	92 f0 7f 88 	r0 = M[r7 + 508];
+84200944:	07 f0 2d ea 	call (m) $_aanc_afb_initialize;
+
+        p_params = &p_ext_data->eft_cap_params;
+84200948:	91 f0 20 20 	rMAC = r7 + 32;
+        p_ext_data->p_fit->bin_select = p_params->OFFSET_BIN_SELECT;
+8420094c:	ca 88       	r0 = M[rMAC + 12];
+8420094e:	93 f0 7e 88 	r1 = M[r7 + 504];
+84200952:	da 8f       	M[r1 + 28] = r0;
+        p_ext_data->p_fit->power_smooth_time = p_params->OFFSET_POWER_SMOOTH_TIME;
+84200954:	0a e8       	r0 = M[rMAC + Null];
+84200956:	13 f0 76 88 	r1 = M[rMAC + 472];
+8420095a:	1a ee       	M[r1 + Null] = r0;
+        p_ext_data->p_fit->threshold = p_params->OFFSET_FIT_THRESHOLD;
+8420095c:	49 88       	rMAC = M[rMAC + 4];
+8420095e:	92 f0 7e 88 	r0 = M[r7 + 504];
+84200962:	51 8e       	M[r0 + 4] = rMAC;
+        p_ext_data->p_fit->bexp_offset = 0;
+84200964:	91 f0 7e 88 	rMAC = M[r7 + 504];
+84200968:	88 8e       	M[rMAC + 8] = Null;
+
+        p_ext_data->fit_quality = 0;
+8420096a:	90 f0 95 8a 	MB[r7 + 149] = Null;
+        p_ext_data->prev_fit_quality = 0;
+8420096e:	90 f0 96 8a 	MB[r7 + 150] = Null;
+
+        aanc_fit100_initialize(p_ext_data->f_handle,
+                               p_ext_data->p_fit,
+                               p_ext_data->p_afb_int,
+                               p_ext_data->p_afb_ref);
+84200972:	95 f0 7c 88 	r3 = M[r7 + 496];
+84200976:	94 f0 7d 88 	r2 = M[r7 + 500];
+8420097a:	93 f0 7e 88 	r1 = M[r7 + 504];
+8420097e:	92 f0 7f 88 	r0 = M[r7 + 508];
+84200982:	07 f0 29 ee 	call (m) $_aanc_fit100_initialize;
+
+        /* initialize auto fit */
+        eft_auto_fit_set_config(p_ext_data);
+84200986:	4a 08       	r0 = r7 + Null;
+84200988:	02 f0 27 e1 	call (m) Lc_eft_auto_fit_set_config_1;
+
+8420098c <Lc_eft_process_data_23>:
+    }
+
+    sample_count = 0;
+8420098c:	02 09       	r8 = Null + Null;
+
+8420098e <Lc_eft_process_data_24>:
+    {
+
+        /* Copy input data to internal data buffers */
+        cbuffer_copy(p_ext_data->p_tmp_ref_ip,
+                     p_ext_data->inputs[EFT_PLAYBACK_TERMINAL_ID],
+                     EFT_DEFAULT_FRAME_SIZE);
+8420098e:	04 f0 40 40 	r2 = Null + 64;
+84200992:	93 f0 00 e8 	r1 = M[r7 + Null];
+84200996:	92 f0 04 88 	r0 = M[r7 + 16];
+8420099a:	ff fd 6a f2 	call (m) 0x4dda4;
+8420099e:	2b e0 
+        cbuffer_copy(p_ext_data->p_tmp_int_ip,
+                     p_ext_data->inputs[EFT_MIC_INT_TERMINAL_ID],
+                     EFT_DEFAULT_FRAME_SIZE);
+842009a0:	04 f0 40 40 	r2 = Null + 64;
+842009a4:	93 f0 01 88 	r1 = M[r7 + 4];
+842009a8:	92 f0 05 88 	r0 = M[r7 + 20];
+842009ac:	ff fd 69 f2 	call (m) 0x4dda4;
+842009b0:	39 ef 
+
+        t_fft_object *p_fft_ref = p_ext_data->p_afb_ref->afb.fft_object_ptr;
+842009b2:	91 f0 7c 88 	rMAC = M[r7 + 496];
+842009b6:	0e 89       	r4 = M[rMAC + 16];
+        p_fft_ref->real_scratch_ptr = scratch_commit(
+            AANC_FILTER_BANK_NUM_BINS*sizeof(int), MALLOC_PREFERENCE_DM1);
+842009b8:	43 20       	r1 = Null + 1;
+842009ba:	02 f0 04 41 	r0 = Null + 260;
+842009be:	ff fd 0b f0 	call (m) 0x215c;
+842009c2:	3f ec 
+842009c4:	72 8e       	M[r4 + 4] = r0;
+        p_fft_ref->imag_scratch_ptr = scratch_commit(
+            AANC_FILTER_BANK_NUM_BINS*sizeof(int), MALLOC_PREFERENCE_DM2);
+842009c6:	83 20       	r1 = Null + 2;
+842009c8:	02 f0 04 41 	r0 = Null + 260;
+842009cc:	ff fd 0b f0 	call (m) 0x215c;
+842009d0:	31 ec 
+842009d2:	b2 8e       	M[r4 + 8] = r0;
+        p_fft_ref->fft_scratch_ptr = scratch_commit(
+            AANC_FILTER_BANK_NUM_BINS*sizeof(int), MALLOC_PREFERENCE_DM2);
+842009d4:	83 20       	r1 = Null + 2;
+842009d6:	02 f0 04 41 	r0 = Null + 260;
+842009da:	ff fd 0b f0 	call (m) 0x215c;
+842009de:	23 ec 
+842009e0:	f2 8e       	M[r4 + 12] = r0;
+
+        /* AFB process on reference */
+        aanc_afb_process_data(p_ext_data->f_handle, p_ext_data->p_afb_ref,
+                              p_ext_data->p_tmp_ref_ip);
+842009e2:	94 f0 04 88 	r2 = M[r7 + 16];
+842009e6:	93 f0 7c 88 	r1 = M[r7 + 496];
+842009ea:	92 f0 7f 88 	r0 = M[r7 + 508];
+842009ee:	07 f0 29 e7 	call (m) $_aanc_afb_process_data;
+
+        /* Second AFB call re-uses scratch memory from the first */
+        t_fft_object *p_fft_int = p_ext_data->p_afb_int->afb.fft_object_ptr;
+842009f2:	91 f0 7d 88 	rMAC = M[r7 + 500];
+842009f6:	0f 89       	r5 = M[rMAC + 16];
+        p_fft_int->real_scratch_ptr = p_fft_ref->real_scratch_ptr;
+842009f8:	71 88       	rMAC = M[r4 + 4];
+842009fa:	79 8e       	M[r5 + 4] = rMAC;
+        p_fft_int->imag_scratch_ptr = p_fft_ref->imag_scratch_ptr;
+842009fc:	b1 88       	rMAC = M[r4 + 8];
+842009fe:	b9 8e       	M[r5 + 8] = rMAC;
+        p_fft_int->fft_scratch_ptr = p_fft_ref->fft_scratch_ptr;
+84200a00:	f1 88       	rMAC = M[r4 + 12];
+84200a02:	f9 8e       	M[r5 + 12] = rMAC;
+
+        /* AFB process on int mic */
+        aanc_afb_process_data(p_ext_data->f_handle, p_ext_data->p_afb_int,
+                              p_ext_data->p_tmp_int_ip);
+84200a04:	94 f0 05 88 	r2 = M[r7 + 20];
+84200a08:	93 f0 7d 88 	r1 = M[r7 + 500];
+84200a0c:	92 f0 7f 88 	r0 = M[r7 + 508];
+84200a10:	07 f0 27 e6 	call (m) $_aanc_afb_process_data;
+
+        /* Set scratch pointers to NULL before freeing scratch */
+        p_fft_ref->real_scratch_ptr = NULL;
+84200a14:	70 8e       	M[r4 + 4] = Null;
+        p_fft_ref->imag_scratch_ptr = NULL;
+84200a16:	b0 8e       	M[r4 + 8] = Null;
+        p_fft_ref->fft_scratch_ptr = NULL;
+84200a18:	f0 8e       	M[r4 + 12] = Null;
+        p_fft_int->real_scratch_ptr = NULL;
+84200a1a:	78 8e       	M[r5 + 4] = Null;
+        p_fft_int->imag_scratch_ptr = NULL;
+84200a1c:	b8 8e       	M[r5 + 8] = Null;
+        p_fft_int->fft_scratch_ptr = NULL;
+84200a1e:	f8 8e       	M[r5 + 12] = Null;
+
+        scratch_free();
+84200a20:	ff fd 0b f0 	call (m) 0x21aa;
+84200a24:	2b ec 
+
+        /* FIT100 processing */
+        aanc_fit100_process_data(p_ext_data->f_handle, p_ext_data->p_fit);
+84200a26:	93 f0 7e 88 	r1 = M[r7 + 504];
+84200a2a:	92 f0 7f 88 	r0 = M[r7 + 508];
+84200a2e:	07 f0 25 eb 	call (m) $_aanc_fit100_process_data;
+
+        p_ext_data->fit_quality = p_ext_data->p_fit->fit_flag;
+84200a32:	93 f0 7e 88 	r1 = M[r7 + 504];
+84200a36:	d9 88       	rMAC = M[r1 + 12];
+84200a38:	91 f0 95 8a 	MB[r7 + 149] = rMAC;
+
+        /* One-shot processing */
+        if (p_shot->start)
+84200a3c:	80 f0 00 e8 	Null = M[r6 + Null];
+84200a40:	26 60       	if EQ jump (m) Lc_eft_process_data_30;
+
+84200a42 <Lc_eft_process_data_25>:
+        {
+            if (p_shot->frame_counter == p_shot->duration_frames)
+84200a42:	81 f0 03 88 	rMAC = M[r6 + 12];
+84200a46:	82 f0 02 88 	r0 = M[r6 + 8];
+84200a4a:	88 04       	Null = rMAC - r0;
+84200a4c:	07 62       	if NE jump (m) Lc_eft_process_data_27;
+
+84200a4e <Lc_eft_process_data_26>:
+            {
+                aanc_fit100_one_shot_initialize(
+                    p_ext_data->f_handle,
+                    p_ext_data->p_fit,
+                    p_ext_data->one_shot.duration_frames
+                );
+84200a4e:	94 f0 28 88 	r2 = M[r7 + 160];
+84200a52:	92 f0 7f 88 	r0 = M[r7 + 508];
+84200a56:	07 f0 35 eb 	call (m) $_aanc_fit100_one_shot_initialize;
+
+84200a5a <Lc_eft_process_data_27>:
+            }
+            p_ext_data->one_shot.frame_counter -= 1;
+84200a5a:	91 f0 29 88 	rMAC = M[r7 + 164];
+84200a5e:	49 24       	rMAC = rMAC - 1;
+84200a60:	91 f0 29 8e 	M[r7 + 164] = rMAC;
+            aanc_fit100_one_shot_process(
+                p_ext_data->f_handle,
+                p_ext_data->p_fit);
+84200a64:	93 f0 7e 88 	r1 = M[r7 + 504];
+84200a68:	92 f0 7f 88 	r0 = M[r7 + 508];
+84200a6c:	07 f0 31 ed 	call (m) $_aanc_fit100_one_shot_process;
+            if (p_ext_data->one_shot.frame_counter == 0)
+84200a70:	90 f0 29 88 	Null = M[r7 + 164];
+84200a74:	0c 62       	if NE jump (m) Lc_eft_process_data_30;
+
+84200a76 <Lc_eft_process_data_28>:
+            {
+                p_ext_data->one_shot.start = FALSE;
+84200a76:	90 f0 26 8e 	M[r7 + 152] = Null;
+                if (p_ext_data->auto_fit.state == EFT_AUTO_FIT_STATE_OFF)
+84200a7a:	91 f0 bc 81 	rMAC = MBS[r7 + 444];
+84200a7e:	07 62       	if NE jump (m) Lc_eft_process_data_30;
+
+84200a80 <Lc_eft_process_data_29>:
+                {   /* raise only if AUTO_FIT is OFF */
+                    eft_send_event_trigger(op_data,
+                        EFT_EVENT_ID_FIT,
+                        EFT_EVENT_PAYLOAD_CAPTURE_COMPLETE);
+84200a80:	74 f0 ff 7b 	r2 = Null + 65535;
+84200a84:	03 00       	r1 = Null + Null;
+84200a86:	5a 08       	r0 = r9 + Null;
+84200a88:	01 f0 2b e0 	call (m) Lc_eft_send_event_trigger_1;
+
+84200a8c <Lc_eft_process_data_30>:
+                }
+            }
+        }
+
+        /* Process and send significant event, if any */
+        eft_process_events(op_data, p_ext_data);
+84200a8c:	4b 08       	r1 = r7 + Null;
+84200a8e:	5a 08       	r0 = r9 + Null;
+84200a90:	02 f0 39 ea 	call (m) Lc_eft_process_events_1;
+
+        /* Update prev fit flag after event processing */
+        p_ext_data->prev_fit_quality = p_ext_data->fit_quality;
+84200a94:	91 f0 95 82 	rMAC = MBU[r7 + 149];
+84200a98:	91 f0 96 8a 	MB[r7 + 150] = rMAC;
+
+        /* auto fit */
+        if (p_ext_data->auto_fit.state > EFT_AUTO_FIT_STATE_OFF)
+84200a9c:	91 f0 bc 81 	rMAC = MBS[r7 + 444];
+84200aa0:	08 24       	Null = rMAC - 0;
+84200aa2:	04 6c       	if LE jump (m) Lc_eft_process_data_32;
+
+84200aa4 <Lc_eft_process_data_31>:
+        {
+            eft_auto_fit_ctrl(p_ext_data);
+84200aa4:	4a 08       	r0 = r7 + Null;
+84200aa6:	05 f0 25 e9 	call (m) Lc_eft_auto_fit_ctrl_1;
+
+84200aaa <Lc_eft_process_data_32>:
+        }
+
+        cbuffer_discard_data(p_ext_data->p_tmp_ref_ip,
+                                EFT_DEFAULT_FRAME_SIZE);
+84200aaa:	03 f0 40 40 	r1 = Null + 64;
+84200aae:	92 f0 04 88 	r0 = M[r7 + 16];
+84200ab2:	ff fd 68 f2 	call (m) 0x4dc8c;
+84200ab6:	3b ee 
+        cbuffer_discard_data(p_ext_data->p_tmp_int_ip,
+                                EFT_DEFAULT_FRAME_SIZE);
+84200ab8:	03 f0 40 40 	r1 = Null + 64;
+84200abc:	92 f0 05 88 	r0 = M[r7 + 20];
+84200ac0:	ff fd 68 f2 	call (m) 0x4dc8c;
+84200ac4:	2d ee 
+
+        samples_to_process = eft_calc_samples_to_process(p_ext_data);
+84200ac6:	4a 08       	r0 = r7 + Null;
+84200ac8:	c4 4e       	call (m) Lc_eft_calc_samples_to_process_1;
+84200aca:	13 00       	r1 = r0 + Null;
+        sample_count += EFT_DEFAULT_FRAME_SIZE;
+84200acc:	0a f0 40 44 	r8 = r8 + 64;
+        /* initialize auto fit */
+        eft_auto_fit_set_config(p_ext_data);
+    }
+
+    sample_count = 0;
+    while (samples_to_process >= EFT_DEFAULT_FRAME_SIZE)
+84200ad0:	30 f0 40 24 	Null = r1 - 64;
+84200ad4:	5d 67       	if GE jump (m) Lc_eft_process_data_24;
+
+84200ad6 <Lc_eft_process_data_33>:
+84200ad6:	01 fa d8 c8 	r6 = r8 LSHIFT 2;
+
+        samples_to_process = eft_calc_samples_to_process(p_ext_data);
+        sample_count += EFT_DEFAULT_FRAME_SIZE;
+    }
+
+    for (i=0; i < EFT_NUM_METADATA_CHANNELS; i++)
+84200ada:	07 00       	r5 = Null + Null;
+84200adc:	96 f0 08 20 	r4 = r7 + 8;
+
+84200ae0 <Lc_eft_process_data_34>:
+    {
+        /* Extract metadata tag from input */
+        mtag_ip_list = buff_metadata_remove(p_ext_data->metadata_ip[i],
+                        sample_count * OCTETS_PER_SAMPLE, &b4idx, &afteridx);
+84200ae0:	85 12       	r3 = FP + 40;
+84200ae2:	44 12       	r2 = FP + 36;
+84200ae4:	32 e8       	r0 = M[r4 + Null];
+84200ae6:	43 08       	r1 = r6 + Null;
+84200ae8:	ff fd 9e f0 	call (m) 0x147c0;
+84200aec:	39 e6 
+
+        /* Free all the incoming tags */
+        buff_metadata_tag_list_delete(mtag_ip_list);
+84200aee:	ff fd 9d f0 	call (m) 0x14512;
+84200af2:	25 e1 
+
+        samples_to_process = eft_calc_samples_to_process(p_ext_data);
+        sample_count += EFT_DEFAULT_FRAME_SIZE;
+    }
+
+    for (i=0; i < EFT_NUM_METADATA_CHANNELS; i++)
+84200af4:	7f 20       	r5 = r5 + 1;
+84200af6:	36 21       	r4 = r4 + 4;
+84200af8:	b8 24       	Null = r5 - 2;
+84200afa:	f3 69       	if LT jump (m) Lc_eft_process_data_34;
+
+84200afc <Lc_eft_process_data_35>:
+        buff_metadata_tag_list_delete(mtag_ip_list);
+    }
+    /***************************
+     * Update touched terminals
+     ***************************/
+    touched->sinks = (unsigned) EFT_MIN_VALID_SINKS;
+84200afc:	c1 20       	rMAC = Null + 3;
+84200afe:	42 d8       	r0 = M[FP + 32];
+84200b00:	51 8e       	M[r0 + 4] = rMAC;
+
+    L5_DBG_MSG("EFT process channel data completed");
+84200b02:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200b06:	48 25       	Null = rMAC - 5;
+84200b08:	07 68       	if LT jump (m) Lc_eft_process_data_37;
+
+84200b0a <Lc_eft_process_data_36>:
+84200b0a:	55 f1 02 f0 	r0 = Null + 357566886;
+84200b0e:	a6 51 
+84200b10:	ff fd 02 f0 	call (m) 0x10b0;
+84200b14:	21 ed 
+
+84200b16 <Lc_eft_process_data_37>:
+
+    return;
+}
+84200b16:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200b18:	d8 4c       	rts;
+
+84200b1a <$_ups_params_eft>:
+
+bool ups_params_eft(void* instance_data, PS_KEY_TYPE key,
+                          PERSISTENCE_RANK rank, uint16 length,
+                          unsigned* data, STATUS_KYMERA status,
+                          uint16 extra_status_info)
+{
+84200b1a:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200b1c:	2f 00       	r5 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+84200b1e:	ef fd fe ff 	call (m) 0x8ea;
+84200b22:	2d ee 
+84200b24:	16 00       	r4 = r0 + Null;
+                          uint16 extra_status_info)
+{
+    OPERATOR_DATA *op_data = (OPERATOR_DATA*) instance_data;
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    cpsSetParameterFromPsStore(&p_ext_data->params_def, length, data, status);
+84200b26:	e5 d5       	r3 = MHS[FP + -8];
+84200b28:	fc d9       	r2 = M[FP + -4];
+84200b2a:	62 f0 d0 21 	r0 = r4 + 464;
+84200b2e:	3b 00       	r1 = r5 + Null;
+84200b30:	ff fd 01 f0 	call (m) 0xdf6;
+84200b34:	27 e6 
+
+    /* Set the reinitialization flag after setting the parameters */
+    p_ext_data->re_init_flag = TRUE;
+84200b36:	41 20       	rMAC = Null + 1;
+84200b38:	61 f0 97 8a 	MB[r4 + 151] = rMAC;
+
+    return TRUE;
+84200b3c:	0a 00       	r0 = rMAC + Null;
+
+84200b3e <Lc_ups_params_eft_2>:
+}
+84200b3e:	f2 48       	popm <FP, r4, r5, rLink>;
+84200b40:	d8 4c       	rts;
+
+84200b42 <$_eft_opmsg_start_capture>:
+
+bool eft_opmsg_start_capture(OPERATOR_DATA *op_data,
+                             void *message_data,
+                             unsigned *resp_length,
+                             OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200b42:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200b44:	1e 00       	r4 = r1 + Null;
+84200b46:	27 00       	r5 = r2 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+84200b48:	ef fd fe ff 	call (m) 0x8ea;
+84200b4c:	23 ed 
+                             void *message_data,
+                             unsigned *resp_length,
+                             OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    EFT_OP_DATA *p_ext_data = get_instance_data(op_data);
+    EFT_CAPTURE *p_shot = &p_ext_data->one_shot;
+84200b4e:	21 f0 98 20 	rMAC = r0 + 152;
+
+    *resp_length = sizeof(OP_STD_RSP)/sizeof(int);
+84200b52:	c2 20       	r0 = Null + 3;
+84200b54:	3a ee       	M[r5 + Null] = r0;
+
+    if (p_shot->start)
+84200b56:	08 e8       	Null = M[rMAC + Null];
+84200b58:	0d 60       	if EQ jump (m) Lc_eft_opmsg_start_capture_5;
+
+84200b5a <Lc_eft_opmsg_start_capture_2>:
+    {
+        L2_DBG_MSG("EFT: capture failed to start - already running");
+84200b5a:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200b5e:	88 24       	Null = rMAC - 2;
+84200b60:	07 68       	if LT jump (m) Lc_eft_opmsg_start_capture_4;
+
+84200b62 <Lc_eft_opmsg_start_capture_3>:
+84200b62:	55 f1 02 f0 	r0 = Null + 357565989;
+84200b66:	25 4a 
+84200b68:	ff fd 02 f0 	call (m) 0x10b0;
+84200b6c:	29 ea 
+
+84200b6e <Lc_eft_opmsg_start_capture_4>:
+        return FALSE;
+84200b6e:	02 00       	r0 = Null + Null;
+84200b70:	15 6e       	jump (m) Lc_eft_opmsg_start_capture_9;
+
+84200b72 <Lc_eft_opmsg_start_capture_5>:
+
+    p_shot->duration_ms = OPMSG_FIELD_GET(
+        message_data,
+        OPMSG_EFT_START_CAPTURE,
+        DURATION_MS
+    );
+84200b72:	f2 88       	r0 = M[r4 + 12];
+84200b74:	92 c6       	r0 = r0 AND 0xffff;
+84200b76:	4a 8e       	M[rMAC + 4] = r0;
+
+    p_shot->duration_frames = p_shot->duration_ms >> EFT_MS_TO_FRAMES_SHIFT;
+84200b78:	52 50       	r0 = r0 LSHIFT -2;
+
+    if (p_shot->duration_frames == 0)
+84200b7a:	8a 8e       	M[rMAC + 8] = r0;
+84200b7c:	0c 62       	if NE jump (m) Lc_eft_opmsg_start_capture_8;
+
+84200b7e <Lc_eft_opmsg_start_capture_6>:
+    {
+        L2_DBG_MSG("EFT: capture failed to start - 0 frames");
+84200b7e:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200b82:	88 24       	Null = rMAC - 2;
+84200b84:	f5 69       	if LT jump (m) Lc_eft_opmsg_start_capture_4;
+
+84200b86 <Lc_eft_opmsg_start_capture_7>:
+84200b86:	55 f1 02 f0 	r0 = Null + 357566036;
+84200b8a:	54 4a 
+84200b8c:	ff fd 02 f0 	call (m) 0x10b0;
+84200b90:	25 e9 
+84200b92:	ee 6f       	jump (m) Lc_eft_opmsg_start_capture_4;
+
+84200b94 <Lc_eft_opmsg_start_capture_8>:
+        return FALSE;
+    }
+
+    p_shot->frame_counter = p_shot->duration_frames;
+84200b94:	ca 8e       	M[rMAC + 12] = r0;
+    p_shot->start = TRUE;
+84200b96:	42 20       	r0 = Null + 1;
+84200b98:	0a ee       	M[rMAC + Null] = r0;
+
+84200b9a <Lc_eft_opmsg_start_capture_9>:
+
+    return TRUE;
+84200b9a:	f2 48       	popm <FP, r4, r5, rLink>;
+84200b9c:	d8 4c       	rts;
+
+84200b9e <$_eft_opmsg_get_bin_power>:
+
+bool eft_opmsg_get_bin_power(OPERATOR_DATA *op_data,
+                             void *message_data,
+                             unsigned *resp_length,
+                             OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200b9e:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+84200ba0:	1e 00       	r4 = r1 + Null;
+84200ba2:	27 00       	r5 = r2 + Null;
+84200ba4:	29 09       	r7 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+84200ba6:	ef fd fe ff 	call (m) 0x8ea;
+84200baa:	25 ea 
+84200bac:	10 09       	r6 = r0 + Null;
+    EFT_BIN_SECTION section;
+    EFT_BIN_SOURCE source;
+    int i;
+
+    /* Allocate response payload */
+    *resp_length = EFT_BINS_RESP_SIZE;
+84200bae:	c1 30       	rMAC = Null + 35;
+84200bb0:	39 ee       	M[r5 + Null] = rMAC;
+
+    p_resp = xzpnewn(EFT_BINS_RESP_SIZE, unsigned);
+84200bb2:	c3 20       	r1 = Null + 3;
+84200bb4:	02 f0 8c 40 	r0 = Null + 140;
+84200bb8:	ff fd 31 f0 	call (m) 0x6f8e;
+84200bbc:	37 ee 
+    if (p_resp == NULL)
+84200bbe:	10 04       	Null = r0 - Null;
+84200bc0:	03 62       	if NE jump (m) Lc_eft_opmsg_get_bin_power_3;
+
+84200bc2 <Lc_eft_opmsg_get_bin_power_2>:
+    {
+        return FALSE;
+84200bc2:	02 00       	r0 = Null + Null;
+84200bc4:	2b 6e       	jump (m) Lc_eft_opmsg_get_bin_power_9;
+
+84200bc6 <Lc_eft_opmsg_get_bin_power_3>:
+    }
+
+    /* Echo message ID and section */
+    msg_id = OPMGR_GET_OPCMD_MESSAGE_MSG_ID((OPMSG_HEADER*)message_data);
+84200bc6:	b3 88       	r1 = M[r4 + 8];
+
+    OPMSG_CREATION_FIELD_SET32(p_resp,
+                               OPMSG_GET_AHM_GAINS_RESP,
+                               MESSAGE_ID,
+                               msg_id);
+84200bc8:	99 c6       	rMAC = r1 AND 0xffff;
+84200bca:	11 ee       	M[r0 + Null] = rMAC;
+84200bcc:	9b 52       	r1 = r1 LSHIFT -16;
+84200bce:	53 8e       	M[r0 + 4] = r1;
+
+    section = (EFT_BIN_SECTION)OPMSG_FIELD_GET(
+        message_data,
+        OPMSG_EFT_GET_BIN_POWER,
+        SECTION
+    );
+84200bd0:	31 89       	rMAC = M[r4 + 16];
+84200bd2:	89 c6       	rMAC = rMAC AND 0xffff;
+84200bd4:	0b 08       	r1 = SE8 rMAC;
+    OPMSG_CREATION_FIELD_SET(
+        p_resp,
+        OPMSG_EFT_GET_BIN_POWER_RESP,
+        SECTION,
+        (uint16)section
+    );
+84200bd6:	99 c6       	rMAC = r1 AND 0xffff;
+84200bd8:	91 8e       	M[r0 + 8] = rMAC;
+
+    source = (EFT_BIN_SOURCE)OPMSG_FIELD_GET(
+        message_data,
+        OPMSG_EFT_GET_BIN_POWER,
+        SOURCE
+    );
+84200bda:	f1 88       	rMAC = M[r4 + 12];
+84200bdc:	89 c6       	rMAC = rMAC AND 0xffff;
+84200bde:	09 08       	rMAC = SE8 rMAC;
+    OPMSG_CREATION_FIELD_SET(
+        p_resp,
+        OPMSG_EFT_GET_BIN_POWER_RESP,
+        SOURCE,
+        (uint16)source
+    );
+84200be0:	8c c6       	r2 = rMAC AND 0xffff;
+84200be2:	54 8e       	M[r0 + 4] = r2;
+        default:
+            debug_shift = 24;
+            break;
+    }
+#else
+switch (source)
+84200be4:	08 04       	Null = rMAC - Null;
+84200be6:	05 62       	if NE jump (m) Lc_eft_opmsg_get_bin_power_5;
+
+84200be8 <Lc_eft_opmsg_get_bin_power_4>:
+{
+case EFT_BIN_SOURCE_REF:
+    p_bin_source = p_ext_data->p_fit->pwr_ref_bins;
+84200be8:	81 f0 7e 88 	rMAC = M[r6 + 504];
+84200bec:	09 31       	rMAC = rMAC + 36;
+    break;
+84200bee:	05 6e       	jump (m) Lc_eft_opmsg_get_bin_power_6;
+
+84200bf0 <Lc_eft_opmsg_get_bin_power_5>:
+case EFT_BIN_SOURCE_MIC:
+default:
+    p_bin_source = p_ext_data->p_fit->pwr_mic_bins;
+84200bf0:	81 f0 7e 88 	rMAC = M[r6 + 504];
+84200bf4:	01 f0 24 45 	rMAC = rMAC + 292;
+
+84200bf8 <Lc_eft_opmsg_get_bin_power_6>:
+    break;
+84200bf8:	dd 54       	r3 = r1 LSHIFT 4;
+}
+#endif
+
+/* Populate the return payload */
+for (i = 0; i < EFT_BINS_PER_SECTION; i++)
+84200bfa:	03 00       	r1 = Null + Null;
+84200bfc:	14 23       	r2 = r0 + 12;
+84200bfe:	84 71       	r10 = Null + 16;
+84200c00:	0a 4c       	do (m) Lc__loop2;
+
+84200c02 <Lc_eft_opmsg_get_bin_power_7>:
+{
+    offset = i + EFT_BINS_PER_SECTION * section;
+84200c02:	ee 00       	r4 = r3 + r1;
+#ifdef EFT_MESSAGE_TEST
+    value = ((offset << debug_shift)) + offset;
+#else
+    value = p_bin_source[offset];
+84200c04:	76 54       	r4 = r4 LSHIFT 2;
+84200c06:	8e e9       	r4 = M[rMAC + r4];
+        p_resp,
+        OPMSG_EFT_GET_BIN_POWER_RESP,
+        POWERS,
+        2 * i,
+        value >> 16
+    );
+84200c08:	b7 52       	r5 = r4 LSHIFT -16;
+84200c0a:	27 ee       	M[r2 + Null] = r5;
+        p_resp,
+        OPMSG_EFT_GET_BIN_POWER_RESP,
+        POWERS,
+        2 * i + 1,
+        value & 0xFFFF
+    );
+84200c0c:	b6 c6       	r4 = r4 AND 0xffff;
+84200c0e:	66 8e       	M[r2 + 4] = r4;
+    break;
+}
+#endif
+
+/* Populate the return payload */
+for (i = 0; i < EFT_BINS_PER_SECTION; i++)
+84200c10:	5b 20       	r1 = r1 + 1;
+84200c12:	24 22       	r2 = r2 + 8;
+
+84200c14 <Lc__loop2>:
+84200c14:	92 f0 00 ee 	M[r7 + Null] = r0;
+    );
+}
+
+*resp_data = (OP_OPMSG_RSP_PAYLOAD*)p_resp;
+
+return TRUE;
+84200c18:	42 20       	r0 = Null + 1;
+
+84200c1a <Lc_eft_opmsg_get_bin_power_9>:
+}
+84200c1a:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+84200c1c:	d8 4c       	rts;
+
+84200c1e <$_eft_opmsg_auto_fit_set_equ_op_id>:
+
+bool eft_opmsg_auto_fit_set_equ_op_id(OPERATOR_DATA* op_data,
+    void* message_data,
+    unsigned* resp_length,
+    OP_OPMSG_RSP_PAYLOAD** resp_data)
+{
+84200c1e:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200c20:	1e 00       	r4 = r1 + Null;
+84200c22:	27 00       	r5 = r2 + Null;
+ *
+ * \return  Pointer to extra operator data EFT_OP_DATA.
+ */
+static inline EFT_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (EFT_OP_DATA *) base_op_get_instance_data(op_data);
+84200c24:	ef fd fe ff 	call (m) 0x8ea;
+84200c28:	27 e6 
+    void* message_data,
+    unsigned* resp_length,
+    OP_OPMSG_RSP_PAYLOAD** resp_data)
+{
+    EFT_OP_DATA* p_ext_data = get_instance_data(op_data);
+    *resp_length = sizeof(OP_STD_RSP) / sizeof(int);
+84200c2a:	c1 20       	rMAC = Null + 3;
+84200c2c:	39 ee       	M[r5 + Null] = rMAC;
+
+    p_ext_data->auto_fit.equ_op_id = OPMSG_FIELD_GET(
+        message_data,
+        OPMSG_EFT_AUTO_FIT_SET_EQU,
+        OP_ID
+    );
+84200c2e:	f1 88       	rMAC = M[r4 + 12];
+84200c30:	8b c6       	r1 = rMAC AND 0xffff;
+84200c32:	23 f0 2a 8e 	M[r0 + 168] = r1;
+    L4_DBG_MSG1("EFT: auto fit, equalizer operator id set to 0x%x)",
+        p_ext_data->auto_fit.equ_op_id);
+84200c36:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200c3a:	08 25       	Null = rMAC - 4;
+84200c3c:	07 68       	if LT jump (m) Lc_eft_opmsg_auto_fit_set_equ_op_id_3;
+
+84200c3e <Lc_eft_opmsg_auto_fit_set_equ_op_id_2>:
+84200c3e:	55 f1 02 f0 	r0 = Null + 357566076;
+84200c42:	7c 4a 
+84200c44:	ff fd 02 f0 	call (m) 0x10c2;
+84200c48:	3f e3 
+
+84200c4a <Lc_eft_opmsg_auto_fit_set_equ_op_id_3>:
+
+    return TRUE;
+84200c4a:	42 20       	r0 = Null + 1;
+
+84200c4c <Lc_eft_opmsg_auto_fit_set_equ_op_id_4>:
+}
+84200c4c:	f2 48       	popm <FP, r4, r5, rLink>;
+84200c4e:	d8 4c       	rts;
+
+84200c50 <Lc_eft_calc_samples_to_process_1>:
+ * If there is less data or space than the default frame size then only that
+ * number of samples will be returned.
+ *
+ */
+static int eft_calc_samples_to_process(EFT_OP_DATA *p_ext_data)
+{
+84200c50:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+    int i, amt, min_data;
+
+    /* Return if playback and int mic input terminals are not connected */
+    if (p_ext_data->inputs[EFT_PLAYBACK_TERMINAL_ID] == NULL ||
+        p_ext_data->inputs[EFT_MIC_INT_TERMINAL_ID] == NULL)
+84200c52:	11 e8       	rMAC = M[r0 + Null];
+84200c54:	03 60       	if EQ jump (m) Lc_eft_calc_samples_to_process_3;
+
+84200c56 <Lc_eft_calc_samples_to_process_2>:
+84200c56:	51 88       	rMAC = M[r0 + 4];
+84200c58:	05 62       	if NE jump (m) Lc_eft_calc_samples_to_process_4;
+
+84200c5a <Lc_eft_calc_samples_to_process_3>:
+    {
+        return INT_MAX;
+84200c5a:	ff f7 f2 f7 	r0 = Null + 2147483647;
+84200c5e:	ff 7b 
+84200c60:	13 6e       	jump (m) Lc_eft_calc_samples_to_process_10;
+
+84200c62 <Lc_eft_calc_samples_to_process_4>:
+    }
+
+    min_data = EFT_DEFAULT_FRAME_SIZE;
+84200c62:	06 f0 40 40 	r4 = Null + 64;
+    /* Calculate the amount of data available */
+    for (i = EFT_PLAYBACK_TERMINAL_ID; i <= EFT_MIC_INT_TERMINAL_ID; i++)
+84200c66:	07 00       	r5 = Null + Null;
+84200c68:	10 09       	r6 = r0 + Null;
+
+84200c6a <Lc_eft_calc_samples_to_process_5>:
+    {
+        if (p_ext_data->inputs[i] != NULL)
+84200c6a:	82 f0 00 e8 	r0 = M[r6 + Null];
+84200c6e:	07 60       	if EQ jump (m) Lc_eft_calc_samples_to_process_8;
+
+84200c70 <Lc_eft_calc_samples_to_process_6>:
+        {
+            amt = cbuffer_calc_amount_data_in_words(p_ext_data->inputs[i]);
+84200c70:	ff fd 67 f2 	call (m) 0x4db5a;
+84200c74:	2b e7 
+            if (amt < min_data)
+84200c76:	90 05       	Null = r0 - r4;
+84200c78:	02 66       	if GE jump (m) Lc_eft_calc_samples_to_process_8;
+
+84200c7a <Lc_eft_calc_samples_to_process_7>:
+            {
+                min_data = amt;
+84200c7a:	16 00       	r4 = r0 + Null;
+
+84200c7c <Lc_eft_calc_samples_to_process_8>:
+        return INT_MAX;
+    }
+
+    min_data = EFT_DEFAULT_FRAME_SIZE;
+    /* Calculate the amount of data available */
+    for (i = EFT_PLAYBACK_TERMINAL_ID; i <= EFT_MIC_INT_TERMINAL_ID; i++)
+84200c7c:	7f 20       	r5 = r5 + 1;
+84200c7e:	20 75       	r6 = r6 + 4;
+84200c80:	78 24       	Null = r5 - 1;
+84200c82:	f4 6d       	if LE jump (m) Lc_eft_calc_samples_to_process_5;
+
+84200c84 <Lc_eft_calc_samples_to_process_9>:
+            }
+        }
+    }
+
+    /* Samples to process determined as minimum data available */
+    return min_data;
+84200c84:	32 00       	r0 = r4 + Null;
+
+84200c86 <Lc_eft_calc_samples_to_process_10>:
+}
+84200c86:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200c88:	d8 4c       	rts;
+
+84200c8a <Lc_eft_clear_event_1>:
+
+static void eft_clear_event(EFT_EVENT *p_event)
+{
+       p_event->frame_counter =p_event->set_frames;
+84200c8a:	51 88       	rMAC = M[r0 + 4];
+84200c8c:	11 ee       	M[r0 + Null] = rMAC;
+       p_event->running = EFT_EVENT_CLEAR;
+84200c8e:	10 9a       	MB[r0 + 8] = Null;
+
+84200c90 <Lc_eft_clear_event_2>:
+84200c90:	d8 4c       	rts;
+
+84200c92 <Lc_eft_send_event_trigger_1>:
+ *
+ * \return  bool indicating success
+ */
+static bool eft_send_event_trigger(OPERATOR_DATA *op_data,
+                                    uint16 id, uint16 payload)
+{
+84200c92:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+84200c94:	11 09       	r7 = r0 + Null;
+84200c96:	1f 00       	r5 = r1 + Null;
+84200c98:	20 09       	r6 = r2 + Null;
+    unsigned msg_size;
+    unsigned *trigger_message = NULL;
+
+    msg_size = OPMSG_UNSOLICITED_EFT_EVENT_TRIGGER_WORD_SIZE;
+    trigger_message = xpnewn(msg_size, unsigned);
+84200c9a:	c3 20       	r1 = Null + 3;
+84200c9c:	02 22       	r0 = Null + 8;
+84200c9e:	ff fd 30 f0 	call (m) 0x6e90;
+84200ca2:	33 ef 
+84200ca4:	16 00       	r4 = r0 + Null;
+    if (trigger_message == NULL)
+84200ca6:	0d 62       	if NE jump (m) Lc_eft_send_event_trigger_5;
+
+84200ca8 <Lc_eft_send_event_trigger_2>:
+    {
+        L2_DBG_MSG("Failed to send EFT event message");
+84200ca8:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200cac:	88 24       	Null = rMAC - 2;
+84200cae:	07 68       	if LT jump (m) Lc_eft_send_event_trigger_4;
+
+84200cb0 <Lc_eft_send_event_trigger_3>:
+84200cb0:	55 f1 02 f0 	r0 = Null + 357564416;
+84200cb4:	00 40 
+84200cb6:	ff fd 01 f0 	call (m) 0x10b0;
+84200cba:	3b ef 
+
+84200cbc <Lc_eft_send_event_trigger_4>:
+        return FALSE;
+84200cbc:	02 00       	r0 = Null + Null;
+84200cbe:	1b 6e       	jump (m) Lc_eft_send_event_trigger_8;
+
+84200cc0 <Lc_eft_send_event_trigger_5>:
+    }
+
+    OPMSG_CREATION_FIELD_SET(trigger_message,
+                             OPMSG_UNSOLICITED_EFT_EVENT_TRIGGER,
+                             ID,
+                             id);
+84200cc0:	3b 00       	r1 = r5 + Null;
+84200cc2:	33 ee       	M[r4 + Null] = r1;
+    OPMSG_CREATION_FIELD_SET(trigger_message,
+                             OPMSG_UNSOLICITED_EFT_EVENT_TRIGGER,
+                             PAYLOAD,
+                             payload);
+84200cc4:	44 08       	r2 = r6 + Null;
+84200cc6:	74 8e       	M[r4 + 4] = r2;
+
+    L2_DBG_MSG2("EFT Event Sent: [%u, %u]", trigger_message[0],
+                trigger_message[1]);
+84200cc8:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200ccc:	88 24       	Null = rMAC - 2;
+84200cce:	07 68       	if LT jump (m) Lc_eft_send_event_trigger_7;
+
+84200cd0 <Lc_eft_send_event_trigger_6>:
+84200cd0:	55 f1 02 f0 	r0 = Null + 357564449;
+84200cd4:	21 40 
+84200cd6:	ff fd 02 f0 	call (m) 0x10d6;
+84200cda:	21 e0 
+
+84200cdc <Lc_eft_send_event_trigger_7>:
+    common_send_unsolicited_message(op_data,
+                                    (unsigned)OPMSG_REPLY_ID_EFT_EVENT_TRIGGER,
+                                    msg_size,
+                                    trigger_message);
+84200cdc:	84 20       	r2 = Null + 2;
+84200cde:	c3 22       	r1 = Null + 11;
+84200ce0:	35 00       	r3 = r4 + Null;
+84200ce2:	4a 08       	r0 = r7 + Null;
+84200ce4:	ef fd fe ff 	call (m) 0x970;
+84200ce8:	2d e4 
+
+    pdelete(trigger_message);
+84200cea:	32 00       	r0 = r4 + Null;
+84200cec:	ff fd 31 f0 	call (m) 0x6fbe;
+84200cf0:	33 e6 
+
+    return TRUE;
+84200cf2:	42 20       	r0 = Null + 1;
+
+84200cf4 <Lc_eft_send_event_trigger_8>:
+}
+84200cf4:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+84200cf6:	d8 4c       	rts;
+
+84200cf8 <Lc_eft_initialize_events_1>:
+ * \param  p_ext_data  Address of the EFT extra_op_data.
+ *
+ * \return  void.
+ */
+static void eft_initialize_events(OPERATOR_DATA *op_data, EFT_OP_DATA *p_ext_data)
+{
+84200cf8:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200cfa:	1e 00       	r4 = r1 + Null;
+    EARBUD_FIT_TEST_PARAMETERS *p_params = &p_ext_data->eft_cap_params;
+84200cfc:	31 30       	rMAC = r4 + 32;
+    unsigned set_frames;
+
+    set_frames = (p_params->OFFSET_EVENT_GOOD_FIT * EFT_FRAME_RATE);
+84200cfe:	89 88       	rMAC = M[rMAC + 8];
+84200d00:	7d f1 97 c9 	r5 = rMAC * 250 (int);
+    set_frames = set_frames >> EFT_TIMER_PARAM_SHIFT;
+84200d04:	ff 52       	r5 = r5 LSHIFT -20;
+    L4_DBG_MSG1("EFT Fit Detect Event Initialized at %u frames", set_frames);
+84200d06:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200d0a:	08 25       	Null = rMAC - 4;
+84200d0c:	08 68       	if LT jump (m) Lc_eft_initialize_events_3;
+
+84200d0e <Lc_eft_initialize_events_2>:
+84200d0e:	55 f1 02 f0 	r0 = Null + 357564474;
+84200d12:	3a 40 
+84200d14:	3b 00       	r1 = r5 + Null;
+84200d16:	ff fd 01 f0 	call (m) 0x10c2;
+84200d1a:	2d ed 
+
+84200d1c <Lc_eft_initialize_events_3>:
+    p_ext_data->fit_event_detect.set_frames = set_frames;
+84200d1c:	67 f0 7a 8e 	M[r4 + 488] = r5;
+    eft_clear_event(&p_ext_data->fit_event_detect);
+84200d20:	62 f0 e4 21 	r0 = r4 + 484;
+84200d24:	b3 4f       	call (m) Lc_eft_clear_event_1;
+
+84200d26 <Lc_eft_initialize_events_4>:
+
+}
+84200d26:	f2 48       	popm <FP, r4, r5, rLink>;
+84200d28:	d8 4c       	rts;
+
+84200d2a <Lc_eft_auto_fit_calc_smooth_coeff_1>:
+ * \param  p_ext_data  Address of the EFT extra_op_data.
+ *
+ * \return  boolean indicating success or failure.
+ */
+static bool eft_auto_fit_calc_smooth_coeff(EFT_OP_DATA* p_ext_data)
+{
+84200d2a:	f2 1d       	pushm <FP(=SP), r4, r5, rLink>, SP = SP + 0x10;
+    /********************
+     * set filter coeff for gain ramping
+     ********************/
+    if (p_ext_data->auto_fit.gain_smooth_tc_ms == 0) {
+84200d2c:	21 f0 2f 88 	rMAC = M[r0 + 188];
+84200d30:	04 62       	if NE jump (m) Lc_eft_auto_fit_calc_smooth_coeff_3;
+
+84200d32 <Lc_eft_auto_fit_calc_smooth_coeff_2>:
+        p_ext_data->auto_fit.eq_gain_smooth_coeff = 0; /* contribution of prv.input */
+84200d32:	20 f0 71 8e 	M[r0 + 452] = Null;
+84200d36:	25 6e       	jump (m) Lc_eft_auto_fit_calc_smooth_coeff_5;
+
+84200d38 <Lc_eft_auto_fit_calc_smooth_coeff_3>:
+    }
+    else if (p_ext_data->auto_fit.gain_smooth_tc_ms * EFT_FRAME_RATE <= 1000) {
+84200d38:	7d f1 93 c9 	r1 = rMAC * 250 (int);
+84200d3c:	30 f0 e8 27 	Null = r1 - 1000;
+84200d40:	f9 ff f3 ef 	if LS jump (m) Lc_eft_auto_fit_calc_smooth_coeff_2;
+
+84200d44 <Lc_eft_auto_fit_calc_smooth_coeff_4>:
+        /* Note: eq_gain_smooth_coeff = 1000 / (gain_smooth_tc_ms * EFT_FRAME_RATE)
+         *       result of kal_s32_div_s32_s32_normalized(1000 / den) in Q15
+         *       -> For result in Q27: (2^12*1000/den)
+         */
+        mant = kal_s32_div_s32_s32_normalized(4096000, kal_s32_mult_s16_s16(
+            (uint16_t)p_ext_data->auto_fit.gain_smooth_tc_ms, EFT_FRAME_RATE), &qexp);
+84200d44:	8b c6       	r1 = rMAC AND 0xffff;
+84200d46:	04 f0 fa 40 	r2 = Null + 250;
+84200d4a:	05 11       	r3 = FP + 16;
+84200d4c:	1b 1b       	r1 = r1 * r2 (int);
+84200d4e:	03 f0 44 f7 	r2 = Null + 4096000;
+84200d52:	00 40 
+84200d54:	0f f4 86 cd 	r4 = SIGNDET r2;
+84200d58:	76 24       	r4 = r4 - 1;
+84200d5a:	a4 19       	r2 = r2 ASHIFT r4;
+84200d5c:	0f f3 87 cd 	r5 = SIGNDET r1;
+84200d60:	db 19       	r1 = r1 ASHIFT r5;
+84200d62:	bf 05       	r5 = r5 - r4;
+84200d64:	7f f4 1e d9 	rMAC = r2 ASHIFT -1 (MI);
+84200d68:	99 4c       	Div = rMAC / r1;
+84200d6a:	2f ec       	MH[r3 + Null] = r5;
+84200d6c:	c3 4c       	r1 = DivResult;
+84200d6e:	9b 5a       	r1 = r1 ASHIFT -16;
+        p_ext_data->auto_fit.eq_gain_smooth_coeff = EFT_Q27_UNITY - (mant << qexp); /* in Q5.27 */
+84200d70:	41 d4       	rMAC = MHS[FP + 16];
+84200d72:	5b 16       	r1 = r1 LSHIFT rMAC;
+84200d74:	80 f0 00 f0 	rMAC = 134217728 - r1;
+84200d78:	00 f3 51 c6 
+84200d7c:	21 f0 71 8e 	M[r0 + 452] = rMAC;
+
+84200d80 <Lc_eft_auto_fit_calc_smooth_coeff_5>:
+
+    }
+    /* 1_minus_coeff = (1 -1000 / (gain_smooth_tc_ms * EFT_FRAME_RATE)) considers contribution of current input */
+    p_ext_data->auto_fit.eq_gain_smooth_1_minus_coeff =
+        EFT_Q27_UNITY - p_ext_data->auto_fit.eq_gain_smooth_coeff;
+84200d80:	24 f0 71 88 	r2 = M[r0 + 452];
+84200d84:	80 f0 00 f0 	r3 = 134217728 - r2;
+84200d88:	00 f4 55 c6 
+84200d8c:	25 f0 72 8e 	M[r0 + 456] = r3;
+
+    L4_DBG_MSG3("EFT: auto fit, smoothing coeffs calculated in Q27 format for gain_smooth_tc_ms=%d: coeff=%d, 1-coeff=%d",
+        p_ext_data->auto_fit.gain_smooth_tc_ms,
+        p_ext_data->auto_fit.eq_gain_smooth_coeff,
+        p_ext_data->auto_fit.eq_gain_smooth_1_minus_coeff
+    );
+84200d90:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200d94:	08 25       	Null = rMAC - 4;
+84200d96:	09 68       	if LT jump (m) Lc_eft_auto_fit_calc_smooth_coeff_7;
+
+84200d98 <Lc_eft_auto_fit_calc_smooth_coeff_6>:
+84200d98:	23 f0 2f 88 	r1 = M[r0 + 188];
+84200d9c:	55 f1 02 f0 	r0 = Null + 357564520;
+84200da0:	68 40 
+84200da2:	ff fd 01 f0 	call (m) 0x10ec;
+84200da6:	2b ea 
+
+84200da8 <Lc_eft_auto_fit_calc_smooth_coeff_7>:
+
+    return TRUE;
+84200da8:	42 20       	r0 = Null + 1;
+
+84200daa <Lc_eft_auto_fit_calc_smooth_coeff_8>:
+}
+84200daa:	f2 49       	SP = SP - 0x10, popm <FP, r4, r5, rLink>;
+84200dac:	d8 4c       	rts;
+
+84200dae <Lc_eft_auto_fit_set_config_1>:
+ * \param  p_ext_data  Address of the EFT extra_op_data.
+ *
+ * \return  boolean indicating success or failure.
+ */
+static bool eft_auto_fit_set_config(EFT_OP_DATA* p_ext_data)
+{
+84200dae:	f6 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>;
+84200db0:	16 00       	r4 = r0 + Null;
+    unsigned band_id;
+    int value, k;
+    EFT_CAPTURE* p_shot = &p_ext_data->one_shot;
+84200db2:	6b f0 98 20 	r9 = r4 + 152;
+
+    /* capture_interval_ms: time per capture interval in ms (capture period) */
+    p_ext_data->auto_fit.capture_interval_ms = p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_CAPTURE_INTERVAL_MS;
+84200db6:	31 99       	rMAC = M[r4 + 48];
+84200db8:	61 f0 2b 8e 	M[r4 + 172] = rMAC;
+
+    /* msgs_per_capture_interval: number of gain update messages per capture interval */
+    p_ext_data->auto_fit.msgs_per_capture_interval = p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_MSGS_PER_CAPTURE_INTERVAL;
+84200dbc:	71 99       	rMAC = M[r4 + 52];
+84200dbe:	61 f0 2c 8e 	M[r4 + 176] = rMAC;
+
+    /* gain_smooth_tc_ms: time constant applied to smooth of power estimates */
+    p_ext_data->auto_fit.gain_smooth_tc_ms = p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_GAIN_SMOOTH_TC_MS;
+84200dc2:	b1 99       	rMAC = M[r4 + 56];
+84200dc4:	61 f0 2f 8e 	M[r4 + 188] = rMAC;
+
+    /* sensitivity_thrshld_db: min. required REF power level for power ratio estimate */
+    if (p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_SENSITIVITY_THRSHLD_DB == EFT_AUTO_FIT_THRSHLD_OFF) {
+84200dc8:	f1 99       	rMAC = M[r4 + 60];
+84200dca:	04 62       	if NE jump (m) Lc_eft_auto_fit_set_config_3;
+
+84200dcc <Lc_eft_auto_fit_set_config_2>:
+        p_ext_data->auto_fit.sensitivity_thrshld_lin = 0;
+84200dcc:	60 f0 2d 8e 	M[r4 + 180] = Null;
+84200dd0:	0a 6e       	jump (m) Lc_eft_auto_fit_set_config_4;
+
+84200dd2 <Lc_eft_auto_fit_set_config_3>:
+        /*
+         * CONVERT from 1/60dB to LIN Q31 and from Q31 to Q27(+24dB): 60 * 20 * log(16) = 1445,
+         * as gain_linear2dB60(..) expects Q31-argument, but gets arg in Q5.27
+         */
+        value = p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_SENSITIVITY_THRSHLD_DB;
+        p_ext_data->auto_fit.sensitivity_thrshld_lin = dB60toLinearQ5(60 * value + 1445);
+84200dd2:	1e f1 91 c9 	rMAC = rMAC * 60 (int);
+84200dd6:	12 f0 a5 29 	r0 = rMAC + 1445;
+84200dda:	ff fd 55 f2 	call (m) 0x4b858;
+84200dde:	3f e3 
+84200de0:	b2 f0 07 8e 	M[r9 + 28] = r0;
+
+84200de4 <Lc_eft_auto_fit_set_config_4>:
+    }
+
+    /* clipping threshold: max. allowed REF power level. Reduce gain when exceeduing this level */
+    if (p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_CLIPPING_THRSHLD_DB == EFT_AUTO_FIT_THRSHLD_OFF) {
+84200de4:	31 a8       	rMAC = M[r4 + 64];
+84200de6:	07 62       	if NE jump (m) Lc_eft_auto_fit_set_config_6;
+
+84200de8 <Lc_eft_auto_fit_set_config_5>:
+        p_ext_data->auto_fit.clipping_thrshld_lin = INT32_MAX;
+84200de8:	ff f7 f1 f7 	rMAC = Null + 2147483647;
+84200dec:	ff 7b 
+84200dee:	61 f0 2e 8e 	M[r4 + 184] = rMAC;
+84200df2:	0a 6e       	jump (m) Lc_eft_auto_fit_set_config_7;
+
+84200df4 <Lc_eft_auto_fit_set_config_6>:
+        /*
+         * CONVERT from 1/60dB to LIN Q31 and from Q31 to Q27(+24dB): 60 * 20 * log(16) = 1445,
+         * as gain_linear2dB60(..) expects Q31-argument, but gets arg in Q5.27
+         */
+        value = p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_CLIPPING_THRSHLD_DB;
+        p_ext_data->auto_fit.clipping_thrshld_lin = dB60toLinearQ5(60 * value + 1445);
+84200df4:	1e f1 91 c9 	rMAC = rMAC * 60 (int);
+84200df8:	12 f0 a5 29 	r0 = rMAC + 1445;
+84200dfc:	ff fd 55 f2 	call (m) 0x4b858;
+84200e00:	3d e2 
+84200e02:	62 f0 2e 8e 	M[r4 + 184] = r0;
+
+84200e06 <Lc_eft_auto_fit_set_config_7>:
+    }
+
+    /* num_bands: number of bands applied for auto fitting power measure */
+    p_ext_data->auto_fit.num_bands = p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_NUM_BANDS;
+84200e06:	f1 a8       	rMAC = M[r4 + 76];
+84200e08:	61 f0 30 8e 	M[r4 + 192] = rMAC;
+
+    /*********
+     * band specific settings
+     *********/
+    /* lowest cutoff frequency of sub band power measure */
+    value = p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_BAND1_START_FREQ_HZ;
+84200e0c:	31 a9       	rMAC = M[r4 + 80];
+    p_ext_data->auto_fit.band_start_freq_bin = (value + (EFT_BIN_FREQ_SEPARATION_HZ >> 1)) / EFT_BIN_FREQ_SEPARATION_HZ;
+84200e0e:	8a 3b       	r0 = rMAC + 62;
+84200e10:	01 f0 7d 40 	rMAC = Null + 125;
+84200e14:	8a 4c       	Div = r0 / rMAC;
+84200e16:	c1 4c       	rMAC = DivResult;
+84200e18:	61 f0 32 8e 	M[r4 + 200] = rMAC;
+
+    ParamType* pparam_freq = (ParamType*)(&p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_BAND1_FREQ_HZ);
+84200e1c:	68 f0 54 20 	r6 = r4 + 84;
+    ParamType* pparam_gain_offs = (ParamType*)(&p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_BAND1_EQ_GAIN_OFFS_DB);
+84200e20:	8a f0 18 20 	r8 = r6 + 24;
+    for (band_id = 0; band_id < p_ext_data->auto_fit.num_bands; band_id++) {
+84200e24:	07 00       	r5 = Null + Null;
+
+84200e26 <Lc_eft_auto_fit_set_config_8>:
+84200e26:	61 f0 30 88 	rMAC = M[r4 + 192];
+84200e2a:	78 04       	Null = r5 - rMAC;
+84200e2c:	02 f0 d1 e0 	if C jump (m) Lc_eft_auto_fit_set_config_12;
+
+84200e30 <Lc_eft_auto_fit_set_config_9>:
+        p_ext_data->auto_fit.band[band_id].freq_hz = (unsigned) pparam_freq[band_id];
+84200e30:	14 f7 92 c9 	r0 = r5 * 40 (int);
+84200e34:	31 00       	rMAC = r4 + Null;
+84200e36:	51 00       	rMAC = r0 + rMAC;
+84200e38:	09 09       	r7 = rMAC + Null;
+84200e3a:	7a 54       	r0 = r5 LSHIFT 2;
+84200e3c:	81 f0 02 e8 	rMAC = M[r6 + r0];
+84200e40:	91 f0 33 8e 	M[r7 + 204] = rMAC;
+        value = (int) pparam_gain_offs[band_id];
+84200e44:	a2 f0 02 e8 	r0 = M[r8 + r0];
+        /* CONVERT from 1/60dB to LIN Q5.27 */
+        p_ext_data->auto_fit.band[band_id].eq_gain_offs_lin = dB60toLinearQ5(value);
+84200e48:	ff fd 55 f2 	call (m) 0x4b858;
+84200e4c:	31 e0 
+84200e4e:	92 f0 34 8e 	M[r7 + 208] = r0;
+        L4_DBG_MSG4("EFT: auto fit, set parameters for Band %d of %d: upper band edge freq=%dHz, "
+            "gain offset=%d (Q5.27, lin.)",
+            band_id + 1,
+            p_ext_data->auto_fit.num_bands,
+            p_ext_data->auto_fit.band[band_id].freq_hz,
+            p_ext_data->auto_fit.band[band_id].eq_gain_offs_lin);
+84200e52:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200e56:	08 25       	Null = rMAC - 4;
+84200e58:	10 68       	if LT jump (m) Lc_eft_auto_fit_set_config_11;
+
+84200e5a <Lc_eft_auto_fit_set_config_10>:
+84200e5a:	91 f0 34 88 	rMAC = M[r7 + 208];
+84200e5e:	09 1c       	pushm <rMAC>;
+84200e60:	95 f0 33 88 	r3 = M[r7 + 204];
+84200e64:	64 f0 30 88 	r2 = M[r4 + 192];
+84200e68:	7b 20       	r1 = r5 + 1;
+84200e6a:	55 f1 02 f0 	r0 = Null + 357564624;
+84200e6e:	d0 40 
+84200e70:	ff fd 01 f0 	call (m) 0x1104;
+84200e74:	35 e4 
+84200e76:	7f 4c       	SP = SP + -4;
+
+84200e78 <Lc_eft_auto_fit_set_config_11>:
+    value = p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_BAND1_START_FREQ_HZ;
+    p_ext_data->auto_fit.band_start_freq_bin = (value + (EFT_BIN_FREQ_SEPARATION_HZ >> 1)) / EFT_BIN_FREQ_SEPARATION_HZ;
+
+    ParamType* pparam_freq = (ParamType*)(&p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_BAND1_FREQ_HZ);
+    ParamType* pparam_gain_offs = (ParamType*)(&p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_BAND1_EQ_GAIN_OFFS_DB);
+    for (band_id = 0; band_id < p_ext_data->auto_fit.num_bands; band_id++) {
+84200e78:	7f 20       	r5 = r5 + 1;
+84200e7a:	d6 6f       	jump (m) Lc_eft_auto_fit_set_config_8;
+
+84200e7c <Lc_eft_auto_fit_set_config_12>:
+        p_ext_data->auto_fit.capture_interval_ms,
+        p_ext_data->auto_fit.msgs_per_capture_interval,
+        p_ext_data->auto_fit.gain_smooth_tc_ms,
+        p_ext_data->auto_fit.sensitivity_thrshld_lin,
+        p_ext_data->auto_fit.clipping_thrshld_lin
+        );
+84200e7c:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200e80:	08 25       	Null = rMAC - 4;
+84200e82:	14 68       	if LT jump (m) Lc_eft_auto_fit_set_config_14;
+
+84200e84 <Lc_eft_auto_fit_set_config_13>:
+84200e84:	61 f0 2e 88 	rMAC = M[r4 + 184];
+84200e88:	09 1c       	pushm <rMAC>;
+84200e8a:	61 f0 2d 88 	rMAC = M[r4 + 180];
+84200e8e:	09 1c       	pushm <rMAC>;
+84200e90:	65 f0 2f 88 	r3 = M[r4 + 188];
+84200e94:	64 f0 2c 88 	r2 = M[r4 + 176];
+84200e98:	63 f0 2b 88 	r1 = M[r4 + 172];
+84200e9c:	55 f1 02 f0 	r0 = Null + 357564729;
+84200ea0:	39 41 
+84200ea2:	ff fd 01 f0 	call (m) 0x1120;
+84200ea6:	3f e3 
+84200ea8:	7e 4c       	SP = SP + -8;
+
+84200eaa <Lc_eft_auto_fit_set_config_14>:
+
+    /* derivations */
+    p_shot->duration_ms = p_ext_data->auto_fit.capture_interval_ms;
+84200eaa:	62 f0 2b 88 	r0 = M[r4 + 172];
+84200eae:	b2 f0 01 8e 	M[r9 + 4] = r0;
+    p_shot->duration_frames = p_shot->duration_ms >> EFT_MS_TO_FRAMES_SHIFT;
+84200eb2:	52 50       	r0 = r0 LSHIFT -2;
+    if (p_shot->duration_frames == 0)
+84200eb4:	b2 f0 02 8e 	M[r9 + 8] = r0;
+84200eb8:	0d 62       	if NE jump (m) Lc_eft_auto_fit_set_config_18;
+
+84200eba <Lc_eft_auto_fit_set_config_15>:
+    {
+        L2_DBG_MSG("EFT: auto fit capture interval is 0");
+84200eba:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200ebe:	88 24       	Null = rMAC - 2;
+84200ec0:	07 68       	if LT jump (m) Lc_eft_auto_fit_set_config_17;
+
+84200ec2 <Lc_eft_auto_fit_set_config_16>:
+84200ec2:	55 f1 02 f0 	r0 = Null + 357564888;
+84200ec6:	d8 41 
+84200ec8:	ff fd 00 f0 	call (m) 0x10b0;
+84200ecc:	29 ef 
+
+84200ece <Lc_eft_auto_fit_set_config_17>:
+        return FALSE;
+84200ece:	02 00       	r0 = Null + Null;
+84200ed0:	2d 6e       	jump (m) Lc_eft_auto_fit_set_config_24;
+
+84200ed2 <Lc_eft_auto_fit_set_config_18>:
+    }
+    p_ext_data->auto_fit.frame_cnt_msg = 0;
+84200ed2:	60 f0 73 8e 	M[r4 + 460] = Null;
+    L4_DBG_MSG4("EFT: auto fit initialized to accumulate over %dms, "
+        "means %d frames x %d samples/frame / %d samples/s",
+        p_shot->duration_ms, p_shot->duration_frames, EFT_DEFAULT_FRAME_SIZE,
+        p_ext_data->sample_rate);
+84200ed6:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200eda:	08 25       	Null = rMAC - 4;
+84200edc:	10 68       	if LT jump (m) Lc_eft_auto_fit_set_config_20;
+
+84200ede <Lc_eft_auto_fit_set_config_19>:
+84200ede:	b1 89       	rMAC = M[r4 + 24];
+84200ee0:	09 1c       	pushm <rMAC>;
+84200ee2:	05 f0 40 40 	r3 = Null + 64;
+84200ee6:	b4 f0 02 88 	r2 = M[r9 + 8];
+84200eea:	b3 f0 01 88 	r1 = M[r9 + 4];
+84200eee:	55 f1 02 f0 	r0 = Null + 357564924;
+84200ef2:	fc 41 
+84200ef4:	ff fd 01 f0 	call (m) 0x1104;
+84200ef8:	31 e0 
+84200efa:	7f 4c       	SP = SP + -4;
+
+84200efc <Lc_eft_auto_fit_set_config_20>:
+
+    /* set filter coeff for gain ramping */
+    eft_auto_fit_calc_smooth_coeff(p_ext_data);
+84200efc:	32 00       	r0 = r4 + Null;
+84200efe:	16 4f       	call (m) Lc_eft_auto_fit_calc_smooth_coeff_1;
+84200f00:	80 f0 03 f0 	r1 = Null + 134217728;
+84200f04:	00 40 
+
+    /* init bandwise parameters */
+    for (k = 0; k < p_ext_data->auto_fit.num_bands; k++) {
+84200f06:	01 00       	rMAC = Null + Null;
+84200f08:	62 f0 dc 20 	r0 = r4 + 220;
+
+84200f0c <Lc_eft_auto_fit_set_config_21>:
+84200f0c:	64 f0 30 88 	r2 = M[r4 + 192];
+84200f10:	08 05       	Null = rMAC - r2;
+84200f12:	02 f0 97 e0 	if C jump (m) Lc_eft_auto_fit_set_config_23;
+
+84200f16 <Lc_eft_auto_fit_set_config_22>:
+        p_ext_data->auto_fit.band[k].eq_gain_lin_prv = EFT_Q27_UNITY; /* 0dB */
+84200f16:	13 ee       	M[r0 + Null] = r1;
+        p_ext_data->auto_fit.band[k].num_clippings = 0; /* indicates no clipping */
+84200f18:	90 8e       	M[r0 + 8] = Null;
+        p_ext_data->auto_fit.band[k].low_sig_flag = 0;
+84200f1a:	d0 8e       	M[r0 + 12] = Null;
+        p_ext_data->auto_fit.band[k].eq_gain_reduction = EFT_Q27_UNITY; /* no reduction */
+84200f1c:	53 8e       	M[r0 + 4] = r1;
+        p_ext_data->auto_fit.band[k].pow_ref_avg = 0;
+84200f1e:	10 8f       	M[r0 + 16] = Null;
+        p_ext_data->auto_fit.band[k].pow_intmic_avg = 0;
+84200f20:	50 8f       	M[r0 + 20] = Null;
+
+    /* set filter coeff for gain ramping */
+    eft_auto_fit_calc_smooth_coeff(p_ext_data);
+
+    /* init bandwise parameters */
+    for (k = 0; k < p_ext_data->auto_fit.num_bands; k++) {
+84200f22:	49 20       	rMAC = rMAC + 1;
+84200f24:	12 32       	r0 = r0 + 40;
+84200f26:	f3 6f       	jump (m) Lc_eft_auto_fit_set_config_21;
+
+84200f28 <Lc_eft_auto_fit_set_config_23>:
+        p_ext_data->auto_fit.band[k].eq_gain_reduction = EFT_Q27_UNITY; /* no reduction */
+        p_ext_data->auto_fit.band[k].pow_ref_avg = 0;
+        p_ext_data->auto_fit.band[k].pow_intmic_avg = 0;
+    }
+
+    return TRUE;
+84200f28:	42 20       	r0 = Null + 1;
+
+84200f2a <Lc_eft_auto_fit_set_config_24>:
+}
+84200f2a:	f6 48       	popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200f2c:	d8 4c       	rts;
+
+84200f2e <Lc_eft_opmsg_auto_fit_set_state_1>:
+ * \param  p_ext_data  Address of the EFT extra_op_data.
+ *
+ * \return  boolean indicating success or failure.
+ */
+static bool eft_opmsg_auto_fit_set_state(EFT_OP_DATA* p_ext_data)
+{
+84200f2e:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200f30:	16 00       	r4 = r0 + Null;
+    p_ext_data->auto_fit.freeze = FALSE; /* default */
+84200f32:	60 f0 c5 8a 	MB[r4 + 197] = Null;
+    p_ext_data->auto_fit.enable = FALSE;
+84200f36:	60 f0 c4 8a 	MB[r4 + 196] = Null;
+    if (p_ext_data->cur_mode >= EARBUD_FIT_TEST_SYSMODE_AUTO_FIT_ON) {
+84200f3a:	62 f0 21 88 	r0 = M[r4 + 132];
+84200f3e:	90 24       	Null = r0 - 2;
+84200f40:	08 64       	if NC jump (m) Lc_eft_opmsg_auto_fit_set_state_4;
+
+84200f42 <Lc_eft_opmsg_auto_fit_set_state_2>:
+        p_ext_data->auto_fit.enable = TRUE;
+84200f42:	41 20       	rMAC = Null + 1;
+84200f44:	61 f0 c4 8a 	MB[r4 + 196] = rMAC;
+        if (p_ext_data->cur_mode == EARBUD_FIT_TEST_SYSMODE_AUTO_FIT_FROZEN) {
+84200f48:	d0 24       	Null = r0 - 3;
+84200f4a:	03 62       	if NE jump (m) Lc_eft_opmsg_auto_fit_set_state_4;
+
+84200f4c <Lc_eft_opmsg_auto_fit_set_state_3>:
+            p_ext_data->auto_fit.freeze = TRUE;
+84200f4c:	61 f0 c5 8a 	MB[r4 + 197] = rMAC;
+
+84200f50 <Lc_eft_opmsg_auto_fit_set_state_4>:
+        }
+    }
+
+    /* state transitions */
+    switch (p_ext_data->auto_fit.state)
+84200f50:	61 f0 bc 81 	rMAC = MBS[r4 + 444];
+84200f54:	07 60       	if EQ jump (m) Lc_eft_opmsg_auto_fit_set_state_8;
+
+84200f56 <Lc_eft_opmsg_auto_fit_set_state_5>:
+84200f56:	48 24       	Null = rMAC - 1;
+84200f58:	19 60       	if EQ jump (m) Lc_eft_opmsg_auto_fit_set_state_11;
+
+84200f5a <Lc_eft_opmsg_auto_fit_set_state_6>:
+84200f5a:	88 24       	Null = rMAC - 2;
+84200f5c:	29 60       	if EQ jump (m) Lc_eft_opmsg_auto_fit_set_state_14;
+
+84200f5e <Lc_eft_opmsg_auto_fit_set_state_7>:
+84200f5e:	c8 24       	Null = rMAC - 3;
+84200f60:	3e 62       	if NE jump (m) Lc_eft_opmsg_auto_fit_set_state_17;
+
+84200f62 <Lc_eft_opmsg_auto_fit_set_state_8>:
+    {
+    case EFT_AUTO_FIT_STATE_OFF:
+        if (p_ext_data->auto_fit.enable == TRUE) {
+84200f62:	61 f0 c4 82 	rMAC = MBU[r4 + 196];
+84200f66:	48 24       	Null = rMAC - 1;
+84200f68:	3a 62       	if NE jump (m) Lc_eft_opmsg_auto_fit_set_state_17;
+
+84200f6a <Lc_eft_opmsg_auto_fit_set_state_9>:
+            p_ext_data->auto_fit.state = EFT_AUTO_FIT_STATE_SWITCHED_ON;
+84200f6a:	41 20       	rMAC = Null + 1;
+84200f6c:	61 f0 bc 8b 	MB[r4 + 444] = rMAC;
+            p_ext_data->auto_fit.is_ready_to_send_msg = FALSE;
+84200f70:	60 f0 c6 8a 	MB[r4 + 198] = Null;
+            L4_DBG_MSG("EFT: auto fit, state set to SWITCHED_ON");
+84200f74:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200f78:	08 25       	Null = rMAC - 4;
+84200f7a:	31 68       	if LT jump (m) Lc_eft_opmsg_auto_fit_set_state_17;
+
+84200f7c <Lc_eft_opmsg_auto_fit_set_state_10>:
+84200f7c:	55 f1 02 f0 	r0 = Null + 357565025;
+84200f80:	61 42 
+84200f82:	ff fd 00 f0 	call (m) 0x10b0;
+84200f86:	2f e9 
+84200f88:	2a 6e       	jump (m) Lc_eft_opmsg_auto_fit_set_state_17;
+
+84200f8a <Lc_eft_opmsg_auto_fit_set_state_11>:
+        }
+        break;
+    case EFT_AUTO_FIT_STATE_SWITCHED_ON:
+        if (p_ext_data->auto_fit.enable == FALSE) {
+84200f8a:	61 f0 c4 82 	rMAC = MBU[r4 + 196];
+84200f8e:	27 62       	if NE jump (m) Lc_eft_opmsg_auto_fit_set_state_17;
+
+84200f90 <Lc_eft_opmsg_auto_fit_set_state_12>:
+            p_ext_data->auto_fit.state = EFT_AUTO_FIT_STATE_OFF;
+84200f90:	60 f0 bc 8b 	MB[r4 + 444] = Null;
+            p_ext_data->auto_fit.is_ready_to_send_msg = FALSE;
+84200f94:	60 f0 c6 8a 	MB[r4 + 198] = Null;
+            L4_DBG_MSG("EFT: auto fit, state set to OFF");
+84200f98:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200f9c:	08 25       	Null = rMAC - 4;
+84200f9e:	1f 68       	if LT jump (m) Lc_eft_opmsg_auto_fit_set_state_17;
+
+84200fa0 <Lc_eft_opmsg_auto_fit_set_state_13>:
+84200fa0:	55 f1 02 f0 	r0 = Null + 357565065;
+84200fa4:	89 42 
+84200fa6:	ff fd 00 f0 	call (m) 0x10b0;
+84200faa:	2b e8 
+84200fac:	18 6e       	jump (m) Lc_eft_opmsg_auto_fit_set_state_17;
+
+84200fae <Lc_eft_opmsg_auto_fit_set_state_14>:
+        }
+        break;
+    case EFT_AUTO_FIT_STATE_ON:
+        if (p_ext_data->auto_fit.enable == FALSE) {
+84200fae:	61 f0 c4 82 	rMAC = MBU[r4 + 196];
+84200fb2:	dc 63       	if NE jump (m) Lc_eft_opmsg_auto_fit_set_state_9;
+
+84200fb4 <Lc_eft_opmsg_auto_fit_set_state_15>:
+            p_ext_data->auto_fit.state = EFT_AUTO_FIT_STATE_SWITCHED_OFF;
+84200fb4:	c1 20       	rMAC = Null + 3;
+84200fb6:	61 f0 bc 8b 	MB[r4 + 444] = rMAC;
+            /* backup new state, keep AUTO_FIT running till last msg is sent, then switch to new state */
+            p_ext_data->auto_fit.cur_mode_bak = p_ext_data->cur_mode;
+84200fba:	62 f0 70 8e 	M[r4 + 448] = r0;
+            /* overwrite mode till last msg is sent */
+            p_ext_data->cur_mode = EARBUD_FIT_TEST_SYSMODE_AUTO_FIT_ON;
+84200fbe:	81 20       	rMAC = Null + 2;
+84200fc0:	61 f0 21 8e 	M[r4 + 132] = rMAC;
+            p_ext_data->auto_fit.freeze = FALSE;
+84200fc4:	60 f0 c5 8a 	MB[r4 + 197] = Null;
+            L4_DBG_MSG("EFT: auto fit, state set to SWITCHED_OFF");
+84200fc8:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200fcc:	08 25       	Null = rMAC - 4;
+84200fce:	07 68       	if LT jump (m) Lc_eft_opmsg_auto_fit_set_state_17;
+
+84200fd0 <Lc_eft_opmsg_auto_fit_set_state_16>:
+84200fd0:	55 f1 02 f0 	r0 = Null + 357565097;
+84200fd4:	a9 42 
+84200fd6:	ff fd 00 f0 	call (m) 0x10b0;
+84200fda:	3b e6 
+
+84200fdc <Lc_eft_opmsg_auto_fit_set_state_17>:
+        }
+        break;
+    }
+
+    /* Set re-initialization flag for capability */
+    p_ext_data->re_init_flag = TRUE;
+84200fdc:	41 20       	rMAC = Null + 1;
+84200fde:	61 f0 97 8a 	MB[r4 + 151] = rMAC;
+
+    return TRUE;
+84200fe2:	0a 00       	r0 = rMAC + Null;
+
+84200fe4 <Lc_eft_opmsg_auto_fit_set_state_18>:
+}
+84200fe4:	f1 48       	popm <FP, r4, rLink>;
+84200fe6:	d8 4c       	rts;
+
+84200fe8 <Lc_eft_process_events_1>:
+ *
+ * \return  boolean indicating success or failure.
+ */
+static bool eft_process_events(OPERATOR_DATA *op_data,
+                               EFT_OP_DATA *p_ext_data)
+{
+84200fe8:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200fea:	16 00       	r4 = r0 + Null;
+    /* Current and previous fit quality */
+    bool cur_fit = (p_ext_data->fit_quality == 1);
+84200fec:	32 f0 95 82 	r0 = MBU[r1 + 149];
+84200ff0:	01 00       	rMAC = Null + Null;
+84200ff2:	50 24       	Null = r0 - 1;
+84200ff4:	20 f0 41 ce 	if EQ rMAC = Null + 1;
+    bool prev_fit = (p_ext_data->prev_fit_quality == 1);
+84200ff8:	32 f0 96 82 	r0 = MBU[r1 + 150];
+84200ffc:	04 00       	r2 = Null + Null;
+84200ffe:	50 24       	Null = r0 - 1;
+84201000:	20 f0 44 ce 	if EQ r2 = Null + 1;
+    EFT_EVENT* fit_event = &p_ext_data->fit_event_detect;
+84201004:	32 f0 e4 21 	r0 = r1 + 484;
+    uint16 payload = EFT_EVENT_PAYLOAD_UNUSED;
+84201008:	87 20       	r5 = Null + 2;
+
+    if (cur_fit)
+8420100a:	08 04       	Null = rMAC - Null;
+8420100c:	1a 60       	if EQ jump (m) Lc_eft_process_events_9;
+
+8420100e <Lc_eft_process_events_2>:
+    {
+        if (prev_fit) /* Steady state for fit detect event */
+8420100e:	20 04       	Null = r2 - Null;
+84201010:	12 60       	if EQ jump (m) Lc_eft_process_events_8;
+
+84201012 <Lc_eft_process_events_3>:
+        {
+            if (fit_event->running == EFT_EVENT_DETECTED)
+84201012:	11 90       	rMAC = MBS[r0 + 8];
+84201014:	48 24       	Null = rMAC - 1;
+84201016:	0d 62       	if NE jump (m) Lc_eft_process_events_7;
+
+84201018 <Lc_eft_process_events_4>:
+            {
+                fit_event->frame_counter -= 1;
+84201018:	ff f2 11 d1 	rMAC = M[r0] + -1;
+                if (fit_event->frame_counter <= 0)
+8420101c:	11 ee       	M[r0 + Null] = rMAC;
+8420101e:	09 62       	if NE jump (m) Lc_eft_process_events_7;
+
+84201020 <Lc_eft_process_events_5>:
+                {
+                    /* Payload 1 indicates good fit */
+                    payload = EFT_EVENT_PAYLOAD_GOOD;
+84201020:	47 20       	r5 = Null + 1;
+                    fit_event->running = EFT_EVENT_SENT;
+84201022:	81 20       	rMAC = Null + 2;
+84201024:	11 9a       	MB[r0 + 8] = rMAC;
+
+84201026 <Lc_eft_process_events_6>:
+
+    if (payload != EFT_EVENT_PAYLOAD_UNUSED)
+    {
+        eft_send_event_trigger(op_data,
+                               EFT_EVENT_ID_FIT,
+                               payload);
+84201026:	03 00       	r1 = Null + Null;
+84201028:	3c 00       	r2 = r5 + Null;
+8420102a:	32 00       	r0 = r4 + Null;
+8420102c:	fe ff 27 e3 	call (m) Lc_eft_send_event_trigger_1;
+
+84201030 <Lc_eft_process_events_7>:
+    }
+    return TRUE;
+84201030:	42 20       	r0 = Null + 1;
+84201032:	12 6e       	jump (m) Lc_eft_process_events_13;
+
+84201034 <Lc_eft_process_events_8>:
+                fit_event->running == EFT_EVENT_DETECTED;
+            }
+        }
+        else
+        {
+            fit_event->frame_counter -= 1;
+84201034:	ff f2 11 d1 	rMAC = M[r0] + -1;
+84201038:	11 ee       	M[r0 + Null] = rMAC;
+            fit_event->running = EFT_EVENT_DETECTED;
+8420103a:	41 20       	rMAC = Null + 1;
+8420103c:	11 9a       	MB[r0 + 8] = rMAC;
+8420103e:	f9 6f       	jump (m) Lc_eft_process_events_7;
+
+84201040 <Lc_eft_process_events_9>:
+        }
+    }
+    else
+    {
+        if (prev_fit) /* Check if good fit message has been sent */
+84201040:	20 04       	Null = r2 - Null;
+84201042:	f7 61       	if EQ jump (m) Lc_eft_process_events_7;
+
+84201044 <Lc_eft_process_events_10>:
+        {
+            if (fit_event->running == EFT_EVENT_SENT)
+84201044:	11 90       	rMAC = MBS[r0 + 8];
+84201046:	88 24       	Null = rMAC - 2;
+84201048:	02 62       	if NE jump (m) Lc_eft_process_events_12;
+
+8420104a <Lc_eft_process_events_11>:
+            {
+                /* if good fit message previously sent, send bad fit message
+                    Payload 0 indicates bad fit */
+                payload = EFT_EVENT_PAYLOAD_BAD;
+8420104a:	07 00       	r5 = Null + Null;
+
+8420104c <Lc_eft_process_events_12>:
+            }
+            eft_clear_event(fit_event);
+8420104c:	fe ff 3f e1 	call (m) Lc_eft_clear_event_1;
+        }
+    }
+
+    if (payload != EFT_EVENT_PAYLOAD_UNUSED)
+84201050:	b8 24       	Null = r5 - 2;
+84201052:	ea 63       	if NE jump (m) Lc_eft_process_events_6;
+
+84201054 <Lc__ite_59>:
+84201054:	ee 6f       	jump (m) Lc_eft_process_events_7;
+
+84201056 <Lc_eft_process_events_13>:
+        eft_send_event_trigger(op_data,
+                               EFT_EVENT_ID_FIT,
+                               payload);
+    }
+    return TRUE;
+}
+84201056:	f2 48       	popm <FP, r4, r5, rLink>;
+84201058:	d8 4c       	rts;
+
+8420105a <Lc_eft_proc_destroy_1>:
+ *
+ * \return  boolean indicating success or failure.
+ */
+
+static bool eft_proc_destroy(EFT_OP_DATA *p_ext_data)
+{
+8420105a:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+8420105c:	16 00       	r4 = r0 + Null;
+    /* Unregister FFT twiddle */
+    if (p_ext_data->twiddle_registered)
+8420105e:	61 f0 01 92 	rMAC = MBU[r4 + 513];
+84201062:	08 60       	if EQ jump (m) Lc_eft_proc_destroy_3;
+
+84201064 <Lc_eft_proc_destroy_2>:
+    {
+        math_fft_twiddle_release(AANC_FILTER_BANK_WINDOW_SIZE);
+84201064:	02 f0 80 40 	r0 = Null + 128;
+84201068:	ff fd 80 f4 	call 0x9112c;
+8420106c:	24 e6 
+        p_ext_data->twiddle_registered = FALSE;
+8420106e:	60 f0 01 9a 	MB[r4 + 513] = Null;
+
+84201072 <Lc_eft_proc_destroy_3>:
+    }
+    /* De-register scratch & free AFB */
+    if (p_ext_data->scratch_registered)
+84201072:	61 f0 00 92 	rMAC = MBU[r4 + 512];
+84201076:	06 60       	if EQ jump (m) Lc_eft_proc_destroy_5;
+
+84201078 <Lc_eft_proc_destroy_4>:
+    {
+        scratch_deregister();
+84201078:	ff fd 07 f0 	call (m) 0x1fc6;
+8420107c:	2f ea 
+        p_ext_data->scratch_registered = FALSE;
+8420107e:	60 f0 00 9a 	MB[r4 + 512] = Null;
+
+84201082 <Lc_eft_proc_destroy_5>:
+    }
+
+    aanc_afb_destroy(p_ext_data->p_afb_ref);
+84201082:	62 f0 7c 88 	r0 = M[r4 + 496];
+84201086:	04 f0 21 e5 	call (m) $_aanc_afb_destroy;
+    pfree(p_ext_data->p_afb_ref);
+8420108a:	62 f0 7c 88 	r0 = M[r4 + 496];
+8420108e:	ff fd 2f f0 	call (m) 0x6fbe;
+84201092:	31 e9 
+    aanc_afb_destroy(p_ext_data->p_afb_int);
+84201094:	62 f0 7d 88 	r0 = M[r4 + 500];
+84201098:	04 f0 2f e4 	call (m) $_aanc_afb_destroy;
+    pfree(p_ext_data->p_afb_int);
+8420109c:	62 f0 7d 88 	r0 = M[r4 + 500];
+842010a0:	ff fd 2f f0 	call (m) 0x6fbe;
+842010a4:	3f e8 
+
+    aanc_fit100_destroy(p_ext_data->p_fit);
+842010a6:	62 f0 7e 88 	r0 = M[r4 + 504];
+842010aa:	04 f0 35 ef 	call (m) $_aanc_fit100_destroy;
+    pfree(p_ext_data->p_fit);
+842010ae:	62 f0 7e 88 	r0 = M[r4 + 504];
+842010b2:	ff fd 2f f0 	call (m) 0x6fbe;
+842010b6:	2d e8 
+
+    cbuffer_destroy(p_ext_data->p_tmp_ref_ip);
+842010b8:	32 89       	r0 = M[r4 + 16];
+842010ba:	ff fd 99 f0 	call (m) 0x14302;
+842010be:	29 e2 
+    cbuffer_destroy(p_ext_data->p_tmp_int_ip);
+842010c0:	72 89       	r0 = M[r4 + 20];
+842010c2:	ff fd 99 f0 	call (m) 0x14302;
+842010c6:	21 e2 
+
+    unload_aanc_handle(p_ext_data->f_handle);
+842010c8:	62 f0 7f 88 	r0 = M[r4 + 508];
+842010cc:	03 f0 2b e6 	call (m) $_unload_aanc_handle;
+
+    return TRUE;
+842010d0:	42 20       	r0 = Null + 1;
+
+842010d2 <Lc_eft_proc_destroy_6>:
+}
+842010d2:	f1 48       	popm <FP, r4, rLink>;
+842010d4:	d8 4c       	rts;
+
+842010d6 <Lc_auto_fit_send_gain_update_to_equ_callback_1>:
+static bool auto_fit_send_gain_update_to_equ_callback(CONNECTION_LINK con_id,
+    STATUS_KYMERA status,
+    EXT_OP_ID op_id,
+    unsigned num_resp_params,
+    unsigned* resp_params)
+{
+842010d6:	c8 1c       	pushm <FP(=SP), rLink>;
+    if (status != ACCMD_STATUS_OK)
+842010d8:	18 04       	Null = r1 - Null;
+842010da:	0d 60       	if EQ jump (m) Lc_auto_fit_send_gain_update_to_equ_callback_5;
+
+842010dc <Lc_auto_fit_send_gain_update_to_equ_callback_2>:
+    {
+        L2_DBG_MSG1("EFT: auto_fit, send_gain_update to equ failed: status=%d", status);
+842010dc:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842010e0:	88 24       	Null = rMAC - 2;
+842010e2:	07 68       	if LT jump (m) Lc_auto_fit_send_gain_update_to_equ_callback_4;
+
+842010e4 <Lc_auto_fit_send_gain_update_to_equ_callback_3>:
+842010e4:	55 f1 02 f0 	r0 = Null + 357566126;
+842010e8:	ae 4a 
+842010ea:	ef fd ff ff 	call (m) 0x10c2;
+842010ee:	39 ee 
+
+842010f0 <Lc_auto_fit_send_gain_update_to_equ_callback_4>:
+        return FALSE;
+842010f0:	02 00       	r0 = Null + Null;
+842010f2:	02 6e       	jump (m) Lc_auto_fit_send_gain_update_to_equ_callback_6;
+
+842010f4 <Lc_auto_fit_send_gain_update_to_equ_callback_5>:
+    }
+
+    return TRUE;
+842010f4:	42 20       	r0 = Null + 1;
+
+842010f6 <Lc_auto_fit_send_gain_update_to_equ_callback_6>:
+}
+842010f6:	c8 48       	popm <FP, rLink>;
+842010f8:	d8 4c       	rts;
+
+842010fa <Lc_auto_fit_send_gain_update_to_equ_1>:
+
+
+static bool auto_fit_send_gain_update_to_equ(EFT_OP_DATA* p_ext_data)
+{
+842010fa:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+842010fc:	56 4c       	SP = SP + 88;
+842010fe:	12 09       	r8 = r0 + Null;
+    int32_t new_gain_db60[EFT_AUTO_FIT_NUM_BANDS_MAX];
+
+    /* send gain update message to equ
+     * (4 + NUM_BANDS*2) WORD16: 4 WORD16 HEADER + 2 WORD16 per BAND
+     */
+    unsigned params[4 + 2 * EFT_AUTO_FIT_NUM_BANDS_MAX] = { 0 };
+84201100:	01 f0 03 f3 	r1 = Null + 1441968;
+84201104:	b0 40 
+84201106:	42 13       	r0 = FP + 52;
+84201108:	04 28       	r2 = Null + 16;
+8420110a:	ff fd c7 f0 	call (m) 0x1a094;
+8420110e:	2b ec 
+
+    /* do not send message if gain update is frozen */
+    if (p_ext_data->auto_fit.freeze == TRUE) {
+84201110:	a1 f0 c5 82 	rMAC = MBU[r8 + 197];
+84201114:	48 24       	Null = rMAC - 1;
+84201116:	31 60       	if EQ jump (m) Lc_auto_fit_send_gain_update_to_equ_6;
+
+84201118 <Lc_auto_fit_send_gain_update_to_equ_2>:
+        return TRUE;
+    }
+
+    /* msg header */
+    params[0] = OPMSG_COMMON_ID_SET_PARAMS;
+84201118:	11 f0 05 40 	rMAC = Null + 8197;
+8420111c:	69 de       	M[FP + 52] = rMAC;
+    params[1] = (1<<12) | 0x1; // Number of blocks: 1
+8420111e:	01 f0 01 60 	rMAC = Null + 4097;
+84201122:	71 de       	M[FP + 56] = rMAC;
+    params[2] = EFT_EQU_OFFSET_BAND1_GAIN_DB; /* OFFS. 1st gain parameter(s) in GEQ capability */
+84201124:	c1 22       	rMAC = Null + 11;
+84201126:	79 de       	M[FP + 60] = rMAC;
+    params[3] = p_ext_data->auto_fit.num_bands; /* PAYLOAD LENGTH in num of WORD32(2xWORD16) */
+84201128:	a1 f0 30 88 	rMAC = M[r8 + 192];
+8420112c:	81 de       	M[FP + 64] = rMAC;
+    L4_DBG_MSG4("EFT: auto_fit, send gain update message (header) to equ: "
+        "msgid=%d, num_blocks=%d, offset=%d, len_payload=%d",
+        params[0], params[1], params[2], params[3]);
+8420112e:	02 f0 34 91 	r0 = MBS[Null + 0x334];
+84201132:	10 25       	Null = r0 - 4;
+84201134:	0e 68       	if LT jump (m) Lc_auto_fit_send_gain_update_to_equ_4;
+
+84201136 <Lc_auto_fit_send_gain_update_to_equ_3>:
+84201136:	09 1c       	pushm <rMAC>;
+84201138:	c5 22       	r3 = Null + 11;
+8420113a:	04 f0 01 60 	r2 = Null + 4097;
+8420113e:	13 f0 05 40 	r1 = Null + 8197;
+84201142:	55 f1 02 f0 	r0 = Null + 357566183;
+84201146:	e7 4a 
+84201148:	ef fd ff ff 	call (m) 0x1104;
+8420114c:	3d ed 
+8420114e:	7f 4c       	SP = SP + -4;
+
+84201150 <Lc_auto_fit_send_gain_update_to_equ_4>:
+    /* payload */
+    for (k = 0; k < p_ext_data->auto_fit.num_bands; k++) {
+84201150:	07 00       	r5 = Null + Null;
+84201152:	a9 f0 d4 20 	r7 = r8 + 212;
+84201156:	c6 11       	r4 = FP + 28;
+84201158:	e8 f0 44 20 	r6 = FP + 68;
+8420115c:	3c 6e       	jump (m) Lc_auto_fit_send_gain_update_to_equ_15;
+
+8420115e <Lc_auto_fit_send_gain_update_to_equ_5>:
+    }
+    opmgr_operator_message(ADAPTOR_INTERNAL,
+        p_ext_data->auto_fit.equ_op_id,
+        4 + 2*p_ext_data->auto_fit.num_bands,
+        params,
+        auto_fit_send_gain_update_to_equ_callback);
+8420115e:	42 f0 10 f0 	push Null + 69210327;
+84201162:	57 ed 
+84201164:	45 13       	r3 = FP + 52;
+84201166:	12 54       	r0 = r0 LSHIFT 1;
+84201168:	a3 f0 2a 88 	r1 = M[r8 + 168];
+8420116c:	14 21       	r2 = r0 + 4;
+8420116e:	82 2b       	r0 = Null + 30;
+84201170:	ff fd 1c f0 	call (m) 0x4aa0;
+84201174:	31 e9 
+84201176:	7f 4c       	SP = SP + -4;
+
+84201178 <Lc_auto_fit_send_gain_update_to_equ_6>:
+     */
+    unsigned params[4 + 2 * EFT_AUTO_FIT_NUM_BANDS_MAX] = { 0 };
+
+    /* do not send message if gain update is frozen */
+    if (p_ext_data->auto_fit.freeze == TRUE) {
+        return TRUE;
+84201178:	42 20       	r0 = Null + 1;
+8420117a:	3c 6e       	jump (m) Lc_auto_fit_send_gain_update_to_equ_18;
+
+8420117c <Lc_auto_fit_send_gain_update_to_equ_7>:
+         */
+        if (p_ext_data->auto_fit.eq_gain_smooth_coeff > 0) {
+            new_gain_db60[k] = gain_linear2dB60(p_ext_data->auto_fit.band[k].eq_gain_lin_smoothed);
+        }
+        else {
+            new_gain_db60[k] = gain_linear2dB60(p_ext_data->auto_fit.band[k].eq_gain_lin);
+8420117c:	92 f0 00 e8 	r0 = M[r7 + Null];
+84201180:	ff fd 53 f2 	call (m) 0x4b8a0;
+84201184:	21 e9 
+84201186:	32 ee       	M[r4 + Null] = r0;
+
+84201188 <Lc_auto_fit_send_gain_update_to_equ_8>:
+
+        /*
+         * Convert from Q31 to Q27(+24dB): 60 * 20 * log(16) = 1445,
+         * as gain_linear2dB60(..) expects Q31-argument, but gets arg in Q5.27
+         */
+        new_gain_db60[k] += 1445;
+84201188:	05 f0 a5 f6 	rMAC = M[r4] + 1445;
+8420118c:	11 c1 
+8420118e:	31 ee       	M[r4 + Null] = rMAC;
+
+        /* limit gain output */
+        if (new_gain_db60[k] < ((int)p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_BAND_GAIN_MIN_DB))
+84201190:	a2 f0 11 88 	r0 = M[r8 + 68];
+84201194:	88 04       	Null = rMAC - r0;
+84201196:	02 66       	if GE jump (m) Lc_auto_fit_send_gain_update_to_equ_10;
+
+84201198 <Lc_auto_fit_send_gain_update_to_equ_9>:
+        {
+            new_gain_db60[k] = (int)p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_BAND_GAIN_MIN_DB;
+84201198:	32 ee       	M[r4 + Null] = r0;
+
+8420119a <Lc_auto_fit_send_gain_update_to_equ_10>:
+        }
+        if (new_gain_db60[k] > ((int)p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_BAND_GAIN_MAX_DB))
+8420119a:	a1 f0 12 88 	rMAC = M[r8 + 72];
+8420119e:	1f f6 00 c3 	Null = M[r4] - rMAC;
+842011a2:	02 6c       	if LE jump (m) Lc_auto_fit_send_gain_update_to_equ_12;
+
+842011a4 <Lc_auto_fit_send_gain_update_to_equ_11>:
+        {
+            new_gain_db60[k] = (int)p_ext_data->eft_cap_params.OFFSET_AUTO_FIT_BAND_GAIN_MAX_DB;
+842011a4:	31 ee       	M[r4 + Null] = rMAC;
+
+842011a6 <Lc_auto_fit_send_gain_update_to_equ_12>:
+        }
+
+        params[2 * k + 4] = (unsigned)((new_gain_db60[k]) >> 16);     // MSB16
+842011a6:	32 e8       	r0 = M[r4 + Null];
+842011a8:	94 5a       	r2 = r0 ASHIFT -16;
+842011aa:	84 f0 00 ee 	M[r6 + Null] = r2;
+        params[2 * k + 5] = (unsigned)((new_gain_db60[k]) & 0xffff);  // LSB16
+842011ae:	95 c6       	r3 = r0 AND 0xffff;
+842011b0:	85 f0 01 8e 	M[r6 + 4] = r3;
+        L4_DBG_MSG3("EFT: auto_fit, send gain update message (payload) to equ: "
+            "band%d: gain_db60_msb16=%d, gain_db60_lsb16=%d",
+            k, params[2*k + 4], params[2*k + 5]);
+842011b4:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842011b8:	08 25       	Null = rMAC - 4;
+842011ba:	08 68       	if LT jump (m) Lc_auto_fit_send_gain_update_to_equ_14;
+
+842011bc <Lc_auto_fit_send_gain_update_to_equ_13>:
+842011bc:	55 f1 02 f0 	r0 = Null + 357566291;
+842011c0:	53 4b 
+842011c2:	3b 00       	r1 = r5 + Null;
+842011c4:	ef fd ff ff 	call (m) 0x10ec;
+842011c8:	29 e9 
+
+842011ca <Lc_auto_fit_send_gain_update_to_equ_14>:
+    params[3] = p_ext_data->auto_fit.num_bands; /* PAYLOAD LENGTH in num of WORD32(2xWORD16) */
+    L4_DBG_MSG4("EFT: auto_fit, send gain update message (header) to equ: "
+        "msgid=%d, num_blocks=%d, offset=%d, len_payload=%d",
+        params[0], params[1], params[2], params[3]);
+    /* payload */
+    for (k = 0; k < p_ext_data->auto_fit.num_bands; k++) {
+842011ca:	7f 20       	r5 = r5 + 1;
+842011cc:	09 f0 28 44 	r7 = r7 + 40;
+842011d0:	36 21       	r4 = r4 + 4;
+842011d2:	40 75       	r6 = r6 + 8;
+
+842011d4 <Lc_auto_fit_send_gain_update_to_equ_15>:
+842011d4:	a2 f0 30 88 	r0 = M[r8 + 192];
+842011d8:	b8 04       	Null = r5 - r0;
+842011da:	f2 ff 85 ef 	if C jump (m) Lc_auto_fit_send_gain_update_to_equ_5;
+
+842011de <Lc_auto_fit_send_gain_update_to_equ_16>:
+        /*
+         * result_dB60 = gain_linear2dB60(inp_Q31),
+         * means 2^31-1<->0db60<->0dB, 2^30<->-360dB60<->-6dB
+         */
+        if (p_ext_data->auto_fit.eq_gain_smooth_coeff > 0) {
+842011de:	a0 f0 71 88 	Null = M[r8 + 452];
+842011e2:	cd 61       	if EQ jump (m) Lc_auto_fit_send_gain_update_to_equ_7;
+
+842011e4 <Lc_auto_fit_send_gain_update_to_equ_17>:
+            new_gain_db60[k] = gain_linear2dB60(p_ext_data->auto_fit.band[k].eq_gain_lin_smoothed);
+842011e4:	92 f0 01 88 	r0 = M[r7 + 4];
+842011e8:	ff fd 53 f2 	call (m) 0x4b8a0;
+842011ec:	39 e5 
+842011ee:	32 ee       	M[r4 + Null] = r0;
+842011f0:	cc 6f       	jump (m) Lc_auto_fit_send_gain_update_to_equ_8;
+
+842011f2 <Lc_auto_fit_send_gain_update_to_equ_18>:
+        4 + 2*p_ext_data->auto_fit.num_bands,
+        params,
+        auto_fit_send_gain_update_to_equ_callback);
+
+    return TRUE;
+}
+842011f2:	6a 4c       	SP = SP + -88;
+842011f4:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+842011f6:	d8 4c       	rts;
+
+842011f8 <Lc_auto_fit_calc_gain_update_1>:
+
+
+static bool auto_fit_calc_gain_update(EFT_OP_DATA* p_ext_data)
+{
+842011f8:	f6 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>;
+842011fa:	53 4c       	SP = SP + 76;
+842011fc:	42 de       	M[FP + 32] = r0;
+    unsigned freq_bin, band, norm_shift, num_bin;
+    int mant, gain_lin;
+    int16_t qexp;
+    int power_ref[EFT_AUTO_FIT_NUM_BANDS_MAX] = { 0 };
+842011fe:	01 f0 03 f3 	r1 = Null + 1442032;
+84201202:	f0 40 
+84201204:	c2 13       	r0 = FP + 60;
+84201206:	84 21       	r2 = Null + 6;
+84201208:	ff fd c7 f0 	call (m) 0x1a094;
+8420120c:	2d e4 
+    int power_intmic[EFT_AUTO_FIT_NUM_BANDS_MAX] = { 0 };
+8420120e:	01 f0 03 f3 	r1 = Null + 1442056;
+84201212:	08 41 
+84201214:	42 15       	r0 = FP + 84;
+84201216:	84 21       	r2 = Null + 6;
+84201218:	ff fd c7 f0 	call (m) 0x1a094;
+8420121c:	3d e3 
+    int* power_ref_all_bins = (int*) p_ext_data->p_fit->pwr_ref_bins;
+8420121e:	41 d8       	rMAC = M[FP + 32];
+84201220:	11 f0 7e 88 	rMAC = M[rMAC + 504];
+84201224:	09 31       	rMAC = rMAC + 36;
+84201226:	49 de       	M[FP + 36] = rMAC;
+    int* power_intmic_all_bins = (int*) p_ext_data->p_fit->pwr_mic_bins;
+84201228:	01 f0 00 45 	rMAC = rMAC + 256;
+8420122c:	51 de       	M[FP + 40] = rMAC;
+    //      BAND_0, avg:  125Hz, 250Hz
+    //      BAND_1, avg:  250Hz, 375Hz,   500Hz
+    //      BAND_2, avg:  500Hz, 625Hz,   750Hz,  875Hz
+    //      BAND_3: avg: 1000Hz, 1125Hz, 1250Hz, 1375Hz, 1500Hz, 1625Hz, 1750Hz, 1875Hz
+
+    freq_bin = p_ext_data->auto_fit.band_start_freq_bin; /* ignore DC bin or multiple low freq bins */
+8420122e:	41 d8       	rMAC = M[FP + 32];
+84201230:	18 f0 32 88 	r6 = M[rMAC + 200];
+84201234:	41 20       	rMAC = Null + 1;
+84201236:	59 de       	M[FP + 44] = rMAC;
+    for (band = 0; band < p_ext_data->auto_fit.num_bands; band++)
+84201238:	60 de       	M[FP + 48] = Null;
+8420123a:	41 d8       	rMAC = M[FP + 32];
+8420123c:	19 f0 cc 20 	r7 = rMAC + 204;
+84201240:	c1 13       	rMAC = FP + 60;
+84201242:	69 de       	M[FP + 52] = rMAC;
+84201244:	ea f0 54 20 	r8 = FP + 84;
+84201248:	2e 6e       	jump (m) Lc_auto_fit_calc_gain_update_4;
+
+8420124a <Lc_auto_fit_calc_gain_update_2>:
+        if ((p_ext_data->auto_fit.band[band].pow_ref_avg < p_ext_data->auto_fit.sensitivity_thrshld_lin)
+            || (power_intmic[band] == 0)) {
+            p_ext_data->auto_fit.band[band].low_sig_flag = 1;
+            continue; /* don't calculate power ratio for this band and proceed with next band */
+        }
+        p_ext_data->auto_fit.band[band].low_sig_flag = 0;
+8420124a:	90 f0 07 8e 	M[r7 + 28] = Null;
+
+        mant = kal_s32_div_s32_s32_normalized(power_ref[band], power_intmic[band], &qexp);
+8420124e:	69 d8       	rMAC = M[FP + 52];
+84201250:	a3 f0 00 e8 	r1 = M[r8 + Null];
+84201254:	84 13       	r2 = FP + 56;
+84201256:	0a e8       	r0 = M[rMAC + Null];
+84201258:	0f f2 85 cd 	r3 = SIGNDET r0;
+8420125c:	6d 24       	r3 = r3 - 1;
+8420125e:	52 19       	r0 = r0 ASHIFT r3;
+84201260:	0f f3 86 cd 	r4 = SIGNDET r1;
+84201264:	9b 19       	r1 = r1 ASHIFT r4;
+84201266:	76 05       	r4 = r4 - r3;
+84201268:	7f f2 1e d9 	rMAC = r0 ASHIFT -1 (MI);
+8420126c:	99 4c       	Div = rMAC / r1;
+8420126e:	26 ec       	MH[r2 + Null] = r4;
+84201270:	c2 4c       	r0 = DivResult;
+84201272:	92 5a       	r0 = r0 ASHIFT -16;
+        gain_lin = mant << qexp;
+84201274:	e1 d4       	rMAC = MHS[FP + 56];
+84201276:	52 16       	r0 = r0 LSHIFT rMAC;
+        gain_lin = kal_s32_shl_s32_sat(gain_lin, 12);  /* convert Q15 --> Q27 */
+84201278:	03 23       	r1 = Null + 12;
+8420127a:	d2 18       	r0 = r0 ASHIFT r1;
+
+        /* band specific equ gain offset : eq_gain_lin *= eq_gain_offs_lin, result in Q5.27 */
+        p_ext_data->auto_fit.band[band].eq_gain_lin = kal_s32_saturate_s64(kal_s64_mult_s32_s32_shift(
+            gain_lin,                                         /* in Q27 */
+            p_ext_data->auto_fit.band[band].eq_gain_offs_lin, /* in Q27 */
+            5));                                              /* to get result in Q27: 32-27=5 */
+8420127c:	93 f0 01 88 	r1 = M[r7 + 4];
+84201280:	44 21       	r2 = Null + 5;
+84201282:	64 34       	r2 = r2 - 33;
+84201284:	3f f2 c1 cc 	rMAC = r0 * r1 (SS);
+84201288:	09 19       	rMAC = rMAC ASHIFT r2 (56bit);
+8420128a:	c9 55       	rMAC = rMAC LSHIFT 8 (56bit);
+8420128c:	4a 5f       	r0 = rMAC ASHIFT 24;
+8420128e:	92 f0 02 8e 	M[r7 + 8] = r0;
+
+84201292 <Lc_auto_fit_calc_gain_update_3>:
+    //      BAND_1, avg:  250Hz, 375Hz,   500Hz
+    //      BAND_2, avg:  500Hz, 625Hz,   750Hz,  875Hz
+    //      BAND_3: avg: 1000Hz, 1125Hz, 1250Hz, 1375Hz, 1500Hz, 1625Hz, 1750Hz, 1875Hz
+
+    freq_bin = p_ext_data->auto_fit.band_start_freq_bin; /* ignore DC bin or multiple low freq bins */
+    for (band = 0; band < p_ext_data->auto_fit.num_bands; band++)
+84201292:	61 d8       	rMAC = M[FP + 48];
+84201294:	09 f0 28 44 	r7 = r7 + 40;
+84201298:	22 75       	r8 = r8 + 4;
+8420129a:	49 20       	rMAC = rMAC + 1;
+8420129c:	61 de       	M[FP + 48] = rMAC;
+8420129e:	69 d8       	rMAC = M[FP + 52];
+842012a0:	09 21       	rMAC = rMAC + 4;
+842012a2:	69 de       	M[FP + 52] = rMAC;
+
+842012a4 <Lc_auto_fit_calc_gain_update_4>:
+842012a4:	41 d8       	rMAC = M[FP + 32];
+842012a6:	62 d8       	r0 = M[FP + 48];
+842012a8:	11 f0 30 88 	rMAC = M[rMAC + 192];
+842012ac:	50 04       	Null = r0 - rMAC;
+842012ae:	02 f0 81 e2 	if C jump (m) Lc_auto_fit_calc_gain_update_16;
+
+842012b2 <Lc_auto_fit_calc_gain_update_5>:
+    {
+        /* only debugging purposes
+        L0_DBG_MSG2("EFT: auto fit capture result band%d, upper edge freq=%dHz",
+            band, p_ext_data->auto_fit.band[band].freq_hz);
+        */
+        norm_shift = 0;
+842012b2:	06 00       	r4 = Null + Null;
+        num_bin = 0;
+842012b4:	07 00       	r5 = Null + Null;
+        while (freq_bin * EFT_BIN_FREQ_SEPARATION_HZ <= p_ext_data->auto_fit.band[band].freq_hz)
+842012b6:	95 f0 00 e8 	r3 = M[r7 + Null];
+842012ba:	3e f8 91 d9 	rMAC = r6 * 125 (int);
+842012be:	48 05       	Null = rMAC - r3;
+842012c0:	08 f0 f5 e0 	if HI jump (m) Lc_auto_fit_calc_gain_update_13;
+
+842012c4 <Lc_auto_fit_calc_gain_update_6>:
+842012c4:	69 d8       	rMAC = M[FP + 52];
+842012c6:	a3 f0 00 e8 	r1 = M[r8 + Null];
+842012ca:	01 f8 db c8 	r9 = r6 LSHIFT 2;
+842012ce:	54 d8       	r2 = M[FP + 40];
+842012d0:	0a e8       	r0 = M[rMAC + Null];
+842012d2:	5c 0c       	r2 = r9 + r2;
+842012d4:	49 d8       	rMAC = M[FP + 36];
+842012d6:	59 0c       	rMAC = r9 + rMAC;
+
+842012d8 <Lc_auto_fit_calc_gain_update_7>:
+        {
+            power_ref[band] += power_ref_all_bins[freq_bin]>>norm_shift;
+842012d8:	1b f0 00 e8 	r9 = M[rMAC + Null];
+842012dc:	6f f0 0c c2 	r10 = Null - r4;
+842012e0:	00 fc 3b c9 	r9 = r9 ASHIFT r10;
+842012e4:	5a 0c       	r0 = r9 + r0;
+            power_intmic[band] += power_intmic_all_bins[freq_bin]>>norm_shift;
+842012e6:	4b f0 00 e8 	r9 = M[r2 + Null];
+842012ea:	6f f0 0c c2 	r10 = Null - r4;
+842012ee:	00 fc 3b c9 	r9 = r9 ASHIFT r10;
+842012f2:	5b 0c       	r1 = r9 + r1;
+
+            if ((power_ref[band] > EFT_AUTO_FIT_BAND_POWER_MAX)
+                || (power_intmic[band] > EFT_AUTO_FIT_BAND_POWER_MAX))
+842012f4:	10 f0 00 f0 	Null = r0 - 1073741824;
+842012f8:	20 f0 00 24 
+842012fc:	06 6a       	if GT jump (m) Lc_auto_fit_calc_gain_update_9;
+
+842012fe <Lc_auto_fit_calc_gain_update_8>:
+842012fe:	10 f0 00 f0 	Null = r1 - 1073741824;
+84201302:	30 f0 00 24 
+84201306:	04 6c       	if LE jump (m) Lc_auto_fit_calc_gain_update_10;
+
+84201308 <Lc_auto_fit_calc_gain_update_9>:
+            {
+                norm_shift++;
+84201308:	76 20       	r4 = r4 + 1;
+                power_ref[band] >>= 1;
+8420130a:	12 58       	r0 = r0 ASHIFT -1;
+                power_intmic[band] >>= 1;
+8420130c:	1b 58       	r1 = r1 ASHIFT -1;
+
+8420130e <Lc_auto_fit_calc_gain_update_10>:
+            }
+
+            num_bin++;
+8420130e:	7f 20       	r5 = r5 + 1;
+            /* if bin freq. == band edge freq. -> consider bin for power of next band as well */
+            if ((freq_bin * EFT_BIN_FREQ_SEPARATION_HZ) == p_ext_data->auto_fit.band[band].freq_hz) {
+84201310:	3e f8 9b d9 	r9 = r6 * 125 (int);
+84201314:	5f fb 00 c2 	Null = r9 - r3;
+84201318:	0a 60       	if EQ jump (m) Lc_auto_fit_calc_gain_update_12;
+
+8420131a <Lc_auto_fit_calc_gain_update_11>:
+                break;
+            }
+            freq_bin++;
+8420131a:	08 75       	r6 = r6 + 1;
+8420131c:	09 21       	rMAC = rMAC + 4;
+8420131e:	24 21       	r2 = r2 + 4;
+        L0_DBG_MSG2("EFT: auto fit capture result band%d, upper edge freq=%dHz",
+            band, p_ext_data->auto_fit.band[band].freq_hz);
+        */
+        norm_shift = 0;
+        num_bin = 0;
+        while (freq_bin * EFT_BIN_FREQ_SEPARATION_HZ <= p_ext_data->auto_fit.band[band].freq_hz)
+84201320:	3e f8 9b d9 	r9 = r6 * 125 (int);
+84201324:	5f fb 00 c2 	Null = r9 - r3;
+84201328:	f9 ff b1 ef 	if LS jump (m) Lc_auto_fit_calc_gain_update_7;
+
+8420132c <Lc_auto_fit_calc_gain_update_12>:
+8420132c:	69 d8       	rMAC = M[FP + 52];
+8420132e:	0a ee       	M[rMAC + Null] = r0;
+84201330:	a3 f0 00 ee 	M[r8 + Null] = r1;
+
+84201334 <Lc_auto_fit_calc_gain_update_13>:
+            }
+            freq_bin++;
+        }
+
+        /* averaged bin power per band */
+        p_ext_data->auto_fit.band[band].pow_ref_avg = kal_s32_saturate_s64((((int64_t) power_ref[band]) << norm_shift)/num_bin);
+84201334:	69 d8       	rMAC = M[FP + 52];
+84201336:	0a 88       	r0 = M[rMAC + 0];
+84201338:	93 5b       	r1 = r0 ASHIFT -31;
+8420133a:	31 00       	rMAC = r4 + Null;
+8420133c:	0d 34       	r3 = rMAC - 32;
+8420133e:	5b 16       	r1 = r1 LSHIFT rMAC;
+84201340:	54 17       	r2 = r0 LSHIFT r3;
+84201342:	52 16       	r0 = r0 LSHIFT rMAC;
+84201344:	1b 13       	r1 = r1 OR r2;
+84201346:	05 00       	r3 = Null + Null;
+84201348:	3c 00       	r2 = r5 + Null;
+8420134a:	ff fd b8 f1 	call (m) 0x38524;
+8420134e:	3b ee 
+84201350:	04 f0 00 f3 	rMAC12 = r1 LSHIFT 0;
+84201354:	de c8 
+84201356:	05 f0 00 f2 	rMAC0 = r0 LSHIFT 0;
+8420135a:	de c8 
+8420135c:	c9 55       	rMAC = rMAC LSHIFT 8 (56bit);
+8420135e:	4a 5f       	r0 = rMAC ASHIFT 24;
+84201360:	92 f0 08 8e 	M[r7 + 32] = r0;
+        p_ext_data->auto_fit.band[band].pow_intmic_avg = kal_s32_saturate_s64((((int64_t)power_intmic[band]) << norm_shift)/num_bin);
+84201364:	a2 f0 00 88 	r0 = M[r8 + 0];
+84201368:	31 34       	rMAC = r4 - 32;
+8420136a:	05 00       	r3 = Null + Null;
+8420136c:	93 5b       	r1 = r0 ASHIFT -31;
+8420136e:	54 16       	r2 = r0 LSHIFT rMAC;
+84201370:	9b 17       	r1 = r1 LSHIFT r4;
+84201372:	92 17       	r0 = r0 LSHIFT r4;
+84201374:	1b 13       	r1 = r1 OR r2;
+84201376:	3c 00       	r2 = r5 + Null;
+84201378:	ff fd b8 f1 	call (m) 0x38524;
+8420137c:	2d ed 
+8420137e:	04 f0 00 f3 	rMAC12 = r1 LSHIFT 0;
+84201382:	de c8 
+84201384:	05 f0 00 f2 	rMAC0 = r0 LSHIFT 0;
+84201388:	de c8 
+8420138a:	c9 55       	rMAC = rMAC LSHIFT 8 (56bit);
+8420138c:	4a 5f       	r0 = rMAC ASHIFT 24;
+8420138e:	92 f0 09 8e 	M[r7 + 36] = r0;
+
+        /* no signal or refpower below sensitivity in current band */
+        if ((p_ext_data->auto_fit.band[band].pow_ref_avg < p_ext_data->auto_fit.sensitivity_thrshld_lin)
+            || (power_intmic[band] == 0)) {
+84201392:	91 f0 08 88 	rMAC = M[r7 + 32];
+84201396:	42 d8       	r0 = M[FP + 32];
+84201398:	22 f0 2d 88 	r0 = M[r0 + 180];
+8420139c:	88 04       	Null = rMAC - r0;
+8420139e:	04 64       	if NC jump (m) Lc_auto_fit_calc_gain_update_15;
+
+842013a0 <Lc_auto_fit_calc_gain_update_14>:
+842013a0:	a0 f0 00 e8 	Null = M[r8 + Null];
+842013a4:	53 63       	if NE jump (m) Lc_auto_fit_calc_gain_update_2;
+
+842013a6 <Lc_auto_fit_calc_gain_update_15>:
+            p_ext_data->auto_fit.band[band].low_sig_flag = 1;
+842013a6:	59 d8       	rMAC = M[FP + 44];
+842013a8:	91 f0 07 8e 	M[r7 + 28] = rMAC;
+            continue; /* don't calculate power ratio for this band and proceed with next band */
+842013ac:	73 6f       	jump (m) Lc_auto_fit_calc_gain_update_3;
+
+842013ae <Lc_auto_fit_calc_gain_update_16>:
+            p_ext_data->auto_fit.band[band].eq_gain_lin,
+            p_ext_data->auto_fit.band[band].eq_gain_offs_lin);
+        */
+    }
+
+    return TRUE;
+842013ae:	42 20       	r0 = Null + 1;
+
+842013b0 <Lc_auto_fit_calc_gain_update_17>:
+}
+842013b0:	6d 4c       	SP = SP + -76;
+842013b2:	f6 48       	popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+842013b4:	d8 4c       	rts;
+
+842013b6 <Lc_auto_fit_one_frame_evaluation_1>:
+
+
+static bool auto_fit_one_frame_evaluation(EFT_OP_DATA* p_ext_data)
+{
+842013b6:	fc fa 41 e0 	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+842013ba:	11 09       	r7 = r0 + Null;
+    unsigned freq_bin, band, norm_shift, num_bin;
+    FIT100* p_fit = (FIT100*)p_ext_data->p_fit;
+842013bc:	91 f0 7e 88 	rMAC = M[r7 + 504];
+    int* power_ref_all_bin_abs = (int*) p_fit->autofit_one_frame.bin_abs;
+842013c0:	1a f0 24 22 	r8 = rMAC + 548;
+    int pow_ref_band_avg;
+
+    /****************
+     * bandwise signal levale evaluation
+     ****************/
+    freq_bin = p_ext_data->auto_fit.band_start_freq_bin; /* ignore DC bin or multiple low freq bins */
+842013c4:	96 f0 32 88 	r4 = M[r7 + 200];
+    for (band = 0; band < p_ext_data->auto_fit.num_bands; band++)
+842013c8:	00 09       	r6 = Null + Null;
+842013ca:	97 f0 cc 20 	r5 = r7 + 204;
+842013ce:	2b 6e       	jump (m) Lc_auto_fit_one_frame_evaluation_7;
+
+842013d0 <Lc_auto_fit_one_frame_evaluation_2>:
+            }
+            freq_bin++;
+        }
+
+        /* averaged bin power per band */
+        pow_ref_band_avg = kal_s32_saturate_s64((((int64_t)power_ref) << norm_shift) / num_bin);
+842013d0:	1a 00       	r0 = r1 + Null;
+842013d2:	1b f0 20 24 	r9 = rMAC - 32;
+842013d6:	9b 5b       	r1 = r1 ASHIFT -31;
+842013d8:	bf f2 c5 c8 	r3 = r0 LSHIFT r9;
+842013dc:	5b 16       	r1 = r1 LSHIFT rMAC;
+842013de:	52 16       	r0 = r0 LSHIFT rMAC;
+842013e0:	5b 13       	r1 = r1 OR r3;
+842013e2:	05 00       	r3 = Null + Null;
+842013e4:	ff fd b8 f1 	call (m) 0x38524;
+842013e8:	21 ea 
+842013ea:	04 f0 00 f3 	rMAC12 = r1 LSHIFT 0;
+842013ee:	de c8 
+842013f0:	05 f0 00 f2 	rMAC0 = r0 LSHIFT 0;
+842013f4:	de c8 
+842013f6:	c9 55       	rMAC = rMAC LSHIFT 8 (56bit);
+842013f8:	4c 5f       	r2 = rMAC ASHIFT 24;
+
+        /* ref power exceeds clipping threshold in current band */
+        if (pow_ref_band_avg > p_ext_data->auto_fit.clipping_thrshld_lin) {
+842013fa:	95 f0 2e 88 	r3 = M[r7 + 184];
+842013fe:	60 05       	Null = r2 - r3;
+84201400:	09 f0 a1 e0 	if LS jump (m) Lc_auto_fit_one_frame_evaluation_6;
+
+84201404 <Lc_auto_fit_one_frame_evaluation_3>:
+            /* Potential clipping in GEQ: reduce related sub band gain on GEQ with upcoming message */
+            L4_DBG_MSG3("EFT: auto fit, clipping detected for current frame in band%d: pow_ref_band_avg=%d > clipping_thrshld_lin=%d",
+                band, pow_ref_band_avg, p_ext_data->auto_fit.clipping_thrshld_lin);
+84201404:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84201408:	08 25       	Null = rMAC - 4;
+8420140a:	08 68       	if LT jump (m) Lc_auto_fit_one_frame_evaluation_5;
+
+8420140c <Lc_auto_fit_one_frame_evaluation_4>:
+8420140c:	55 f1 02 f0 	r0 = Null + 357566396;
+84201410:	bc 4b 
+84201412:	43 08       	r1 = r6 + Null;
+84201414:	ef fd fe ff 	call (m) 0x10ec;
+84201418:	39 e6 
+
+8420141a <Lc_auto_fit_one_frame_evaluation_5>:
+
+            p_ext_data->auto_fit.band[band].num_clippings++;
+8420141a:	b9 89       	rMAC = M[r5 + 24];
+8420141c:	49 20       	rMAC = rMAC + 1;
+8420141e:	b9 8f       	M[r5 + 24] = rMAC;
+
+84201420 <Lc_auto_fit_one_frame_evaluation_6>:
+
+    /****************
+     * bandwise signal levale evaluation
+     ****************/
+    freq_bin = p_ext_data->auto_fit.band_start_freq_bin; /* ignore DC bin or multiple low freq bins */
+    for (band = 0; band < p_ext_data->auto_fit.num_bands; band++)
+84201420:	08 75       	r6 = r6 + 1;
+84201422:	3f 32       	r5 = r5 + 40;
+
+84201424 <Lc_auto_fit_one_frame_evaluation_7>:
+84201424:	91 f0 30 88 	rMAC = M[r7 + 192];
+84201428:	1f f8 00 c2 	Null = r6 - rMAC;
+8420142c:	02 f0 cb e0 	if C jump (m) Lc_auto_fit_one_frame_evaluation_14;
+
+84201430 <Lc_auto_fit_one_frame_evaluation_8>:
+    {
+        /* only debugging purposes
+        L0_DBG_MSG2("EFT: auto fit capture result band%d, upper edge freq=%dHz",
+            band, p_ext_data->auto_fit.band[band].freq_hz);
+        */
+        power_ref = 0;
+84201430:	03 00       	r1 = Null + Null;
+        norm_shift = 0;
+84201432:	01 00       	rMAC = Null + Null;
+84201434:	7b f0 00 e8 	r9 = M[r5 + Null];
+        num_bin = 0;
+84201438:	04 00       	r2 = Null + Null;
+8420143a:	75 54       	r3 = r4 LSHIFT 2;
+8420143c:	52 08       	r0 = r8 + Null;
+8420143e:	aa 00       	r0 = r3 + r0;
+84201440:	15 00       	r3 = r0 + Null;
+
+84201442 <Lc_auto_fit_one_frame_evaluation_9>:
+        while (freq_bin * EFT_BIN_FREQ_SEPARATION_HZ <= p_ext_data->auto_fit.band[band].freq_hz)
+84201442:	3e f6 9c d9 	r10 = r4 * 125 (int);
+84201446:	bf fc 00 c2 	Null = r10 - r9;
+8420144a:	f8 ff 87 ef 	if HI jump (m) Lc_auto_fit_one_frame_evaluation_2;
+
+8420144e <Lc_auto_fit_one_frame_evaluation_10>:
+        {
+            power_ref += power_ref_all_bin_abs[freq_bin] >> norm_shift;
+8420144e:	2a e8       	r0 = M[r3 + Null];
+84201450:	1f f0 0f c2 	rMACB = Null - rMAC;
+84201454:	00 ff 32 c9 	r0 = r0 ASHIFT rMACB;
+84201458:	d3 00       	r1 = r0 + r1;
+
+            if (power_ref > EFT_AUTO_FIT_BAND_POWER_MAX)
+8420145a:	10 f0 00 f0 	Null = r1 - 1073741824;
+8420145e:	30 f0 00 24 
+84201462:	03 6c       	if LE jump (m) Lc_auto_fit_one_frame_evaluation_12;
+
+84201464 <Lc_auto_fit_one_frame_evaluation_11>:
+            {
+                norm_shift++;
+84201464:	49 20       	rMAC = rMAC + 1;
+                power_ref >>= 1;
+84201466:	1b 58       	r1 = r1 ASHIFT -1;
+
+84201468 <Lc_auto_fit_one_frame_evaluation_12>:
+            }
+
+            num_bin++;
+84201468:	64 20       	r2 = r2 + 1;
+            /* if bin freq. == band edge freq. -> consider bin for power of next band as well */
+            if ((freq_bin * EFT_BIN_FREQ_SEPARATION_HZ) == p_ext_data->auto_fit.band[band].freq_hz) {
+8420146a:	bf fc 00 c2 	Null = r10 - r9;
+8420146e:	b1 61       	if EQ jump (m) Lc_auto_fit_one_frame_evaluation_2;
+
+84201470 <Lc_auto_fit_one_frame_evaluation_13>:
+                break;
+            }
+            freq_bin++;
+84201470:	76 20       	r4 = r4 + 1;
+84201472:	2d 21       	r3 = r3 + 4;
+84201474:	e7 6f       	jump (m) Lc_auto_fit_one_frame_evaluation_9;
+
+84201476 <Lc_auto_fit_one_frame_evaluation_14>:
+
+            p_ext_data->auto_fit.band[band].num_clippings++;
+        }
+    }
+
+    return TRUE;
+84201476:	42 20       	r0 = Null + 1;
+
+84201478 <Lc_auto_fit_one_frame_evaluation_15>:
+}
+84201478:	fc fa 61 e0 	popm <FP, r4, r5, r6, r7, r8, r9, rLink, rMACB>;
+8420147c:	d8 4c       	rts;
+
+8420147e <Lc_auto_fit_clipping_detection_1>:
+
+
+static bool auto_fit_clipping_detection(EFT_OP_DATA* p_ext_data)
+{
+8420147e:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84201480:	12 09       	r8 = r0 + Null;
+84201482:	10 f0 01 f0 	rMAC = Null + 16777216;
+84201486:	00 40 
+84201488:	80 f0 0b f0 	r9 = Null + 134217728;
+8420148c:	00 40 
+8420148e:	41 de       	M[FP + 32] = rMAC;
+    unsigned gain_reduction_min = (EFT_Q27_UNITY >> 3); /* -18dB */
+    int gain_lin, delta;
+    int tc_shift = 6; /* time constant */
+
+    /* gain reduction factor due to clipping */
+    for (band = 0; band < p_ext_data->auto_fit.num_bands; band++)
+84201490:	00 09       	r6 = Null + Null;
+84201492:	a6 f0 e0 20 	r4 = r8 + 224;
+84201496:	0e 6e       	jump (m) Lc_auto_fit_clipping_detection_4;
+
+84201498 <Lc_auto_fit_clipping_detection_2>:
+                    gain_lin,                                          /* in Q27 */
+                    p_ext_data->auto_fit.band[band].eq_gain_reduction, /* in Q27 */
+                    5));
+            }
+            else {
+                gain_lin = p_ext_data->auto_fit.band[band].eq_gain_lin;
+84201498:	62 f3 fd b9 	r0 = M[r4 + -12];
+                /* band specific equ gain reduction: eq_gain_lin *= eq_gain_reduction, result in Q5.27 */
+                p_ext_data->auto_fit.band[band].eq_gain_lin = kal_s32_saturate_s64(kal_s64_mult_s32_s32_shift(
+                    gain_lin,                                          /* in Q27 */
+                    p_ext_data->auto_fit.band[band].eq_gain_reduction, /* in Q27 */
+                    5));
+8420149c:	44 21       	r2 = Null + 5;
+8420149e:	64 34       	r2 = r2 - 33;
+842014a0:	3f f2 c1 cc 	rMAC = r0 * r1 (SS);
+842014a4:	09 19       	rMAC = rMAC ASHIFT r2 (56bit);
+842014a6:	c9 55       	rMAC = rMAC LSHIFT 8 (56bit);
+842014a8:	4a 5f       	r0 = rMAC ASHIFT 24;
+842014aa:	62 f3 fd bf 	M[r4 + -12] = r0;
+
+842014ae <Lc_auto_fit_clipping_detection_3>:
+    unsigned gain_reduction_min = (EFT_Q27_UNITY >> 3); /* -18dB */
+    int gain_lin, delta;
+    int tc_shift = 6; /* time constant */
+
+    /* gain reduction factor due to clipping */
+    for (band = 0; band < p_ext_data->auto_fit.num_bands; band++)
+842014ae:	08 75       	r6 = r6 + 1;
+842014b0:	36 32       	r4 = r4 + 40;
+
+842014b2 <Lc_auto_fit_clipping_detection_4>:
+842014b2:	a1 f0 30 88 	rMAC = M[r8 + 192];
+842014b6:	1f f8 00 c2 	Null = r6 - rMAC;
+842014ba:	02 f0 a9 e1 	if C jump (m) Lc_auto_fit_clipping_detection_16;
+
+842014be <Lc_auto_fit_clipping_detection_5>:
+    {
+        /* reduce gain_lin in case of clipping within frames since last message */
+        if (p_ext_data->auto_fit.band[band].num_clippings > 0)
+842014be:	77 88       	r5 = M[r4 + 4];
+842014c0:	22 60       	if EQ jump (m) Lc_auto_fit_clipping_detection_10;
+
+842014c2 <Lc_auto_fit_clipping_detection_6>:
+        { /* clipping detected since last message -> decrease gain */
+            delta = (p_ext_data->auto_fit.band[band].eq_gain_reduction / p_ext_data->auto_fit.msgs_per_capture_interval) >> tc_shift;
+842014c2:	69 f0 00 e8 	r7 = M[r4 + Null];
+842014c6:	a3 f0 2c 88 	r1 = M[r8 + 176];
+842014ca:	4a 08       	r0 = r7 + Null;
+842014cc:	ff fd c6 f0 	call (m) 0x1a136;
+842014d0:	2b e3 
+842014d2:	52 51       	r0 = r0 LSHIFT -6;
+            p_ext_data->auto_fit.band[band].eq_gain_reduction -= p_ext_data->auto_fit.band[band].num_clippings*delta;
+842014d4:	d1 1b       	rMAC = r0 * r5 (int);
+842014d6:	1f f9 01 c2 	rMAC = r7 - rMAC;
+842014da:	31 ee       	M[r4 + Null] = rMAC;
+            /* Note: "num_clippings" applied to incr. stepsize */
+
+            /* lower reduction limit */
+            if (p_ext_data->auto_fit.band[band].eq_gain_reduction < gain_reduction_min) {
+842014dc:	00 f4 10 f0 	Null = rMAC - 16777216;
+842014e0:	00 24 
+842014e2:	02 f0 89 e0 	if C jump (m) Lc_auto_fit_clipping_detection_8;
+
+842014e6 <Lc_auto_fit_clipping_detection_7>:
+                p_ext_data->auto_fit.band[band].eq_gain_reduction = gain_reduction_min;
+842014e6:	41 d8       	rMAC = M[FP + 32];
+842014e8:	31 ee       	M[r4 + Null] = rMAC;
+
+842014ea <Lc_auto_fit_clipping_detection_8>:
+            }
+            L4_DBG_MSG2("EFT: auto fit, gain reduction in band%d due to clipping. clipping counter=%d",
+                band, p_ext_data->auto_fit.band[band].num_clippings);
+842014ea:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842014ee:	08 25       	Null = rMAC - 4;
+842014f0:	22 68       	if LT jump (m) Lc_auto_fit_clipping_detection_13;
+
+842014f2 <Lc_auto_fit_clipping_detection_9>:
+842014f2:	55 f1 02 f0 	r0 = Null + 357566504;
+842014f6:	28 50 
+842014f8:	3c 00       	r2 = r5 + Null;
+842014fa:	43 08       	r1 = r6 + Null;
+842014fc:	ef fd fd ff 	call (m) 0x10d6;
+84201500:	3b ee 
+84201502:	19 6e       	jump (m) Lc_auto_fit_clipping_detection_13;
+
+84201504 <Lc_auto_fit_clipping_detection_10>:
+        }
+        else { /* no clipping detected since last message */
+            /* increase gain as it was reduced before */
+            if (p_ext_data->auto_fit.band[band].eq_gain_reduction < EFT_Q27_UNITY) {
+84201504:	37 e8       	r5 = M[r4 + Null];
+84201506:	02 f0 00 f0 	Null = r5 - 134217728;
+8420150a:	70 f0 00 24 
+8420150e:	02 f0 a7 e0 	if C jump (m) Lc_auto_fit_clipping_detection_13;
+
+84201512 <Lc_auto_fit_clipping_detection_11>:
+                delta = (p_ext_data->auto_fit.band[band].eq_gain_reduction / p_ext_data->auto_fit.msgs_per_capture_interval) >> tc_shift;
+84201512:	a3 f0 2c 88 	r1 = M[r8 + 176];
+84201516:	3a 00       	r0 = r5 + Null;
+84201518:	ff fd c6 f0 	call (m) 0x1a136;
+8420151c:	3f e0 
+8420151e:	52 51       	r0 = r0 LSHIFT -6;
+                p_ext_data->auto_fit.band[band].eq_gain_reduction += delta;
+84201520:	d1 01       	rMAC = r0 + r5;
+84201522:	31 ee       	M[r4 + Null] = rMAC;
+
+                /* upper reduction limit (= no reduction) */
+                if (p_ext_data->auto_fit.band[band].eq_gain_reduction > EFT_Q27_UNITY) {
+84201524:	02 f0 00 f0 	Null = rMAC - 134217728;
+84201528:	10 f0 00 24 
+8420152c:	09 f0 89 e0 	if LS jump (m) Lc_auto_fit_clipping_detection_13;
+
+84201530 <Lc_auto_fit_clipping_detection_12>:
+                    p_ext_data->auto_fit.band[band].eq_gain_reduction = EFT_Q27_UNITY;
+84201530:	6b f0 00 ee 	M[r4 + Null] = r9;
+
+84201534 <Lc_auto_fit_clipping_detection_13>:
+                }
+            }
+        }
+        /* reset clipping indicator */
+        p_ext_data->auto_fit.band[band].num_clippings = 0;
+84201534:	70 8e       	M[r4 + 4] = Null;
+
+        /* apply gain reduction */
+        if (p_ext_data->auto_fit.band[band].eq_gain_reduction < EFT_Q27_UNITY) {
+84201536:	33 e8       	r1 = M[r4 + Null];
+84201538:	02 f0 00 f0 	Null = r1 - 134217728;
+8420153c:	30 f0 00 24 
+84201540:	f2 ff ef ee 	if C jump (m) Lc_auto_fit_clipping_detection_3;
+
+84201544 <Lc_auto_fit_clipping_detection_14>:
+            if (p_ext_data->auto_fit.eq_gain_smooth_coeff > 0) {
+84201544:	a0 f0 71 88 	Null = M[r8 + 452];
+84201548:	a8 61       	if EQ jump (m) Lc_auto_fit_clipping_detection_2;
+
+8420154a <Lc_auto_fit_clipping_detection_15>:
+                gain_lin = p_ext_data->auto_fit.band[band].eq_gain_lin_smoothed;
+8420154a:	62 f3 fe b9 	r0 = M[r4 + -8];
+                /* band specific equ gain reduction: eq_gain_lin *= eq_gain_reduction, result in Q5.27 */
+                p_ext_data->auto_fit.band[band].eq_gain_lin_smoothed = kal_s32_saturate_s64(kal_s64_mult_s32_s32_shift(
+                    gain_lin,                                          /* in Q27 */
+                    p_ext_data->auto_fit.band[band].eq_gain_reduction, /* in Q27 */
+                    5));
+8420154e:	44 21       	r2 = Null + 5;
+84201550:	64 34       	r2 = r2 - 33;
+84201552:	3f f2 c1 cc 	rMAC = r0 * r1 (SS);
+84201556:	09 19       	rMAC = rMAC ASHIFT r2 (56bit);
+84201558:	c9 55       	rMAC = rMAC LSHIFT 8 (56bit);
+8420155a:	4a 5f       	r0 = rMAC ASHIFT 24;
+8420155c:	62 f3 fe bf 	M[r4 + -8] = r0;
+84201560:	a7 6f       	jump (m) Lc_auto_fit_clipping_detection_3;
+
+84201562 <Lc_auto_fit_clipping_detection_16>:
+                    5));
+            }
+        }
+    }
+
+    return TRUE;
+84201562:	42 20       	r0 = Null + 1;
+
+84201564 <Lc_auto_fit_clipping_detection_17>:
+}
+84201564:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84201566:	d8 4c       	rts;
+
+84201568 <Lc_auto_fit_gain_ramping_1>:
+
+
+static bool auto_fit_gain_ramping(EFT_OP_DATA* p_ext_data)
+{
+84201568:	72 1c       	pushm <FP(=SP), r4, r5>;
+    unsigned k;
+    /* Note: LP filter: 1st order
+     *    out = (1.0f - coeff) * in + z1;
+     *     z1 = coeff * out;
+     */
+    for (k = 0; k < p_ext_data->auto_fit.num_bands; k++) {
+8420156a:	03 00       	r1 = Null + Null;
+8420156c:	24 f0 d8 20 	r2 = r0 + 216;
+
+84201570 <Lc_auto_fit_gain_ramping_2>:
+84201570:	21 f0 30 88 	rMAC = M[r0 + 192];
+84201574:	58 04       	Null = r1 - rMAC;
+84201576:	02 f0 cf e0 	if C jump (m) Lc_auto_fit_gain_ramping_4;
+
+8420157a <Lc_auto_fit_gain_ramping_3>:
+        p_ext_data->auto_fit.band[k].eq_gain_lin_smoothed = kal_s32_saturate_s64(kal_s64_mult_s32_s32_shift(
+            p_ext_data->auto_fit.band[k].eq_gain_lin, p_ext_data->auto_fit.eq_gain_smooth_1_minus_coeff, 5)
+            + p_ext_data->auto_fit.band[k].eq_gain_lin_prv);
+8420157a:	45 f3 ff b9 	r3 = M[r2 + -4];
+8420157e:	26 f0 72 88 	r4 = M[r0 + 456];
+84201582:	47 21       	r5 = Null + 5;
+84201584:	7f 34       	r5 = r5 - 33;
+84201586:	6f f5 c1 cc 	rMAC = r3 * r4 (SS);
+8420158a:	c9 19       	rMAC = rMAC ASHIFT r5 (56bit);
+8420158c:	00 f1 d7 c8 	r5 = rMAC LSHIFT 0;
+84201590:	ce 57       	r4 = rMAC LSHIFT 32;
+84201592:	65 88       	r3 = M[r2 + 4];
+84201594:	ae 01       	r4 = r3 + r4;
+84201596:	c7 03       	r5 = Null + r5 + Carry;
+84201598:	04 f0 00 f7 	rMAC12 = r5 LSHIFT 0;
+8420159c:	de c8 
+8420159e:	05 f0 00 f6 	rMAC0 = r4 LSHIFT 0;
+842015a2:	de c8 
+842015a4:	c9 55       	rMAC = rMAC LSHIFT 8 (56bit);
+842015a6:	4d 5f       	r3 = rMAC ASHIFT 24;
+842015a8:	25 ee       	M[r2 + Null] = r3;
+
+        p_ext_data->auto_fit.band[k].eq_gain_lin_prv = kal_s32_saturate_s64(kal_s64_mult_s32_s32_shift(
+            p_ext_data->auto_fit.band[k].eq_gain_lin_smoothed, /* in Q27 */
+            p_ext_data->auto_fit.eq_gain_smooth_coeff,         /* in Q27 */
+            5));                                               /* to get result in Q27: 32-27=5 */
+842015aa:	26 f0 71 88 	r4 = M[r0 + 452];
+842015ae:	47 21       	r5 = Null + 5;
+842015b0:	7f 34       	r5 = r5 - 33;
+842015b2:	6f f5 c1 cc 	rMAC = r3 * r4 (SS);
+842015b6:	c9 19       	rMAC = rMAC ASHIFT r5 (56bit);
+842015b8:	c9 55       	rMAC = rMAC LSHIFT 8 (56bit);
+842015ba:	4d 5f       	r3 = rMAC ASHIFT 24;
+842015bc:	65 8e       	M[r2 + 4] = r3;
+    unsigned k;
+    /* Note: LP filter: 1st order
+     *    out = (1.0f - coeff) * in + z1;
+     *     z1 = coeff * out;
+     */
+    for (k = 0; k < p_ext_data->auto_fit.num_bands; k++) {
+842015be:	5b 20       	r1 = r1 + 1;
+842015c0:	24 32       	r2 = r2 + 40;
+842015c2:	d7 6f       	jump (m) Lc_auto_fit_gain_ramping_2;
+
+842015c4 <Lc_auto_fit_gain_ramping_4>:
+            p_ext_data->auto_fit.band[k].eq_gain_lin_smoothed, /* in Q27 */
+            p_ext_data->auto_fit.eq_gain_smooth_coeff,         /* in Q27 */
+            5));                                               /* to get result in Q27: 32-27=5 */
+    }
+
+    return TRUE;
+842015c4:	42 20       	r0 = Null + 1;
+
+842015c6 <Lc_auto_fit_gain_ramping_5>:
+}
+842015c6:	72 48       	popm <FP, r4, r5>;
+842015c8:	d8 4c       	rts;
+
+842015ca <Lc_eft_auto_fit_ctrl_1>:
+
+
+static bool eft_auto_fit_ctrl(EFT_OP_DATA* p_ext_data)
+{
+842015ca:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+842015cc:	16 00       	r4 = r0 + Null;
+    EFT_CAPTURE* p_shot = &p_ext_data->one_shot;
+842015ce:	67 f0 98 20 	r5 = r4 + 152;
+
+    /**********
+     * Called on capture rate
+     * availability of new power estimate: triggers ready flag (to send gain update messages to equalizer)
+     **********/
+    if ((p_ext_data->auto_fit.state > EFT_AUTO_FIT_STATE_SWITCHED_ON) && (p_shot->start == FALSE))
+842015d2:	61 f0 bc 81 	rMAC = MBS[r4 + 444];
+842015d6:	48 24       	Null = rMAC - 1;
+842015d8:	13 6c       	if LE jump (m) Lc_eft_auto_fit_ctrl_6;
+
+842015da <Lc_eft_auto_fit_ctrl_2>:
+842015da:	38 e8       	Null = M[r5 + Null];
+842015dc:	11 62       	if NE jump (m) Lc_eft_auto_fit_ctrl_6;
+
+842015de <Lc_eft_auto_fit_ctrl_3>:
+    {
+        L4_DBG_MSG("EFT: auto fit, new power estimate available...");
+842015de:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842015e2:	08 25       	Null = rMAC - 4;
+842015e4:	07 68       	if LT jump (m) Lc_eft_auto_fit_ctrl_5;
+
+842015e6 <Lc_eft_auto_fit_ctrl_4>:
+842015e6:	55 f1 02 f0 	r0 = Null + 357566581;
+842015ea:	75 50 
+842015ec:	ef fd fd ff 	call (m) 0x10b0;
+842015f0:	25 e6 
+
+842015f2 <Lc_eft_auto_fit_ctrl_5>:
+        p_ext_data->auto_fit.is_ready_to_send_msg = TRUE;
+842015f2:	41 20       	rMAC = Null + 1;
+842015f4:	61 f0 c6 8a 	MB[r4 + 198] = rMAC;
+        auto_fit_calc_gain_update(p_ext_data);
+842015f8:	32 00       	r0 = r4 + Null;
+842015fa:	fd ff 3f ef 	call (m) Lc_auto_fit_calc_gain_update_1;
+
+842015fe <Lc_eft_auto_fit_ctrl_6>:
+    /* framewise measures from fit 100 library, call upon each frame */
+    // compute another rms to consider rms for single frame -> for fast attack
+    aanc_fit100_autofit_one_shot_process(
+        p_ext_data->f_handle,
+        p_ext_data->p_fit
+    );
+842015fe:	63 f0 7e 88 	r1 = M[r4 + 504];
+84201602:	62 f0 7f 88 	r0 = M[r4 + 508];
+84201606:	02 f0 31 e3 	call (m) $_aanc_fit100_autofit_one_shot_process;
+    /* framewise evaluation of framewise measures */
+    auto_fit_one_frame_evaluation(p_ext_data);
+8420160a:	32 00       	r0 = r4 + Null;
+8420160c:	fe ff 2b ed 	call (m) Lc_auto_fit_one_frame_evaluation_1;
+
+    if (p_ext_data->auto_fit.is_ready_to_send_msg == TRUE)
+84201610:	61 f0 c6 82 	rMAC = MBU[r4 + 198];
+84201614:	48 24       	Null = rMAC - 1;
+84201616:	59 62       	if NE jump (m) Lc_eft_auto_fit_ctrl_24;
+
+84201618 <Lc_eft_auto_fit_ctrl_7>:
+    {
+        /* gain smoothing on frame rate, start as as soon as 1st measure is available */
+        if (p_ext_data->auto_fit.eq_gain_smooth_coeff > 0) {
+84201618:	60 f0 71 88 	Null = M[r4 + 452];
+8420161c:	03 60       	if EQ jump (m) Lc_eft_auto_fit_ctrl_9;
+
+8420161e <Lc_eft_auto_fit_ctrl_8>:
+            auto_fit_gain_ramping(p_ext_data);
+8420161e:	32 00       	r0 = r4 + Null;
+84201620:	a4 4f       	call (m) Lc_auto_fit_gain_ramping_1;
+
+84201622 <Lc_eft_auto_fit_ctrl_9>:
+        * Called on message rate
+        **********/
+       /* check whether its time to sent new gain update message on multiple of capture rate */
+       if ((p_ext_data->auto_fit.frame_cnt_msg <= 0)
+           || ((p_ext_data->auto_fit.state == EFT_AUTO_FIT_STATE_SWITCHED_OFF)
+               && (p_ext_data->auto_fit.msgs_per_capture_interval == 0))) {
+84201622:	61 f0 73 88 	rMAC = M[r4 + 460];
+84201626:	08 24       	Null = rMAC - 0;
+84201628:	08 6c       	if LE jump (m) Lc_eft_auto_fit_ctrl_12;
+
+8420162a <Lc_eft_auto_fit_ctrl_10>:
+8420162a:	61 f0 bc 81 	rMAC = MBS[r4 + 444];
+8420162e:	c8 24       	Null = rMAC - 3;
+84201630:	45 62       	if NE jump (m) Lc_eft_auto_fit_ctrl_23;
+
+84201632 <Lc_eft_auto_fit_ctrl_11>:
+84201632:	60 f0 2c 88 	Null = M[r4 + 176];
+84201636:	42 62       	if NE jump (m) Lc_eft_auto_fit_ctrl_23;
+
+84201638 <Lc_eft_auto_fit_ctrl_12>:
+84201638:	61 f0 bc 81 	rMAC = MBS[r4 + 444];
+8420163c:	c8 24       	Null = rMAC - 3;
+8420163e:	2f 62       	if NE jump (m) Lc_eft_auto_fit_ctrl_20;
+
+84201640 <Lc_eft_auto_fit_ctrl_13>:
+84201640:	80 f0 03 f0 	r1 = Null + 134217728;
+84201644:	00 40 
+           /* last message before disabling of auto_fit: set equ gain to 0dB */
+           if (p_ext_data->auto_fit.state == EFT_AUTO_FIT_STATE_SWITCHED_OFF) {
+               for (k = 0; k < p_ext_data->auto_fit.num_bands; k++) {
+84201646:	01 00       	rMAC = Null + Null;
+84201648:	62 f0 d4 20 	r0 = r4 + 212;
+
+8420164c <Lc_eft_auto_fit_ctrl_14>:
+8420164c:	64 f0 30 88 	r2 = M[r4 + 192];
+84201650:	08 05       	Null = rMAC - r2;
+84201652:	02 f0 99 e0 	if C jump (m) Lc_eft_auto_fit_ctrl_16;
+
+84201656 <Lc_eft_auto_fit_ctrl_15>:
+                   p_ext_data->auto_fit.band[k].eq_gain_lin = EFT_Q27_UNITY;
+84201656:	13 ee       	M[r0 + Null] = r1;
+                   p_ext_data->auto_fit.band[k].eq_gain_lin_smoothed = EFT_Q27_UNITY;
+84201658:	53 8e       	M[r0 + 4] = r1;
+                   p_ext_data->auto_fit.band[k].eq_gain_lin_prv = EFT_Q27_UNITY;
+8420165a:	93 8e       	M[r0 + 8] = r1;
+                   /* monitor signals */
+                   p_ext_data->auto_fit.band[k].pow_ref_avg = 0;
+8420165c:	90 8f       	M[r0 + 24] = Null;
+                   p_ext_data->auto_fit.band[k].pow_intmic_avg = 0;
+8420165e:	d0 8f       	M[r0 + 28] = Null;
+                   p_ext_data->auto_fit.band[k].low_sig_flag = 0;
+84201660:	50 8f       	M[r0 + 20] = Null;
+                   p_ext_data->auto_fit.band[k].num_clippings = 0;
+84201662:	10 8f       	M[r0 + 16] = Null;
+       if ((p_ext_data->auto_fit.frame_cnt_msg <= 0)
+           || ((p_ext_data->auto_fit.state == EFT_AUTO_FIT_STATE_SWITCHED_OFF)
+               && (p_ext_data->auto_fit.msgs_per_capture_interval == 0))) {
+           /* last message before disabling of auto_fit: set equ gain to 0dB */
+           if (p_ext_data->auto_fit.state == EFT_AUTO_FIT_STATE_SWITCHED_OFF) {
+               for (k = 0; k < p_ext_data->auto_fit.num_bands; k++) {
+84201664:	49 20       	rMAC = rMAC + 1;
+84201666:	12 32       	r0 = r0 + 40;
+84201668:	f2 6f       	jump (m) Lc_eft_auto_fit_ctrl_14;
+
+8420166a <Lc_eft_auto_fit_ctrl_16>:
+                   p_ext_data->auto_fit.band[k].pow_intmic_avg = 0;
+                   p_ext_data->auto_fit.band[k].low_sig_flag = 0;
+                   p_ext_data->auto_fit.band[k].num_clippings = 0;
+               }
+               /* disable sent message flag and set state to OFF */
+               p_ext_data->auto_fit.is_ready_to_send_msg = FALSE;
+8420166a:	60 f0 c6 8a 	MB[r4 + 198] = Null;
+               p_ext_data->auto_fit.state = EFT_AUTO_FIT_STATE_OFF;
+8420166e:	60 f0 bc 8b 	MB[r4 + 444] = Null;
+               p_ext_data->one_shot.start = FALSE;
+84201672:	60 f0 26 8e 	M[r4 + 152] = Null;
+               auto_fit_send_gain_update_to_equ(p_ext_data); /* last message when SWITCHED_OFF */
+84201676:	32 00       	r0 = r4 + Null;
+84201678:	fd ff 23 e4 	call (m) Lc_auto_fit_send_gain_update_to_equ_1;
+               L4_DBG_MSG("EFT: auto fit, state set to OFF (transition from SWITCHED_OFF to OFF)");
+8420167c:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84201680:	08 25       	Null = rMAC - 4;
+84201682:	07 68       	if LT jump (m) Lc_eft_auto_fit_ctrl_18;
+
+84201684 <Lc_eft_auto_fit_ctrl_17>:
+84201684:	55 f1 02 f0 	r0 = Null + 357566628;
+84201688:	a4 50 
+8420168a:	ef fd fd ff 	call (m) 0x10b0;
+8420168e:	27 e1 
+
+84201690 <Lc_eft_auto_fit_ctrl_18>:
+               /* after last msg is sent, switch to new state */
+               p_ext_data->cur_mode = p_ext_data->auto_fit.cur_mode_bak;
+84201690:	61 f0 70 88 	rMAC = M[r4 + 448];
+84201694:	61 f0 21 8e 	M[r4 + 132] = rMAC;
+
+84201698 <Lc_eft_auto_fit_ctrl_19>:
+    }
+
+    /* check if previous capture is still active */
+    if (p_shot->start)
+    {
+        return TRUE;
+84201698:	42 20       	r0 = Null + 1;
+8420169a:	39 6e       	jump (m) Lc_eft_auto_fit_ctrl_31;
+
+8420169c <Lc_eft_auto_fit_ctrl_20>:
+               L4_DBG_MSG("EFT: auto fit, state set to OFF (transition from SWITCHED_OFF to OFF)");
+               /* after last msg is sent, switch to new state */
+               p_ext_data->cur_mode = p_ext_data->auto_fit.cur_mode_bak;
+               return TRUE;
+           }
+           if (p_ext_data->auto_fit.msgs_per_capture_interval > 0)
+8420169c:	60 f0 2c 88 	Null = M[r4 + 176];
+842016a0:	07 60       	if EQ jump (m) Lc_eft_auto_fit_ctrl_22;
+
+842016a2 <Lc_eft_auto_fit_ctrl_21>:
+           {
+               /* check occurence of clipping since last message */
+               auto_fit_clipping_detection(p_ext_data);
+842016a2:	32 00       	r0 = r4 + Null;
+842016a4:	fe ff 3b ee 	call (m) Lc_auto_fit_clipping_detection_1;
+               /* send gain update message */
+               auto_fit_send_gain_update_to_equ(p_ext_data);
+842016a8:	32 00       	r0 = r4 + Null;
+842016aa:	fd ff 31 e2 	call (m) Lc_auto_fit_send_gain_update_to_equ_1;
+
+842016ae <Lc_eft_auto_fit_ctrl_22>:
+           }
+           p_ext_data->auto_fit.frame_cnt_msg += p_shot->duration_frames;
+842016ae:	b9 88       	rMAC = M[r5 + 8];
+842016b0:	62 f0 73 88 	r0 = M[r4 + 460];
+842016b4:	51 00       	rMAC = r0 + rMAC;
+842016b6:	61 f0 73 8e 	M[r4 + 460] = rMAC;
+
+842016ba <Lc_eft_auto_fit_ctrl_23>:
+       }
+       p_ext_data->auto_fit.frame_cnt_msg -= p_ext_data->auto_fit.msgs_per_capture_interval;
+842016ba:	61 f0 73 88 	rMAC = M[r4 + 460];
+842016be:	62 f0 2c 88 	r0 = M[r4 + 176];
+842016c2:	89 04       	rMAC = rMAC - r0;
+842016c4:	61 f0 73 8e 	M[r4 + 460] = rMAC;
+
+842016c8 <Lc_eft_auto_fit_ctrl_24>:
+    }
+
+    /* check if previous capture is still active */
+    if (p_shot->start)
+842016c8:	38 e8       	Null = M[r5 + Null];
+842016ca:	e7 63       	if NE jump (m) Lc_eft_auto_fit_ctrl_19;
+
+842016cc <Lc_eft_auto_fit_ctrl_25>:
+    }
+
+    /**********
+     * Called on capture rate
+     **********/
+    L4_DBG_MSG("EFT: auto fit, start new capture");
+842016cc:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842016d0:	08 25       	Null = rMAC - 4;
+842016d2:	07 68       	if LT jump (m) Lc_eft_auto_fit_ctrl_27;
+
+842016d4 <Lc_eft_auto_fit_ctrl_26>:
+842016d4:	55 f1 02 f0 	r0 = Null + 357566698;
+842016d8:	ea 50 
+842016da:	ef fd fc ff 	call (m) 0x10b0;
+842016de:	37 ee 
+
+842016e0 <Lc_eft_auto_fit_ctrl_27>:
+    /* initialize auto_fit and launch 1st capture */
+    if (p_ext_data->auto_fit.state == EFT_AUTO_FIT_STATE_SWITCHED_ON) {
+842016e0:	61 f0 bc 81 	rMAC = MBS[r4 + 444];
+842016e4:	48 24       	Null = rMAC - 1;
+842016e6:	0e 62       	if NE jump (m) Lc_eft_auto_fit_ctrl_30;
+
+842016e8 <Lc_eft_auto_fit_ctrl_28>:
+        p_ext_data->auto_fit.state = EFT_AUTO_FIT_STATE_ON;
+842016e8:	81 20       	rMAC = Null + 2;
+842016ea:	61 f0 bc 8b 	MB[r4 + 444] = rMAC;
+        L4_DBG_MSG("EFT: auto fit, state set to ON (transition from SWITCHED_ON to ON)");
+842016ee:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842016f2:	08 25       	Null = rMAC - 4;
+842016f4:	07 68       	if LT jump (m) Lc_eft_auto_fit_ctrl_30;
+
+842016f6 <Lc_eft_auto_fit_ctrl_29>:
+842016f6:	55 f1 02 f0 	r0 = Null + 357566731;
+842016fa:	0b 51 
+842016fc:	ef fd fc ff 	call (m) 0x10b0;
+84201700:	35 ed 
+
+84201702 <Lc_eft_auto_fit_ctrl_30>:
+    }
+    p_shot->frame_counter = p_shot->duration_frames;
+84201702:	b9 88       	rMAC = M[r5 + 8];
+84201704:	f9 8e       	M[r5 + 12] = rMAC;
+    p_shot->start = TRUE;
+84201706:	41 20       	rMAC = Null + 1;
+84201708:	39 ee       	M[r5 + Null] = rMAC;
+8420170a:	c7 6f       	jump (m) Lc_eft_auto_fit_ctrl_19;
+
+8420170c <Lc_eft_auto_fit_ctrl_31>:
+
+    return TRUE;
+}
+8420170c:	f2 48       	popm <FP, r4, r5, rLink>;
+8420170e:	d8 4c       	rts;
+
+84201710 <$_EARBUD_FIT_TEST_GetDefaults>:
+84201710:	20 f0 ca 24 	Null = r0 - 202;
+   0x00000000u,			// AUTO_FIT_BAND5_EQ_GAIN_OFFS_DB
+   0x00000000u			// AUTO_FIT_BAND6_EQ_GAIN_OFFS_DB
+};
+
+unsigned *EARBUD_FIT_TEST_GetDefaults(unsigned capid){
+	switch(capid){
+84201714:	05 60       	if EQ jump (m) Lc_EARBUD_FIT_TEST_GetDefaults_3;
+
+84201716 <Lc_EARBUD_FIT_TEST_GetDefaults_2>:
+84201716:	01 f0 20 f0 	Null = r0 - 16546;
+8420171a:	a2 24 
+8420171c:	05 62       	if NE jump (m) Lc_EARBUD_FIT_TEST_GetDefaults_4;
+
+8420171e <Lc_EARBUD_FIT_TEST_GetDefaults_3>:
+		case 0x00CA: return defaults_earbud_fit_testEARBUD_FIT_TEST_16K;
+8420171e:	f1 ff 02 f3 	r0 = Null + -15335424;
+84201722:	00 40 
+84201724:	02 6e       	jump (m) Lc_EARBUD_FIT_TEST_GetDefaults_5;
+
+84201726 <Lc_EARBUD_FIT_TEST_GetDefaults_4>:
+		case 0x40A2: return defaults_earbud_fit_testEARBUD_FIT_TEST_16K;
+	}
+	return((unsigned *)0);
+84201726:	02 00       	r0 = Null + Null;
+
+84201728 <Lc_EARBUD_FIT_TEST_GetDefaults_5>:
+84201728:	d8 4c       	rts;
+
+8420172a <$kdc_start>:
+.MODULE $M.kdc_start;
+.CODESEGMENT PM;
+.DATASEGMENT DM;
+
+$kdc_start:
+r0 = $_earbud_fit_test_16k_cap_data;
+8420172a:	01 f0 02 f3 	r0 = Null + 1441792;
+8420172e:	00 40 
+    /* Force this symbol to be exported in ELF */
+    Null = $___kymera_debug_map_addr;
+84201730:	00 f0 4c 5a 	Null = Null + 3660;

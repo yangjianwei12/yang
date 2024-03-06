@@ -1,0 +1,49 @@
+/******************************************************************************
+ *  Copyright (c) 2022 Qualcomm Technologies International, Ltd.
+ *  All Rights Reserved.
+ *  Qualcomm Technologies International, Ltd. Confidential and Proprietary.
+ *
+ *  %%version
+ *  %%appversion
+ *
+ *  FILE
+ *      gatt_mics_server_db.dbi
+ *
+ *  DESCRIPTION
+ *
+ *      This file defines the Microphone Control Service in JSON format. This file is
+ *      included in the main application data base file which is used to
+ *      produce ATT flat data base. 
+ *
+ *****************************************************************************/
+
+#ifndef __GATT_MICS_SERVER_DB_DBI__
+#define __GATT_MICS_SERVER_DB_DBI__
+
+#include "gatt_mics_server_uuids.h"
+
+/* Primary service declaration of Microphone Control Service */
+
+primary_service {
+    uuid : GATT_MICS_UUID_MICROPHONE_CONTROL_SERVICE,
+    name : "MICROPHONE_CONTROL_SERVICE",
+    sdp  : true,
+
+    /* Mute characteristic - 1-octet. */
+
+    characteristic {
+        uuid        : GATT_MICS_UUID_SERVER_MUTE,
+        name        : "MICS_SERVER_MUTE",
+        flags       : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ],
+        properties  : [ read, write, notify ],
+        
+        value       : [ 0x00 ],
+        
+        client_config {
+            name : "MICS_SERVER_MUTE_CLIENT_CONFIG",
+            flags : [ FLAG_IRQ, FLAG_ENCR_R, FLAG_ENCR_W ]
+            }
+    }
+},
+
+#endif /* __GATT_MICS_SERVER_DB_DBI__ */

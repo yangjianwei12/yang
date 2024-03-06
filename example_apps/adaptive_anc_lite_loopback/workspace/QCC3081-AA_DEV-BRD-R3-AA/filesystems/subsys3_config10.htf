@@ -1,0 +1,5 @@
+file=audio10
+
+#P0 = 480kB (Main Heap) + 416KB (Extra Heap) + 32kB (optional DM_AS_PM)
+#P1 = 256kB (Main Heap) + 128kB (Extra Heap) + 32kB (optional  DM_AS_PM)
+HeapAllocationEx = [E0 01 A0 01 20 00 00 01 80 00 20 00]

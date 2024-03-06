@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright (c) 2023 Qualcomm Technologies International, Ltd.-->
+<!--Chain for LE Unicast Stereo -->
+
+<chain name="CHAIN_LC3_ISO_STEREO_DECODER" id="0" generate_operator_roles_enum="False" generate_endpoint_roles_enum="False">
+
+    <include_header name="app_chain_config.h"/>
+    <include_header name="kymera_chain_roles.h"/>
+
+    <operator name="OPR_LC3_DECODE_SCO_ISO" id="CAP_ID_LC3_SCO_ISO_DEC" processor="P0,P1">
+        <sink name="IN" terminal="0"/>
+        <source name="OUT_0" terminal="0"/>
+        <source name="OUT_1" terminal="1"/>
+    </operator>
+
+    <operator name="OPR_LEFT_RIGHT_MIXER" id="CAP_ID_MIXER" processor="P0,P1">
+        <sink name="IN_L" terminal="0"/>
+        <sink name="IN_R" terminal="1"/>
+        <source name="OUT" terminal="0"/>
+    </operator>
+
+    <input sink="OPR_LC3_DECODE_SCO_ISO.IN" role="EPR_ISO_FROM_AIR_LEFT"/>
+    <connection source="OPR_LC3_DECODE_SCO_ISO.OUT_0" sink="OPR_LEFT_RIGHT_MIXER.IN_L"/>
+    <connection source="OPR_LC3_DECODE_SCO_ISO.OUT_1" sink="OPR_LEFT_RIGHT_MIXER.IN_R"/>
+    <output source="OPR_LEFT_RIGHT_MIXER.OUT" role="EPR_SOURCE_DECODED_PCM"/>
+</chain>
+

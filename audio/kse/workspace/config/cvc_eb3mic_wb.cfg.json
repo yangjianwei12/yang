@@ -1,0 +1,221 @@
+{
+    "stream": [
+        {
+            "interface": "pcm",
+            "type": "source",
+            "kwargs": {
+                "backing": "file",
+                "filename": "resource/cvc_eb3mic_wb_ref.wav"
+            }
+        },
+        {
+            "interface": "pcm",
+            "type": "source",
+            "kwargs": {
+                "backing": "file",
+                "filename": "resource/cvc_eb3mic_wb_ext1.wav"
+            }
+        },
+        {
+            "interface": "pcm",
+            "type": "source",
+            "kwargs": {
+                "backing": "file",
+                "filename": "resource/cvc_eb3mic_wb_ext2.wav"
+            }
+        },
+        {
+            "interface": "pcm",
+            "type": "source",
+            "kwargs": {
+                "backing": "file",
+                "filename": "resource/cvc_eb3mic_wb_bcm.wav"
+            }
+        },
+        {
+            "interface": "pcm",
+            "type": "sink",
+            "kwargs": {
+                "backing": "file",
+                "filename": "tmp/cvc_eb3mic_wb_out.wav",
+                "sample_rate": 16000,
+                "sample_width": 16
+            }
+        }
+    ],
+    "endpoint": [
+        {
+            "interface": "pcm",
+            "type": "source",
+            "kwargs": {
+                "instance": 0,
+                "channel": 0,
+                "pcm_sync_rate": 16000,
+                "pcm_sample_rising_edge": 0,
+                "pcm_master_mode": 1,
+                "pcm_slot_count": 4,
+                "pcm_sample_format": 1,
+                "pcm_master_clock_rate": 1024000
+            }
+        },
+        {
+            "interface": "pcm",
+            "type": "source",
+            "kwargs": {
+                "instance": 0,
+                "channel": 1,
+                "pcm_sync_rate": 16000,
+                "pcm_sample_rising_edge": 0,
+                "pcm_master_mode": 1,
+                "pcm_slot_count": 4,
+                "pcm_sample_format": 1,
+                "pcm_master_clock_rate": 1024000
+            }
+        },
+        {
+            "interface": "pcm",
+            "type": "source",
+            "kwargs": {
+                "instance": 0,
+                "channel": 2,
+                "pcm_sync_rate": 16000,
+                "pcm_sample_rising_edge": 0,
+                "pcm_master_mode": 1,
+                "pcm_slot_count": 4,
+                "pcm_sample_format": 1,
+                "pcm_master_clock_rate": 1024000
+            }
+        },
+        {
+            "interface": "pcm",
+            "type": "source",
+            "kwargs": {
+                "instance": 0,
+                "channel": 3,
+                "pcm_sync_rate": 16000,
+                "pcm_sample_rising_edge": 0,
+                "pcm_master_mode": 1,
+                "pcm_slot_count": 4,
+                "pcm_sample_format": 1,
+                "pcm_master_clock_rate": 1024000
+            }
+        },
+        {
+            "interface": "pcm",
+            "type": "sink",
+            "kwargs": {
+                "instance": 1,
+                "channel": 0,
+                "pcm_sync_rate": 16000,
+                "pcm_sample_rising_edge": 0,
+                "pcm_master_mode": 1,
+                "pcm_slot_count": 4,
+                "pcm_sample_format": 1,
+                "pcm_master_clock_rate": 1024000
+            }
+        }
+    ],
+    "operator": [
+        {
+            "interface": "DOWNLOAD_CVCEB3MIC_MONO_IE_WB",
+            "args": [
+                [
+                    "SET_CONTROL",
+                    [
+                        1,
+                        1,
+                        0,
+                        2
+                    ]
+                ],
+                [
+                    "SET_PARAMS",
+                    [
+                        1, 
+                        0, 
+                        1, 
+                        0,
+                        7304
+                    ]
+                ],
+                [
+                    "SET_PARAMS",
+                    [
+                        1, 
+                        1, 
+                        1, 
+                        65,
+                        788
+                    ]
+                ],
+                [
+                    "SET_PARAMS",
+                    [
+                        1, 
+                        97, 
+                        1, 
+                        747,
+                        7235
+                    ]
+                ],
+                [
+                    "SET_PARAMS",
+                    [
+                        1, 
+                        98, 
+                        1, 
+                        28180,
+                        31457
+                    ]
+                ]
+            ],
+            "description": "SET_CONTROL: HFK mode",
+            "description": "SET_PARAMS: HFK_CONFIG = 0x00001C88",
+            "description": "SET_PARAMS: DMSS_CONFIG = 0x00410314",
+            "description": "SET_PARAMS: ASF_MIC_DISTANCE = 0x02EB1C43",
+            "description": "SET_PARAMS: ASF_BETA = 0x6E147AE1"
+       }
+    ],
+    "graph": [
+        [
+            "stream0",
+            "endpoint0"
+        ],
+        [
+            "endpoint0",
+            "operator0i0"
+        ],
+        [
+            "stream1",
+            "endpoint1"
+        ],
+        [
+            "endpoint1",
+            "operator0i1"
+        ],
+        [
+            "stream2",
+            "endpoint2"
+        ],
+        [
+            "endpoint2",
+            "operator0i2"
+        ],
+        [
+            "stream3",
+            "endpoint3"
+        ],
+        [
+            "endpoint3",
+            "operator0i3"
+        ],
+        [
+            "operator0o0",
+            "endpoint4"
+        ],
+        [
+            "endpoint4",
+            "stream4"
+        ]
+    ]
+}

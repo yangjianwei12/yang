@@ -1,0 +1,22 @@
+############################################################################
+# Copyright (c) 2021 Qualcomm Technologies International, Ltd.
+############################################################################
+# Definitions required to build the ML Engine capability
+%cpp
+ENABLE_ML_PROFILER
+%include config.MODIFY_ML_COMMON
+#
+# Capabilities to include in the build
+#
+
+%list CFG_CAPABILITIES
+ML_ENGINE
+
+%list ALL_SRCDIRS
+capabilities/ml_engine
+
+%list ALL_INCDIRS
+capabilities/ml_engine
+
+%list CFG_LIBS
+capabilities/ml_engine/ml_engine

@@ -1,0 +1,276 @@
+"""
+Copyright (c) 2021-2023 Qualcomm Technologies International, Ltd.
+
+Synergy Library build script
+"""
+
+from __future__ import print_function
+import os
+import logging
+import SCons.Builder
+
+Import('p_env')
+
+# Builder for database files
+p_env.Tool('gattdbgen')
+
+def convert_options(param):
+    """
+    Convert a string of option=value pairs into a dictionary.
+    Singlets are also accepted, having an empty string value.
+    """
+
+    import re
+
+    # Initialise return value
+    options = dict()
+
+    # Split the input string into groups, where each group comprises
+    # <alphanumeric text> or
+    # <alphanumeric text> = <value containing alphanumeric text> or
+    #                       "<value containing any character>" or
+    #                       '<value containing any character>'
+    expression = r'\w+(?:\s*=\s*(?:\w+|".*?"|\'.*?\'))?'
+    for pair in re.findall(expression, param):
+        (option, sep, value) = pair.partition('=')
+        options[option] = value.strip(' \t\'"')
+
+    return options
+
+
+# Generate source lists
+from tools.gen_build_files import Parse_xml, Paths
+Parse_xml('source_lists.xml')
+
+#Generate Enum Headers and Source
+from tools.enum_generator import Generate_enums, generated_files
+Generate_enums()
+
+# Extract build arguments
+for (key, value) in convert_options(p_env['BUILD_ARGUMENTS']).items():
+    if value:
+        p_env[key] = value
+
+# VM_APP_TYPE could be set in BUILD_ARGUMENTS to configure synergy library
+# for different applications.
+# If VM_APP_TYPE is set to "xyz", SCons expects following file to be present
+# in Synergy folder - './config/SConscript.xyz'.
+# Typically this SConscript file is used to change the 'csr_bt_config.h'
+# used in the build, allowing us to select features as per the application.
+# If VM_APP_TYPE is not set './config/inc/default/csr_bt_config.h' is used.
+if p_env.get('VM_APP_TYPE'):
+	conf_file = 'config/SConscript.' + p_env['VM_APP_TYPE']
+	p_env.SConscript(conf_file, exports='Paths', must_exist=True)
+	OUTPUT_DIR = 'output_' + p_env['VM_APP_TYPE']
+	logging.info(f"Using {p_env['VM_APP_TYPE']} Configuration")
+else:
+	OUTPUT_DIR = 'output_default'
+	logging.info("Using Default Configuration")
+
+# Assign default values where required
+if not p_env.get('BUILD_TYPE'):
+    p_env['BUILD_TYPE'] = 'release'
+if not p_env.get('CHIP_TYPE'):
+    p_env['CHIP_TYPE'] = 'qcc516x_qcc306x'
+if not p_env.get('DEFS'):
+    # Define HCI flag required by CM but not available with Hydra OS hci.h
+    p_env['DEFS'] = 'HYDRA TRAPSET_BLUESTACK=1 TRAPSET_RFCOMM=1 ' + \
+                    'TRAPSET_STREAM=1 TRAPSET_AUDIO=1 TRAPSET_CORE=1 ' + \
+                    'HCI_CIS_MAX="((uint8_t)0x08)" ' + \
+                    'HCI_ULP_BROADCAST_CODE_SIZE=16 BLUESTACK_LIB EXCLUDE_VSC'
+
+# Replace tags in SYNERGY_INCLUDE_PATHS and CORESTACK_LIB_SOURCES
+QBL_PATH = "../../../../os/"+p_env['CHIP_TYPE'] + "/" + p_env['OS_VARIANT']+"/src/fw/src/bt/utilities"
+Paths["SYNERGY_INCLUDE_PATHS"] = [p.replace("QBL_LIB_PATH", QBL_PATH) for p in Paths["SYNERGY_INCLUDE_PATHS"]]
+Paths["CORESTACK_LIB_SOURCES"] = [p.replace("QBL_LIB_PATH","corestack") for p in Paths["CORESTACK_LIB_SOURCES"]]
+
+# Replace tags in OS_INCLUDE_PATHS
+Paths['OS_INCLUDE_PATHS'] = [p.replace('$(CHIP_TYPE)', p_env['CHIP_TYPE']).replace('$(OS_VARIANT)', p_env['OS_VARIANT']) for p in Paths["OS_INCLUDE_PATHS"]]
+
+# Initialise folder locations
+PROJECT_ROOT = os.getcwd().replace('\\', '/')
+print("PROJECT_ROOT is " + PROJECT_ROOT)
+
+try:
+    TOOLS_ROOT = p_env['TOOLS_ROOT']
+except KeyError:
+    print("Variable TOOLS_ROOT has not been defined. It should be set to "
+          "the location of the tools folder.")
+    exit(1)
+print("TOOLS_ROOT is " + TOOLS_ROOT)
+
+try:
+    ADK_ROOT = p_env['ADK_ROOT']
+except KeyError:
+    print("Variable ADK_ROOT has not been defined. It should be set to "
+          "the location of the ADK folder.")
+    Exit(1)
+print("ADK_ROOT is " + ADK_ROOT)
+
+# Setup paths for the build
+SRC_DIR = os.getcwd()
+
+# Define LIBRARY_VERSION
+LIBRARY_VERSION = p_env.get('LIBRARY_VERSION', 'default')
+p_env.Replace(LIBRARY_VERSION = LIBRARY_VERSION + '_' + p_env['CHIP_TYPE'])
+
+# Folders
+if p_env['BUILDOUTPUT_PATH']:
+    p_env.Replace(inst_dir = p_env['BUILDOUTPUT_PATH'] + '/../installed_libs')
+else:
+    p_env.Replace(inst_dir = '#installed_libs')
+p_env.Replace(profiles_inc_dir = p_env['inst_dir'] + '/include/profiles/' + p_env['LIBRARY_VERSION'])
+
+LIB_DIR = p_env['inst_dir'] + '/lib/' + p_env['LIBRARY_VERSION'] + '/native'
+SYNERGY_INTERFACE_DIR = p_env['profiles_inc_dir']
+SYNERGY_PLATFORM_INTERFACE_DIR = SYNERGY_INTERFACE_DIR + '/platform'
+SYNERGY_LE_AUDIO_DIR = 'bt/profile_managers/le_audio'
+SYNERGY_SERVICE_DIR = SYNERGY_LE_AUDIO_DIR + '/services'
+SYNERGY_LE_DIR = 'bt/profile_managers/gatt_services'
+
+# Expand ellipses in LIBPATHS and INCPATHS to include subdirectories recursively
+for f in p_env.get('INCPATHS', '').split():
+    if f.endswith('...'):
+        for root, dir, file in os.walk(f[:-3]):
+            p_env.AppendUnique(CPPPATH=root)
+    else:
+        p_env.AppendUnique(CPPPATH=f)
+
+p_env.Replace(LIBPATH=[])
+for f in p_env.get('LIBPATHS', '').split():
+    if f.endswith('...'):
+        for root, dir, file in os.walk(f[:-3]):
+            p_env.AppendUnique(LIBPATH=root)
+    else:
+        p_env.AppendUnique(LIBPATH=f)
+
+# Convert definitions into a list
+p_env.Replace(DEFS=p_env.get('DEFS', '').split())
+
+# Release package will not contain LEA code. Temporarily relying on availability
+# of code for building. Later we need to expose a build parameter (similar to
+# CHIP_TYPE) via lib builder utilities.
+LEA_ENABLED = os.path.exists(SYNERGY_LE_AUDIO_DIR)
+if LEA_ENABLED:
+    p_env.Append(DEFS = ['CSR_ENABLE_LEA'])
+
+# Define standard compiler options
+MINIM_OPT = '-minim'
+
+try:
+    CHIP_NAME_OPT = '-k' + p_env['CHIP_NAME']
+except KeyError:
+    print("CHIP_NAME property missing")
+    Exit(1)
+
+print("BUILDING FOR " + p_env['CHIP_TYPE'])
+
+WARNING_OPTS = p_env.get('WARNING_FLAGS',
+                         '-Wall -WAccuracyLoss -WnoConstantTest ' + \
+                         '-WCharPointerUnaligned')
+# Following warnings are left disabled when porting by commenting out the line
+if not p_env.get('EXTRA_WARNINGS'):
+    WARNING_OPTS += ' -WnoAccuracyLoss -WnoArgSizeLarger' + \
+                    ' -WnoPointerUnaligned -WnoExplicitQualifier' + \
+                    ' -WnoCharPointerUnaligned -WnoUnsignedCompare'
+
+# Treat warnings as errors
+WARNING_OPTS += ' -Werror'
+
+# If the project property 'Build Type' is set to 'release' optimise for
+# speed, otherwise use debugging friendly options
+if p_env['BUILD_TYPE'].lower() == 'release':
+    OPTIMISE_OPTS = p_env.get('RELEASE_OPTIMISE_FLAGS', '-O2')
+    p_env.Append(DEFS=['RELEASE_BUILD'])
+else:
+    OPTIMISE_OPTS = p_env.get('DEBUG_OPTIMISE_FLAGS', '-O0')
+    p_env.Append(DEFS=['DEBUG_BUILD'])
+
+COMPILE_FLAGS = '-g -Xa -apply-b179745-workaround ' + \
+                ' '.join([MINIM_OPT, WARNING_OPTS, OPTIMISE_OPTS])
+
+# Translate options variable names into SCons versions
+p_env.Replace(CFLAGS=COMPILE_FLAGS)
+p_env.Append(CPPDEFINES=p_env['DEFS'])
+p_env.Replace(CPPFLAGS=[CHIP_NAME_OPT])
+p_env.Replace(CPPPATH = Paths['SYNERGY_INCLUDE_PATHS'] + Paths['OS_INCLUDE_PATHS'] + [SYNERGY_INTERFACE_DIR])
+
+# Header rules
+for f in Paths['BT_PUBLIC_HEADERS']:
+    p_env.Command(SYNERGY_INTERFACE_DIR + '/' + os.path.basename(f), f,
+                  [Copy('$TARGET', '$SOURCE'), Chmod('$TARGET', 0o666)])
+
+for f in generated_files:
+    p_env.Command(SYNERGY_INTERFACE_DIR + '/' + os.path.basename(f), f,
+                  [Copy('$TARGET', '$SOURCE'), Chmod('$TARGET', 0o666)])
+
+for f in Paths['PLATFORM_PUBLIC_HEADERS']:
+    p_env.Command(SYNERGY_PLATFORM_INTERFACE_DIR + '/' + os.path.basename(f), f,
+                  [Copy('$TARGET', '$SOURCE'), Chmod('$TARGET', 0o666)])
+
+for f in Paths['LE_DBI_FILES']:
+    p_env.Command(SYNERGY_INTERFACE_DIR + '/' + os.path.basename(f), f,
+                  [Copy('$TARGET', '$SOURCE'), Chmod('$TARGET', 0o666)])
+
+if LEA_ENABLED:
+    for f in Paths['BT_LEA_PUBLIC_HEADERS']:
+        p_env.Command(SYNERGY_INTERFACE_DIR + '/' + os.path.basename(f), f,
+                      [Copy('$TARGET', '$SOURCE'), Chmod('$TARGET', 0o666)])
+
+    for f in Paths['LEA_DBI_FILES']:
+        p_env.Command(SYNERGY_INTERFACE_DIR + '/' + os.path.basename(f), f,
+                      [Copy('$TARGET', '$SOURCE'), Chmod('$TARGET', 0o666)])
+        p_env.DbiObject(SYNERGY_INTERFACE_DIR + '/' + os.path.basename(f).replace('.dbi', '.h'), f)
+
+# Setup paths for the build
+path = [OUTPUT_DIR]
+if p_env.get('BUILDOUTPUT_PATH', None):
+    path = [p_env['BUILDOUTPUT_PATH'], 'synergy'] + path
+BUILD_DIR = '/'.join(path)
+
+# Ensure object files are created separately from source files, and
+# don't create copies of the source files in the build folder
+p_env.VariantDir(BUILD_DIR, SRC_DIR, duplicate=0)
+p_env.VariantDir(BUILD_DIR + '/corestack', SRC_DIR + '/' + QBL_PATH,  duplicate=0)
+Paths['FRAMEWORK_LIB_SOURCES'] = [BUILD_DIR + '/' + s for s in Paths['FRAMEWORK_LIB_SOURCES']]
+Paths['SERVICE_LIB_SOURCES'] = [BUILD_DIR + '/' + s for s in Paths['SERVICE_LIB_SOURCES']]
+Paths['PROFILES_LIB_SOURCES'] = [BUILD_DIR + '/' + s for s in Paths['PROFILES_LIB_SOURCES']]
+Paths['CORESTACK_LIB_SOURCES'] = [BUILD_DIR + '/' + s for s in Paths['CORESTACK_LIB_SOURCES']]
+if LEA_ENABLED:
+    Paths['LEA_LIB_SOURCES'] = [BUILD_DIR + '/' + s for s in Paths['LEA_LIB_SOURCES']]
+
+# Special handling for Service sources
+CPPPATH_SERVICE = Paths['OS_INCLUDE_PATHS'] + Paths['SYNERGY_INCLUDE_PATHS']
+SYNERGY_OBJECT_FRW = [p_env.Object(src, CPPPATH=CPPPATH_SERVICE)
+                                for src in Paths['FRAMEWORK_LIB_SOURCES']]
+SYNERGY_SERVICE_OBJECT = [p_env.Object(src, CPPPATH=CPPPATH_SERVICE)
+                                for src in Paths['SERVICE_LIB_SOURCES']]
+# (remaining sources can use default C builder)
+
+# Special handling for csr_bt_corestack_libs because the number of
+# objects exceeds the command line length limit
+CORESTACK_OBJS = [p_env.Object(src)[0]
+                                for src in Paths['CORESTACK_LIB_SOURCES']]
+CORESTACK_OBJS_FILE = p_env.File(BUILD_DIR + '/csr_bt_corestack_libs.txt')
+p_env.Textfile(CORESTACK_OBJS_FILE, [f.path.replace('\\', '/') for f in CORESTACK_OBJS])
+p_env.Depends(CORESTACK_OBJS_FILE, CORESTACK_OBJS)
+
+# Library component rules
+SYNERGY_FRW_LIB       = p_env.Library(target = LIB_DIR + '/csr_frw',
+                                      source = SYNERGY_OBJECT_FRW),
+SYNERGY_SERVICE_LIB   = p_env.Library(target = LIB_DIR + '/synergy_service',
+                                      source = SYNERGY_SERVICE_OBJECT),
+SYNERGY_PROFILES_LIB  = p_env.Library(target = LIB_DIR + '/csr_bt_profiles',
+                                      source = Paths['PROFILES_LIB_SOURCES']),
+SYNERGY_CORESTACK_LIB = p_env.Library(target = LIB_DIR + '/csr_bt_corestack_libs',
+                                      source = CORESTACK_OBJS_FILE,
+                                      ARCOM = '$AR $ARFLAGS $TARGET @$SOURCE')
+LIBRARIES = [SYNERGY_FRW_LIB, SYNERGY_SERVICE_LIB, SYNERGY_PROFILES_LIB,
+             SYNERGY_CORESTACK_LIB]
+if LEA_ENABLED:
+    SYNERGY_LE_AUDIO_LIB = p_env.Library(target = LIB_DIR + '/csr_bt_le_audio',
+                                         source = Paths['LEA_LIB_SOURCES'])
+    LIBRARIES.append(SYNERGY_LE_AUDIO_LIB)
+
+# Deliverable library
+p_env.Library(target = LIB_DIR + '/csr_bt', source = LIBRARIES)

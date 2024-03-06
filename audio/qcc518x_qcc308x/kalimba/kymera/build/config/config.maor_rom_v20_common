@@ -1,0 +1,7 @@
+############################################################################
+# Copyright (c) 2020 Qualcomm Technologies International, Ltd.
+############################################################################
+# Maor (2.0- expected final hardware) ROM config common for both cores with no dual core enabled.
+
+%include config.maor_rom_common
+%include config.MODIFY_CHIP_MAOR_R02

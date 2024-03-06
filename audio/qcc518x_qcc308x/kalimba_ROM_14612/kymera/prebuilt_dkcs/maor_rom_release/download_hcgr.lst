@@ -1,0 +1,5184 @@
+
+/home/svc-audio-dspsw/kymera_builds/builds/2023/kymera_2312060823/kalimba/kymera/tools/KCSMaker/out/14612/maor_rom_release/download/debugbin/download_hcgr_external.elf:     file format elf32-littlekalimba
+
+Disassembly of section .text_minim:
+
+8420064c <$_hcgr_create>:
+Capability API Handlers
+*/
+
+bool hcgr_create(OPERATOR_DATA *op_data, void *message_data,
+                 unsigned *response_id, void **resp_data)
+{
+8420064c:	f6 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>;
+8420064e:	16 00       	r4 = r0 + Null;
+84200650:	2b 09       	r9 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data HCGR_OP_DATA.
+ */
+static inline HCGR_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (HCGR_OP_DATA *) base_op_get_instance_data(op_data);
+84200652:	ff fd 01 f0 	call (m) 0x8ea;
+84200656:	39 e4 
+84200658:	17 00       	r5 = r0 + Null;
+{
+    HCGR_OP_DATA *p_ext_data = get_instance_data(op_data);
+    unsigned *p_default_params;     /* Pointer to default params */
+    unsigned *p_cap_params;         /* Pointer to capability params */
+    CPS_PARAM_DEF *p_param_def;     /* Pointer to parameter definition */
+    EXT_OP_ID ext_op_id  = INT_TO_EXT_OPID(op_data->id);
+8420065a:	72 88       	r0 = M[r4 + 4];
+8420065c:	52 55       	r0 = r0 LSHIFT 6;
+8420065e:	40 f0 00 f2 	r8 = r0 OR 0x4000;
+84200662:	5a d8 
+    /* NB: create is passed a zero-initialized structure so any fields not
+     * explicitly initialized are 0.
+     */
+
+    L5_DBG_MSG2("OPID: %x, HCGR Create: p_ext_data at %p", ext_op_id, p_ext_data);
+84200664:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200668:	48 25       	Null = rMAC - 5;
+8420066a:	09 68       	if LT jump (m) Lc_hcgr_create_3;
+
+8420066c <Lc_hcgr_create_2>:
+8420066c:	55 f1 02 f0 	r0 = Null + 357564523;
+84200670:	6b 40 
+84200672:	3c 00       	r2 = r5 + Null;
+84200674:	53 08       	r1 = r8 + Null;
+84200676:	ff fd 05 f0 	call (m) 0x10d6;
+8420067a:	21 e3 
+
+8420067c <Lc_hcgr_create_3>:
+
+    if (!base_op_create_lite(op_data, resp_data))
+8420067c:	5b 08       	r1 = r9 + Null;
+8420067e:	32 00       	r0 = r4 + Null;
+84200680:	ff fd 00 f0 	call (m) 0x850;
+84200684:	31 ee 
+84200686:	10 04       	Null = r0 - Null;
+84200688:	62 60       	if EQ jump (m) Lc_hcgr_create_8;
+
+8420068a <Lc_hcgr_create_4>:
+ * \param  response_data Pointer to the pointer to message that is allocated in the function.
+ * \param  new_status  A status ID that is to be sent in the message.
+ */
+inline static void base_op_change_response_status(void **response_data, STATUS_KYMERA new_status)
+{
+    (((OP_STD_RSP *)(*response_data))->status = new_status);
+8420068a:	01 f0 00 60 	rMAC = Null + 4096;
+8420068e:	b2 f0 00 e8 	r0 = M[r9 + Null];
+84200692:	51 8e       	M[r0 + 4] = rMAC;
+     * termination point in create then change it to STATUS_OK.
+     */
+    base_op_change_response_status(resp_data, STATUS_CMD_FAILED);
+
+    /* Multi-channel create */
+    aud_cur_create(op_data, HCGR_MAX_TERMINALS, HCGR_MAX_TERMINALS);
+84200694:	c4 20       	r2 = Null + 3;
+84200696:	23 00       	r1 = r2 + Null;
+84200698:	32 00       	r0 = r4 + Null;
+8420069a:	06 f0 35 e6 	call (m) $_aud_cur_create;
+    aud_cur_set_callbacks(op_data,
+                          NULL,
+                          NULL,
+                          hcgr_connect_hook,
+                          hcgr_disconnect_hook,
+                          hcgr_param_update_hook);
+8420069e:	42 f0 0d f0 	push Null + 69209411;
+842006a2:	53 e4 
+842006a4:	42 f0 05 f0 	r3 = Null + 69209329;
+842006a8:	f1 58 
+842006aa:	04 00       	r2 = Null + Null;
+842006ac:	03 00       	r1 = Null + Null;
+842006ae:	42 f0 0d f0 	push Null + 69209377;
+842006b2:	51 e2 
+842006b4:	32 00       	r0 = r4 + Null;
+842006b6:	07 f0 3f e8 	call (m) $_aud_cur_set_callbacks;
+842006ba:	7e 4c       	SP = SP + -8;
+    aud_cur_set_flags(op_data,
+                      HCGR_SUPPORTS_IN_PLACE,
+                      HCGR_SUPPORTS_METADATA,
+                      HCGR_DYNAMIC_BUFFERS_FALSE);
+842006bc:	44 20       	r2 = Null + 1;
+842006be:	05 00       	r3 = Null + Null;
+842006c0:	23 00       	r1 = r2 + Null;
+842006c2:	32 00       	r0 = r4 + Null;
+842006c4:	07 f0 33 e9 	call (m) $_aud_cur_set_flags;
+    aud_cur_set_min_terminal_masks(op_data,
+                                   HCGR_MIN_VALID_SOURCES,
+                                   HCGR_MIN_VALID_SINKS);
+842006c8:	84 20       	r2 = Null + 2;
+842006ca:	03 00       	r1 = Null + Null;
+842006cc:	32 00       	r0 = r4 + Null;
+842006ce:	07 f0 23 ea 	call (m) $_aud_cur_set_min_terminal_masks;
+
+    /* Initialize capid and sample rate fields */
+    p_ext_data->cap_id = HCGR_16K_CAP_ID;
+842006d2:	21 f0 b9 40 	rMAC = Null + 16569;
+842006d6:	79 8e       	M[r5 + 4] = rMAC;
+
+    p_ext_data->sample_rate = 16000;
+842006d8:	11 f0 80 7a 	rMAC = Null + 16000;
+842006dc:	39 ee       	M[r5 + Null] = rMAC;
+
+    aud_cur_set_buffer_size(op_data, HCGR_DEFAULT_BUFFER_SIZE);
+842006de:	03 f0 80 40 	r1 = Null + 128;
+842006e2:	32 00       	r0 = r4 + Null;
+842006e4:	07 f0 2f ea 	call (m) $_aud_cur_set_buffer_size;
+    aud_cur_set_block_size(op_data, HCGR_DEFAULT_BLOCK_SIZE);
+842006e8:	03 30       	r1 = Null + 32;
+842006ea:	32 00       	r0 = r4 + Null;
+842006ec:	07 f0 37 ea 	call (m) $_aud_cur_set_block_size;
+
+    /* Initialize parameters */
+    p_default_params = (unsigned*) HCGR_GetDefaults(p_ext_data->cap_id);
+842006f0:	7a 88       	r0 = M[r5 + 4];
+842006f2:	06 f0 23 e3 	call (m) $_HCGR_GetDefaults;
+842006f6:	11 09       	r7 = r0 + Null;
+    p_cap_params = (unsigned*) &p_ext_data->hcgr_cap_params;
+842006f8:	78 f0 08 20 	r6 = r5 + 8;
+    p_param_def = aud_cur_get_cps(op_data);
+842006fc:	32 00       	r0 = r4 + Null;
+842006fe:	07 f0 27 e9 	call (m) $_aud_cur_get_cps;
+    if (!cpsInitParameters(p_param_def,
+                          p_default_params,
+                          p_cap_params,
+                          sizeof(HCGR_PARAMETERS)))
+84200702:	05 f0 7c 40 	r3 = Null + 124;
+84200706:	44 08       	r2 = r6 + Null;
+84200708:	4b 08       	r1 = r7 + Null;
+8420070a:	ff fd 02 f0 	call (m) 0xb2a;
+8420070e:	21 e1 
+84200710:	10 04       	Null = r0 - Null;
+84200712:	2f 60       	if EQ jump (m) Lc_hcgr_create_11;
+
+84200714 <Lc_hcgr_create_5>:
+    {
+       return TRUE;
+    }
+
+    /* Initialize system mode */
+    p_ext_data->cur_mode = HCGR_SYSMODE_FULL;
+84200714:	41 20       	rMAC = Null + 1;
+84200716:	71 f0 21 8e 	M[r5 + 132] = rMAC;
+    p_ext_data->host_mode = HCGR_SYSMODE_FULL;
+8420071a:	71 f0 23 8e 	M[r5 + 140] = rMAC;
+    p_ext_data->qact_mode = HCGR_SYSMODE_FULL;
+8420071e:	71 f0 24 8e 	M[r5 + 144] = rMAC;
+
+    /* Allocate twiddle factor for AFB */
+    if (!math_fft_twiddle_alloc(AANC_FILTER_BANK_WINDOW_SIZE))
+84200722:	02 f0 80 40 	r0 = Null + 128;
+84200726:	ff fd 84 f4 	call 0x91054;
+8420072a:	2e e9 
+8420072c:	10 04       	Null = r0 - Null;
+8420072e:	23 62       	if NE jump (m) Lc_hcgr_create_12;
+
+84200730 <Lc_hcgr_create_6>:
+    {
+        hcgr_proc_destroy(p_ext_data);
+84200730:	3a 00       	r0 = r5 + Null;
+84200732:	03 f0 39 e6 	call (m) Lc_hcgr_proc_destroy_1;
+        L2_DBG_MSG1("OPID: %x, HCGR failed to allocate twiddle factors", ext_op_id);
+84200736:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420073a:	88 24       	Null = rMAC - 2;
+8420073c:	08 68       	if LT jump (m) Lc_hcgr_create_8;
+
+8420073e <Lc_hcgr_create_7>:
+8420073e:	55 f1 02 f0 	r0 = Null + 357564563;
+84200742:	93 40 
+84200744:	53 08       	r1 = r8 + Null;
+84200746:	ff fd 04 f0 	call (m) 0x10c2;
+8420074a:	3d eb 
+
+8420074c <Lc_hcgr_create_8>:
+
+    L5_DBG_MSG2("OPID: %x, HCGR Create: p_ext_data at %p", ext_op_id, p_ext_data);
+
+    if (!base_op_create_lite(op_data, resp_data))
+    {
+        return FALSE;
+8420074c:	02 00       	r0 = Null + Null;
+8420074e:	61 6e       	jump (m) Lc_hcgr_create_22;
+
+84200750 <Lc_hcgr_create_9>:
+84200750:	b1 f0 00 e8 	rMAC = M[r9 + Null];
+84200754:	48 8e       	M[rMAC + 4] = Null;
+    }
+
+    /* Operator creation was succesful, change respone to STATUS_OK*/
+    base_op_change_response_status(resp_data, STATUS_OK);
+
+    p_ext_data->hcgr.ext_op_id = ext_op_id;
+84200756:	7a f0 4f 8e 	M[r5 + 316] = r8;
+    L4_DBG_MSG1("OPID: %x, HCGR: Created", ext_op_id);
+8420075a:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420075e:	08 25       	Null = rMAC - 4;
+84200760:	08 68       	if LT jump (m) Lc_hcgr_create_11;
+
+84200762 <Lc_hcgr_create_10>:
+84200762:	55 f1 02 f0 	r0 = Null + 357564710;
+84200766:	26 41 
+84200768:	53 08       	r1 = r8 + Null;
+8420076a:	ff fd 04 f0 	call (m) 0x10c2;
+8420076e:	39 ea 
+
+84200770 <Lc_hcgr_create_11>:
+    if (!cpsInitParameters(p_param_def,
+                          p_default_params,
+                          p_cap_params,
+                          sizeof(HCGR_PARAMETERS)))
+    {
+       return TRUE;
+84200770:	42 20       	r0 = Null + 1;
+84200772:	4f 6e       	jump (m) Lc_hcgr_create_22;
+
+84200774 <Lc_hcgr_create_12>:
+    {
+        hcgr_proc_destroy(p_ext_data);
+        L2_DBG_MSG1("OPID: %x, HCGR failed to allocate twiddle factors", ext_op_id);
+        return FALSE;
+    }
+    p_ext_data->twiddle_registered = TRUE;
+84200774:	46 20       	r4 = Null + 1;
+84200776:	76 f0 a1 8a 	MB[r5 + 161] = r4;
+
+    /* Register scratch memory for AFB & allocate object */
+    if (!scratch_register())
+8420077a:	ff fd 0b f0 	call (m) 0x1f5a;
+8420077e:	21 ef 
+84200780:	10 04       	Null = r0 - Null;
+84200782:	10 62       	if NE jump (m) Lc_hcgr_create_15;
+
+84200784 <Lc_hcgr_create_13>:
+    {
+        hcgr_proc_destroy(p_ext_data);
+84200784:	3a 00       	r0 = r5 + Null;
+84200786:	03 f0 25 e4 	call (m) Lc_hcgr_proc_destroy_1;
+        L2_DBG_MSG1("OPID: %x, HCGR failed to register scratch memory", ext_op_id);
+8420078a:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420078e:	88 24       	Null = rMAC - 2;
+84200790:	de 69       	if LT jump (m) Lc_hcgr_create_8;
+
+84200792 <Lc_hcgr_create_14>:
+84200792:	55 f1 02 f0 	r0 = Null + 357564613;
+84200796:	c5 40 
+84200798:	53 08       	r1 = r8 + Null;
+8420079a:	ff fd 04 f0 	call (m) 0x10c2;
+8420079e:	29 e9 
+842007a0:	d6 6f       	jump (m) Lc_hcgr_create_8;
+
+842007a2 <Lc_hcgr_create_15>:
+        return FALSE;
+    }
+
+    p_ext_data->scratch_registered = TRUE;
+842007a2:	76 f0 a0 8a 	MB[r5 + 160] = r4;
+
+    if (!scratch_reserve(AANC_AFB_SCRATCH_MEMORY, MALLOC_PREFERENCE_DM1) ||
+        !scratch_reserve(AANC_AFB_SCRATCH_MEMORY, MALLOC_PREFERENCE_DM2) ||
+        !scratch_reserve(AANC_AFB_SCRATCH_MEMORY, MALLOC_PREFERENCE_DM2))
+842007a6:	33 00       	r1 = r4 + Null;
+842007a8:	02 f0 00 42 	r0 = Null + 512;
+842007ac:	ff fd 0c f0 	call (m) 0x204c;
+842007b0:	21 e5 
+842007b2:	10 04       	Null = r0 - Null;
+842007b4:	11 60       	if EQ jump (m) Lc_hcgr_create_18;
+
+842007b6 <Lc_hcgr_create_16>:
+842007b6:	83 20       	r1 = Null + 2;
+842007b8:	02 f0 00 42 	r0 = Null + 512;
+842007bc:	ff fd 0c f0 	call (m) 0x204c;
+842007c0:	31 e4 
+842007c2:	10 04       	Null = r0 - Null;
+842007c4:	09 60       	if EQ jump (m) Lc_hcgr_create_18;
+
+842007c6 <Lc_hcgr_create_17>:
+842007c6:	83 20       	r1 = Null + 2;
+842007c8:	02 f0 00 42 	r0 = Null + 512;
+842007cc:	ff fd 0c f0 	call (m) 0x204c;
+842007d0:	21 e4 
+842007d2:	10 04       	Null = r0 - Null;
+842007d4:	10 62       	if NE jump (m) Lc_hcgr_create_20;
+
+842007d6 <Lc_hcgr_create_18>:
+    {
+        hcgr_proc_destroy(p_ext_data);
+842007d6:	3a 00       	r0 = r5 + Null;
+842007d8:	03 f0 33 e1 	call (m) Lc_hcgr_proc_destroy_1;
+        L2_DBG_MSG1("OPID: %x, HCGR failed to reserve scratch memory", ext_op_id);
+842007dc:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842007e0:	88 24       	Null = rMAC - 2;
+842007e2:	b5 69       	if LT jump (m) Lc_hcgr_create_8;
+
+842007e4 <Lc_hcgr_create_19>:
+842007e4:	55 f1 02 f0 	r0 = Null + 357564662;
+842007e8:	f6 40 
+842007ea:	53 08       	r1 = r8 + Null;
+842007ec:	ff fd 04 f0 	call (m) 0x10c2;
+842007f0:	37 e6 
+842007f2:	ad 6f       	jump (m) Lc_hcgr_create_8;
+
+842007f4 <Lc_hcgr_create_20>:
+        return FALSE;
+    }
+
+    if(!hcgr_proc_create(&p_ext_data->hcgr, &p_ext_data->hcgr_cap_params, &p_ext_data->f_handle))
+842007f4:	72 f0 a4 20 	r0 = r5 + 164;
+842007f8:	24 f3 f8 3b 	r2 = r0 + -8;
+842007fc:	23 f3 64 3b 	r1 = r0 + -156;
+84200800:	04 f0 33 e3 	call (m) $_hcgr_proc_create;
+84200804:	10 04       	Null = r0 - Null;
+84200806:	a5 63       	if NE jump (m) Lc_hcgr_create_9;
+
+84200808 <Lc_hcgr_create_21>:
+    {
+        hcgr_proc_destroy(p_ext_data);
+84200808:	3a 00       	r0 = r5 + Null;
+8420080a:	03 f0 21 e0 	call (m) Lc_hcgr_proc_destroy_1;
+8420080e:	9f 6f       	jump (m) Lc_hcgr_create_8;
+
+84200810 <Lc_hcgr_create_22>:
+    base_op_change_response_status(resp_data, STATUS_OK);
+
+    p_ext_data->hcgr.ext_op_id = ext_op_id;
+    L4_DBG_MSG1("OPID: %x, HCGR: Created", ext_op_id);
+    return TRUE;
+}
+84200810:	f6 48       	popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200812:	d8 4c       	rts;
+
+84200814 <$_hcgr_destroy>:
+
+bool hcgr_destroy(OPERATOR_DATA *op_data, void *message_data,
+                  unsigned *response_id, void **resp_data)
+{
+84200814:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200816:	17 00       	r5 = r0 + Null;
+84200818:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data HCGR_OP_DATA.
+ */
+static inline HCGR_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (HCGR_OP_DATA *) base_op_get_instance_data(op_data);
+8420081a:	ff fd 00 f0 	call (m) 0x8ea;
+8420081e:	31 e6 
+84200820:	16 00       	r4 = r0 + Null;
+                  unsigned *response_id, void **resp_data)
+{
+    HCGR_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* call base_op destroy that creates and fills response message, too */
+    if (!base_op_destroy_lite(op_data, resp_data))
+84200822:	43 08       	r1 = r6 + Null;
+84200824:	3a 00       	r0 = r5 + Null;
+84200826:	ff fd 00 f0 	call (m) 0x834;
+8420082a:	2f e0 
+8420082c:	10 04       	Null = r0 - Null;
+8420082e:	03 62       	if NE jump (m) Lc_hcgr_destroy_3;
+
+84200830 <Lc_hcgr_destroy_2>:
+    {
+        return FALSE;
+84200830:	02 00       	r0 = Null + Null;
+84200832:	2b 6e       	jump (m) Lc_hcgr_destroy_10;
+
+84200834 <Lc_hcgr_destroy_3>:
+    }
+
+    /* TODO: patch functions */
+
+    if (p_ext_data != NULL)
+84200834:	30 04       	Null = r4 - Null;
+84200836:	16 60       	if EQ jump (m) Lc_hcgr_destroy_7;
+
+84200838 <Lc_hcgr_destroy_4>:
+    {
+        hcgr_proc_destroy(p_ext_data);
+84200838:	32 00       	r0 = r4 + Null;
+8420083a:	02 f0 31 ee 	call (m) Lc_hcgr_proc_destroy_1;
+        L4_DBG_MSG1("OPID: %x, HCGR: Cleanup complete.", INT_TO_EXT_OPID(op_data->id));
+8420083e:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200842:	08 25       	Null = rMAC - 4;
+84200844:	0c 68       	if LT jump (m) Lc_hcgr_destroy_6;
+
+84200846 <Lc_hcgr_destroy_5>:
+84200846:	7a 88       	r0 = M[r5 + 4];
+84200848:	52 55       	r0 = r0 LSHIFT 6;
+8420084a:	40 f0 00 f2 	r1 = r0 OR 0x4000;
+8420084e:	53 d8 
+84200850:	55 f1 02 f0 	r0 = Null + 357564734;
+84200854:	3e 41 
+84200856:	ff fd 04 f0 	call (m) 0x10c2;
+8420085a:	2d e3 
+
+8420085c <Lc_hcgr_destroy_6>:
+
+        hcgr_release_shared_gains(p_ext_data);
+8420085c:	32 00       	r0 = r4 + Null;
+8420085e:	03 f0 2d e0 	call (m) Lc_hcgr_release_shared_gains_1;
+
+84200862 <Lc_hcgr_destroy_7>:
+    }
+
+    /* Release class data */
+    aud_cur_destroy(op_data);
+84200862:	3a 00       	r0 = r5 + Null;
+84200864:	05 f0 29 ec 	call (m) $_aud_cur_destroy;
+
+    L4_DBG_MSG1("OPID: %x, HCGR: Destroyed", INT_TO_EXT_OPID(op_data->id));
+84200868:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420086c:	08 25       	Null = rMAC - 4;
+8420086e:	0c 68       	if LT jump (m) Lc_hcgr_destroy_9;
+
+84200870 <Lc_hcgr_destroy_8>:
+84200870:	7a 88       	r0 = M[r5 + 4];
+84200872:	52 55       	r0 = r0 LSHIFT 6;
+84200874:	40 f0 00 f2 	r1 = r0 OR 0x4000;
+84200878:	53 d8 
+8420087a:	55 f1 02 f0 	r0 = Null + 357564768;
+8420087e:	60 41 
+84200880:	ff fd 04 f0 	call (m) 0x10c2;
+84200884:	23 e2 
+
+84200886 <Lc_hcgr_destroy_9>:
+    return TRUE;
+84200886:	42 20       	r0 = Null + 1;
+
+84200888 <Lc_hcgr_destroy_10>:
+}
+84200888:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+8420088a:	d8 4c       	rts;
+
+8420088c <$_hcgr_opmsg_set_control>:
+*/
+bool hcgr_opmsg_set_control(OPERATOR_DATA *op_data,
+                            void *message_data,
+                            unsigned *resp_length,
+                            OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+8420088c:	f5 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>, SP = SP + 0x10;
+8420088e:	18 09       	r6 = r1 + Null;
+84200890:	27 00       	r5 = r2 + Null;
+84200892:	2a 09       	r8 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data HCGR_OP_DATA.
+ */
+static inline HCGR_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (HCGR_OP_DATA *) base_op_get_instance_data(op_data);
+84200894:	ff fd 00 f0 	call (m) 0x8ea;
+84200898:	37 e2 
+8420089a:	16 00       	r4 = r0 + Null;
+    HCGR_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    unsigned i;
+    unsigned num_controls;
+
+    OPMSG_RESULT_STATES result = OPMSG_RESULT_STATES_NORMAL_STATE;
+8420089c:	01 09       	r7 = Null + Null;
+
+    if (!cps_control_setup(message_data, resp_length, resp_data, &num_controls))
+8420089e:	c5 11       	r3 = FP + 28;
+842008a0:	54 08       	r2 = r8 + Null;
+842008a2:	3b 00       	r1 = r5 + Null;
+842008a4:	42 08       	r0 = r6 + Null;
+842008a6:	ff fd 02 f0 	call (m) 0xe9e;
+842008aa:	39 ef 
+842008ac:	10 04       	Null = r0 - Null;
+842008ae:	03 62       	if NE jump (m) Lc_hcgr_opmsg_set_control_3;
+
+842008b0 <Lc_hcgr_opmsg_set_control_2>:
+    {
+       return FALSE;
+842008b0:	02 00       	r0 = Null + Null;
+842008b2:	49 6e       	jump (m) Lc_hcgr_opmsg_set_control_19;
+
+842008b4 <Lc_hcgr_opmsg_set_control_3>:
+    }
+
+    /* Iterate through control messages looking for mode override messages */
+    for (i = 0; i < num_controls; i++)
+842008b4:	07 00       	r5 = Null + Null;
+842008b6:	08 6e       	jump (m) Lc_hcgr_opmsg_set_control_6;
+
+842008b8 <Lc_hcgr_opmsg_set_control_4>:
+                {
+                    p_ext_data->ovr_control |= HCGR_CONTROL_MODE_OVERRIDE;
+                }
+                else
+                {
+                    p_ext_data->ovr_control &= HCGR_OVERRIDE_MODE_MASK;
+842008b8:	61 f0 22 88 	rMAC = M[r4 + 136];
+842008bc:	11 f6 ff 1f 	rMAC = rMAC AND 0xdfff;
+842008c0:	61 f0 22 8e 	M[r4 + 136] = rMAC;
+
+842008c4 <Lc_hcgr_opmsg_set_control_5>:
+    {
+       return FALSE;
+    }
+
+    /* Iterate through control messages looking for mode override messages */
+    for (i = 0; i < num_controls; i++)
+842008c4:	7f 20       	r5 = r5 + 1;
+
+842008c6 <Lc_hcgr_opmsg_set_control_6>:
+842008c6:	39 d8       	rMAC = M[FP + 28];
+842008c8:	78 04       	Null = r5 - rMAC;
+842008ca:	02 f0 d3 e0 	if C jump (m) Lc_hcgr_opmsg_set_control_15;
+
+842008ce <Lc_hcgr_opmsg_set_control_7>:
+    {
+        unsigned ctrl_value, ctrl_id;
+        CPS_CONTROL_SOURCE  ctrl_src;
+
+        ctrl_id = cps_control_get(message_data, i, &ctrl_value, &ctrl_src);
+842008ce:	45 12       	r3 = FP + 36;
+842008d0:	04 12       	r2 = FP + 32;
+842008d2:	3b 00       	r1 = r5 + Null;
+842008d4:	42 08       	r0 = r6 + Null;
+842008d6:	ff fd 03 f0 	call (m) 0xee2;
+842008da:	2d e0 
+
+        /* Mode override */
+        if (ctrl_id == OPMSG_CONTROL_MODE_ID)
+842008dc:	50 24       	Null = r0 - 1;
+842008de:	1e 62       	if NE jump (m) Lc_hcgr_opmsg_set_control_14;
+
+842008e0 <Lc_hcgr_opmsg_set_control_8>:
+        {
+            /* Check for valid mode */
+            ctrl_value &= HCGR_SYSMODE_MASK;
+842008e0:	41 d8       	rMAC = M[FP + 32];
+842008e2:	89 c0       	rMAC = rMAC AND 0x3;
+842008e4:	41 de       	M[FP + 32] = rMAC;
+            if (ctrl_value >= HCGR_SYSMODE_MAX_MODES)
+842008e6:	88 24       	Null = rMAC - 2;
+842008e8:	03 64       	if NC jump (m) Lc_hcgr_opmsg_set_control_10;
+
+842008ea <Lc_hcgr_opmsg_set_control_9>:
+            {
+                result = OPMSG_RESULT_STATES_INVALID_CONTROL_VALUE;
+842008ea:	29 71       	r7 = Null + 5;
+                break;
+842008ec:	18 6e       	jump (m) Lc_hcgr_opmsg_set_control_15;
+
+842008ee <Lc_hcgr_opmsg_set_control_10>:
+            }
+
+            /* Update current mode */
+            p_ext_data->cur_mode = ctrl_value;
+842008ee:	61 f0 21 8e 	M[r4 + 132] = rMAC;
+
+            /* Determine control mode source and set override flags for mode */
+            if (ctrl_src == CPS_SOURCE_HOST)
+842008f2:	21 d1       	rMAC = MBS[FP + 36];
+842008f4:	05 62       	if NE jump (m) Lc_hcgr_opmsg_set_control_12;
+
+842008f6 <Lc_hcgr_opmsg_set_control_11>:
+            {
+                p_ext_data->host_mode = ctrl_value;
+842008f6:	41 d8       	rMAC = M[FP + 32];
+842008f8:	61 f0 23 8e 	M[r4 + 140] = rMAC;
+842008fc:	e4 6f       	jump (m) Lc_hcgr_opmsg_set_control_5;
+
+842008fe <Lc_hcgr_opmsg_set_control_12>:
+            }
+            else
+            {
+                p_ext_data->qact_mode = ctrl_value;
+842008fe:	41 d8       	rMAC = M[FP + 32];
+84200900:	61 f0 24 8e 	M[r4 + 144] = rMAC;
+                /* Set or clear the QACT override flag.
+                * &= is used to preserve the state of the
+                * override word.
+                */
+                if (ctrl_src == CPS_SOURCE_OBPM_ENABLE)
+84200904:	21 d1       	rMAC = MBS[FP + 36];
+84200906:	88 24       	Null = rMAC - 2;
+84200908:	d8 63       	if NE jump (m) Lc_hcgr_opmsg_set_control_4;
+
+8420090a <Lc_hcgr_opmsg_set_control_13>:
+                {
+                    p_ext_data->ovr_control |= HCGR_CONTROL_MODE_OVERRIDE;
+8420090a:	61 f0 22 88 	rMAC = M[r4 + 136];
+8420090e:	20 f0 00 f1 	rMAC = rMAC OR 0x2000;
+84200912:	51 d8 
+84200914:	61 f0 22 8e 	M[r4 + 136] = rMAC;
+84200918:	d6 6f       	jump (m) Lc_hcgr_opmsg_set_control_5;
+
+8420091a <Lc_hcgr_opmsg_set_control_14>:
+            }
+
+        }
+        else
+        {
+            result = OPMSG_RESULT_STATES_UNSUPPORTED_CONTROL;
+8420091a:	21 71       	r7 = Null + 4;
+
+8420091c <Lc_hcgr_opmsg_set_control_15>:
+            break;
+        }
+    }
+
+    /* Set current operating mode based on override */
+    if ((p_ext_data->ovr_control & HCGR_CONTROL_MODE_OVERRIDE) != 0)
+8420091c:	61 f0 22 88 	rMAC = M[r4 + 136];
+84200920:	11 f1 00 00 	rMAC = rMAC AND 0x2000;
+84200924:	06 60       	if EQ jump (m) Lc_hcgr_opmsg_set_control_17;
+
+84200926 <Lc_hcgr_opmsg_set_control_16>:
+    {
+        p_ext_data->cur_mode = p_ext_data->qact_mode;
+84200926:	61 f0 24 88 	rMAC = M[r4 + 144];
+8420092a:	61 f0 21 8e 	M[r4 + 132] = rMAC;
+8420092e:	05 6e       	jump (m) Lc_hcgr_opmsg_set_control_18;
+
+84200930 <Lc_hcgr_opmsg_set_control_17>:
+    }
+    else
+    {
+        p_ext_data->cur_mode = p_ext_data->host_mode;
+84200930:	61 f0 23 88 	rMAC = M[r4 + 140];
+84200934:	61 f0 21 8e 	M[r4 + 132] = rMAC;
+
+84200938 <Lc_hcgr_opmsg_set_control_18>:
+    }
+
+    cps_response_set_result(resp_data, result);
+84200938:	4b 08       	r1 = r7 + Null;
+8420093a:	52 08       	r0 = r8 + Null;
+8420093c:	ff fd 02 f0 	call (m) 0xf30;
+84200940:	35 ef 
+
+    return TRUE;
+84200942:	42 20       	r0 = Null + 1;
+
+84200944 <Lc_hcgr_opmsg_set_control_19>:
+}
+84200944:	f5 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200946:	d8 4c       	rts;
+
+84200948 <$_hcgr_opmsg_get_status>:
+
+bool hcgr_opmsg_get_status(OPERATOR_DATA *op_data,
+                           void *message_data,
+                           unsigned *resp_length,
+                           OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200948:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+8420094a:	55 4c       	SP = SP + 84;
+8420094c:	1a 09       	r8 = r1 + Null;
+8420094e:	21 09       	r7 = r2 + Null;
+84200950:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data HCGR_OP_DATA.
+ */
+static inline HCGR_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (HCGR_OP_DATA *) base_op_get_instance_data(op_data);
+84200952:	ef fd ff ff 	call (m) 0x8ea;
+84200956:	39 ec 
+84200958:	17 00       	r5 = r0 + Null;
+{
+    HCGR_OP_DATA *p_ext_data = get_instance_data(op_data);
+    /* TODO: patch functions */
+    int i;
+    int *p_blk_exp;
+    hcgr_t * p_hcgr = &p_ext_data->hcgr;          /* Pointer to HCGR */
+8420095a:	76 f0 a4 20 	r4 = r5 + 164;
+
+    /* Build the response */
+    unsigned *resp = NULL;
+8420095e:	38 de       	M[FP + 28] = Null;
+    if (!common_obpm_status_helper(message_data, resp_length, resp_data,
+                                  sizeof(HCGR_STATISTICS), &resp))
+84200960:	c1 11       	rMAC = FP + 28;
+84200962:	09 1c       	pushm <rMAC>;
+84200964:	05 32       	r3 = Null + 40;
+84200966:	44 08       	r2 = r6 + Null;
+84200968:	4b 08       	r1 = r7 + Null;
+8420096a:	52 08       	r0 = r8 + Null;
+8420096c:	ff fd 02 f0 	call (m) 0xf46;
+84200970:	3b ee 
+84200972:	7f 4c       	SP = SP + -4;
+84200974:	10 04       	Null = r0 - Null;
+84200976:	03 62       	if NE jump (m) Lc_hcgr_opmsg_get_status_3;
+
+84200978 <Lc_hcgr_opmsg_get_status_2>:
+    {
+         return FALSE;
+84200978:	02 00       	r0 = Null + Null;
+8420097a:	55 6e       	jump (m) Lc_hcgr_opmsg_get_status_13;
+
+8420097c <Lc_hcgr_opmsg_get_status_3>:
+    }
+#ifdef USE_AANC_LICENSING
+    HC100_DMX *p_hc = p_hcgr->p_hc;              /* Pointer to Howling control data */
+8420097c:	f1 88       	rMAC = M[r4 + 12];
+    if ((resp != 0) && (p_hc->licensed == TRUE))
+8420097e:	3a d8       	r0 = M[FP + 28];
+84200980:	51 60       	if EQ jump (m) Lc_hcgr_opmsg_get_status_12;
+
+84200982 <Lc_hcgr_opmsg_get_status_4>:
+84200982:	49 99       	rMAC = M[rMAC + 52];
+84200984:	48 24       	Null = rMAC - 1;
+84200986:	37 62       	if NE jump (m) Lc_hcgr_opmsg_get_status_10;
+
+84200988 <Lc_hcgr_opmsg_get_status_5>:
+#endif
+    {
+        HCGR_STATISTICS stats;
+        HCGR_STATISTICS *pstats = &stats;
+        ParamType *pparam = (ParamType*)pstats;
+        pstats->OFFSET_CUR_MODE             = p_ext_data->cur_mode;
+84200988:	71 f0 21 88 	rMAC = M[r5 + 132];
+8420098c:	41 de       	M[FP + 32] = rMAC;
+        pstats->OFFSET_OVR_CONTROL          = p_ext_data->ovr_control;
+8420098e:	71 f0 22 88 	rMAC = M[r5 + 136];
+84200992:	49 de       	M[FP + 36] = rMAC;
+        pstats->OFFSET_FLAGS                = p_ext_data->flags;
+84200994:	71 f0 25 88 	rMAC = M[r5 + 148];
+84200998:	51 de       	M[FP + 40] = rMAC;
+        pstats->OFFSET_FB_HW_TARGET_GAIN    = p_hcgr->fb_hw_target_gain;
+8420099a:	71 88       	rMAC = M[r4 + 4];
+8420099c:	61 de       	M[FP + 48] = rMAC;
+        pstats->OFFSET_FF_HW_TARGET_GAIN    = p_hcgr->ff_hw_target_gain;
+8420099e:	31 e8       	rMAC = M[r4 + Null];
+842009a0:	59 de       	M[FP + 44] = rMAC;
+        pstats->OFFSET_HCGR_FB_GAIN         = p_hcgr->p_fb_fine_gain->gain_current;
+842009a2:	f1 99       	rMAC = M[r4 + 60];
+842009a4:	09 89       	rMAC = M[rMAC + 16];
+842009a6:	89 de       	M[FP + 68] = rMAC;
+        pstats->OFFSET_HCGR_FF_GAIN         = p_hcgr->p_ff_fine_gain->gain_current;
+842009a8:	b1 99       	rMAC = M[r4 + 56];
+842009aa:	09 89       	rMAC = M[rMAC + 16];
+842009ac:	81 de       	M[FP + 64] = rMAC;
+        p_blk_exp = p_hcgr->p_afb->afb.freq_output_object_ptr->exp_ptr;
+842009ae:	b1 88       	rMAC = M[r4 + 8];
+842009b0:	49 89       	rMAC = M[rMAC + 20];
+842009b2:	89 88       	rMAC = M[rMAC + 8];
+        pstats->OFFSET_BLOCK_LEVEL          = *p_blk_exp * HCGR_DB_PER_LVL;
+842009b4:	09 e8       	rMAC = M[rMAC + Null];
+842009b6:	fd f1 91 c9 	rMAC = rMAC * -6 (int);
+842009ba:	69 de       	M[FP + 52] = rMAC;
+        if (p_hcgr->latch_bexp >= 0)
+842009bc:	f1 a9       	rMAC = M[r4 + 92];
+842009be:	04 f0 95 e0 	if NEG jump (m) Lc_hcgr_opmsg_get_status_7;
+
+842009c2 <Lc_hcgr_opmsg_get_status_6>:
+        {
+            pstats->OFFSET_HOWL_BLOCK_LEVEL = \
+                p_hcgr->latch_bexp * HCGR_DB_PER_LVL;
+842009c2:	fd f1 91 c9 	rMAC = rMAC * -6 (int);
+842009c6:	71 de       	M[FP + 56] = rMAC;
+            pstats->OFFSET_HOWL_FREQ        = \
+                p_hcgr->latch_max_bin * HCGR_FREQ_PER_BIN;
+842009c8:	b1 a9       	rMAC = M[r4 + 88];
+842009ca:	3e f1 91 d9 	rMAC = rMAC * 125 (int);
+842009ce:	79 de       	M[FP + 60] = rMAC;
+842009d0:	04 6e       	jump (m) Lc_hcgr_opmsg_get_status_8;
+
+842009d2 <Lc_hcgr_opmsg_get_status_7>:
+        }
+        else
+        {
+            pstats->OFFSET_HOWL_BLOCK_LEVEL = HCGR_CLEAR_BIN;
+842009d2:	70 de       	M[FP + 56] = Null;
+            pstats->OFFSET_HOWL_FREQ        = HCGR_CLEAR_FREQ;
+842009d4:	41 24       	rMAC = Null - 1;
+842009d6:	79 de       	M[FP + 60] = rMAC;
+
+842009d8 <Lc_hcgr_opmsg_get_status_8>:
+        }
+
+        for (i = 0; i < HCGR_N_STAT/2; i++)
+842009d8:	06 00       	r4 = Null + Null;
+842009da:	07 12       	r5 = FP + 32;
+
+842009dc <Lc_hcgr_opmsg_get_status_9>:
+        {
+            resp = cpsPack2Words(pparam[2*i], pparam[2*i+1], resp);
+842009dc:	3c d8       	r2 = M[FP + 28];
+842009de:	7b 88       	r1 = M[r5 + 4];
+842009e0:	3a e8       	r0 = M[r5 + Null];
+842009e2:	ff fd 68 f2 	call (m) 0x4da2c;
+842009e6:	2b e2 
+842009e8:	3a de       	M[FP + 28] = r0;
+        {
+            pstats->OFFSET_HOWL_BLOCK_LEVEL = HCGR_CLEAR_BIN;
+            pstats->OFFSET_HOWL_FREQ        = HCGR_CLEAR_FREQ;
+        }
+
+        for (i = 0; i < HCGR_N_STAT/2; i++)
+842009ea:	76 20       	r4 = r4 + 1;
+842009ec:	3f 22       	r5 = r5 + 8;
+842009ee:	70 25       	Null = r4 - 5;
+842009f0:	f6 69       	if LT jump (m) Lc_hcgr_opmsg_get_status_9;
+
+842009f2 <Lc__ite_17>:
+842009f2:	18 6e       	jump (m) Lc_hcgr_opmsg_get_status_12;
+
+842009f4 <Lc_hcgr_opmsg_get_status_10>:
+   else if(resp != 0)
+   {
+        HCGR_STATISTICS stats;
+        HCGR_STATISTICS *pstats = &stats;
+        ParamType *pparam = (ParamType*)pstats;
+        pstats->OFFSET_CUR_MODE             = 0;
+842009f4:	90 de       	M[FP + 72] = Null;
+        pstats->OFFSET_OVR_CONTROL          = 0;
+842009f6:	98 de       	M[FP + 76] = Null;
+        pstats->OFFSET_FLAGS                = 0;
+842009f8:	a0 de       	M[FP + 80] = Null;
+        pstats->OFFSET_FB_HW_TARGET_GAIN    = 0;
+842009fa:	b0 de       	M[FP + 88] = Null;
+        pstats->OFFSET_FF_HW_TARGET_GAIN    = 0;
+842009fc:	a8 de       	M[FP + 84] = Null;
+        pstats->OFFSET_HCGR_FB_GAIN         = 0;
+842009fe:	d8 de       	M[FP + 108] = Null;
+        pstats->OFFSET_HCGR_FF_GAIN         = 0;
+84200a00:	d0 de       	M[FP + 104] = Null;
+        pstats->OFFSET_BLOCK_LEVEL          = 0;
+84200a02:	b8 de       	M[FP + 92] = Null;
+        pstats->OFFSET_HOWL_BLOCK_LEVEL     = 0;
+84200a04:	c0 de       	M[FP + 96] = Null;
+        pstats->OFFSET_HOWL_FREQ            = 0;
+84200a06:	c8 de       	M[FP + 100] = Null;
+        for (i = 0; i < HCGR_N_STAT/2; i++)
+84200a08:	06 00       	r4 = Null + Null;
+84200a0a:	87 14       	r5 = FP + 72;
+
+84200a0c <Lc_hcgr_opmsg_get_status_11>:
+        {
+            resp = cpsPack2Words(pparam[2*i], pparam[2*i+1], resp);
+84200a0c:	3c d8       	r2 = M[FP + 28];
+84200a0e:	7b 88       	r1 = M[r5 + 4];
+84200a10:	3a e8       	r0 = M[r5 + Null];
+84200a12:	ff fd 68 f2 	call (m) 0x4da2c;
+84200a16:	3b e0 
+84200a18:	3a de       	M[FP + 28] = r0;
+        pstats->OFFSET_HCGR_FB_GAIN         = 0;
+        pstats->OFFSET_HCGR_FF_GAIN         = 0;
+        pstats->OFFSET_BLOCK_LEVEL          = 0;
+        pstats->OFFSET_HOWL_BLOCK_LEVEL     = 0;
+        pstats->OFFSET_HOWL_FREQ            = 0;
+        for (i = 0; i < HCGR_N_STAT/2; i++)
+84200a1a:	76 20       	r4 = r4 + 1;
+84200a1c:	3f 22       	r5 = r5 + 8;
+84200a1e:	70 25       	Null = r4 - 5;
+84200a20:	f6 69       	if LT jump (m) Lc_hcgr_opmsg_get_status_11;
+
+84200a22 <Lc_hcgr_opmsg_get_status_12>:
+            cpsPack1Word(pparam[HCGR_N_STAT-1], resp);
+        }
+   }   
+#endif
+
+   return TRUE;
+84200a22:	42 20       	r0 = Null + 1;
+
+84200a24 <Lc_hcgr_opmsg_get_status_13>:
+}
+84200a24:	6b 4c       	SP = SP + -84;
+84200a26:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200a28:	d8 4c       	rts;
+
+84200a2a <$_hcgr_opmsg_link_ahm>:
+
+bool hcgr_opmsg_link_ahm(OPERATOR_DATA *op_data,
+                         void *message_data,
+                         unsigned *resp_length,
+                         OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200a2a:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200a2c:	10 09       	r6 = r0 + Null;
+84200a2e:	1f 00       	r5 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data HCGR_OP_DATA.
+ */
+static inline HCGR_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (HCGR_OP_DATA *) base_op_get_instance_data(op_data);
+84200a30:	ef fd ff ff 	call (m) 0x8ea;
+84200a34:	3b e5 
+84200a36:	16 00       	r4 = r0 + Null;
+    bool link;
+    AHM_ANC_FILTER filter_path;
+
+    link_data = OPMSG_FIELD_GET(message_data,
+                                OPMSG_COMMON_MSG_LINK_ANC_HW_MANAGER,
+                                LINK);
+84200a38:	f9 88       	rMAC = M[r5 + 12];
+    ahm_op_id = OPMSG_FIELD_GET(message_data,
+                                OPMSG_COMMON_MSG_LINK_ANC_HW_MANAGER,
+                                AHM_OP_ID);
+84200a3a:	3a 89       	r0 = M[r5 + 16];
+84200a3c:	92 c6       	r0 = r0 AND 0xffff;
+
+    p_ext_data->ahm_op_id = ahm_op_id;
+84200a3e:	62 f0 a0 8c 	MH[r4 + 320] = r0;
+
+    link = (bool)link_data;
+
+    if (link)
+84200a42:	89 c6       	rMAC = rMAC AND 0xffff;
+84200a44:	4f 60       	if EQ jump (m) Lc_hcgr_opmsg_link_ahm_11;
+
+84200a46 <Lc_hcgr_opmsg_link_ahm_2>:
+    {
+        if (p_ext_data->hcgr.p_fb_fine_gain != NULL)
+84200a46:	61 f0 38 88 	rMAC = M[r4 + 224];
+84200a4a:	13 60       	if EQ jump (m) Lc_hcgr_opmsg_link_ahm_6;
+
+84200a4c <Lc_hcgr_opmsg_link_ahm_3>:
+        {
+            L2_DBG_MSG1("OPID: %x, HCGR: link failed: FB path already linked", INT_TO_EXT_OPID(op_data->id));
+84200a4c:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200a50:	88 24       	Null = rMAC - 2;
+84200a52:	0d 68       	if LT jump (m) Lc_hcgr_opmsg_link_ahm_5;
+
+84200a54 <Lc_hcgr_opmsg_link_ahm_4>:
+84200a54:	82 f0 01 88 	r0 = M[r6 + 4];
+84200a58:	52 55       	r0 = r0 LSHIFT 6;
+84200a5a:	40 f0 00 f2 	r1 = r0 OR 0x4000;
+84200a5e:	53 d8 
+84200a60:	55 f1 02 f0 	r0 = Null + 357564794;
+84200a64:	7a 41 
+84200a66:	ff fd 03 f0 	call (m) 0x10c2;
+84200a6a:	3d e2 
+
+84200a6c <Lc_hcgr_opmsg_link_ahm_5>:
+            return FALSE;
+84200a6c:	02 00       	r0 = Null + Null;
+84200a6e:	3e 6e       	jump (m) Lc_hcgr_opmsg_link_ahm_13;
+
+84200a70 <Lc_hcgr_opmsg_link_ahm_6>:
+        }
+
+        /* It is assumed that UCID will be set before linking AHM gains */
+        hcgr_init_filter_path(&p_ext_data->hcgr, &p_ext_data->hcgr_cap_params);
+84200a70:	62 f0 a4 20 	r0 = r4 + 164;
+84200a74:	23 f3 64 3b 	r1 = r0 + -156;
+84200a78:	02 f0 2b e9 	call (m) $_hcgr_init_filter_path;
+
+        filter_path = p_ext_data->hcgr.hcgr_filter_path;
+84200a7c:	67 f0 f8 80 	r5 = MBS[r4 + 248];
+        aud_cur_get_shared_fine_gain((void*)p_ext_data,
+                                     AHM_ANC_FILTER_FB_ID,
+                                     p_ext_data->ahm_op_id,
+                                     AHM_GAIN_CONTROL_TYPE_DELTA,
+                                     AHM_ANC_INSTANCE_ANC0_ID,
+                                     hcgr_opmsg_link_ahm_callback);
+84200a80:	42 f0 0e f0 	push Null + 69209779;
+84200a84:	53 eb 
+84200a86:	64 f0 a0 86 	r2 = MHU[r4 + 320];
+84200a8a:	43 20       	r1 = Null + 1;
+84200a8c:	05 00       	r3 = Null + Null;
+84200a8e:	00 f0 51 e0 	push Null + 1;
+84200a92:	32 00       	r0 = r4 + Null;
+84200a94:	07 f0 31 e3 	call (m) $_aud_cur_get_shared_fine_gain;
+84200a98:	7e 4c       	SP = SP + -8;
+        if (filter_path == AHM_ANC_FILTER_FF_AND_FB_ID)
+84200a9a:	78 25       	Null = r5 - 5;
+84200a9c:	26 62       	if NE jump (m) Lc_hcgr_opmsg_link_ahm_12;
+
+84200a9e <Lc_hcgr_opmsg_link_ahm_7>:
+        {
+            if (p_ext_data->hcgr.p_ff_fine_gain != NULL)
+84200a9e:	61 f0 37 88 	rMAC = M[r4 + 220];
+84200aa2:	12 60       	if EQ jump (m) Lc_hcgr_opmsg_link_ahm_10;
+
+84200aa4 <Lc_hcgr_opmsg_link_ahm_8>:
+            {
+                L2_DBG_MSG1("OPID: %x, HCGR: link failed: FF path already linked", INT_TO_EXT_OPID(op_data->id));
+84200aa4:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200aa8:	88 24       	Null = rMAC - 2;
+84200aaa:	e1 69       	if LT jump (m) Lc_hcgr_opmsg_link_ahm_5;
+
+84200aac <Lc_hcgr_opmsg_link_ahm_9>:
+84200aac:	82 f0 01 88 	r0 = M[r6 + 4];
+84200ab0:	52 55       	r0 = r0 LSHIFT 6;
+84200ab2:	40 f0 00 f2 	r1 = r0 OR 0x4000;
+84200ab6:	53 d8 
+84200ab8:	55 f1 02 f0 	r0 = Null + 357564846;
+84200abc:	ae 41 
+84200abe:	ff fd 03 f0 	call (m) 0x10c2;
+84200ac2:	25 e0 
+84200ac4:	d4 6f       	jump (m) Lc_hcgr_opmsg_link_ahm_5;
+
+84200ac6 <Lc_hcgr_opmsg_link_ahm_10>:
+            aud_cur_get_shared_fine_gain((void*)p_ext_data,
+                                         AHM_ANC_FILTER_FF_ID,
+                                         p_ext_data->ahm_op_id,
+                                         AHM_GAIN_CONTROL_TYPE_DELTA,
+                                         AHM_ANC_INSTANCE_ANC0_ID,
+                                         hcgr_opmsg_link_ahm_callback);
+84200ac6:	42 f0 0e f0 	push Null + 69209779;
+84200aca:	53 eb 
+84200acc:	64 f0 a0 86 	r2 = MHU[r4 + 320];
+84200ad0:	05 00       	r3 = Null + Null;
+84200ad2:	03 00       	r1 = Null + Null;
+84200ad4:	00 f0 51 e0 	push Null + 1;
+84200ad8:	32 00       	r0 = r4 + Null;
+84200ada:	07 f0 2b e1 	call (m) $_aud_cur_get_shared_fine_gain;
+84200ade:	7e 4c       	SP = SP + -8;
+84200ae0:	04 6e       	jump (m) Lc_hcgr_opmsg_link_ahm_12;
+
+84200ae2 <Lc_hcgr_opmsg_link_ahm_11>:
+        }
+    }
+    else
+    {
+        hcgr_release_shared_gains(p_ext_data);
+84200ae2:	32 00       	r0 = r4 + Null;
+84200ae4:	01 f0 27 ec 	call (m) Lc_hcgr_release_shared_gains_1;
+
+84200ae8 <Lc_hcgr_opmsg_link_ahm_12>:
+    }
+
+    return TRUE;
+84200ae8:	42 20       	r0 = Null + 1;
+
+84200aea <Lc_hcgr_opmsg_link_ahm_13>:
+}
+84200aea:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200aec:	d8 4c       	rts;
+
+84200aee <$_hcgr_opmsg_link_target_gain>:
+}
+bool hcgr_opmsg_link_target_gain(OPERATOR_DATA *op_data,
+                                 void *message_data,
+                                 unsigned *resp_length,
+                                 OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200aee:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200af0:	16 00       	r4 = r0 + Null;
+84200af2:	1f 00       	r5 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data HCGR_OP_DATA.
+ */
+static inline HCGR_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (HCGR_OP_DATA *) base_op_get_instance_data(op_data);
+84200af4:	ef fd fe ff 	call (m) 0x8ea;
+84200af8:	37 ef 
+    unsigned adrc_op_id;        /* ANC Compander operator ID */
+    uint16 is_coarse_gain;      /* Requested gain is coarse or fine gain */
+
+    adrc_op_id = OPMSG_FIELD_GET32(message_data,
+                                   OPMSG_HCGR_LINK_TARGET_GAIN_PTR,
+                                   TARGET_OP_ID);
+84200afa:	79 89       	rMAC = M[r5 + 20];
+84200afc:	8b c6       	r1 = rMAC AND 0xffff;
+84200afe:	9b 56       	r1 = r1 LSHIFT 16;
+84200b00:	39 89       	rMAC = M[r5 + 16];
+84200b02:	89 c6       	rMAC = rMAC AND 0xffff;
+84200b04:	5c 00       	r2 = r1 + rMAC;
+    is_coarse_gain = OPMSG_FIELD_GET(message_data,
+                                     OPMSG_HCGR_LINK_TARGET_GAIN_PTR,
+                                     COARSE);
+84200b06:	f9 89       	rMAC = M[r5 + 28];
+84200b08:	8d c6       	r3 = rMAC AND 0xffff;
+
+    /* Check parameter validity */
+    if((adrc_op_id == 0) ||
+       (is_coarse_gain == TRUE))
+84200b0a:	20 04       	Null = r2 - Null;
+84200b0c:	03 60       	if EQ jump (m) Lc_hcgr_opmsg_link_target_gain_3;
+
+84200b0e <Lc_hcgr_opmsg_link_target_gain_2>:
+84200b0e:	68 24       	Null = r3 - 1;
+84200b10:	12 62       	if NE jump (m) Lc_hcgr_opmsg_link_target_gain_6;
+
+84200b12 <Lc_hcgr_opmsg_link_target_gain_3>:
+    {
+        L2_DBG_MSG3("OPID: %x, HCGR: Link target gain: Invalid parameters - \
+                    adrc_op_id 0x%x, is_coarse_gain %u",
+                    INT_TO_EXT_OPID(op_data->id),
+                    adrc_op_id, is_coarse_gain);
+84200b12:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200b16:	88 24       	Null = rMAC - 2;
+84200b18:	0c 68       	if LT jump (m) Lc_hcgr_opmsg_link_target_gain_5;
+
+84200b1a <Lc_hcgr_opmsg_link_target_gain_4>:
+84200b1a:	72 88       	r0 = M[r4 + 4];
+84200b1c:	52 55       	r0 = r0 LSHIFT 6;
+84200b1e:	40 f0 00 f2 	r1 = r0 OR 0x4000;
+84200b22:	53 d8 
+84200b24:	55 f1 02 f0 	r0 = Null + 357564957;
+84200b28:	1d 42 
+84200b2a:	ff fd 02 f0 	call (m) 0x10ec;
+84200b2e:	23 ee 
+
+84200b30 <Lc_hcgr_opmsg_link_target_gain_5>:
+        return FALSE;
+84200b30:	02 00       	r0 = Null + Null;
+84200b32:	20 6e       	jump (m) Lc_hcgr_opmsg_link_target_gain_10;
+
+84200b34 <Lc_hcgr_opmsg_link_target_gain_6>:
+    }
+
+    /* Check if ANC Compander gain is already linked */
+    p_hcgr = &p_ext_data->hcgr;
+84200b34:	21 f0 a4 20 	rMAC = r0 + 164;
+    if(p_hcgr->p_adrc_gain != NULL)
+84200b38:	09 a8       	rMAC = M[rMAC + 64];
+84200b3a:	11 60       	if EQ jump (m) Lc_hcgr_opmsg_link_target_gain_9;
+
+84200b3c <Lc_hcgr_opmsg_link_target_gain_7>:
+    {
+        L2_DBG_MSG1("OPID: %x, HCGR: Link target gain failed: already linked",
+                    INT_TO_EXT_OPID(op_data->id));
+84200b3c:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200b40:	88 24       	Null = rMAC - 2;
+84200b42:	f7 69       	if LT jump (m) Lc_hcgr_opmsg_link_target_gain_5;
+
+84200b44 <Lc_hcgr_opmsg_link_target_gain_8>:
+84200b44:	72 88       	r0 = M[r4 + 4];
+84200b46:	52 55       	r0 = r0 LSHIFT 6;
+84200b48:	40 f0 00 f2 	r1 = r0 OR 0x4000;
+84200b4c:	53 d8 
+84200b4e:	55 f1 02 f0 	r0 = Null + 357565067;
+84200b52:	8b 42 
+84200b54:	ff fd 02 f0 	call (m) 0x10c2;
+84200b58:	2f eb 
+84200b5a:	eb 6f       	jump (m) Lc_hcgr_opmsg_link_target_gain_5;
+
+84200b5c <Lc_hcgr_opmsg_link_target_gain_9>:
+    aud_cur_get_shared_fine_gain((void*)p_ext_data,
+                                 0, /* unused */
+                                 adrc_op_id,
+                                 0, /* unused */
+                                 AHM_ANC_INSTANCE_ANC0_ID,
+                                 hcgr_opmsg_link_target_gain_callback);
+84200b5c:	42 f0 0f f0 	push Null + 69209961;
+84200b60:	59 e6 
+84200b62:	05 00       	r3 = Null + Null;
+84200b64:	00 f0 51 e0 	push Null + 1;
+84200b68:	03 00       	r1 = Null + Null;
+84200b6a:	06 f0 3b ec 	call (m) $_aud_cur_get_shared_fine_gain;
+84200b6e:	7e 4c       	SP = SP + -8;
+
+    return TRUE;
+84200b70:	42 20       	r0 = Null + 1;
+
+84200b72 <Lc_hcgr_opmsg_link_target_gain_10>:
+}
+84200b72:	f2 48       	popm <FP, r4, r5, rLink>;
+84200b74:	d8 4c       	rts;
+
+84200b76 <$_hcgr_process_data>:
+/****************************************************************************
+Data processing function
+*/
+void hcgr_process_data(OPERATOR_DATA *op_data, TOUCHED_TERMINALS *touched)
+{
+84200b76:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84200b78:	13 09       	r9 = r0 + Null;
+84200b7a:	43 de       	M[FP + 32] = r1;
+ *
+ * \return  Pointer to extra operator data HCGR_OP_DATA.
+ */
+static inline HCGR_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (HCGR_OP_DATA *) base_op_get_instance_data(op_data);
+84200b7c:	ef fd fe ff 	call (m) 0x8ea;
+84200b80:	2f eb 
+84200b82:	10 09       	r6 = r0 + Null;
+
+    /*********************
+     * Early exit testing
+     *********************/
+
+    samples_to_process = aud_cur_calc_samples(op_data, touched);
+84200b84:	5a 08       	r0 = r9 + Null;
+84200b86:	43 d8       	r1 = M[FP + 32];
+84200b88:	05 f0 2f ef 	call (m) $_aud_cur_calc_samples;
+84200b8c:	16 00       	r4 = r0 + Null;
+
+     /* Return early if not enough data to process */
+    if (samples_to_process < HCGR_DEFAULT_FRAME_SIZE)
+84200b8e:	60 f0 40 24 	Null = r4 - 64;
+84200b92:	0f 66       	if GE jump (m) Lc_hcgr_process_data_4;
+
+84200b94 <Lc_hcgr_process_data_2>:
+    {
+        L5_DBG_MSG2("OPID: %x, Not enough data to process (%d)", p_ext_data->hcgr.ext_op_id, samples_to_process);
+84200b94:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200b98:	48 25       	Null = rMAC - 5;
+84200b9a:	a9 68       	if LT jump (m) Lc_hcgr_process_data_22;
+
+84200b9c <Lc_hcgr_process_data_3>:
+84200b9c:	83 f0 4f 88 	r1 = M[r6 + 316];
+84200ba0:	55 f1 02 f0 	r0 = Null + 357565123;
+84200ba4:	c3 42 
+84200ba6:	34 00       	r2 = r4 + Null;
+84200ba8:	ff fd 02 f0 	call (m) 0x10d6;
+84200bac:	2f e9 
+84200bae:	9f 6e       	jump (m) Lc_hcgr_process_data_22;
+
+84200bb0 <Lc_hcgr_process_data_4>:
+    /* Default validity to FALSE so that any early exit testing not related to
+     * not having enough samples to process ensures an invalid gain is not used
+     * by the ANC HW Manager.
+     */
+    p_shared_fb_gain = p_ext_data->hcgr.p_fb_fine_gain;
+    p_shared_ff_gain = p_ext_data->hcgr.p_ff_fine_gain;
+84200bb0:	81 f0 37 88 	rMAC = M[r6 + 220];
+
+    if (p_shared_fb_gain != NULL)
+84200bb4:	82 f0 38 88 	r0 = M[r6 + 224];
+84200bb8:	02 60       	if EQ jump (m) Lc_hcgr_process_data_6;
+
+84200bba <Lc_hcgr_process_data_5>:
+    {
+        p_shared_fb_gain->valid = FALSE;
+84200bba:	50 9b       	MB[r0 + 13] = Null;
+
+84200bbc <Lc_hcgr_process_data_6>:
+    }
+    if (p_shared_ff_gain != NULL)
+84200bbc:	08 04       	Null = rMAC - Null;
+84200bbe:	02 60       	if EQ jump (m) Lc_hcgr_process_data_8;
+
+84200bc0 <Lc_hcgr_process_data_7>:
+    {
+        p_shared_ff_gain->valid = FALSE;
+84200bc0:	48 9b       	MB[rMAC + 13] = Null;
+
+84200bc2 <Lc_hcgr_process_data_8>:
+    }
+
+    /* Don't do any processing in standby */
+    if (p_ext_data->cur_mode == HCGR_SYSMODE_STANDBY)
+84200bc2:	80 f0 21 88 	Null = M[r6 + 132];
+84200bc6:	12 62       	if NE jump (m) Lc_hcgr_process_data_12;
+
+84200bc8 <Lc_hcgr_process_data_9>:
+    {
+        /* Reset delta gains */
+        p_shared_fb_gain->gain_delta = AHM_DELTA_NOMINAL;
+84200bc8:	10 f0 03 f0 	r1 = Null + 16777216;
+84200bcc:	00 40 
+84200bce:	13 ee       	M[r0 + Null] = r1;
+        if (p_shared_ff_gain != NULL)
+84200bd0:	08 04       	Null = rMAC - Null;
+84200bd2:	02 60       	if EQ jump (m) Lc_hcgr_process_data_11;
+
+84200bd4 <Lc_hcgr_process_data_10>:
+        {
+            p_shared_ff_gain->gain_delta = AHM_DELTA_NOMINAL;
+84200bd4:	0b ee       	M[rMAC + Null] = r1;
+
+84200bd6 <Lc_hcgr_process_data_11>:
+        }
+        /* Copy or discard data on all terminals */
+        aud_cur_mic_data_transfer(op_data,
+                                  samples_to_process,
+                                  HCGR_TERMINAL_SKIP_MASK);
+84200bd6:	04 00       	r2 = Null + Null;
+84200bd8:	33 00       	r1 = r4 + Null;
+84200bda:	5a 08       	r0 = r9 + Null;
+84200bdc:	06 f0 27 e2 	call (m) $_aud_cur_mic_data_transfer;
+        /*  Metadata transfer */
+        aud_cur_mic_metadata_transfer(op_data, samples_to_process);
+84200be0:	33 00       	r1 = r4 + Null;
+84200be2:	5a 08       	r0 = r9 + Null;
+84200be4:	06 f0 2f e5 	call (m) $_aud_cur_mic_metadata_transfer;
+84200be8:	82 6e       	jump (m) Lc_hcgr_process_data_22;
+
+84200bea <Lc_hcgr_process_data_12>:
+ * \return - Pointer to the class data
+ */
+
+static inline AUDIO_CURATION_DEF *get_class_data(OPERATOR_DATA *op_data)
+{
+    return (AUDIO_CURATION_DEF *) base_op_get_class_ext(op_data);
+84200bea:	5a 08       	r0 = r9 + Null;
+84200bec:	ef fd fe ff 	call (m) 0x934;
+84200bf0:	29 ea 
+
+        /* Exit early */
+        return;
+    }
+
+    if (aud_cur_get_reinit(op_data))
+84200bf2:	11 e2       	rMAC = MBU[r0 + Null];
+84200bf4:	1b 60       	if EQ jump (m) Lc_hcgr_process_data_16;
+
+84200bf6 <Lc_hcgr_process_data_13>:
+    {
+        /* Get pointers */
+        p_hcgr = &p_ext_data->hcgr;
+84200bf6:	86 f0 a4 20 	r4 = r6 + 164;
+        p_hc = p_hcgr->p_hc;
+84200bfa:	f1 88       	rMAC = M[r4 + 12];
+#ifdef USE_AANC_LICENSING
+        /* Set re-init flag to FALSE if license checks have passed. */
+        if (p_hc->licensed == TRUE)
+84200bfc:	49 99       	rMAC = M[rMAC + 52];
+84200bfe:	48 24       	Null = rMAC - 1;
+84200c00:	06 62       	if NE jump (m) Lc_hcgr_process_data_15;
+
+84200c02 <Lc_hcgr_process_data_14>:
+84200c02:	5a 08       	r0 = r9 + Null;
+84200c04:	ef fd fe ff 	call (m) 0x934;
+84200c08:	31 e9 
+}
+
+inline void aud_cur_set_reinit(OPERATOR_DATA *op_data, bool state)
+{
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    p_class_data->re_init_flag = state;
+84200c0a:	10 ea       	MB[r0 + Null] = Null;
+
+84200c0c <Lc_hcgr_process_data_15>:
+        {
+        aud_cur_set_reinit(op_data, FALSE);
+        }
+
+        /* Initialize afb */
+        aanc_afb_initialize(p_ext_data->f_handle, p_hcgr->p_afb);
+84200c0c:	b3 88       	r1 = M[r4 + 8];
+84200c0e:	82 f0 27 88 	r0 = M[r6 + 156];
+84200c12:	09 f0 35 e0 	call (m) $_aanc_afb_initialize;
+        hcgr_proc_intialize(&p_ext_data->hcgr, &p_ext_data->hcgr_cap_params,
+                            p_ext_data->f_handle, p_ext_data->sample_rate);
+84200c16:	82 f0 a4 20 	r0 = r6 + 164;
+84200c1a:	85 f0 00 e8 	r3 = M[r6 + Null];
+84200c1e:	84 f0 27 88 	r2 = M[r6 + 156];
+84200c22:	23 f3 64 3b 	r1 = r0 + -156;
+84200c26:	01 f0 2d ec 	call (m) $_hcgr_proc_intialize;
+
+84200c2a <Lc_hcgr_process_data_16>:
+    }
+
+    bypass_hcgr = (p_ext_data->hcgr_cap_params.OFFSET_HCGR_CONFIG &
+                   HCGR_CONFIG_BYPASS) > 0;
+84200c2a:	81 f0 02 88 	rMAC = M[r6 + 8];
+84200c2e:	02 00       	r0 = Null + Null;
+84200c30:	49 c0       	rMAC = rMAC AND 0x2;
+84200c32:	21 f0 42 ce 	if NE r0 = Null + 1;
+84200c36:	4a de       	M[FP + 36] = r0;
+
+    sample_count = 0;
+84200c38:	02 09       	r8 = Null + Null;
+
+84200c3a <Lc_hcgr_process_data_17>:
+    while (samples_to_process >= HCGR_DEFAULT_FRAME_SIZE)
+    {
+        if (!bypass_hcgr)
+84200c3a:	49 d8       	rMAC = M[FP + 36];
+84200c3c:	33 62       	if NE jump (m) Lc_hcgr_process_data_19;
+
+84200c3e <Lc_hcgr_process_data_18>:
+        {
+            p_hcgr = &p_ext_data->hcgr;
+84200c3e:	87 f0 a4 20 	r5 = r6 + 164;
+            p_hc = p_hcgr->p_hc;
+84200c42:	79 f0 03 88 	r7 = M[r5 + 12];
+
+            t_fft_object *p_fft = p_hcgr->p_afb->afb.fft_object_ptr;
+84200c46:	b9 88       	rMAC = M[r5 + 8];
+84200c48:	0e 89       	r4 = M[rMAC + 16];
+            p_fft->real_scratch_ptr = scratch_commit(
+                AANC_FILTER_BANK_NUM_BINS*sizeof(int), MALLOC_PREFERENCE_DM1);
+84200c4a:	43 20       	r1 = Null + 1;
+84200c4c:	02 f0 04 41 	r0 = Null + 260;
+84200c50:	ff fd 0a f0 	call (m) 0x215c;
+84200c54:	2d e8 
+84200c56:	72 8e       	M[r4 + 4] = r0;
+            p_fft->imag_scratch_ptr = scratch_commit(
+                AANC_FILTER_BANK_NUM_BINS*sizeof(int), MALLOC_PREFERENCE_DM2);
+84200c58:	83 20       	r1 = Null + 2;
+84200c5a:	02 f0 04 41 	r0 = Null + 260;
+84200c5e:	ff fd 0a f0 	call (m) 0x215c;
+84200c62:	3f e7 
+84200c64:	b2 8e       	M[r4 + 8] = r0;
+            p_fft->fft_scratch_ptr = scratch_commit(
+                AANC_FILTER_BANK_NUM_BINS*sizeof(int), MALLOC_PREFERENCE_DM2);
+84200c66:	83 20       	r1 = Null + 2;
+84200c68:	02 f0 04 41 	r0 = Null + 260;
+84200c6c:	ff fd 0a f0 	call (m) 0x215c;
+84200c70:	31 e7 
+84200c72:	f2 8e       	M[r4 + 12] = r0;
+
+            /* AFB process */
+            aanc_afb_process_data(p_ext_data->f_handle,
+                                  p_hcgr->p_afb,
+                                  p_hcgr->p_in_buf);
+84200c74:	7c 99       	r2 = M[r5 + 52];
+84200c76:	bb 88       	r1 = M[r5 + 8];
+84200c78:	82 f0 27 88 	r0 = M[r6 + 156];
+84200c7c:	08 f0 31 ef 	call (m) $_aanc_afb_process_data;
+
+            /* Set scratch pointers to NULL before freeing scratch */
+            p_fft->real_scratch_ptr = NULL;
+84200c80:	70 8e       	M[r4 + 4] = Null;
+            p_fft->imag_scratch_ptr = NULL;
+84200c82:	b0 8e       	M[r4 + 8] = Null;
+            p_fft->fft_scratch_ptr = NULL;
+84200c84:	f0 8e       	M[r4 + 12] = Null;
+
+            scratch_free();
+84200c86:	ff fd 0a f0 	call (m) 0x21aa;
+84200c8a:	25 e9 
+
+            /* Call howling control function */
+            aanc_hc100_process_data(p_ext_data->f_handle, p_hc);
+84200c8c:	82 f0 27 88 	r0 = M[r6 + 156];
+84200c90:	4b 08       	r1 = r7 + Null;
+84200c92:	07 f0 37 ec 	call (m) $_aanc_hc100_process_data;
+
+            /* Recovery process on FF & FB path */
+            hcgr_proc_recovery(&p_ext_data->hcgr, &p_ext_data->hcgr_cap_params);
+84200c96:	82 f0 a4 20 	r0 = r6 + 164;
+84200c9a:	23 f3 64 3b 	r1 = r0 + -156;
+84200c9e:	02 f0 3d e3 	call (m) $_hcgr_proc_recovery;
+
+84200ca2 <Lc_hcgr_process_data_19>:
+        }
+        /* Copy or discard data on all terminals */
+        aud_cur_mic_data_transfer(op_data,
+                                  HCGR_DEFAULT_FRAME_SIZE,
+                                  HCGR_TERMINAL_SKIP_MASK);
+84200ca2:	03 f0 40 40 	r1 = Null + 64;
+84200ca6:	04 00       	r2 = Null + Null;
+84200ca8:	5a 08       	r0 = r9 + Null;
+84200caa:	05 f0 39 eb 	call (m) $_aud_cur_mic_data_transfer;
+
+        samples_to_process = aud_cur_calc_samples(op_data, touched);
+84200cae:	5a 08       	r0 = r9 + Null;
+84200cb0:	43 d8       	r1 = M[FP + 32];
+84200cb2:	05 f0 25 e6 	call (m) $_aud_cur_calc_samples;
+84200cb6:	16 00       	r4 = r0 + Null;
+        sample_count += HCGR_DEFAULT_FRAME_SIZE;
+84200cb8:	0a f0 40 44 	r8 = r8 + 64;
+
+    bypass_hcgr = (p_ext_data->hcgr_cap_params.OFFSET_HCGR_CONFIG &
+                   HCGR_CONFIG_BYPASS) > 0;
+
+    sample_count = 0;
+    while (samples_to_process >= HCGR_DEFAULT_FRAME_SIZE)
+84200cbc:	60 f0 40 24 	Null = r4 - 64;
+84200cc0:	bd 67       	if GE jump (m) Lc_hcgr_process_data_17;
+
+84200cc2 <Lc_hcgr_process_data_20>:
+
+        samples_to_process = aud_cur_calc_samples(op_data, touched);
+        sample_count += HCGR_DEFAULT_FRAME_SIZE;
+    }
+    /*  Metadata transfer */
+    aud_cur_mic_metadata_transfer(op_data, sample_count);
+84200cc2:	53 08       	r1 = r8 + Null;
+84200cc4:	5a 08       	r0 = r9 + Null;
+84200cc6:	05 f0 2d ee 	call (m) $_aud_cur_mic_metadata_transfer;
+
+    /* Update flags */
+    hcgr_update_flags(p_ext_data);
+84200cca:	42 08       	r0 = r6 + Null;
+84200ccc:	71 4e       	call (m) Lc_hcgr_update_flags_1;
+#endif
+
+    /***************************
+     * Update touched terminals
+     ***************************/
+    touched->sinks = (unsigned) HCGR_MIN_VALID_SINKS;
+84200cce:	81 20       	rMAC = Null + 2;
+84200cd0:	42 d8       	r0 = M[FP + 32];
+84200cd2:	51 8e       	M[r0 + 4] = rMAC;
+
+    L5_DBG_MSG1("OPID: %x, HCGR process data completed", p_ext_data->hcgr.ext_op_id);
+84200cd4:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200cd8:	48 25       	Null = rMAC - 5;
+84200cda:	09 68       	if LT jump (m) Lc_hcgr_process_data_22;
+
+84200cdc <Lc_hcgr_process_data_21>:
+84200cdc:	83 f0 4f 88 	r1 = M[r6 + 316];
+84200ce0:	55 f1 02 f0 	r0 = Null + 357565165;
+84200ce4:	ed 42 
+84200ce6:	ff fd 01 f0 	call (m) 0x10c2;
+84200cea:	3d ee 
+
+84200cec <Lc_hcgr_process_data_22>:
+
+    return;
+}
+84200cec:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200cee:	d8 4c       	rts;
+
+84200cf0 <$_hcgr_connect_hook>:
+
+/****************************************************************************
+Hook functions
+*/
+bool hcgr_connect_hook(OPERATOR_DATA *op_data, unsigned terminal_id)
+{
+84200cf0:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200cf2:	16 00       	r4 = r0 + Null;
+84200cf4:	18 09       	r6 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data HCGR_OP_DATA.
+ */
+static inline HCGR_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (HCGR_OP_DATA *) base_op_get_instance_data(op_data);
+84200cf6:	ef fd fd ff 	call (m) 0x8ea;
+84200cfa:	35 ef 
+84200cfc:	17 00       	r5 = r0 + Null;
+{
+    uint16 terminal_num;
+    tCbuffer * p_buffer;
+    HCGR_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+84200cfe:	81 f0 3f 00 	rMAC = r6 AND 0x3f;
+
+    if (terminal_num == HCGR_TERMINAL)
+84200d02:	48 24       	Null = rMAC - 1;
+84200d04:	0b 62       	if NE jump (m) Lc_hcgr_connect_hook_4;
+
+84200d06 <Lc_hcgr_connect_hook_2>:
+    {
+        if((terminal_id & TERMINAL_SINK_MASK) > 0)
+84200d06:	40 f0 81 f0 	rMAC = r6 AND 0x800000;
+84200d0a:	00 00 
+84200d0c:	07 60       	if EQ jump (m) Lc_hcgr_connect_hook_4;
+
+84200d0e <Lc_hcgr_connect_hook_3>:
+        {
+            p_buffer = aud_cur_get_sink_terminal(op_data, terminal_num);
+84200d0e:	43 20       	r1 = Null + 1;
+84200d10:	32 00       	r0 = r4 + Null;
+84200d12:	04 f0 21 ea 	call (m) $_aud_cur_get_sink_terminal;
+            p_ext_data->hcgr.p_in_buf = p_buffer;
+84200d16:	72 f0 36 8e 	M[r5 + 216] = r0;
+
+84200d1a <Lc_hcgr_connect_hook_4>:
+        }
+    }
+
+
+    return TRUE;
+84200d1a:	42 20       	r0 = Null + 1;
+
+84200d1c <Lc_hcgr_connect_hook_5>:
+}
+84200d1c:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200d1e:	d8 4c       	rts;
+
+84200d20 <$_hcgr_disconnect_hook>:
+
+bool hcgr_disconnect_hook(OPERATOR_DATA *op_data, unsigned terminal_id)
+{
+84200d20:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200d22:	1e 00       	r4 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data HCGR_OP_DATA.
+ */
+static inline HCGR_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (HCGR_OP_DATA *) base_op_get_instance_data(op_data);
+84200d24:	ef fd fd ff 	call (m) 0x8ea;
+84200d28:	27 ee 
+bool hcgr_disconnect_hook(OPERATOR_DATA *op_data, unsigned terminal_id)
+{
+    uint16 terminal_num;
+    HCGR_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+84200d2a:	b1 c2       	rMAC = r4 AND 0x3f;
+
+    if (terminal_num == HCGR_TERMINAL)
+84200d2c:	48 24       	Null = rMAC - 1;
+84200d2e:	07 62       	if NE jump (m) Lc_hcgr_disconnect_hook_4;
+
+84200d30 <Lc_hcgr_disconnect_hook_2>:
+    {
+        if ((terminal_id & TERMINAL_SINK_MASK) > 0)
+84200d30:	40 f0 61 f0 	rMAC = r4 AND 0x800000;
+84200d34:	00 00 
+84200d36:	03 60       	if EQ jump (m) Lc_hcgr_disconnect_hook_4;
+
+84200d38 <Lc_hcgr_disconnect_hook_3>:
+        {
+            p_ext_data->hcgr.p_in_buf = NULL;
+84200d38:	20 f0 36 8e 	M[r0 + 216] = Null;
+
+84200d3c <Lc_hcgr_disconnect_hook_4>:
+        }
+    }
+
+    return TRUE;
+84200d3c:	42 20       	r0 = Null + 1;
+
+84200d3e <Lc_hcgr_disconnect_hook_5>:
+}
+84200d3e:	f1 48       	popm <FP, r4, rLink>;
+84200d40:	d8 4c       	rts;
+
+84200d42 <$_hcgr_param_update_hook>:
+
+bool hcgr_param_update_hook(OPERATOR_DATA *op_data)
+{
+84200d42:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+ *
+ * \return  Pointer to extra operator data HCGR_OP_DATA.
+ */
+static inline HCGR_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (HCGR_OP_DATA *) base_op_get_instance_data(op_data);
+84200d44:	ef fd fd ff 	call (m) 0x8ea;
+84200d48:	27 ed 
+84200d4a:	16 00       	r4 = r0 + Null;
+    AHM_ANC_FILTER old_filter_path, new_filter_path;
+
+    /* Re-link AHM shared gains.
+       Ignore if AHM is not linked. This can happen if SET_UCID/SET_PARAMS comes
+       before linking AHM. */
+    if (p_ext_data->ahm_op_id != 0)
+84200d4c:	61 f0 a0 86 	rMAC = MHU[r4 + 320];
+84200d50:	2c 60       	if EQ jump (m) Lc_hcgr_param_update_hook_5;
+
+84200d52 <Lc_hcgr_param_update_hook_2>:
+    {
+        old_filter_path = p_ext_data->hcgr.hcgr_filter_path;
+84200d52:	68 f0 f8 80 	r6 = MBS[r4 + 248];
+        hcgr_init_filter_path(&p_ext_data->hcgr, &p_ext_data->hcgr_cap_params);
+84200d56:	62 f0 a4 20 	r0 = r4 + 164;
+84200d5a:	23 f3 64 3b 	r1 = r0 + -156;
+84200d5e:	01 f0 25 e2 	call (m) $_hcgr_init_filter_path;
+        new_filter_path = p_ext_data->hcgr.hcgr_filter_path;
+84200d62:	67 f0 f8 80 	r5 = MBS[r4 + 248];
+
+        /* Re-link if filter path has changed */
+        if(old_filter_path != new_filter_path)
+84200d66:	7f f8 00 c2 	Null = r6 - r5;
+84200d6a:	1f 60       	if EQ jump (m) Lc_hcgr_param_update_hook_5;
+
+84200d6c <Lc_hcgr_param_update_hook_3>:
+        {
+            hcgr_release_shared_gains(p_ext_data);
+84200d6c:	32 00       	r0 = r4 + Null;
+84200d6e:	7e 4e       	call (m) Lc_hcgr_release_shared_gains_1;
+            aud_cur_get_shared_fine_gain((void*)p_ext_data,
+                                         AHM_ANC_FILTER_FB_ID,
+                                         p_ext_data->ahm_op_id,
+                                         AHM_GAIN_CONTROL_TYPE_DELTA,
+                                         AHM_ANC_INSTANCE_ANC0_ID,
+                                         hcgr_opmsg_link_ahm_callback);
+84200d70:	42 f0 0e f0 	push Null + 69209779;
+84200d74:	53 eb 
+84200d76:	64 f0 a0 86 	r2 = MHU[r4 + 320];
+84200d7a:	43 20       	r1 = Null + 1;
+84200d7c:	05 00       	r3 = Null + Null;
+84200d7e:	00 f0 51 e0 	push Null + 1;
+84200d82:	32 00       	r0 = r4 + Null;
+84200d84:	05 f0 21 ec 	call (m) $_aud_cur_get_shared_fine_gain;
+84200d88:	7e 4c       	SP = SP + -8;
+            if (new_filter_path == AHM_ANC_FILTER_FF_AND_FB_ID)
+84200d8a:	78 25       	Null = r5 - 5;
+84200d8c:	0e 62       	if NE jump (m) Lc_hcgr_param_update_hook_5;
+
+84200d8e <Lc_hcgr_param_update_hook_4>:
+                aud_cur_get_shared_fine_gain((void*)p_ext_data,
+                                             AHM_ANC_FILTER_FF_ID,
+                                             p_ext_data->ahm_op_id,
+                                             AHM_GAIN_CONTROL_TYPE_DELTA,
+                                             AHM_ANC_INSTANCE_ANC0_ID,
+                                             hcgr_opmsg_link_ahm_callback);
+84200d8e:	42 f0 0e f0 	push Null + 69209779;
+84200d92:	53 eb 
+84200d94:	64 f0 a0 86 	r2 = MHU[r4 + 320];
+84200d98:	05 00       	r3 = Null + Null;
+84200d9a:	03 00       	r1 = Null + Null;
+84200d9c:	00 f0 51 e0 	push Null + 1;
+84200da0:	32 00       	r0 = r4 + Null;
+84200da2:	05 f0 23 eb 	call (m) $_aud_cur_get_shared_fine_gain;
+84200da6:	7e 4c       	SP = SP + -8;
+
+84200da8 <Lc_hcgr_param_update_hook_5>:
+            }
+        }
+    }
+
+    return TRUE;
+84200da8:	42 20       	r0 = Null + 1;
+
+84200daa <Lc_hcgr_param_update_hook_6>:
+}
+84200daa:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200dac:	d8 4c       	rts;
+
+84200dae <Lc_hcgr_update_flags_1>:
+ *
+ * \return void
+ */
+static void hcgr_update_flags(HCGR_OP_DATA *p_ext_data)
+{
+    hcgr_t * p_hcgr = &p_ext_data->hcgr;
+84200dae:	21 f0 a4 20 	rMAC = r0 + 164;
+    HC100_DMX *p_hc = p_hcgr->p_hc;
+84200db2:	cb 88       	r1 = M[rMAC + 12];
+
+    /* Store previous flags */
+    p_ext_data->previous_flags = p_ext_data->flags;
+84200db4:	24 f0 25 88 	r2 = M[r0 + 148];
+84200db8:	24 f0 26 8e 	M[r0 + 152] = r2;
+
+    /* Tone detected flag */
+    if (p_hc->tone_detected_flag)
+84200dbc:	98 99       	Null = M[r1 + 56];
+84200dbe:	05 60       	if EQ jump (m) Lc_hcgr_update_flags_3;
+
+84200dc0 <Lc_hcgr_update_flags_2>:
+    {
+        p_ext_data->flags |= HCGR_FLAGS_HOWLING;
+84200dc0:	23 c8       	r1 = r2 OR 0x1;
+84200dc2:	23 f0 25 8e 	M[r0 + 148] = r1;
+84200dc6:	05 6e       	jump (m) Lc_hcgr_update_flags_4;
+
+84200dc8 <Lc_hcgr_update_flags_3>:
+    }
+    else
+    {
+        p_ext_data->flags &= ~HCGR_FLAGS_HOWLING;
+84200dc8:	43 ff fe 1f 	r1 = r2 AND 0xfffffffe;
+84200dcc:	23 f0 25 8e 	M[r0 + 148] = r1;
+
+84200dd0 <Lc_hcgr_update_flags_4>:
+    }
+
+    /* Recovery active */
+    if (p_hcgr->ff_recovery_active)
+84200dd0:	c8 89       	Null = M[rMAC + 28];
+84200dd2:	07 60       	if EQ jump (m) Lc_hcgr_update_flags_6;
+
+84200dd4 <Lc_hcgr_update_flags_5>:
+    {
+        p_ext_data->flags |= HCGR_FLAGS_FF_RECOVERY;
+84200dd4:	23 f0 25 88 	r1 = M[r0 + 148];
+84200dd8:	5b c8       	r1 = r1 OR 0x2;
+84200dda:	23 f0 25 8e 	M[r0 + 148] = r1;
+84200dde:	07 6e       	jump (m) Lc_hcgr_update_flags_7;
+
+84200de0 <Lc_hcgr_update_flags_6>:
+    }
+    else
+    {
+        p_ext_data->flags &= ~HCGR_FLAGS_FF_RECOVERY;
+84200de0:	23 f0 25 88 	r1 = M[r0 + 148];
+84200de4:	33 ff fd 1f 	r1 = r1 AND 0xfffffffd;
+84200de8:	23 f0 25 8e 	M[r0 + 148] = r1;
+
+84200dec <Lc_hcgr_update_flags_7>:
+    }
+    if (p_hcgr->fb_recovery_active)
+84200dec:	08 98       	Null = M[rMAC + 32];
+84200dee:	07 60       	if EQ jump (m) Lc_hcgr_update_flags_9;
+
+84200df0 <Lc_hcgr_update_flags_8>:
+    {
+        p_ext_data->flags |= HCGR_FLAGS_FB_RECOVERY;
+84200df0:	21 f0 25 88 	rMAC = M[r0 + 148];
+84200df4:	c9 c8       	rMAC = rMAC OR 0x4;
+84200df6:	21 f0 25 8e 	M[r0 + 148] = rMAC;
+84200dfa:	07 6e       	jump (m) Lc_hcgr_update_flags_10;
+
+84200dfc <Lc_hcgr_update_flags_9>:
+    }
+    else
+    {
+        p_ext_data->flags &= ~HCGR_FLAGS_FB_RECOVERY;
+84200dfc:	21 f0 25 88 	rMAC = M[r0 + 148];
+84200e00:	11 ff fb 1f 	rMAC = rMAC AND 0xfffffffb;
+84200e04:	21 f0 25 8e 	M[r0 + 148] = rMAC;
+
+84200e08 <Lc_hcgr_update_flags_10>:
+84200e08:	d8 4c       	rts;
+
+84200e0a <Lc_hcgr_proc_destroy_1>:
+ * \param  p_ext_data  Address of the HCGR extra_op_data.
+ *
+ * \return  boolean indicating success or failure.
+ */
+static bool hcgr_proc_destroy(HCGR_OP_DATA *p_ext_data)
+{
+84200e0a:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200e0c:	17 00       	r5 = r0 + Null;
+    hcgr_t * p_hcgr;
+
+    /* Unregister FFT twiddle */
+    if (p_ext_data->twiddle_registered)
+84200e0e:	71 f0 a1 82 	rMAC = MBU[r5 + 161];
+84200e12:	08 60       	if EQ jump (m) Lc_hcgr_proc_destroy_3;
+
+84200e14 <Lc_hcgr_proc_destroy_2>:
+    {
+        math_fft_twiddle_release(AANC_FILTER_BANK_WINDOW_SIZE);
+84200e14:	02 f0 80 40 	r0 = Null + 128;
+84200e18:	ff fd 81 f4 	call 0x9112c;
+84200e1c:	34 e8 
+        p_ext_data->twiddle_registered = FALSE;
+84200e1e:	70 f0 a1 8a 	MB[r5 + 161] = Null;
+
+84200e22 <Lc_hcgr_proc_destroy_3>:
+    }
+    /* De-register scratch & free AFB */
+    if (p_ext_data->scratch_registered)
+84200e22:	71 f0 a0 82 	rMAC = MBU[r5 + 160];
+84200e26:	06 60       	if EQ jump (m) Lc_hcgr_proc_destroy_5;
+
+84200e28 <Lc_hcgr_proc_destroy_4>:
+    {
+        scratch_deregister();
+84200e28:	ff fd 08 f0 	call (m) 0x1fc6;
+84200e2c:	3f ec 
+        p_ext_data->scratch_registered = FALSE;
+84200e2e:	70 f0 a0 8a 	MB[r5 + 160] = Null;
+
+84200e32 <Lc_hcgr_proc_destroy_5>:
+    }
+
+    p_hcgr = &p_ext_data->hcgr;
+84200e32:	76 f0 a4 20 	r4 = r5 + 164;
+
+    aanc_afb_destroy(p_hcgr->p_afb);
+84200e36:	b2 88       	r0 = M[r4 + 8];
+84200e38:	08 f0 25 e4 	call (m) $_aanc_afb_destroy;
+    pfree(p_hcgr->p_afb);
+84200e3c:	b2 88       	r0 = M[r4 + 8];
+84200e3e:	ff fd 30 f0 	call (m) 0x6fbe;
+84200e42:	21 ec 
+    pfree(p_hcgr->p_hc);
+84200e44:	f2 88       	r0 = M[r4 + 12];
+84200e46:	ff fd 30 f0 	call (m) 0x6fbe;
+84200e4a:	39 eb 
+    pfree(p_hcgr->p_hc_dm1);
+84200e4c:	32 89       	r0 = M[r4 + 16];
+84200e4e:	ff fd 30 f0 	call (m) 0x6fbe;
+84200e52:	31 eb 
+    pfree(p_hcgr->p_hc_dm2);
+84200e54:	72 89       	r0 = M[r4 + 20];
+84200e56:	ff fd 30 f0 	call (m) 0x6fbe;
+84200e5a:	29 eb 
+
+    unload_aanc_handle(p_ext_data->f_handle);
+84200e5c:	72 f0 27 88 	r0 = M[r5 + 156];
+84200e60:	07 f0 2d e6 	call (m) $_unload_aanc_handle;
+
+    return TRUE;
+84200e64:	42 20       	r0 = Null + 1;
+
+84200e66 <Lc_hcgr_proc_destroy_6>:
+}
+84200e66:	f2 48       	popm <FP, r4, r5, rLink>;
+84200e68:	d8 4c       	rts;
+
+84200e6a <Lc_hcgr_release_shared_gains_1>:
+ *
+ * \return - None
+ *
+ */
+static void hcgr_release_shared_gains(HCGR_OP_DATA *p_ext_data)
+{
+84200e6a:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200e6c:	16 00       	r4 = r0 + Null;
+    AHM_SHARED_FINE_GAIN *p_fb_gain, *p_ff_gain;
+    /* Release */
+    p_fb_gain = p_ext_data->hcgr.p_fb_fine_gain;
+84200e6e:	62 f0 38 88 	r0 = M[r4 + 224];
+    p_ff_gain = p_ext_data->hcgr.p_ff_fine_gain;
+84200e72:	67 f0 37 88 	r5 = M[r4 + 220];
+
+    if (p_ext_data->ahm_op_id == 0)
+84200e76:	65 f0 a0 86 	r3 = MHU[r4 + 320];
+84200e7a:	1a 60       	if EQ jump (m) Lc_hcgr_release_shared_gains_7;
+
+84200e7c <Lc_hcgr_release_shared_gains_2>:
+    {
+        /* Nothing to do */
+        return;
+    }
+
+    if (p_fb_gain != NULL)
+84200e7c:	10 04       	Null = r0 - Null;
+84200e7e:	08 60       	if EQ jump (m) Lc_hcgr_release_shared_gains_4;
+
+84200e80 <Lc_hcgr_release_shared_gains_3>:
+    {
+        aud_cur_release_shared_fine_gain(p_fb_gain,
+                                         AHM_ANC_FILTER_FB_ID,
+                                         AHM_GAIN_CONTROL_TYPE_DELTA,
+                                         p_ext_data->ahm_op_id,
+                                         AHM_ANC_INSTANCE_ANC0_ID);
+84200e80:	00 f0 51 e0 	push Null + 1;
+84200e84:	43 20       	r1 = Null + 1;
+84200e86:	04 00       	r2 = Null + Null;
+84200e88:	05 f0 29 e2 	call (m) $_aud_cur_release_shared_fine_gain;
+84200e8c:	7f 4c       	SP = SP + -4;
+
+84200e8e <Lc_hcgr_release_shared_gains_4>:
+    }
+
+    if (p_ff_gain != NULL)
+84200e8e:	38 04       	Null = r5 - Null;
+84200e90:	0b 60       	if EQ jump (m) Lc_hcgr_release_shared_gains_6;
+
+84200e92 <Lc_hcgr_release_shared_gains_5>:
+    {
+        aud_cur_release_shared_fine_gain(p_ff_gain,
+                                         AHM_ANC_FILTER_FF_ID,
+                                         AHM_GAIN_CONTROL_TYPE_DELTA,
+                                         p_ext_data->ahm_op_id,
+                                         AHM_ANC_INSTANCE_ANC0_ID);
+84200e92:	00 f0 51 e0 	push Null + 1;
+84200e96:	65 f0 a0 86 	r3 = MHU[r4 + 320];
+84200e9a:	04 00       	r2 = Null + Null;
+84200e9c:	03 00       	r1 = Null + Null;
+84200e9e:	3a 00       	r0 = r5 + Null;
+84200ea0:	05 f0 31 e1 	call (m) $_aud_cur_release_shared_fine_gain;
+84200ea4:	7f 4c       	SP = SP + -4;
+
+84200ea6 <Lc_hcgr_release_shared_gains_6>:
+    }
+
+    p_ext_data->hcgr.p_fb_fine_gain = NULL;
+84200ea6:	60 f0 38 8e 	M[r4 + 224] = Null;
+    p_ext_data->hcgr.p_ff_fine_gain = NULL;
+84200eaa:	60 f0 37 8e 	M[r4 + 220] = Null;
+
+84200eae <Lc_hcgr_release_shared_gains_7>:
+
+    return;
+}
+84200eae:	f2 48       	popm <FP, r4, r5, rLink>;
+84200eb0:	d8 4c       	rts;
+
+84200eb2 <Lc_hcgr_opmsg_link_ahm_callback_1>:
+static bool hcgr_opmsg_link_ahm_callback(CONNECTION_LINK con_id,
+                                         STATUS_KYMERA status,
+                                         EXT_OP_ID op_id,
+                                         unsigned num_resp_params,
+                                         unsigned *resp_params)
+{
+84200eb2:	f6 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>;
+84200eb4:	f9 d9       	rMAC = M[FP + -4];
+    AHM_GAIN_BANK * nominal_gain_bank;
+    AHM_ANC_FILTER filter_path;
+
+    raw_ptr = OPMSG_CREATION_FIELD_GET32(resp_params,
+                                         OPMSG_COMMON_MSG_GET_SHARED_GAIN_RESP,
+                                         P_EXT_DATA);
+84200eb6:	8a 88       	r0 = M[rMAC + 8];
+84200eb8:	4c 88       	r2 = M[rMAC + 4];
+84200eba:	92 56       	r0 = r0 LSHIFT 16;
+84200ebc:	16 13       	r4 = r0 OR r2;
+    p_ext_data = (HCGR_OP_DATA*)raw_ptr;
+
+    EXT_OP_ID ext_op_id  = p_ext_data->hcgr.ext_op_id;
+84200ebe:	6b f0 4f 88 	r9 = M[r4 + 316];
+    if (status != ACCMD_STATUS_OK)
+84200ec2:	18 04       	Null = r1 - Null;
+84200ec4:	0b 60       	if EQ jump (m) Lc_hcgr_opmsg_link_ahm_callback_3;
+
+84200ec6 <Lc_hcgr_opmsg_link_ahm_callback_2>:
+    {
+        L0_DBG_MSG2("OPID: %x, HCGR link response failed: status=%d", ext_op_id, status);
+84200ec6:	55 f1 02 f0 	r0 = Null + 357564416;
+84200eca:	00 40 
+84200ecc:	1c 00       	r2 = r1 + Null;
+84200ece:	5b 08       	r1 = r9 + Null;
+84200ed0:	ff fd 01 f0 	call (m) 0x10d6;
+84200ed4:	27 e0 
+        return FALSE;
+84200ed6:	02 00       	r0 = Null + Null;
+84200ed8:	46 6e       	jump (m) Lc_hcgr_opmsg_link_ahm_callback_10;
+
+84200eda <Lc_hcgr_opmsg_link_ahm_callback_3>:
+    }
+    raw_gain = OPMSG_CREATION_FIELD_GET32(resp_params,
+                                          OPMSG_COMMON_MSG_GET_SHARED_GAIN_RESP,
+                                          SHARED_GAIN_PTR);
+84200eda:	0a 89       	r0 = M[rMAC + 16];
+84200edc:	cb 88       	r1 = M[rMAC + 12];
+84200ede:	92 56       	r0 = r0 LSHIFT 16;
+84200ee0:	d7 12       	r5 = r0 OR r1;
+    p_gain = (AHM_SHARED_FINE_GAIN*)raw_gain;
+
+    cur_gain = OPMSG_CREATION_FIELD_GET32(resp_params,
+                                          OPMSG_COMMON_MSG_GET_SHARED_GAIN_RESP,
+                                          CURRENT_GAINS_PTR);
+84200ee2:	8a 89       	r0 = M[rMAC + 24];
+84200ee4:	4b 89       	r1 = M[rMAC + 20];
+84200ee6:	92 56       	r0 = r0 LSHIFT 16;
+84200ee8:	3f f2 48 c8 	r6 = r0 OR r1;
+    cur_gain_bank = (AHM_GAIN_BANK*)cur_gain;
+
+    nominal_gain = OPMSG_CREATION_FIELD_GET32(resp_params,
+                                             OPMSG_COMMON_MSG_GET_SHARED_GAIN_RESP,
+                                             NOMINAL_GAINS_PTR);
+84200eec:	8a 98       	r0 = M[rMAC + 40];
+84200eee:	4b 98       	r1 = M[rMAC + 36];
+84200ef0:	92 56       	r0 = r0 LSHIFT 16;
+84200ef2:	3f f2 49 c8 	r7 = r0 OR r1;
+    nominal_gain_bank = (AHM_GAIN_BANK*)nominal_gain;
+
+    raw_filter = OPMSG_CREATION_FIELD_GET32(resp_params,
+                                            OPMSG_COMMON_MSG_GET_SHARED_GAIN_RESP,
+                                            FILTER_TYPE);
+84200ef6:	0a 99       	r0 = M[rMAC + 48];
+84200ef8:	cb 98       	r1 = M[rMAC + 44];
+84200efa:	92 56       	r0 = r0 LSHIFT 16;
+84200efc:	d2 12       	r0 = r0 OR r1;
+    filter_path = (AHM_ANC_FILTER)raw_filter;
+84200efe:	ef f2 4a ce 	r8 = SE8 r0;
+
+    ahm_timer_period = \
+        OPMSG_CREATION_FIELD_GET32(resp_params,
+                                   OPMSG_COMMON_MSG_GET_SHARED_GAIN_RESP,
+                                   AHM_TIMER_PERIOD_US);
+84200f02:	8a 99       	r0 = M[rMAC + 56];
+84200f04:	92 56       	r0 = r0 LSHIFT 16;
+84200f06:	49 99       	rMAC = M[rMAC + 52];
+84200f08:	89 12       	rMAC = rMAC OR r0;
+    p_ext_data->hcgr.ahm_minimal_period_samples = \
+        (p_ext_data->sample_rate * ahm_timer_period) / HCGR_MICRO_SEC_CONVERSION_FACTOR;
+84200f0a:	32 e8       	r0 = M[r4 + Null];
+84200f0c:	00 f0 a3 f7 	r1 = Null + 1000000;
+84200f10:	40 42 
+84200f12:	52 1a       	r0 = r0 * rMAC (int);
+84200f14:	ff fd c9 f0 	call (m) 0x1a136;
+84200f18:	23 e1 
+84200f1a:	62 f0 4a 8e 	M[r4 + 296] = r0;
+
+    switch (filter_path)
+84200f1e:	51 08       	rMAC = r8 + Null;
+84200f20:	0e 60       	if EQ jump (m) Lc_hcgr_opmsg_link_ahm_callback_6;
+
+84200f22 <Lc_hcgr_opmsg_link_ahm_callback_4>:
+84200f22:	48 24       	Null = rMAC - 1;
+84200f24:	13 62       	if NE jump (m) Lc_hcgr_opmsg_link_ahm_callback_7;
+
+84200f26 <Lc_hcgr_opmsg_link_ahm_callback_5>:
+                &cur_gain_bank->ff;
+            p_ext_data->hcgr.p_ff_nominal_gain = \
+                &nominal_gain_bank->ff;
+            break;
+        case AHM_ANC_FILTER_FB_ID:
+            p_ext_data->hcgr.p_fb_fine_gain = p_gain;
+84200f26:	67 f0 38 8e 	M[r4 + 224] = r5;
+            p_ext_data->hcgr.p_fb_current_gain = \
+                &cur_gain_bank->fb;
+84200f2a:	81 f0 04 20 	rMAC = r6 + 4;
+84200f2e:	61 f0 3c 8e 	M[r4 + 240] = rMAC;
+            p_ext_data->hcgr.p_fb_nominal_gain = \
+                &nominal_gain_bank->fb;
+84200f32:	91 f0 04 20 	rMAC = r7 + 4;
+84200f36:	61 f0 3d 8e 	M[r4 + 244] = rMAC;
+            break;
+84200f3a:	14 6e       	jump (m) Lc_hcgr_opmsg_link_ahm_callback_9;
+
+84200f3c <Lc_hcgr_opmsg_link_ahm_callback_6>:
+        (p_ext_data->sample_rate * ahm_timer_period) / HCGR_MICRO_SEC_CONVERSION_FACTOR;
+
+    switch (filter_path)
+    {
+        case AHM_ANC_FILTER_FF_ID:
+            p_ext_data->hcgr.p_ff_fine_gain = p_gain;
+84200f3c:	67 f0 37 8e 	M[r4 + 220] = r5;
+            p_ext_data->hcgr.p_ff_current_gain = \
+                &cur_gain_bank->ff;
+84200f40:	68 f0 3a 8e 	M[r4 + 232] = r6;
+            p_ext_data->hcgr.p_ff_nominal_gain = \
+                &nominal_gain_bank->ff;
+84200f44:	69 f0 3b 8e 	M[r4 + 236] = r7;
+            break;
+84200f48:	0d 6e       	jump (m) Lc_hcgr_opmsg_link_ahm_callback_9;
+
+84200f4a <Lc_hcgr_opmsg_link_ahm_callback_7>:
+            p_ext_data->hcgr.p_fb_nominal_gain = \
+                &nominal_gain_bank->fb;
+            break;
+        default:
+            L2_DBG_MSG2("OPID: %x, HCGR unsupported filter path for gain control: %u",
+                        ext_op_id, filter_path);
+84200f4a:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200f4e:	88 24       	Null = rMAC - 2;
+84200f50:	09 68       	if LT jump (m) Lc_hcgr_opmsg_link_ahm_callback_9;
+
+84200f52 <Lc_hcgr_opmsg_link_ahm_callback_8>:
+84200f52:	55 f1 02 f0 	r0 = Null + 357564463;
+84200f56:	2f 40 
+84200f58:	54 08       	r2 = r8 + Null;
+84200f5a:	5b 08       	r1 = r9 + Null;
+84200f5c:	ff fd 00 f0 	call (m) 0x10d6;
+84200f60:	3b eb 
+
+84200f62 <Lc_hcgr_opmsg_link_ahm_callback_9>:
+            break;
+    }
+
+    return TRUE;
+84200f62:	42 20       	r0 = Null + 1;
+
+84200f64 <Lc_hcgr_opmsg_link_ahm_callback_10>:
+}
+84200f64:	f6 48       	popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200f66:	d8 4c       	rts;
+
+84200f68 <Lc_hcgr_opmsg_link_target_gain_callback_1>:
+static bool hcgr_opmsg_link_target_gain_callback(CONNECTION_LINK con_id,
+                                                 STATUS_KYMERA status,
+                                                 EXT_OP_ID op_id,
+                                                 unsigned num_resp_params,
+                                                 unsigned *resp_params)
+{
+84200f68:	c8 1c       	pushm <FP(=SP), rLink>;
+84200f6a:	19 00       	rMAC = r1 + Null;
+84200f6c:	fa d9       	r0 = M[FP + -4];
+    AHM_SHARED_FINE_GAIN *p_adrc_gain;
+
+    /* Get p_ext_data pointer */
+    raw_ptr = OPMSG_CREATION_FIELD_GET32(resp_params,
+                                         OPMSG_COMMON_MSG_GET_SHARED_GAIN_RESP,
+                                         P_EXT_DATA);
+84200f6e:	93 88       	r1 = M[r0 + 8];
+84200f70:	54 88       	r2 = M[r0 + 4];
+84200f72:	9b 56       	r1 = r1 LSHIFT 16;
+84200f74:	1b 13       	r1 = r1 OR r2;
+    p_ext_data = (HCGR_OP_DATA*)raw_ptr;
+    if (status != ACCMD_STATUS_OK)
+84200f76:	08 04       	Null = rMAC - Null;
+84200f78:	0c 60       	if EQ jump (m) Lc_hcgr_opmsg_link_target_gain_callback_3;
+
+84200f7a <Lc_hcgr_opmsg_link_target_gain_callback_2>:
+    {
+        L0_DBG_MSG2("OPID: %x, HCGR link target gain response failed: status=%d", p_ext_data->hcgr.ext_op_id, status);
+84200f7a:	33 f0 4f 88 	r1 = M[r1 + 316];
+84200f7e:	55 f1 02 f0 	r0 = Null + 357564898;
+84200f82:	e2 41 
+84200f84:	0c 00       	r2 = rMAC + Null;
+84200f86:	ff fd 00 f0 	call (m) 0x10d6;
+84200f8a:	31 ea 
+        return FALSE;
+84200f8c:	02 00       	r0 = Null + Null;
+84200f8e:	08 6e       	jump (m) Lc_hcgr_opmsg_link_target_gain_callback_4;
+
+84200f90 <Lc_hcgr_opmsg_link_target_gain_callback_3>:
+    }
+
+    /* Get shared gain pointer */
+    raw_gain = OPMSG_CREATION_FIELD_GET32(resp_params,
+                                          OPMSG_COMMON_MSG_GET_SHARED_GAIN_RESP,
+                                          SHARED_GAIN_PTR);
+84200f90:	14 89       	r2 = M[r0 + 16];
+84200f92:	d1 88       	rMAC = M[r0 + 12];
+84200f94:	a4 56       	r2 = r2 LSHIFT 16;
+84200f96:	09 13       	rMAC = rMAC OR r2;
+    p_adrc_gain = (AHM_SHARED_FINE_GAIN*)raw_gain;
+
+    p_ext_data->hcgr.p_adrc_gain = p_adrc_gain;
+84200f98:	31 f0 39 8e 	M[r1 + 228] = rMAC;
+
+    return TRUE;
+84200f9c:	42 20       	r0 = Null + 1;
+
+84200f9e <Lc_hcgr_opmsg_link_target_gain_callback_4>:
+}
+84200f9e:	c8 48       	popm <FP, rLink>;
+84200fa0:	d8 4c       	rts;
+
+84200fa2 <$_hcgr_init_filter_path>:
+84200fa2:	19 e8       	rMAC = M[r1 + Null];
+void hcgr_init_filter_path(hcgr_t *p_hcgr, HCGR_PARAMETERS *p_params)
+{
+    if ((p_params->OFFSET_HCGR_CONFIG &
+            HCGR_CONFIG_IS_FF_AND_FB_HCGR) > 0)
+    {
+        p_hcgr->hcgr_filter_path = AHM_ANC_FILTER_FF_AND_FB_ID;
+84200fa4:	43 21       	r1 = Null + 5;
+84200fa6:	09 c0       	rMAC = rMAC AND 0x1;
+84200fa8:	20 f0 43 ce 	if EQ r1 = Null + 1;
+84200fac:	23 f0 54 8a 	MB[r0 + 84] = r1;
+
+84200fb0 <Lc_hcgr_init_filter_path_2>:
+84200fb0:	d8 4c       	rts;
+
+84200fb2 <$_hcgr_proc_intialize>:
+    }
+    return;
+}
+void hcgr_proc_intialize(hcgr_t *p_hcgr, HCGR_PARAMETERS *p_params,
+                         void *f_handle, unsigned sample_rate)
+{
+84200fb2:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200fb4:	50 4c       	SP = SP + 64;
+84200fb6:	17 00       	r5 = r0 + Null;
+84200fb8:	1e 00       	r4 = r1 + Null;
+84200fba:	21 09       	r7 = r2 + Null;
+84200fbc:	2a 09       	r8 = r3 + Null;
+    /* Get pointers */
+    HC100_DMX *p_hc;               /* Pointer to Howling control data */
+    p_hc = p_hcgr->p_hc;
+84200fbe:	78 f0 03 88 	r6 = M[r5 + 12];
+84200fc2:	f1 99       	rMAC = M[r4 + 60];
+84200fc4:	79 de       	M[FP + 60] = rMAC;
+84200fc6:	31 a8       	rMAC = M[r4 + 64];
+84200fc8:	81 de       	M[FP + 64] = rMAC;
+84200fca:	71 a8       	rMAC = M[r4 + 68];
+84200fcc:	89 de       	M[FP + 68] = rMAC;
+84200fce:	b1 a8       	rMAC = M[r4 + 72];
+84200fd0:	91 de       	M[FP + 72] = rMAC;
+84200fd2:	f1 a8       	rMAC = M[r4 + 76];
+84200fd4:	99 de       	M[FP + 76] = rMAC;
+84200fd6:	31 a9       	rMAC = M[r4 + 80];
+84200fd8:	a1 de       	M[FP + 80] = rMAC;
+84200fda:	71 a9       	rMAC = M[r4 + 84];
+84200fdc:	a9 de       	M[FP + 84] = rMAC;
+84200fde:	b1 a9       	rMAC = M[r4 + 88];
+84200fe0:	b1 de       	M[FP + 88] = rMAC;
+        p_params->OFFSET_STEP_SIZE_18DB_FS,
+        p_params->OFFSET_STEP_SIZE_24DB_FS,
+        p_params->OFFSET_STEP_SIZE_30DB_FS,
+        p_params->OFFSET_STEP_SIZE_36DB_FS,
+        p_params->OFFSET_STEP_SIZE_42DB_FS,
+    };
+84200fe2:	c3 13       	r1 = FP + 60;
+84200fe4:	c2 11       	r0 = FP + 28;
+84200fe6:	04 22       	r2 = Null + 8;
+84200fe8:	ff fd c8 f0 	call (m) 0x1a094;
+84200fec:	2d e5 
+
+    p_hc->counter_table = counter_table;
+84200fee:	c1 11       	rMAC = FP + 28;
+84200ff0:	81 f0 09 8e 	M[r6 + 36] = rMAC;
+    p_hc->counter_limit = p_params->OFFSET_COUNTER_TRIGGER;
+84200ff4:	b1 99       	rMAC = M[r4 + 56];
+84200ff6:	81 f0 0a 8e 	M[r6 + 40] = rMAC;
+    p_hc->ptpr_threshold = p_params->OFFSET_PTPR_THRESHOLD_MANT;
+84200ffa:	31 89       	rMAC = M[r4 + 16];
+84200ffc:	81 f0 00 ee 	M[r6 + Null] = rMAC;
+    p_hc->ptpr_threshold_bexp = p_params->OFFSET_PTPR_THRESHOLD_EXP;
+84201000:	f1 88       	rMAC = M[r4 + 12];
+84201002:	81 f0 01 8e 	M[r6 + 4] = rMAC;
+    p_hc->ptpr_threshold_dc_bexp = \
+        p_params->OFFSET_PTPR_THRESHOLD_DC_BEXP;
+84201006:	71 89       	rMAC = M[r4 + 20];
+84201008:	81 f0 02 8e 	M[r6 + 8] = rMAC;
+    p_hc->papr_threshold_shift = p_params->OFFSET_PAPR_THRESHOLD_SHIFT;
+8420100c:	b1 89       	rMAC = M[r4 + 24];
+8420100e:	81 f0 03 8e 	M[r6 + 12] = rMAC;
+    p_hc->pnpr_threshold = p_params->OFFSET_PNPR_THRESHOLD;
+84201012:	f1 89       	rMAC = M[r4 + 28];
+84201014:	81 f0 04 8e 	M[r6 + 16] = rMAC;
+    p_hc->ifpr_growth_scale = p_params->OFFSET_IFPR_GROWTH_SCALE;
+84201018:	31 98       	rMAC = M[r4 + 32];
+8420101a:	81 f0 05 8e 	M[r6 + 20] = rMAC;
+    p_hc->bin1_trigger_detect_count = \
+        p_params->OFFSET_BIN1_TRIGGER_DETECT_COUNT;
+8420101e:	71 98       	rMAC = M[r4 + 36];
+84201020:	81 f0 06 8e 	M[r6 + 24] = rMAC;
+    p_hc->bin1_frame_reset_count = \
+        p_params->OFFSET_BIN1_FRAME_RESET_COUNT;
+84201024:	b1 98       	rMAC = M[r4 + 40];
+84201026:	81 f0 07 8e 	M[r6 + 28] = rMAC;
+    p_hc->counter_regular = p_params->OFFSET_COUNTER_REGULAR;
+8420102a:	71 99       	rMAC = M[r4 + 52];
+8420102c:	81 f0 08 8e 	M[r6 + 32] = rMAC;
+    p_hc->no_hc_below_bin_num = p_params->OFFSET_NOP_BELOW_BIN;
+84201030:	b1 88       	rMAC = M[r4 + 8];
+84201032:	81 f0 0b 8e 	M[r6 + 44] = rMAC;
+
+    aanc_hc100_initialize(f_handle, p_hc, p_hcgr->p_afb);
+84201036:	bc 88       	r2 = M[r5 + 8];
+84201038:	43 08       	r1 = r6 + Null;
+8420103a:	4a 08       	r0 = r7 + Null;
+8420103c:	05 f0 25 eb 	call (m) $_aanc_hc100_initialize;
+
+    p_hcgr->attack_tc = \
+        aanc_utils_convert_time_to_tc(p_params->OFFSET_GAIN_ATTACK_TIME,
+                                      p_hcgr->ahm_minimal_period_samples,
+                                      sample_rate);
+84201040:	73 f0 21 88 	r1 = M[r5 + 132];
+84201044:	72 b8       	r0 = M[r4 + 100];
+84201046:	54 08       	r2 = r8 + Null;
+84201048:	fa ff 38 eb 	call $_aanc_utils_convert_time_to_tc;
+8420104c:	72 f0 20 8e 	M[r5 + 128] = r0;
+    p_hcgr->slow_recovery_thresh = \
+        p_params->OFFSET_SLOW_RECOVERY_GAIN_THRESHOLD;
+84201050:	b1 b9       	rMAC = M[r4 + 120];
+84201052:	71 f0 25 8e 	M[r5 + 148] = rMAC;
+
+    /* Initialize latch values */
+    p_hcgr->latch_max_bin = HCGR_RESET_VALUE;
+84201056:	41 24       	rMAC = Null - 1;
+84201058:	b9 af       	M[r5 + 88] = rMAC;
+    p_hcgr->latch_bexp = HCGR_RESET_VALUE;
+8420105a:	f9 af       	M[r5 + 92] = rMAC;
+
+    p_hcgr->minimum_fb_gain = p_params->OFFSET_MINIMUM_FB_GAIN;
+8420105c:	31 b8       	rMAC = M[r4 + 96];
+8420105e:	71 f0 24 8e 	M[r5 + 144] = rMAC;
+    p_hcgr->fb_release_active = FALSE;
+84201062:	b8 9e       	M[r5 + 40] = Null;
+
+    p_hcgr->minimum_ff_gain = p_params->OFFSET_MINIMUM_FF_GAIN;
+84201064:	f1 a9       	rMAC = M[r4 + 92];
+84201066:	71 f0 23 8e 	M[r5 + 140] = rMAC;
+    p_hcgr->ff_release_active = FALSE;
+8420106a:	78 9e       	M[r5 + 36] = Null;
+
+8420106c <Lc_hcgr_proc_intialize_2>:
+    return;
+8420106c:	70 4c       	SP = SP + -64;
+8420106e:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84201070:	d8 4c       	rts;
+
+84201072 <$_hcgr_proc_create>:
+}
+
+bool hcgr_proc_create(hcgr_t *p_hcgr, HCGR_PARAMETERS *p_params, void **f_handle)
+{
+84201072:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84201074:	16 00       	r4 = r0 + Null;
+84201076:	1f 00       	r5 = r1 + Null;
+84201078:	20 09       	r6 = r2 + Null;
+    /* Allocate AFB */
+    p_hcgr->p_afb = xzpmalloc(aanc_afb_bytes());
+8420107a:	06 f0 3d e6 	call (m) $_aanc_afb_bytes;
+8420107e:	c3 20       	r1 = Null + 3;
+84201080:	ff fd 2f f0 	call (m) 0x6f8e;
+84201084:	2f e8 
+    if (p_hcgr->p_afb == NULL)
+84201086:	b2 8e       	M[r4 + 8] = r0;
+84201088:	0f 62       	if NE jump (m) Lc_hcgr_proc_create_5;
+
+8420108a <Lc_hcgr_proc_create_2>:
+    {
+        L2_DBG_MSG1("OPID: %x, HCGR failed to allocate AFB on HCGR", p_hcgr->ext_op_id);
+8420108a:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420108e:	88 24       	Null = rMAC - 2;
+84201090:	09 68       	if LT jump (m) Lc_hcgr_proc_create_4;
+
+84201092 <Lc_hcgr_proc_create_3>:
+84201092:	63 f0 26 88 	r1 = M[r4 + 152];
+84201096:	55 f1 02 f0 	r0 = Null + 357565203;
+8420109a:	13 43 
+8420109c:	ff fd 00 f0 	call (m) 0x10c2;
+842010a0:	27 e1 
+
+842010a2 <Lc_hcgr_proc_create_4>:
+        return FALSE;
+842010a2:	02 00       	r0 = Null + Null;
+842010a4:	39 6e       	jump (m) Lc_hcgr_proc_create_9;
+
+842010a6 <Lc_hcgr_proc_create_5>:
+    }
+    aanc_afb_create(p_hcgr->p_afb);
+842010a6:	06 f0 37 e5 	call (m) $_aanc_afb_create;
+
+    /* Allocate HC Memory */
+    p_hcgr->p_hc = (HC100_DMX*) xzppmalloc(aanc_hc100_dmx_bytes(),
+                                           MALLOC_PREFERENCE_NONE);
+842010aa:	05 f0 21 e5 	call (m) $_aanc_hc100_dmx_bytes;
+842010ae:	c3 20       	r1 = Null + 3;
+842010b0:	ff fd 2f f0 	call (m) 0x6f8e;
+842010b4:	3f e6 
+842010b6:	f2 8e       	M[r4 + 12] = r0;
+    p_hcgr->p_hc_dm1 = (uint8*) xzppmalloc(aanc_hc100_dm1_bytes(),
+                                           MALLOC_PREFERENCE_DM1);
+842010b8:	05 f0 39 e4 	call (m) $_aanc_hc100_dm1_bytes;
+842010bc:	43 20       	r1 = Null + 1;
+842010be:	ff fd 2f f0 	call (m) 0x6f8e;
+842010c2:	31 e6 
+842010c4:	32 8f       	M[r4 + 16] = r0;
+    p_hcgr->p_hc_dm2 = (uint8*) xzppmalloc(aanc_hc100_dm2_bytes(),
+                                           MALLOC_PREFERENCE_DM2);
+842010c6:	05 f0 31 e4 	call (m) $_aanc_hc100_dm2_bytes;
+842010ca:	83 20       	r1 = Null + 2;
+842010cc:	ff fd 2f f0 	call (m) 0x6f8e;
+842010d0:	23 e6 
+842010d2:	14 00       	r2 = r0 + Null;
+842010d4:	74 8f       	M[r4 + 20] = r2;
+
+    /* Create HC100 data structure  */
+    aanc_hc100_create(p_hcgr->p_hc, p_hcgr->p_hc_dm1, p_hcgr->p_hc_dm2);
+842010d6:	33 89       	r1 = M[r4 + 16];
+842010d8:	f2 88       	r0 = M[r4 + 12];
+842010da:	05 f0 23 e4 	call (m) $_aanc_hc100_create;
+
+    hcgr_init_filter_path(p_hcgr, p_params);
+842010de:	3b 00       	r1 = r5 + Null;
+842010e0:	32 00       	r0 = r4 + Null;
+842010e2:	60 4f       	call (m) $_hcgr_init_filter_path;
+
+    p_hcgr->ahm_minimal_period_samples = HCGR_DEFAULT_AHM_MINIMAL_PERIOD_SAMPLES;
+842010e4:	01 28       	rMAC = Null + 16;
+842010e6:	61 f0 21 8e 	M[r4 + 132] = rMAC;
+    p_hcgr->gain_recovery_rate = p_params->OFFSET_GAIN_RECOVERY_RATE;
+842010ea:	f9 b8       	rMAC = M[r5 + 108];
+842010ec:	61 f0 22 8e 	M[r4 + 136] = rMAC;
+
+    if (!load_aanc_handle(f_handle))
+842010f0:	42 08       	r0 = r6 + Null;
+842010f2:	05 f0 39 ee 	call (m) $_load_aanc_handle;
+842010f6:	10 04       	Null = r0 - Null;
+842010f8:	0e 62       	if NE jump (m) Lc_hcgr_proc_create_8;
+
+842010fa <Lc_hcgr_proc_create_6>:
+    {
+        L2_DBG_MSG1("OPID: %x, HCGR failed to load feature handle", p_hcgr->ext_op_id);
+842010fa:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842010fe:	88 24       	Null = rMAC - 2;
+84201100:	d1 69       	if LT jump (m) Lc_hcgr_proc_create_4;
+
+84201102 <Lc_hcgr_proc_create_7>:
+84201102:	63 f0 26 88 	r1 = M[r4 + 152];
+84201106:	55 f1 02 f0 	r0 = Null + 357565249;
+8420110a:	41 43 
+8420110c:	ef fd ff ff 	call (m) 0x10c2;
+84201110:	37 ed 
+84201112:	c8 6f       	jump (m) Lc_hcgr_proc_create_4;
+
+84201114 <Lc_hcgr_proc_create_8>:
+        return FALSE;
+    }
+    return TRUE;
+84201114:	42 20       	r0 = Null + 1;
+
+84201116 <Lc_hcgr_proc_create_9>:
+}
+84201116:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84201118:	d8 4c       	rts;
+
+8420111a <$_hcgr_proc_recovery>:
+
+void hcgr_proc_recovery(hcgr_t *p_hcgr, HCGR_PARAMETERS *p_params)
+{
+8420111a:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+8420111c:	16 00       	r4 = r0 + Null;
+8420111e:	1a 09       	r8 = r1 + Null;
+   HC100_DMX *p_hc = p_hcgr->p_hc;               /* Pointer to Howling control data */
+84201120:	68 f0 03 88 	r6 = M[r4 + 12];
+   AHM_SHARED_FINE_GAIN *p_shared_fb_gain = p_hcgr->p_fb_fine_gain;
+84201124:	f7 99       	r5 = M[r4 + 60];
+   AHM_SHARED_FINE_GAIN *p_shared_ff_gain = p_hcgr->p_ff_fine_gain;
+84201126:	69 f0 0e 88 	r7 = M[r4 + 56];
+
+   /* Recovery process on FB path */
+   if (!p_hcgr->fb_recovery_active)
+8420112a:	30 98       	Null = M[r4 + 32];
+8420112c:	50 62       	if NE jump (m) Lc_hcgr_proc_recovery_10;
+
+8420112e <Lc_hcgr_proc_recovery_2>:
+   {
+       /* Activate on first howling detection */
+       if (p_hc->tone_detected_flag)
+8420112e:	80 f0 0e 88 	Null = M[r6 + 56];
+84201132:	4b 60       	if EQ jump (m) Lc_hcgr_proc_recovery_9;
+
+84201134 <Lc_hcgr_proc_recovery_3>:
+       {
+           p_hcgr->fb_recovery_active = TRUE;
+84201134:	41 20       	rMAC = Null + 1;
+84201136:	31 9e       	M[r4 + 32] = rMAC;
+           p_hcgr->recovery_active = TRUE;
+84201138:	b1 8f       	M[r4 + 24] = rMAC;
+
+           /* Latching happens only once and is independent of
+              FF or FB path*/
+           p_hcgr->latch_max_bin = (int)p_hc->max_bin;
+8420113a:	81 f0 10 88 	rMAC = M[r6 + 64];
+8420113e:	b1 af       	M[r4 + 88] = rMAC;
+           p_hcgr->latch_bexp = \
+               *p_hcgr->p_afb->afb.freq_output_object_ptr->exp_ptr;
+84201140:	b1 88       	rMAC = M[r4 + 8];
+84201142:	49 89       	rMAC = M[rMAC + 20];
+84201144:	89 88       	rMAC = M[rMAC + 8];
+84201146:	09 e8       	rMAC = M[rMAC + Null];
+84201148:	f1 af       	M[r4 + 92] = rMAC;
+           p_hcgr->latch_peak_power = p_hc->peak_power;
+8420114a:	81 f0 11 88 	rMAC = M[r6 + 68];
+8420114e:	31 be       	M[r4 + 96] = rMAC;
+           p_hcgr->latch_average_power_thresh = \
+                p_hc->average_power_thresh;
+84201150:	81 f0 12 88 	rMAC = M[r6 + 72];
+84201154:	71 be       	M[r4 + 100] = rMAC;
+           p_hcgr->latch_low_neighbour_pwr = p_hc->low_neighbour_pwr;
+84201156:	81 f0 14 88 	rMAC = M[r6 + 80];
+8420115a:	f1 be       	M[r4 + 108] = rMAC;
+           p_hcgr->latch_high_neighbour_pwr = p_hc->high_neighbour_pwr;
+8420115c:	81 f0 15 88 	rMAC = M[r6 + 84];
+84201160:	31 bf       	M[r4 + 112] = rMAC;
+           p_hcgr->latch_neighbour_peak_thresh = \
+               p_hc->neighbour_peak_thresh;
+84201162:	81 f0 13 88 	rMAC = M[r6 + 76];
+84201166:	b1 be       	M[r4 + 104] = rMAC;
+           p_hcgr->latch_prev_det_scaled = p_hc->prev_det_scaled;
+84201168:	81 f0 16 88 	rMAC = M[r6 + 88];
+8420116c:	71 bf       	M[r4 + 116] = rMAC;
+
+           if (p_hcgr->p_fb_nominal_gain != NULL)
+8420116e:	31 a9       	rMAC = M[r4 + 80];
+84201170:	04 60       	if EQ jump (m) Lc_hcgr_proc_recovery_5;
+
+84201172 <Lc_hcgr_proc_recovery_4>:
+           {
+               p_hcgr->fb_hw_target_gain = p_hcgr->p_fb_nominal_gain->fine;
+84201172:	49 86       	rMAC = MHU[rMAC + 2];
+84201174:	71 8e       	M[r4 + 4] = rMAC;
+84201176:	10 6e       	jump (m) Lc_hcgr_proc_recovery_8;
+
+84201178 <Lc_hcgr_proc_recovery_5>:
+           }
+           else
+           {
+               L5_DBG_MSG1("OPID: %x, HCGR Setting default target gain. Nominal \
+                           gain not linked on FB path", p_hcgr->ext_op_id);
+84201178:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420117c:	48 25       	Null = rMAC - 5;
+8420117e:	09 68       	if LT jump (m) Lc_hcgr_proc_recovery_7;
+
+84201180 <Lc_hcgr_proc_recovery_6>:
+84201180:	63 f0 26 88 	r1 = M[r4 + 152];
+84201184:	55 f1 02 f0 	r0 = Null + 357565294;
+84201188:	6e 43 
+8420118a:	ef fd ff ff 	call (m) 0x10c2;
+8420118e:	39 e9 
+
+84201190 <Lc_hcgr_proc_recovery_7>:
+               p_hcgr->fb_hw_target_gain = HCGR_DEFAULT_TARGET_GAIN;
+84201190:	01 f0 80 40 	rMAC = Null + 128;
+84201194:	71 8e       	M[r4 + 4] = rMAC;
+
+84201196 <Lc_hcgr_proc_recovery_8>:
+           }
+
+           /* Store minimum delta gain. This will be used for
+              subsequent HC detections */
+           p_hcgr->min_fb_delta_gain = (p_hcgr->minimum_fb_gain << \
+               HCGR_DIV_PRECISION ) / p_hcgr->fb_hw_target_gain;
+84201196:	62 f0 24 88 	r0 = M[r4 + 144];
+8420119a:	73 88       	r1 = M[r4 + 4];
+8420119c:	d2 56       	r0 = r0 LSHIFT 20;
+8420119e:	ff fd c7 f0 	call (m) 0x1a136;
+842011a2:	39 ec 
+           p_hcgr->min_fb_delta_gain = \
+               p_hcgr->min_fb_delta_gain << HCGR_DIV_TO_DELTA_SHIFT;
+842011a4:	d2 54       	r0 = r0 LSHIFT 4;
+842011a6:	f2 bf       	M[r4 + 124] = r0;
+           /* Update shared delta gain to target max reduction */
+           p_shared_fb_gain->gain_delta = p_hcgr->min_fb_delta_gain;
+842011a8:	3a ee       	M[r5 + Null] = r0;
+
+           /* Calculate current gain w.r.t recovery target */
+           p_shared_fb_gain->gain_current =
+               (p_hcgr->p_fb_current_gain->fine << HCGR_DIV_PRECISION) / \
+                   p_hcgr->fb_hw_target_gain;
+842011aa:	f1 a8       	rMAC = M[r4 + 76];
+842011ac:	4a 86       	r0 = MHU[rMAC + 2];
+842011ae:	d2 56       	r0 = r0 LSHIFT 20;
+842011b0:	71 88       	rMAC = M[r4 + 4];
+842011b2:	8a 4c       	Div = r0 / rMAC;
+842011b4:	c2 4c       	r0 = DivResult;
+           p_shared_fb_gain->gain_current =
+               p_shared_fb_gain->gain_current << HCGR_DIV_TO_DELTA_SHIFT;
+842011b6:	d2 54       	r0 = r0 LSHIFT 4;
+842011b8:	3a 8f       	M[r5 + 16] = r0;
+
+           p_shared_fb_gain->tc_attack = p_hcgr->attack_tc;
+842011ba:	61 f0 20 88 	rMAC = M[r4 + 128];
+842011be:	79 8e       	M[r5 + 4] = rMAC;
+           p_shared_fb_gain->tc_release = HCGR_GAIN_RELEASE_TC;
+842011c0:	ff f7 f1 f7 	rMAC = Null + 2147483647;
+842011c4:	ff 7b 
+842011c6:	b9 8e       	M[r5 + 8] = rMAC;
+
+842011c8 <Lc_hcgr_proc_recovery_9>:
+       }
+   }
+
+   if (p_hcgr->fb_recovery_active)
+842011c8:	30 98       	Null = M[r4 + 32];
+842011ca:	35 60       	if EQ jump (m) Lc_hcgr_proc_recovery_20;
+
+842011cc <Lc_hcgr_proc_recovery_10>:
+   {
+       if (!p_hc->tone_detected_flag)
+842011cc:	80 f0 0e 88 	Null = M[r6 + 56];
+842011d0:	2b 62       	if NE jump (m) Lc_hcgr_proc_recovery_18;
+
+842011d2 <Lc_hcgr_proc_recovery_11>:
+       {
+           /* Howling is mitigated at this point. Start FB gain recovery. */
+           p_hcgr->fb_release_active = TRUE;
+842011d2:	41 20       	rMAC = Null + 1;
+842011d4:	b1 9e       	M[r4 + 40] = rMAC;
+           if (p_shared_fb_gain->gain_current > p_hcgr->slow_recovery_thresh)
+842011d6:	39 89       	rMAC = M[r5 + 16];
+842011d8:	62 f0 25 88 	r0 = M[r4 + 148];
+842011dc:	88 04       	Null = rMAC - r0;
+842011de:	09 f0 9f e0 	if LS jump (m) Lc_hcgr_proc_recovery_15;
+
+842011e2 <Lc_hcgr_proc_recovery_12>:
+           {
+               if (p_hcgr->fb_slowest_recovery == TRUE)
+842011e2:	31 99       	rMAC = M[r4 + 48];
+842011e4:	48 24       	Null = rMAC - 1;
+842011e6:	06 62       	if NE jump (m) Lc_hcgr_proc_recovery_14;
+
+842011e8 <Lc_hcgr_proc_recovery_13>:
+               {
+                   p_hcgr->gain_recovery_rate = \
+                       p_params->OFFSET_GAIN_RECOVERY_RATE_SLOWEST;
+842011e8:	a1 f0 1d 88 	rMAC = M[r8 + 116];
+842011ec:	61 f0 22 8e 	M[r4 + 136] = rMAC;
+842011f0:	0a 6e       	jump (m) Lc_hcgr_proc_recovery_16;
+
+842011f2 <Lc_hcgr_proc_recovery_14>:
+               }
+               else
+               {
+                   p_hcgr->gain_recovery_rate = \
+                       p_params->OFFSET_GAIN_RECOVERY_RATE_SLOW;
+842011f2:	a1 f0 1c 88 	rMAC = M[r8 + 112];
+842011f6:	61 f0 22 8e 	M[r4 + 136] = rMAC;
+842011fa:	05 6e       	jump (m) Lc_hcgr_proc_recovery_16;
+
+842011fc <Lc_hcgr_proc_recovery_15>:
+               }
+           }
+           else
+           {
+               p_hcgr->gain_recovery_rate = \
+                   p_params->OFFSET_GAIN_RECOVERY_RATE;
+842011fc:	a1 f0 1b 88 	rMAC = M[r8 + 108];
+84201200:	61 f0 22 8e 	M[r4 + 136] = rMAC;
+
+84201204 <Lc_hcgr_proc_recovery_16>:
+           }
+           p_shared_fb_gain->gain_delta = \
+               aanc_utils_scale_gain(p_shared_fb_gain->gain_current,
+                                     p_hcgr->gain_recovery_rate);
+84201204:	63 f0 22 88 	r1 = M[r4 + 136];
+84201208:	3a 89       	r0 = M[r5 + 16];
+8420120a:	fa ff 2a e1 	call $_aanc_utils_scale_gain;
+8420120e:	3a ee       	M[r5 + Null] = r0;
+
+           if (p_shared_fb_gain->gain_current >= AHM_DELTA_NOMINAL)
+84201210:	39 89       	rMAC = M[r5 + 16];
+84201212:	00 f4 10 f0 	Null = rMAC - 16777216;
+84201216:	00 24 
+84201218:	0e 68       	if LT jump (m) Lc_hcgr_proc_recovery_20;
+
+8420121a <Lc_hcgr_proc_recovery_17>:
+           {
+               /* FB gain is completely recovered at this point.
+                  Recovery is complete on FB path */
+               p_shared_fb_gain->gain_delta = AHM_DELTA_NOMINAL;
+8420121a:	10 f0 01 f0 	rMAC = Null + 16777216;
+8420121e:	00 40 
+84201220:	39 ee       	M[r5 + Null] = rMAC;
+               p_hcgr->fb_recovery_active = FALSE;
+84201222:	30 9e       	M[r4 + 32] = Null;
+84201224:	08 6e       	jump (m) Lc_hcgr_proc_recovery_20;
+
+84201226 <Lc_hcgr_proc_recovery_18>:
+       }
+       else
+       {
+           /* We are here either because howling is not yet mitigated OR
+              there is a subsequent detection during recovery */
+           p_shared_fb_gain->gain_delta = p_hcgr->min_fb_delta_gain;
+84201226:	f1 b9       	rMAC = M[r4 + 124];
+84201228:	39 ee       	M[r5 + Null] = rMAC;
+           if (p_hcgr->fb_release_active == TRUE)
+8420122a:	b1 98       	rMAC = M[r4 + 40];
+8420122c:	48 24       	Null = rMAC - 1;
+8420122e:	03 62       	if NE jump (m) Lc_hcgr_proc_recovery_20;
+
+84201230 <Lc_hcgr_proc_recovery_19>:
+           {
+               /* We are here because of subsequent detections
+                  during recovery */
+               p_hcgr->fb_slowest_recovery = TRUE;
+84201230:	41 20       	rMAC = Null + 1;
+84201232:	31 9f       	M[r4 + 48] = rMAC;
+
+84201234 <Lc_hcgr_proc_recovery_20>:
+           }
+       }
+   }
+   /* Recovery process on FF path */
+   if (p_hcgr->hcgr_filter_path == AHM_ANC_FILTER_FF_AND_FB_ID)
+84201234:	61 f0 54 80 	rMAC = MBS[r4 + 84];
+84201238:	48 25       	Null = rMAC - 5;
+8420123a:	76 62       	if NE jump (m) Lc_hcgr_proc_recovery_40;
+
+8420123c <Lc_hcgr_proc_recovery_21>:
+   {
+       if (!p_hcgr->ff_recovery_active)
+8420123c:	f0 89       	Null = M[r4 + 28];
+8420123e:	3a 62       	if NE jump (m) Lc_hcgr_proc_recovery_30;
+
+84201240 <Lc_hcgr_proc_recovery_22>:
+       {
+           /* Activate on first howling detection */
+           if (p_hc->tone_detected_flag)
+84201240:	80 f0 0e 88 	Null = M[r6 + 56];
+84201244:	35 60       	if EQ jump (m) Lc_hcgr_proc_recovery_29;
+
+84201246 <Lc_hcgr_proc_recovery_23>:
+           {
+               p_hcgr->ff_recovery_active = TRUE;
+84201246:	41 20       	rMAC = Null + 1;
+84201248:	f1 8f       	M[r4 + 28] = rMAC;
+               p_hcgr->recovery_active = TRUE;
+8420124a:	b1 8f       	M[r4 + 24] = rMAC;
+
+               if (p_hcgr->p_ff_nominal_gain != NULL)
+8420124c:	b1 a8       	rMAC = M[r4 + 72];
+8420124e:	04 60       	if EQ jump (m) Lc_hcgr_proc_recovery_25;
+
+84201250 <Lc_hcgr_proc_recovery_24>:
+               {
+                   p_hcgr->ff_hw_target_gain = p_hcgr->p_ff_nominal_gain->fine;
+84201250:	49 86       	rMAC = MHU[rMAC + 2];
+84201252:	31 ee       	M[r4 + Null] = rMAC;
+84201254:	10 6e       	jump (m) Lc_hcgr_proc_recovery_28;
+
+84201256 <Lc_hcgr_proc_recovery_25>:
+               }
+               else
+               {
+                   L5_DBG_MSG1("OPID: %x, HCGR Setting default target gain. Nominal \
+                               gain not linked for FF path", p_hcgr->ext_op_id);
+84201256:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420125a:	48 25       	Null = rMAC - 5;
+8420125c:	09 68       	if LT jump (m) Lc_hcgr_proc_recovery_27;
+
+8420125e <Lc_hcgr_proc_recovery_26>:
+8420125e:	63 f0 26 88 	r1 = M[r4 + 152];
+84201262:	55 f1 02 f0 	r0 = Null + 357565400;
+84201266:	d8 43 
+84201268:	ef fd ff ff 	call (m) 0x10c2;
+8420126c:	3b e2 
+
+8420126e <Lc_hcgr_proc_recovery_27>:
+                   p_hcgr->ff_hw_target_gain = HCGR_DEFAULT_TARGET_GAIN;
+8420126e:	01 f0 80 40 	rMAC = Null + 128;
+84201272:	31 ee       	M[r4 + Null] = rMAC;
+
+84201274 <Lc_hcgr_proc_recovery_28>:
+               }
+
+               /* Store minimum delta gain. This will be used for
+               subsequent HC detections */
+               p_hcgr->min_ff_delta_gain = (p_hcgr->minimum_ff_gain << \
+                   HCGR_DIV_PRECISION ) / p_hcgr->ff_hw_target_gain;
+84201274:	62 f0 23 88 	r0 = M[r4 + 140];
+84201278:	33 e8       	r1 = M[r4 + Null];
+8420127a:	d2 56       	r0 = r0 LSHIFT 20;
+8420127c:	ff fd c7 f0 	call (m) 0x1a136;
+84201280:	3b e5 
+               p_hcgr->min_ff_delta_gain = \
+                   p_hcgr->min_ff_delta_gain << HCGR_DIV_TO_DELTA_SHIFT;
+84201282:	d2 54       	r0 = r0 LSHIFT 4;
+84201284:	b2 bf       	M[r4 + 120] = r0;
+               /* Update shared delta gain to target max reduction */
+               p_shared_ff_gain->gain_delta = p_hcgr->min_ff_delta_gain;
+84201286:	92 f0 00 ee 	M[r7 + Null] = r0;
+
+               /* Calculate current gain w.r.t recovery target */
+               p_shared_ff_gain->gain_current =
+                   (p_hcgr->p_ff_current_gain->fine << HCGR_DIV_PRECISION) / \
+                       p_hcgr->ff_hw_target_gain;
+8420128a:	71 a8       	rMAC = M[r4 + 68];
+8420128c:	4a 86       	r0 = MHU[rMAC + 2];
+8420128e:	d2 56       	r0 = r0 LSHIFT 20;
+84201290:	31 e8       	rMAC = M[r4 + Null];
+84201292:	8a 4c       	Div = r0 / rMAC;
+84201294:	c2 4c       	r0 = DivResult;
+               p_shared_ff_gain->gain_current =
+                   p_shared_ff_gain->gain_current << HCGR_DIV_TO_DELTA_SHIFT;
+84201296:	d2 54       	r0 = r0 LSHIFT 4;
+84201298:	92 f0 04 8e 	M[r7 + 16] = r0;
+
+               p_shared_ff_gain->tc_attack = p_hcgr->attack_tc;
+8420129c:	61 f0 20 88 	rMAC = M[r4 + 128];
+842012a0:	91 f0 01 8e 	M[r7 + 4] = rMAC;
+               p_shared_ff_gain->tc_release = HCGR_GAIN_RELEASE_TC;
+842012a4:	ff f7 f1 f7 	rMAC = Null + 2147483647;
+842012a8:	ff 7b 
+842012aa:	91 f0 02 8e 	M[r7 + 8] = rMAC;
+
+842012ae <Lc_hcgr_proc_recovery_29>:
+           }
+       }
+
+       if (p_hcgr->ff_recovery_active)
+842012ae:	f0 89       	Null = M[r4 + 28];
+842012b0:	3b 60       	if EQ jump (m) Lc_hcgr_proc_recovery_40;
+
+842012b2 <Lc_hcgr_proc_recovery_30>:
+       {
+           if (!p_hc->tone_detected_flag)
+842012b2:	80 f0 0e 88 	Null = M[r6 + 56];
+842012b6:	30 62       	if NE jump (m) Lc_hcgr_proc_recovery_38;
+
+842012b8 <Lc_hcgr_proc_recovery_31>:
+           {
+               /* Howling is mitigated at this point. Start FF gain recovery. */
+               p_hcgr->ff_release_active = TRUE;
+842012b8:	41 20       	rMAC = Null + 1;
+842012ba:	71 9e       	M[r4 + 36] = rMAC;
+               if (p_shared_ff_gain->gain_current > p_hcgr->slow_recovery_thresh)
+842012bc:	91 f0 04 88 	rMAC = M[r7 + 16];
+842012c0:	62 f0 25 88 	r0 = M[r4 + 148];
+842012c4:	88 04       	Null = rMAC - r0;
+842012c6:	09 f0 9f e0 	if LS jump (m) Lc_hcgr_proc_recovery_35;
+
+842012ca <Lc_hcgr_proc_recovery_32>:
+               {
+                   if (p_hcgr->ff_slowest_recovery == TRUE)
+842012ca:	f1 98       	rMAC = M[r4 + 44];
+842012cc:	48 24       	Null = rMAC - 1;
+842012ce:	06 62       	if NE jump (m) Lc_hcgr_proc_recovery_34;
+
+842012d0 <Lc_hcgr_proc_recovery_33>:
+                   {
+                       p_hcgr->gain_recovery_rate = \
+                           p_params->OFFSET_GAIN_RECOVERY_RATE_SLOWEST;
+842012d0:	a1 f0 1d 88 	rMAC = M[r8 + 116];
+842012d4:	61 f0 22 8e 	M[r4 + 136] = rMAC;
+842012d8:	0a 6e       	jump (m) Lc_hcgr_proc_recovery_36;
+
+842012da <Lc_hcgr_proc_recovery_34>:
+                   }
+                   else
+                   {
+                       p_hcgr->gain_recovery_rate = \
+                           p_params->OFFSET_GAIN_RECOVERY_RATE_SLOW;
+842012da:	a1 f0 1c 88 	rMAC = M[r8 + 112];
+842012de:	61 f0 22 8e 	M[r4 + 136] = rMAC;
+842012e2:	05 6e       	jump (m) Lc_hcgr_proc_recovery_36;
+
+842012e4 <Lc_hcgr_proc_recovery_35>:
+                   }
+               }
+               else
+               {
+                   p_hcgr->gain_recovery_rate = \
+                       p_params->OFFSET_GAIN_RECOVERY_RATE;
+842012e4:	a1 f0 1b 88 	rMAC = M[r8 + 108];
+842012e8:	61 f0 22 8e 	M[r4 + 136] = rMAC;
+
+842012ec <Lc_hcgr_proc_recovery_36>:
+               }
+               p_shared_ff_gain->gain_delta = \
+                   aanc_utils_scale_gain(p_shared_ff_gain->gain_current,
+                                       p_hcgr->gain_recovery_rate);
+842012ec:	63 f0 22 88 	r1 = M[r4 + 136];
+842012f0:	92 f0 04 88 	r0 = M[r7 + 16];
+842012f4:	f9 ff 20 ea 	call $_aanc_utils_scale_gain;
+842012f8:	92 f0 00 ee 	M[r7 + Null] = r0;
+
+               if (p_shared_ff_gain->gain_current >= AHM_DELTA_NOMINAL)
+842012fc:	91 f0 04 88 	rMAC = M[r7 + 16];
+84201300:	00 f4 10 f0 	Null = rMAC - 16777216;
+84201304:	00 24 
+84201306:	10 68       	if LT jump (m) Lc_hcgr_proc_recovery_40;
+
+84201308 <Lc_hcgr_proc_recovery_37>:
+               {
+                   /* FF gain is completely recovered at this point.
+                   Recovery is complete on FF path */
+                   p_shared_ff_gain->gain_delta = AHM_DELTA_NOMINAL;
+84201308:	10 f0 01 f0 	rMAC = Null + 16777216;
+8420130c:	00 40 
+8420130e:	91 f0 00 ee 	M[r7 + Null] = rMAC;
+                   p_hcgr->ff_recovery_active = FALSE;
+84201312:	f0 8f       	M[r4 + 28] = Null;
+84201314:	09 6e       	jump (m) Lc_hcgr_proc_recovery_40;
+
+84201316 <Lc_hcgr_proc_recovery_38>:
+           }
+           else
+           {
+               /* We are here either because howling is not yet mitigated OR
+               there is a subsequent detection during recovery */
+               p_shared_ff_gain->gain_delta = p_hcgr->min_ff_delta_gain;
+84201316:	b1 b9       	rMAC = M[r4 + 120];
+84201318:	91 f0 00 ee 	M[r7 + Null] = rMAC;
+               if (p_hcgr->ff_release_active == TRUE)
+8420131c:	71 98       	rMAC = M[r4 + 36];
+8420131e:	48 24       	Null = rMAC - 1;
+84201320:	03 62       	if NE jump (m) Lc_hcgr_proc_recovery_40;
+
+84201322 <Lc_hcgr_proc_recovery_39>:
+               {
+                   /* We are here because of subsequent detections
+                   during recovery */
+                   p_hcgr->ff_slowest_recovery = TRUE;
+84201322:	41 20       	rMAC = Null + 1;
+84201324:	f1 9e       	M[r4 + 44] = rMAC;
+
+84201326 <Lc_hcgr_proc_recovery_40>:
+               }
+           }
+       }
+   }
+
+   if (p_hcgr->recovery_active == TRUE)
+84201326:	b1 89       	rMAC = M[r4 + 24];
+84201328:	48 24       	Null = rMAC - 1;
+8420132a:	13 62       	if NE jump (m) Lc_hcgr_proc_recovery_44;
+
+8420132c <Lc_hcgr_proc_recovery_41>:
+   {
+       if ((p_hcgr->ff_recovery_active == FALSE) &&
+           (p_hcgr->fb_recovery_active == FALSE))
+8420132c:	f0 89       	Null = M[r4 + 28];
+8420132e:	11 62       	if NE jump (m) Lc_hcgr_proc_recovery_44;
+
+84201330 <Lc_hcgr_proc_recovery_42>:
+84201330:	30 98       	Null = M[r4 + 32];
+84201332:	0f 62       	if NE jump (m) Lc_hcgr_proc_recovery_44;
+
+84201334 <Lc_hcgr_proc_recovery_43>:
+       {
+           /* Recovery on both paths complete */
+           p_hcgr->recovery_active = FALSE;
+84201334:	b0 8f       	M[r4 + 24] = Null;
+           p_hcgr->fb_release_active = FALSE;
+84201336:	b0 9e       	M[r4 + 40] = Null;
+           p_hcgr->fb_slowest_recovery = FALSE;
+84201338:	30 9f       	M[r4 + 48] = Null;
+           p_hcgr->ff_release_active = FALSE;
+8420133a:	70 9e       	M[r4 + 36] = Null;
+           p_hcgr->ff_slowest_recovery = FALSE;
+8420133c:	f0 9e       	M[r4 + 44] = Null;
+           /* Release latched values */
+           p_hcgr->latch_max_bin = HCGR_RESET_VALUE;
+8420133e:	41 24       	rMAC = Null - 1;
+84201340:	b1 af       	M[r4 + 88] = rMAC;
+           p_hcgr->latch_bexp = HCGR_RESET_VALUE;
+84201342:	f1 af       	M[r4 + 92] = rMAC;
+           p_hcgr->latch_peak_power = HCGR_RESET_VALUE;
+84201344:	31 be       	M[r4 + 96] = rMAC;
+           p_hcgr->latch_average_power_thresh = HCGR_RESET_VALUE;
+84201346:	71 be       	M[r4 + 100] = rMAC;
+           p_hcgr->latch_low_neighbour_pwr = HCGR_RESET_VALUE;
+84201348:	f1 be       	M[r4 + 108] = rMAC;
+           p_hcgr->latch_high_neighbour_pwr = HCGR_RESET_VALUE;
+8420134a:	31 bf       	M[r4 + 112] = rMAC;
+           p_hcgr->latch_neighbour_peak_thresh = HCGR_RESET_VALUE;
+8420134c:	b1 be       	M[r4 + 104] = rMAC;
+           p_hcgr->latch_prev_det_scaled = HCGR_RESET_VALUE;
+8420134e:	71 bf       	M[r4 + 116] = rMAC;
+
+84201350 <Lc_hcgr_proc_recovery_44>:
+       }
+   }
+   return;
+}
+84201350:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84201352:	d8 4c       	rts;
+
+84201354 <$_HCGR_GetDefaults>:
+84201354:	20 f0 d8 24 	Null = r0 - 216;
+   0x01002DE0u,			// GAIN_RECOVERY_RATE_SLOWEST
+   0x0019999Au			// SLOW_RECOVERY_GAIN_THRESHOLD
+};
+
+unsigned *HCGR_GetDefaults(unsigned capid){
+	switch(capid){
+84201358:	05 60       	if EQ jump (m) Lc_HCGR_GetDefaults_3;
+
+8420135a <Lc_HCGR_GetDefaults_2>:
+8420135a:	01 f0 20 f0 	Null = r0 - 16569;
+8420135e:	b9 24 
+84201360:	05 62       	if NE jump (m) Lc_HCGR_GetDefaults_4;
+
+84201362 <Lc_HCGR_GetDefaults_3>:
+		case 0x00D8: return defaults_hcgrHCGR_16K;
+84201362:	f1 ff 02 f3 	r0 = Null + -15335424;
+84201366:	00 40 
+84201368:	02 6e       	jump (m) Lc_HCGR_GetDefaults_5;
+
+8420136a <Lc_HCGR_GetDefaults_4>:
+		case 0x40B9: return defaults_hcgrHCGR_16K;
+	}
+	return((unsigned *)0);
+8420136a:	02 00       	r0 = Null + Null;
+
+8420136c <Lc_HCGR_GetDefaults_5>:
+8420136c:	d8 4c       	rts;
+
+8420136e <$_aud_cur_create>:
+8420136e:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+}
+
+bool aud_cur_create(OPERATOR_DATA *op_data,
+                    unsigned max_sources,
+                    unsigned max_sinks)
+{
+84201370:	16 00       	r4 = r0 + Null;
+84201372:	1f 00       	r5 = r1 + Null;
+84201374:	20 09       	r6 = r2 + Null;
+
+    unsigned input_size, output_size;
+    AUDIO_CURATION_DEF *ptr;
+
+    /* Allocate class data including space for linked lists */
+    output_size = max_sources * sizeof(tCbuffer);
+84201376:	3a 47       	r0 = r5 * 28 (int);
+    input_size = max_sinks * sizeof(tCbuffer);
+84201378:	0e f8 91 c9 	rMAC = r6 * 28 (int);
+
+    ptr = (AUDIO_CURATION_DEF*)xzpmalloc(sizeof(AUDIO_CURATION_DEF) + \
+        input_size + output_size);
+8420137c:	c3 20       	r1 = Null + 3;
+8420137e:	51 00       	rMAC = r0 + rMAC;
+84201380:	12 f0 64 20 	r0 = rMAC + 100;
+84201384:	ff fd 2e f0 	call (m) 0x6f8e;
+84201388:	2b e0 
+8420138a:	11 09       	r7 = r0 + Null;
+
+    if (ptr == NULL)
+8420138c:	0d 62       	if NE jump (m) Lc_aud_cur_create_5;
+
+8420138e <Lc_aud_cur_create_2>:
+    {
+          L4_DBG_MSG("base aud cur create: class allocation failed.");
+8420138e:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84201392:	08 25       	Null = rMAC - 4;
+84201394:	07 68       	if LT jump (m) Lc_aud_cur_create_4;
+
+84201396 <Lc_aud_cur_create_3>:
+84201396:	55 f1 02 f0 	r0 = Null + 357565943;
+8420139a:	f7 49 
+8420139c:	ef fd fe ff 	call (m) 0x10b0;
+842013a0:	35 e8 
+
+842013a2 <Lc_aud_cur_create_4>:
+          return FALSE;
+842013a2:	02 00       	r0 = Null + Null;
+842013a4:	22 6e       	jump (m) Lc_aud_cur_create_6;
+
+842013a6 <Lc_aud_cur_create_5>:
+    }
+
+    ptr->sources.max = (uint16)max_sources;
+842013a6:	97 f0 0a 8c 	MH[r7 + 20] = r5;
+    ptr->sinks.max = (uint16)max_sinks;
+842013aa:	98 f0 04 8c 	MH[r7 + 8] = r6;
+
+    ptr->sinks.p_buffer_list = (tCbuffer**)&ptr->buffer_data;
+842013ae:	91 f0 64 20 	rMAC = r7 + 100;
+842013b2:	91 f0 04 8e 	M[r7 + 16] = rMAC;
+    ptr->sources.p_buffer_list = ptr->sinks.p_buffer_list + max_sources;
+842013b6:	7a 54       	r0 = r5 LSHIFT 2;
+842013b8:	51 00       	rMAC = r0 + rMAC;
+842013ba:	91 f0 07 8e 	M[r7 + 28] = rMAC;
+
+    ptr->buffer_size = 2 * AUD_CUR_DEFAULT_BLOCK_SIZE;
+842013be:	81 20       	rMAC = Null + 2;
+842013c0:	91 f0 08 8e 	M[r7 + 32] = rMAC;
+    ptr->block_size  = AUD_CUR_DEFAULT_BLOCK_SIZE;
+842013c4:	41 20       	rMAC = Null + 1;
+842013c6:	91 f0 09 8e 	M[r7 + 36] = rMAC;
+
+    ptr->cap_id = base_op_get_cap_id(op_data);
+842013ca:	32 00       	r0 = r4 + Null;
+842013cc:	ef fd fa ff 	call (m) 0x8ee;
+842013d0:	23 e9 
+842013d2:	92 f0 0f 8e 	M[r7 + 60] = r0;
+
+    ptr->re_init_flag = TRUE;
+842013d6:	41 20       	rMAC = Null + 1;
+842013d8:	91 f0 00 ea 	MB[r7 + Null] = rMAC;
+ * \return - NONE
+ */
+static inline void set_class_data(OPERATOR_DATA *op_data,
+                                  AUDIO_CURATION_DEF *class_data)
+{
+    base_op_set_class_ext(op_data, class_data);
+842013dc:	4b 08       	r1 = r7 + Null;
+842013de:	32 00       	r0 = r4 + Null;
+842013e0:	ef fd fa ff 	call (m) 0x938;
+842013e4:	39 ea 
+    ptr->re_init_flag = TRUE;
+
+    /* Save Pointer to channel definition in operator data */
+    set_class_data(op_data, ptr);
+
+    return TRUE;
+842013e6:	42 20       	r0 = Null + 1;
+
+842013e8 <Lc_aud_cur_create_6>:
+}
+842013e8:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+842013ea:	d8 4c       	rts;
+
+842013ec <$_aud_cur_destroy>:
+
+void aud_cur_destroy(OPERATOR_DATA *op_data)
+{
+842013ec:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+842013ee:	16 00       	r4 = r0 + Null;
+ * \return - Pointer to the class data
+ */
+
+static inline AUDIO_CURATION_DEF *get_class_data(OPERATOR_DATA *op_data)
+{
+    return (AUDIO_CURATION_DEF *) base_op_get_class_ext(op_data);
+842013f0:	ef fd fa ff 	call (m) 0x934;
+842013f4:	25 ea 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    if (p_class_data == NULL)
+842013f6:	10 04       	Null = r0 - Null;
+842013f8:	09 60       	if EQ jump (m) Lc_aud_cur_destroy_3;
+
+842013fa <Lc_aud_cur_destroy_2>:
+    {
+        return;
+    }
+
+    pfree(p_class_data);
+842013fa:	ff fd 2d f0 	call (m) 0x6fbe;
+842013fe:	25 ee 
+    set_class_data(op_data, NULL);
+84201400:	03 00       	r1 = Null + Null;
+ * \return - NONE
+ */
+static inline void set_class_data(OPERATOR_DATA *op_data,
+                                  AUDIO_CURATION_DEF *class_data)
+{
+    base_op_set_class_ext(op_data, class_data);
+84201402:	32 00       	r0 = r4 + Null;
+84201404:	ef fd fa ff 	call (m) 0x938;
+84201408:	35 e9 
+
+8420140a <Lc_aud_cur_destroy_3>:
+    }
+
+    pfree(p_class_data);
+    set_class_data(op_data, NULL);
+    return;
+}
+8420140a:	f1 48       	popm <FP, r4, rLink>;
+8420140c:	d8 4c       	rts;
+
+8420140e <$_aud_cur_connect>:
+
+bool aud_cur_connect(OPERATOR_DATA *op_data,
+                     void *message_data,
+                     unsigned *response_id,
+                     void **response_data)
+{
+8420140e:	c8 1c       	pushm <FP(=SP), rLink>;
+    return aud_cur_connect_common(op_data,
+                                  message_data,
+                                  response_id,
+                                  response_data,
+                                  TRUE);
+84201410:	00 f0 51 e0 	push Null + 1;
+84201414:	02 f0 3f ec 	call (m) Lc_aud_cur_connect_common_1;
+84201418:	7f 4c       	SP = SP + -4;
+
+8420141a <Lc_aud_cur_connect_2>:
+}
+8420141a:	c8 48       	popm <FP, rLink>;
+8420141c:	d8 4c       	rts;
+
+8420141e <$_aud_cur_disconnect>:
+
+bool aud_cur_disconnect(OPERATOR_DATA *op_data,
+                        void *message_data,
+                        unsigned *response_id,
+                        void **response_data)
+{
+8420141e:	c8 1c       	pushm <FP(=SP), rLink>;
+    return aud_cur_connect_common(op_data,
+                                  message_data,
+                                  response_id,
+                                  response_data,
+                                  FALSE);
+84201420:	00 f0 30 cf 	push Null;
+84201424:	02 f0 2f ec 	call (m) Lc_aud_cur_connect_common_1;
+84201428:	7f 4c       	SP = SP + -4;
+
+8420142a <Lc_aud_cur_disconnect_2>:
+}
+8420142a:	c8 48       	popm <FP, rLink>;
+8420142c:	d8 4c       	rts;
+
+8420142e <$_aud_cur_buffer_details>:
+
+bool aud_cur_buffer_details(OPERATOR_DATA *op_data,
+                            void *message_data,
+                            unsigned *response_id,
+                            void **response_data)
+{
+8420142e:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+84201430:	17 00       	r5 = r0 + Null;
+84201432:	19 09       	r7 = r1 + Null;
+84201434:	2e 00       	r4 = r3 + Null;
+84201436:	ef fd fa ff 	call (m) 0x934;
+8420143a:	3f e7 
+8420143c:	10 09       	r6 = r0 + Null;
+    tCbuffer **p_metadata;
+    unsigned terminal_id, buffer_size;
+    uint16 terminal_num;
+    bool is_sink;
+
+    if (!base_op_buffer_details_lite(op_data, response_data))
+8420143e:	33 00       	r1 = r4 + Null;
+84201440:	3a 00       	r0 = r5 + Null;
+84201442:	ef fd fa ff 	call (m) 0x842;
+84201446:	21 e0 
+84201448:	10 04       	Null = r0 - Null;
+8420144a:	03 62       	if NE jump (m) Lc_aud_cur_buffer_details_3;
+
+8420144c <Lc_aud_cur_buffer_details_2>:
+    {
+        return FALSE;
+8420144c:	02 00       	r0 = Null + Null;
+8420144e:	4f 6e       	jump (m) Lc_aud_cur_buffer_details_20;
+
+84201450 <Lc_aud_cur_buffer_details_3>:
+    }
+
+    p_resp = (OP_BUF_DETAILS_RSP*) *response_data;
+84201450:	31 e8       	rMAC = M[r4 + Null];
+
+    /* Make sure the buffer size is at least adequate for the capability */
+    buffer_size = p_resp->b.buffer_size;
+84201452:	4f 89       	r5 = M[rMAC + 20];
+    if (buffer_size < p_class_data->buffer_size)
+84201454:	82 f0 08 88 	r0 = M[r6 + 32];
+84201458:	b8 04       	Null = r5 - r0;
+8420145a:	02 f0 87 e0 	if C jump (m) Lc_aud_cur_buffer_details_5;
+
+8420145e <Lc_aud_cur_buffer_details_4>:
+    {
+        buffer_size = p_class_data->buffer_size;
+8420145e:	17 00       	r5 = r0 + Null;
+
+84201460 <Lc_aud_cur_buffer_details_5>:
+    }
+
+    terminal_id = OPMGR_GET_OP_CONNECT_TERMINAL_ID(message_data);
+84201460:	95 f0 00 e8 	r3 = M[r7 + Null];
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+84201464:	ab c2       	r1 = r3 AND 0x3f;
+    is_sink = terminal_id & TERMINAL_SINK_MASK;
+
+    /* Setup the selected terminal */
+    if (is_sink)
+84201466:	40 f0 52 f0 	r0 = r3 AND 0x800000;
+8420146a:	00 00 
+8420146c:	07 60       	if EQ jump (m) Lc_aud_cur_buffer_details_7;
+
+8420146e <Lc_aud_cur_buffer_details_6>:
+    {
+        /* Select source (opposite to the given buffer) */
+        p_opposite_terminal = &p_class_data->sources;
+8420146e:	84 f0 14 20 	r2 = r6 + 20;
+84201472:	22 00       	r0 = r2 + Null;
+        p_metadata = p_class_data->metadata_ip;
+84201474:	04 f0 40 44 	r2 = r2 + 64;
+84201478:	06 6e       	jump (m) Lc_aud_cur_buffer_details_8;
+
+8420147a <Lc_aud_cur_buffer_details_7>:
+    }
+    else
+    {
+        /* Select sink (opposite to the given buffer) */
+        p_opposite_terminal = &p_class_data->sinks;
+8420147a:	84 f0 08 20 	r2 = r6 + 8;
+8420147e:	22 00       	r0 = r2 + Null;
+        p_metadata = p_class_data->metadata_op;
+84201480:	04 f0 54 44 	r2 = r2 + 84;
+
+84201484 <Lc_aud_cur_buffer_details_8>:
+    }
+
+    if (p_class_data->in_place_flag)
+84201484:	89 f0 01 82 	r7 = MBU[r6 + 1];
+84201488:	22 60       	if EQ jump (m) Lc_aud_cur_buffer_details_14;
+
+8420148a <Lc_aud_cur_buffer_details_9>:
+    {
+        /* Make sure the terminal is valid */
+        if (terminal_num >= p_opposite_terminal->max)
+8420148a:	29 f0 00 e6 	r7 = MHU[r0 + Null];
+8420148e:	9f f3 00 c2 	Null = r1 - r7;
+84201492:	10 68       	if LT jump (m) Lc_aud_cur_buffer_details_13;
+
+84201494 <Lc_aud_cur_buffer_details_10>:
+        {
+            L4_DBG_MSG1("base aud cur details: invalid terminal number %d",
+                        terminal_num);
+84201494:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84201498:	08 25       	Null = rMAC - 4;
+8420149a:	07 68       	if LT jump (m) Lc_aud_cur_buffer_details_12;
+
+8420149c <Lc_aud_cur_buffer_details_11>:
+8420149c:	55 f1 02 f0 	r0 = Null + 357565989;
+842014a0:	25 4a 
+842014a2:	ef fd fe ff 	call (m) 0x10c2;
+842014a6:	21 e1 
+
+842014a8 <Lc_aud_cur_buffer_details_12>:
+842014a8:	01 f0 00 60 	rMAC = Null + 4096;
+842014ac:	32 e8       	r0 = M[r4 + Null];
+842014ae:	51 8e       	M[r0 + 4] = rMAC;
+842014b0:	1d 6e       	jump (m) Lc_aud_cur_buffer_details_19;
+
+842014b2 <Lc_aud_cur_buffer_details_13>:
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+        }
+
+        /* Setup in-place payload */
+        p_resp->runs_in_place = TRUE;
+842014b2:	46 20       	r4 = Null + 1;
+842014b4:	ce 9a       	MB[rMAC + 11] = r4;
+        p_resp->b.in_place_buff_params.in_place_terminal = \
+            SWAP_TERMINAL_DIRECTION(terminal_id);
+842014b6:	08 f0 00 f0 	r3 = r3 XOR 0x800000;
+842014ba:	00 f5 95 c8 
+842014be:	4d 8f       	M[rMAC + 20] = r3;
+        p_resp->b.in_place_buff_params.size = buffer_size;
+842014c0:	8f 8f       	M[rMAC + 24] = r5;
+ * \return - pointer to the terminal cbuffer
+ */
+static inline tCbuffer *aud_cur_get_terminal(AUD_CUR_TERMINAL *p_def,
+                                             uint16 num)
+{
+    return p_def->p_buffer_list[num];
+842014c2:	92 88       	r0 = M[r0 + 8];
+842014c4:	5d 54       	r3 = r1 LSHIFT 2;
+842014c6:	52 e9       	r0 = M[r0 + r3];
+}
+842014c8:	ca 8f       	M[rMAC + 28] = r0;
+842014ca:	03 6e       	jump (m) Lc_aud_cur_buffer_details_15;
+
+842014cc <Lc_aud_cur_buffer_details_14>:
+        p_resp->b.in_place_buff_params.buffer = \
+            aud_cur_get_terminal(p_opposite_terminal, terminal_num);
+    }
+    else
+    {
+        p_resp->runs_in_place = FALSE;
+842014cc:	c8 9a       	MB[rMAC + 11] = Null;
+        p_resp->b.buffer_size = buffer_size;
+842014ce:	4f 8f       	M[rMAC + 20] = r5;
+
+842014d0 <Lc_aud_cur_buffer_details_15>:
+    }
+
+    /* Populate metadata response */
+    p_resp->supports_metadata = p_class_data->supports_metadata_flag;
+842014d0:	82 f0 02 82 	r0 = MBU[r6 + 2];
+842014d4:	0a 9b       	MB[rMAC + 12] = r0;
+    if (p_class_data->supports_metadata_flag)
+842014d6:	82 f0 02 82 	r0 = MBU[r6 + 2];
+842014da:	08 60       	if EQ jump (m) Lc_aud_cur_buffer_details_19;
+
+842014dc <Lc_aud_cur_buffer_details_16>:
+    {
+        if (terminal_num == AUD_CUR_PLAYBACK_TERMINAL)
+842014dc:	18 04       	Null = r1 - Null;
+842014de:	04 62       	if NE jump (m) Lc_aud_cur_buffer_details_18;
+
+842014e0 <Lc_aud_cur_buffer_details_17>:
+        {
+            p_resp->metadata_buffer = p_metadata[AUD_CUR_METADATA_PLAYBACK];
+842014e0:	22 e8       	r0 = M[r2 + Null];
+842014e2:	0a 8f       	M[rMAC + 16] = r0;
+842014e4:	03 6e       	jump (m) Lc_aud_cur_buffer_details_19;
+
+842014e6 <Lc_aud_cur_buffer_details_18>:
+        }
+        else
+        {
+            p_resp->metadata_buffer = p_metadata[AUD_CUR_METADATA_MIC];
+842014e6:	62 88       	r0 = M[r2 + 4];
+842014e8:	0a 8f       	M[rMAC + 16] = r0;
+
+842014ea <Lc_aud_cur_buffer_details_19>:
+        }
+    }
+
+    return TRUE;
+842014ea:	42 20       	r0 = Null + 1;
+
+842014ec <Lc_aud_cur_buffer_details_20>:
+}
+842014ec:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+842014ee:	d8 4c       	rts;
+
+842014f0 <$_aud_cur_start>:
+
+bool aud_cur_start(OPERATOR_DATA *op_data,
+                   void *message_data,
+                   unsigned *response_id,
+                   void **response_data)
+{
+842014f0:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+842014f2:	16 00       	r4 = r0 + Null;
+842014f4:	19 09       	r7 = r1 + Null;
+842014f6:	27 00       	r5 = r2 + Null;
+842014f8:	2a 09       	r8 = r3 + Null;
+842014fa:	ef fd fa ff 	call (m) 0x934;
+842014fe:	3b e1 
+84201500:	10 09       	r6 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    /* Create the response. If there aren't sufficient resources for this fail
+     * early.
+     */
+    if (!base_op_start(op_data, message_data, response_id, response_data))
+84201502:	55 08       	r3 = r8 + Null;
+84201504:	3c 00       	r2 = r5 + Null;
+84201506:	4b 08       	r1 = r7 + Null;
+84201508:	32 00       	r0 = r4 + Null;
+8420150a:	ef fd f9 ff 	call (m) 0x730;
+8420150e:	27 e1 
+84201510:	10 04       	Null = r0 - Null;
+84201512:	03 62       	if NE jump (m) Lc_aud_cur_start_3;
+
+84201514 <Lc_aud_cur_start_2>:
+    {
+        return FALSE;
+84201514:	02 00       	r0 = Null + Null;
+84201516:	23 6e       	jump (m) Lc_aud_cur_start_11;
+
+84201518 <Lc_aud_cur_start_3>:
+    }
+
+    /* If already running just ack */
+    if (opmgr_op_is_running(op_data))
+84201518:	32 00       	r0 = r4 + Null;
+8420151a:	ff fd 23 f0 	call (m) 0x5ca4;
+8420151e:	2b ec 
+84201520:	10 04       	Null = r0 - Null;
+84201522:	12 62       	if NE jump (m) Lc_aud_cur_start_7;
+
+84201524 <Lc_aud_cur_start_4>:
+       return TRUE;
+    }
+
+    /* Make sure we have valid terminal connections */
+    if (!aud_cur_check_valid_terminals(&p_class_data->sinks) ||
+        !aud_cur_check_valid_terminals(&p_class_data->sources))
+84201524:	82 f0 08 20 	r0 = r6 + 8;
+84201528:	02 f0 3b ee 	call (m) Lc_aud_cur_check_valid_terminals_1;
+8420152c:	10 04       	Null = r0 - Null;
+8420152e:	07 60       	if EQ jump (m) Lc_aud_cur_start_6;
+
+84201530 <Lc_aud_cur_start_5>:
+84201530:	82 f0 14 20 	r0 = r6 + 20;
+84201534:	02 f0 2f ee 	call (m) Lc_aud_cur_check_valid_terminals_1;
+84201538:	10 04       	Null = r0 - Null;
+8420153a:	08 62       	if NE jump (m) Lc_aud_cur_start_8;
+
+8420153c <Lc_aud_cur_start_6>:
+8420153c:	01 f0 00 60 	rMAC = Null + 4096;
+84201540:	a2 f0 00 e8 	r0 = M[r8 + Null];
+84201544:	51 8e       	M[r0 + 4] = rMAC;
+
+84201546 <Lc_aud_cur_start_7>:
+    }
+
+    /* If already running just ack */
+    if (opmgr_op_is_running(op_data))
+    {
+       return TRUE;
+84201546:	42 20       	r0 = Null + 1;
+84201548:	0a 6e       	jump (m) Lc_aud_cur_start_11;
+
+8420154a <Lc_aud_cur_start_8>:
+    {
+        base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+        return TRUE;
+    }
+
+    if (p_class_data->start_fn != NULL)
+8420154a:	81 f0 10 88 	rMAC = M[r6 + 64];
+8420154e:	03 60       	if EQ jump (m) Lc_aud_cur_start_10;
+
+84201550 <Lc_aud_cur_start_9>:
+    {
+        p_class_data->start_fn(op_data);
+84201550:	32 00       	r0 = r4 + Null;
+84201552:	d1 4c       	call rMAC;
+
+84201554 <Lc_aud_cur_start_10>:
+    }
+
+    /* Reinitialize the operator */
+    p_class_data->re_init_flag = TRUE;
+84201554:	41 20       	rMAC = Null + 1;
+84201556:	81 f0 00 ea 	MB[r6 + Null] = rMAC;
+8420155a:	f6 6f       	jump (m) Lc_aud_cur_start_7;
+
+8420155c <Lc_aud_cur_start_11>:
+
+    return TRUE;
+}
+8420155c:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+8420155e:	d8 4c       	rts;
+
+84201560 <$_aud_cur_reset>:
+
+bool aud_cur_reset(OPERATOR_DATA *op_data,
+                   void *message_data,
+                   unsigned *response_id,
+                   void **response_data)
+{
+84201560:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84201562:	16 00       	r4 = r0 + Null;
+84201564:	1a 09       	r8 = r1 + Null;
+84201566:	27 00       	r5 = r2 + Null;
+84201568:	29 09       	r7 = r3 + Null;
+8420156a:	ef fd f9 ff 	call (m) 0x934;
+8420156e:	2b ee 
+84201570:	10 09       	r6 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    /* Create the response. If there aren't sufficient resources for this fail
+     * early. */
+    if (!base_op_reset(op_data, message_data, response_id, response_data))
+84201572:	4d 08       	r3 = r7 + Null;
+84201574:	3c 00       	r2 = r5 + Null;
+84201576:	53 08       	r1 = r8 + Null;
+84201578:	32 00       	r0 = r4 + Null;
+8420157a:	ef fd f8 ff 	call (m) 0x724;
+8420157e:	2b ed 
+84201580:	10 04       	Null = r0 - Null;
+84201582:	03 62       	if NE jump (m) Lc_aud_cur_reset_3;
+
+84201584 <Lc_aud_cur_reset_2>:
+    {
+        return FALSE;
+84201584:	02 00       	r0 = Null + Null;
+84201586:	05 6e       	jump (m) Lc_aud_cur_reset_4;
+
+84201588 <Lc_aud_cur_reset_3>:
+    }
+
+    p_class_data->re_init_flag = TRUE;
+84201588:	41 20       	rMAC = Null + 1;
+8420158a:	81 f0 00 ea 	MB[r6 + Null] = rMAC;
+
+    return TRUE;
+8420158e:	0a 00       	r0 = rMAC + Null;
+
+84201590 <Lc_aud_cur_reset_4>:
+}
+84201590:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84201592:	d8 4c       	rts;
+
+84201594 <$_aud_cur_get_sched_info>:
+
+bool aud_cur_get_sched_info(OPERATOR_DATA *op_data,
+                            void *message_data,
+                            unsigned *response_id,
+                            void **response_data)
+{
+84201594:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84201596:	16 00       	r4 = r0 + Null;
+84201598:	1a 09       	r8 = r1 + Null;
+8420159a:	20 09       	r6 = r2 + Null;
+8420159c:	2f 00       	r5 = r3 + Null;
+8420159e:	ef fd f9 ff 	call (m) 0x934;
+842015a2:	37 ec 
+842015a4:	11 09       	r7 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    OP_SCHED_INFO_RSP* resp;
+
+    resp = base_op_get_sched_info_ex(op_data, message_data, response_id);
+842015a6:	44 08       	r2 = r6 + Null;
+842015a8:	53 08       	r1 = r8 + Null;
+842015aa:	32 00       	r0 = r4 + Null;
+842015ac:	ef fd f9 ff 	call (m) 0x7f6;
+842015b0:	2b e2 
+    if (resp == NULL)
+842015b2:	10 04       	Null = r0 - Null;
+842015b4:	09 62       	if NE jump (m) Lc_aud_cur_get_sched_info_3;
+
+842015b6 <Lc_aud_cur_get_sched_info_2>:
+    {
+        return base_op_build_std_response_ex(op_data, STATUS_CMD_FAILED,
+                                             response_data);
+842015b6:	03 f0 00 60 	r1 = Null + 4096;
+842015ba:	3c 00       	r2 = r5 + Null;
+842015bc:	32 00       	r0 = r4 + Null;
+842015be:	ef fd f9 ff 	call (m) 0x8c0;
+842015c2:	23 e8 
+842015c4:	06 6e       	jump (m) Lc_aud_cur_get_sched_info_4;
+
+842015c6 <Lc_aud_cur_get_sched_info_3>:
+    }
+
+    *response_data = resp;
+842015c6:	3a ee       	M[r5 + Null] = r0;
+    resp->block_size = p_class_data->block_size;
+842015c8:	91 f0 09 88 	rMAC = M[r7 + 36];
+842015cc:	91 8e       	M[r0 + 8] = rMAC;
+
+    return TRUE;
+842015ce:	42 20       	r0 = Null + 1;
+
+842015d0 <Lc_aud_cur_get_sched_info_4>:
+}
+842015d0:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+842015d2:	d8 4c       	rts;
+
+842015d4 <$_aud_cur_set_callbacks>:
+                           AUD_CUR_START_FN start_fn,
+                           AUD_CUR_STOP_FN stop_fn,
+                           AUD_CUR_CONNECT_FN connect_fn,
+                           AUD_CUR_DISCONNECT_FN disconnect_fn,
+                           AUD_CUR_PARAM_UPDATE_FN param_update_fn)
+{
+842015d4:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842015d6:	1e 00       	r4 = r1 + Null;
+842015d8:	27 00       	r5 = r2 + Null;
+842015da:	28 09       	r6 = r3 + Null;
+842015dc:	ef fd f9 ff 	call (m) 0x934;
+842015e0:	39 ea 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    p_class_data->start_fn = start_fn;
+842015e2:	16 ae       	M[r0 + 64] = r4;
+    p_class_data->stop_fn = stop_fn;
+842015e4:	57 ae       	M[r0 + 68] = r5;
+    p_class_data->connect_fn = connect_fn;
+842015e6:	28 f0 12 8e 	M[r0 + 72] = r6;
+    p_class_data->disconnect_fn = disconnect_fn;
+842015ea:	f9 d9       	rMAC = M[FP + -4];
+842015ec:	d1 ae       	M[r0 + 76] = rMAC;
+    p_class_data->param_update_fn = param_update_fn;
+842015ee:	f1 d9       	rMAC = M[FP + -8];
+842015f0:	11 af       	M[r0 + 80] = rMAC;
+
+842015f2 <Lc_aud_cur_set_callbacks_2>:
+
+    return;
+842015f2:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842015f4:	d8 4c       	rts;
+
+842015f6 <$_aud_cur_set_flags>:
+
+void aud_cur_set_flags(OPERATOR_DATA *op_data,
+                       bool in_place,
+                       bool supports_metadata,
+                       bool dynamic_buffer_size)
+{
+842015f6:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842015f8:	1e 00       	r4 = r1 + Null;
+842015fa:	27 00       	r5 = r2 + Null;
+842015fc:	28 09       	r6 = r3 + Null;
+842015fe:	ef fd f9 ff 	call (m) 0x934;
+84201602:	37 e9 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    p_class_data->in_place_flag = in_place;
+84201604:	56 8a       	MB[r0 + 1] = r4;
+    p_class_data->supports_metadata_flag = supports_metadata;
+84201606:	97 8a       	MB[r0 + 2] = r5;
+    p_class_data->dynamic_buffer_size_flag = dynamic_buffer_size;
+84201608:	28 f0 03 8a 	MB[r0 + 3] = r6;
+
+8420160c <Lc_aud_cur_set_flags_2>:
+
+    return;
+8420160c:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+8420160e:	d8 4c       	rts;
+
+84201610 <$_aud_cur_set_min_terminal_masks>:
+
+
+void aud_cur_set_min_terminal_masks(OPERATOR_DATA *op_data,
+                                    uint16 source_mask,
+                                    uint16 sink_mask)
+{
+84201610:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84201612:	1e 00       	r4 = r1 + Null;
+84201614:	27 00       	r5 = r2 + Null;
+84201616:	ef fd f9 ff 	call (m) 0x934;
+8420161a:	3f e8 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    p_class_data->sources.min_valid_mask = source_mask;
+8420161c:	d6 9c       	MH[r0 + 22] = r4;
+    p_class_data->sinks.min_valid_mask = sink_mask;
+8420161e:	57 8d       	MH[r0 + 10] = r5;
+
+84201620 <Lc_aud_cur_set_min_terminal_masks_2>:
+
+    return;
+84201620:	f2 48       	popm <FP, r4, r5, rLink>;
+84201622:	d8 4c       	rts;
+
+84201624 <$_aud_cur_get_cps>:
+
+    return;
+}
+
+CPS_PARAM_DEF *aud_cur_get_cps(OPERATOR_DATA *op_data)
+{
+84201624:	c8 1c       	pushm <FP(=SP), rLink>;
+84201626:	ef fd f9 ff 	call (m) 0x934;
+8420162a:	2f e8 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return &p_class_data->param_def;
+8420162c:	12 32       	r0 = r0 + 40;
+
+8420162e <Lc_aud_cur_get_cps_2>:
+}
+8420162e:	c8 48       	popm <FP, rLink>;
+84201630:	d8 4c       	rts;
+
+84201632 <$_aud_cur_set_buffer_size>:
+
+    return;
+}
+
+void aud_cur_set_buffer_size(OPERATOR_DATA *op_data, unsigned buffer_size)
+{
+84201632:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84201634:	1e 00       	r4 = r1 + Null;
+84201636:	ef fd f9 ff 	call (m) 0x934;
+8420163a:	3f e7 
+   AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+   p_class_data->buffer_size  = buffer_size;
+8420163c:	16 9e       	M[r0 + 32] = r4;
+
+8420163e <Lc_aud_cur_set_buffer_size_2>:
+}
+8420163e:	f1 48       	popm <FP, r4, rLink>;
+84201640:	d8 4c       	rts;
+
+84201642 <$_aud_cur_set_block_size>:
+
+void aud_cur_set_block_size(OPERATOR_DATA *op_data, unsigned block_size)
+{
+84201642:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84201644:	1e 00       	r4 = r1 + Null;
+84201646:	ef fd f9 ff 	call (m) 0x934;
+8420164a:	2f e7 
+   AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+   p_class_data->block_size  = block_size;
+8420164c:	56 9e       	M[r0 + 36] = r4;
+
+8420164e <Lc_aud_cur_set_block_size_2>:
+}
+8420164e:	f1 48       	popm <FP, r4, rLink>;
+84201650:	d8 4c       	rts;
+
+84201652 <$_aud_cur_get_sink_terminal>:
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return aud_cur_get_terminal(&p_class_data->sources, id);
+}
+
+tCbuffer *aud_cur_get_sink_terminal(OPERATOR_DATA *op_data, uint16 id)
+{
+84201652:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84201654:	1e 00       	r4 = r1 + Null;
+84201656:	ef fd f9 ff 	call (m) 0x934;
+8420165a:	3f e6 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return aud_cur_get_terminal(&p_class_data->sinks, id);
+8420165c:	11 22       	rMAC = r0 + 8;
+ * \return - pointer to the terminal cbuffer
+ */
+static inline tCbuffer *aud_cur_get_terminal(AUD_CUR_TERMINAL *p_def,
+                                             uint16 num)
+{
+    return p_def->p_buffer_list[num];
+8420165e:	89 88       	rMAC = M[rMAC + 8];
+84201660:	72 54       	r0 = r4 LSHIFT 2;
+84201662:	8a e8       	r0 = M[rMAC + r0];
+
+84201664 <Lc_aud_cur_get_sink_terminal_2>:
+}
+
+tCbuffer *aud_cur_get_sink_terminal(OPERATOR_DATA *op_data, uint16 id)
+{
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return aud_cur_get_terminal(&p_class_data->sinks, id);
+84201664:	f1 48       	popm <FP, r4, rLink>;
+84201666:	d8 4c       	rts;
+
+84201668 <$_aud_cur_opmsg_get_params>:
+
+bool aud_cur_opmsg_get_params(OPERATOR_DATA *op_data,
+                              void *message_data,
+                              unsigned *resp_length,
+                              OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84201668:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+8420166a:	1f 00       	r5 = r1 + Null;
+8420166c:	26 00       	r4 = r2 + Null;
+8420166e:	28 09       	r6 = r3 + Null;
+84201670:	ef fd f9 ff 	call (m) 0x934;
+84201674:	25 e6 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return cpsGetParameterMsgHandler(&p_class_data->param_def, message_data,
+                                     resp_length, response_data);
+84201676:	12 32       	r0 = r0 + 40;
+84201678:	45 08       	r3 = r6 + Null;
+8420167a:	34 00       	r2 = r4 + Null;
+8420167c:	3b 00       	r1 = r5 + Null;
+8420167e:	ef fd fa ff 	call (m) 0xb7c;
+84201682:	3f e7 
+
+84201684 <Lc_aud_cur_opmsg_get_params_2>:
+}
+84201684:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84201686:	d8 4c       	rts;
+
+84201688 <$_aud_cur_opmsg_get_defaults>:
+
+bool aud_cur_opmsg_get_defaults(OPERATOR_DATA *op_data,
+                                void *message_data,
+                                unsigned *resp_length,
+                                OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84201688:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+8420168a:	1f 00       	r5 = r1 + Null;
+8420168c:	26 00       	r4 = r2 + Null;
+8420168e:	28 09       	r6 = r3 + Null;
+84201690:	ef fd f9 ff 	call (m) 0x934;
+84201694:	25 e5 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return cpsGetDefaultsMsgHandler(&p_class_data->param_def, message_data,
+                                    resp_length, response_data);
+84201696:	12 32       	r0 = r0 + 40;
+84201698:	45 08       	r3 = r6 + Null;
+8420169a:	34 00       	r2 = r4 + Null;
+8420169c:	3b 00       	r1 = r5 + Null;
+8420169e:	ef fd fa ff 	call (m) 0xc2c;
+842016a2:	2f ec 
+
+842016a4 <Lc_aud_cur_opmsg_get_defaults_2>:
+}
+842016a4:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842016a6:	d8 4c       	rts;
+
+842016a8 <$_aud_cur_opmsg_set_params>:
+
+bool aud_cur_opmsg_set_params(OPERATOR_DATA *op_data,
+                              void *message_data,
+                              unsigned *resp_length,
+                              OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+842016a8:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+842016aa:	11 09       	r7 = r0 + Null;
+842016ac:	1a 09       	r8 = r1 + Null;
+842016ae:	27 00       	r5 = r2 + Null;
+842016b0:	28 09       	r6 = r3 + Null;
+842016b2:	ef fd f9 ff 	call (m) 0x934;
+842016b6:	23 e4 
+842016b8:	16 00       	r4 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    bool success;
+
+    success = cpsSetParameterMsgHandler(&p_class_data->param_def, message_data,
+                                        resp_length, response_data);
+842016ba:	32 32       	r0 = r4 + 40;
+842016bc:	45 08       	r3 = r6 + Null;
+842016be:	3c 00       	r2 = r5 + Null;
+842016c0:	53 08       	r1 = r8 + Null;
+842016c2:	ef fd fb ff 	call (m) 0xd00;
+842016c6:	3f e1 
+842016c8:	17 00       	r5 = r0 + Null;
+
+    if (success)
+842016ca:	07 60       	if EQ jump (m) Lc_aud_cur_opmsg_set_params_5;
+
+842016cc <Lc_aud_cur_opmsg_set_params_2>:
+    {
+        if (p_class_data->param_update_fn != NULL)
+842016cc:	31 a9       	rMAC = M[r4 + 80];
+842016ce:	03 60       	if EQ jump (m) Lc_aud_cur_opmsg_set_params_4;
+
+842016d0 <Lc_aud_cur_opmsg_set_params_3>:
+        {
+            p_class_data->param_update_fn(op_data);
+842016d0:	4a 08       	r0 = r7 + Null;
+842016d2:	d1 4c       	call rMAC;
+
+842016d4 <Lc_aud_cur_opmsg_set_params_4>:
+        }
+        /* Set re-initialization flag */
+        p_class_data->re_init_flag = TRUE;
+842016d4:	41 20       	rMAC = Null + 1;
+842016d6:	31 ea       	MB[r4 + Null] = rMAC;
+
+842016d8 <Lc_aud_cur_opmsg_set_params_5>:
+    }
+
+    return success;
+842016d8:	3a 00       	r0 = r5 + Null;
+
+842016da <Lc_aud_cur_opmsg_set_params_6>:
+}
+842016da:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+842016dc:	d8 4c       	rts;
+
+842016de <$_aud_cur_ups_params>:
+                        PERSISTENCE_RANK rank,
+                        uint16 length,
+                        unsigned* data,
+                        STATUS_KYMERA status,
+                        uint16 extra_status_info)
+{
+842016de:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842016e0:	10 09       	r6 = r0 + Null;
+842016e2:	2f 00       	r5 = r3 + Null;
+842016e4:	ef fd f9 ff 	call (m) 0x934;
+842016e8:	31 e2 
+842016ea:	16 00       	r4 = r0 + Null;
+    OPERATOR_DATA *op_data = (OPERATOR_DATA*)instance_data;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    cpsSetParameterFromPsStore(&p_class_data->param_def, length, data, status);
+842016ec:	e5 d5       	r3 = MHS[FP + -8];
+842016ee:	fc d9       	r2 = M[FP + -4];
+842016f0:	32 32       	r0 = r4 + 40;
+842016f2:	3b 00       	r1 = r5 + Null;
+842016f4:	ef fd fb ff 	call (m) 0xdf6;
+842016f8:	23 e8 
+
+    if (p_class_data->param_update_fn != NULL)
+842016fa:	31 a9       	rMAC = M[r4 + 80];
+842016fc:	03 60       	if EQ jump (m) Lc_aud_cur_ups_params_3;
+
+842016fe <Lc_aud_cur_ups_params_2>:
+    {
+        p_class_data->param_update_fn(op_data);
+842016fe:	42 08       	r0 = r6 + Null;
+84201700:	d1 4c       	call rMAC;
+
+84201702 <Lc_aud_cur_ups_params_3>:
+    }
+
+    /* Set the re-init flag after the parameters are updated. */
+    p_class_data->re_init_flag = TRUE;
+84201702:	41 20       	rMAC = Null + 1;
+84201704:	31 ea       	MB[r4 + Null] = rMAC;
+
+    return TRUE;
+84201706:	0a 00       	r0 = rMAC + Null;
+
+84201708 <Lc_aud_cur_ups_params_4>:
+}
+84201708:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+8420170a:	d8 4c       	rts;
+
+8420170c <$_aud_cur_opmsg_set_ucid>:
+
+bool aud_cur_opmsg_set_ucid(OPERATOR_DATA *op_data,
+                            void *message_data,
+                            unsigned *resp_length,
+                            OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+8420170c:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+8420170e:	12 09       	r8 = r0 + Null;
+84201710:	19 09       	r7 = r1 + Null;
+84201712:	27 00       	r5 = r2 + Null;
+84201714:	28 09       	r6 = r3 + Null;
+84201716:	ef fd f9 ff 	call (m) 0x934;
+8420171a:	3f e0 
+8420171c:	16 00       	r4 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    PS_KEY_TYPE key;
+    bool success;
+
+    success = cpsSetUcidMsgHandler(&p_class_data->param_def, message_data,
+                                  resp_length, response_data);
+8420171e:	32 32       	r0 = r4 + 40;
+84201720:	45 08       	r3 = r6 + Null;
+84201722:	3c 00       	r2 = r5 + Null;
+84201724:	4b 08       	r1 = r7 + Null;
+84201726:	ef fd fb ff 	call (m) 0xd92;
+8420172a:	2d e3 
+8420172c:	17 00       	r5 = r0 + Null;
+    key = MAP_CAPID_UCID_SBID_TO_PSKEYID(p_class_data->cap_id,
+                                         p_class_data->param_def.ucid,
+                                         OPMSG_P_STORE_PARAMETER_SUB_ID);
+8420172e:	f1 99       	rMAC = M[r4 + 60];
+84201730:	8a c6       	r0 = rMAC AND 0xffff;
+84201732:	92 55       	r0 = r0 LSHIFT 7;
+84201734:	b1 99       	rMAC = M[r4 + 56];
+84201736:	8b c2       	r1 = rMAC AND 0x3f;
+84201738:	1b 54       	r1 = r1 LSHIFT 1;
+8420173a:	9b 12       	r1 = r1 OR r0;
+
+    ps_entry_read((void*)op_data, key, PERSIST_ANY, aud_cur_ups_params);
+8420173c:	42 f0 05 f0 	r3 = Null + 69211871;
+84201740:	df 6a 
+84201742:	04 00       	r2 = Null + Null;
+84201744:	52 08       	r0 = r8 + Null;
+84201746:	ff fd 36 f0 	call (m) 0x8370;
+8420174a:	2b e1 
+
+    return success;
+8420174c:	3a 00       	r0 = r5 + Null;
+
+8420174e <Lc_aud_cur_opmsg_set_ucid_2>:
+}
+8420174e:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84201750:	d8 4c       	rts;
+
+84201752 <$_aud_cur_opmsg_get_ps_id>:
+
+bool aud_cur_opmsg_get_ps_id(OPERATOR_DATA *op_data,
+                             void *message_data,
+                             unsigned *resp_length,
+                             OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84201752:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84201754:	1f 00       	r5 = r1 + Null;
+84201756:	26 00       	r4 = r2 + Null;
+84201758:	28 09       	r6 = r3 + Null;
+8420175a:	ef fd f8 ff 	call (m) 0x934;
+8420175e:	3b ee 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return cpsGetUcidMsgHandler(&p_class_data->param_def, p_class_data->cap_id,
+                                message_data, resp_length, response_data);
+84201760:	10 1c       	pushm <r6>;
+84201762:	d3 99       	r1 = M[r0 + 60];
+84201764:	35 00       	r3 = r4 + Null;
+84201766:	12 32       	r0 = r0 + 40;
+84201768:	3c 00       	r2 = r5 + Null;
+8420176a:	ef fd fb ff 	call (m) 0xdb4;
+8420176e:	2b e2 
+84201770:	7f 4c       	SP = SP + -4;
+
+84201772 <Lc_aud_cur_opmsg_get_ps_id_2>:
+}
+84201772:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84201774:	d8 4c       	rts;
+
+84201776 <$_aud_cur_calc_samples>:
+/****************************************************************************
+Process Data
+*/
+
+unsigned aud_cur_calc_samples(OPERATOR_DATA *op_data, TOUCHED_TERMINALS *touched)
+{
+84201776:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84201778:	43 de       	M[FP + 32] = r1;
+8420177a:	ef fd f8 ff 	call (m) 0x934;
+8420177e:	3b ed 
+84201780:	16 00       	r4 = r0 + Null;
+
+    unsigned min_data, min_space, block_size, amount, i, samples;
+    tCbuffer **p_inputs, **p_outputs;
+
+    /* If no input terminal connections then do nothing */
+    if (p_class_data->sinks.connected == 0)
+84201782:	f1 87       	rMAC = MHU[r4 + 14];
+84201784:	03 62       	if NE jump (m) Lc_aud_cur_calc_samples_3;
+
+84201786 <Lc_aud_cur_calc_samples_2>:
+    {
+        return 0;
+84201786:	02 00       	r0 = Null + Null;
+84201788:	4b 6e       	jump (m) Lc_aud_cur_calc_samples_23;
+
+8420178a <Lc_aud_cur_calc_samples_3>:
+    }
+
+    /* Initialize data */
+    block_size = p_class_data->block_size;
+8420178a:	6b f0 09 88 	r9 = M[r4 + 36];
+
+    /* Find the minimum amount of data available in the input buffers */
+    min_data = UINT_MAX;
+8420178e:	0a f0 01 24 	r8 = Null - 1;
+    p_inputs = p_class_data->sinks.p_buffer_list;
+84201792:	68 f0 04 88 	r6 = M[r4 + 16];
+
+    for (i = 0; i < p_class_data->sinks.max; i++)
+84201796:	07 00       	r5 = Null + Null;
+
+84201798 <Lc_aud_cur_calc_samples_4>:
+84201798:	31 87       	rMAC = MHU[r4 + 8];
+8420179a:	78 04       	Null = r5 - rMAC;
+8420179c:	02 f0 a7 e0 	if C jump (m) Lc_aud_cur_calc_samples_10;
+
+842017a0 <Lc_aud_cur_calc_samples_5>:
+    {
+        if (p_inputs[i] != NULL)
+842017a0:	82 f0 00 e8 	r0 = M[r6 + Null];
+842017a4:	0c 60       	if EQ jump (m) Lc_aud_cur_calc_samples_9;
+
+842017a6 <Lc_aud_cur_calc_samples_6>:
+        {
+            amount = cbuffer_calc_amount_data_in_words(p_inputs[i]);
+842017a6:	ff fd 61 f2 	call (m) 0x4db5a;
+842017aa:	35 ed 
+            if (amount < min_data)
+842017ac:	af f2 00 c2 	Null = r0 - r8;
+842017b0:	02 f0 8d e0 	if C jump (m) Lc_aud_cur_calc_samples_9;
+
+842017b4 <Lc_aud_cur_calc_samples_7>:
+            {
+                /* Need at least one block of data available */
+                if (amount < block_size)
+842017b4:	bf f2 00 c2 	Null = r0 - r9;
+842017b8:	e7 65       	if NC jump (m) Lc_aud_cur_calc_samples_2;
+
+842017ba <Lc_aud_cur_calc_samples_8>:
+                {
+                    return 0;
+                }
+                min_data = amount;
+842017ba:	12 09       	r8 = r0 + Null;
+
+842017bc <Lc_aud_cur_calc_samples_9>:
+
+    /* Find the minimum amount of data available in the input buffers */
+    min_data = UINT_MAX;
+    p_inputs = p_class_data->sinks.p_buffer_list;
+
+    for (i = 0; i < p_class_data->sinks.max; i++)
+842017bc:	7f 20       	r5 = r5 + 1;
+842017be:	20 75       	r6 = r6 + 4;
+842017c0:	ec 6f       	jump (m) Lc_aud_cur_calc_samples_4;
+
+842017c2 <Lc_aud_cur_calc_samples_10>:
+            }
+        }
+    }
+
+    /* Find the minimum amount of space available at the output buffers */
+    min_space = UINT_MAX;
+842017c2:	47 24       	r5 = Null - 1;
+    p_outputs = p_class_data->sources.p_buffer_list;
+842017c4:	69 f0 07 88 	r7 = M[r4 + 28];
+
+    if (p_class_data->sources.connected > 0)
+842017c8:	71 97       	rMAC = MHU[r4 + 26];
+842017ca:	17 60       	if EQ jump (m) Lc_aud_cur_calc_samples_18;
+
+842017cc <Lc_aud_cur_calc_samples_11>:
+    {
+        for (i = 0; i < p_class_data->sources.max; i++)
+842017cc:	00 09       	r6 = Null + Null;
+
+842017ce <Lc_aud_cur_calc_samples_12>:
+842017ce:	b1 96       	rMAC = MHU[r4 + 20];
+842017d0:	1f f8 00 c2 	Null = r6 - rMAC;
+842017d4:	02 f0 a5 e0 	if C jump (m) Lc_aud_cur_calc_samples_18;
+
+842017d8 <Lc_aud_cur_calc_samples_13>:
+        {
+            if (p_outputs[i] != NULL)
+842017d8:	92 f0 00 e8 	r0 = M[r7 + Null];
+842017dc:	0b 60       	if EQ jump (m) Lc_aud_cur_calc_samples_17;
+
+842017de <Lc_aud_cur_calc_samples_14>:
+            {
+                amount = cbuffer_calc_amount_space_in_words(p_outputs[i]);
+842017de:	ff fd 61 f2 	call (m) 0x4db14;
+842017e2:	37 e9 
+                if (amount < min_space)
+842017e4:	d0 05       	Null = r0 - r5;
+842017e6:	02 f0 8d e0 	if C jump (m) Lc_aud_cur_calc_samples_17;
+
+842017ea <Lc_aud_cur_calc_samples_15>:
+                {
+                    /* Need at least one block of space available */
+                    if (amount < block_size)
+842017ea:	bf f2 00 c2 	Null = r0 - r9;
+842017ee:	cc 65       	if NC jump (m) Lc_aud_cur_calc_samples_2;
+
+842017f0 <Lc_aud_cur_calc_samples_16>:
+                    {
+                        return 0;
+                    }
+                    min_space = amount;
+842017f0:	17 00       	r5 = r0 + Null;
+
+842017f2 <Lc_aud_cur_calc_samples_17>:
+    min_space = UINT_MAX;
+    p_outputs = p_class_data->sources.p_buffer_list;
+
+    if (p_class_data->sources.connected > 0)
+    {
+        for (i = 0; i < p_class_data->sources.max; i++)
+842017f2:	08 75       	r6 = r6 + 1;
+842017f4:	21 75       	r7 = r7 + 4;
+842017f6:	ec 6f       	jump (m) Lc_aud_cur_calc_samples_12;
+
+842017f8 <Lc_aud_cur_calc_samples_18>:
+            }
+        }
+    }
+
+    /* Update kick flags */
+    touched->sources = p_class_data->sources.connected;
+842017f8:	71 97       	rMAC = MHU[r4 + 26];
+842017fa:	42 d8       	r0 = M[FP + 32];
+842017fc:	11 ee       	M[r0 + Null] = rMAC;
+
+    /* Samples to process is the smaller of data or space available */
+    if (min_data < min_space)
+842017fe:	7f fa 00 c2 	Null = r8 - r5;
+84201802:	02 f0 89 e0 	if C jump (m) Lc_aud_cur_calc_samples_20;
+
+84201806 <Lc_aud_cur_calc_samples_19>:
+    {
+        samples = min_data;
+84201806:	52 08       	r0 = r8 + Null;
+84201808:	02 6e       	jump (m) Lc_aud_cur_calc_samples_21;
+
+8420180a <Lc_aud_cur_calc_samples_20>:
+    }
+    else
+    {
+        samples = min_space;
+8420180a:	3a 00       	r0 = r5 + Null;
+
+8420180c <Lc_aud_cur_calc_samples_21>:
+    }
+
+    /* If there is less than a block left then kick backwards */
+    if (min_data - samples < block_size)
+8420180c:	2f fa 01 c2 	rMAC = r8 - r0;
+84201810:	bf f1 00 c2 	Null = rMAC - r9;
+84201814:	02 f0 8b e0 	if C jump (m) Lc_aud_cur_calc_samples_23;
+
+84201818 <Lc_aud_cur_calc_samples_22>:
+    {
+        touched->sinks = p_class_data->sinks.connected;
+84201818:	f1 87       	rMAC = MHU[r4 + 14];
+8420181a:	43 d8       	r1 = M[FP + 32];
+8420181c:	59 8e       	M[r1 + 4] = rMAC;
+
+8420181e <Lc_aud_cur_calc_samples_23>:
+    }
+
+    return samples;
+8420181e:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84201820:	d8 4c       	rts;
+
+84201822 <$_aud_cur_mic_data_transfer>:
+}
+
+unsigned aud_cur_mic_data_transfer(OPERATOR_DATA *op_data,
+                                   unsigned amount,
+                                   unsigned terminal_skip_mask)
+{
+84201822:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84201824:	1a 09       	r8 = r1 + Null;
+84201826:	44 de       	M[FP + 32] = r2;
+84201828:	ef fd f8 ff 	call (m) 0x934;
+8420182c:	2d e8 
+8420182e:	4a de       	M[FP + 36] = r0;
+84201830:	11 00       	rMAC = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    unsigned i, mic_amt, temp_amt;
+    tCbuffer **ip_buffers, **op_buffers;
+
+    ip_buffers = p_class_data->sinks.p_buffer_list;
+84201832:	09 89       	rMAC = M[rMAC + 16];
+    op_buffers = p_class_data->sources.p_buffer_list;
+84201834:	d2 89       	r0 = M[r0 + 28];
+
+    /* Copy mic stream data */
+    mic_amt = amount;
+84201836:	53 09       	r9 = r8 + Null;
+
+    for (i = 1; i < p_class_data->sinks.max; i++)
+84201838:	46 20       	r4 = Null + 1;
+8420183a:	18 f0 04 20 	r6 = rMAC + 4;
+8420183e:	17 21       	r5 = r0 + 4;
+84201840:	0d 6e       	jump (m) Lc_aud_cur_mic_data_transfer_6;
+
+84201842 <Lc_aud_cur_mic_data_transfer_2>:
+                                            ip_buffers[i],
+                                            amount);
+                }
+                else
+                {
+                    cbuffer_advance_read_ptr(ip_buffers[i], amount);
+84201842:	53 08       	r1 = r8 + Null;
+84201844:	ff fd 61 f2 	call (m) 0x4db68;
+84201848:	25 e9 
+
+8420184a <Lc_aud_cur_mic_data_transfer_3>:
+                }
+                if (temp_amt < mic_amt)
+8420184a:	bf f9 00 c2 	Null = r7 - r9;
+8420184e:	02 f0 87 e0 	if C jump (m) Lc_aud_cur_mic_data_transfer_5;
+
+84201852 <Lc_aud_cur_mic_data_transfer_4>:
+                {
+                    mic_amt = temp_amt;
+84201852:	4b 09       	r9 = r7 + Null;
+
+84201854 <Lc_aud_cur_mic_data_transfer_5>:
+    op_buffers = p_class_data->sources.p_buffer_list;
+
+    /* Copy mic stream data */
+    mic_amt = amount;
+
+    for (i = 1; i < p_class_data->sinks.max; i++)
+84201854:	76 20       	r4 = r4 + 1;
+84201856:	20 75       	r6 = r6 + 4;
+84201858:	3f 21       	r5 = r5 + 4;
+
+8420185a <Lc_aud_cur_mic_data_transfer_6>:
+8420185a:	49 d8       	rMAC = M[FP + 36];
+8420185c:	09 87       	rMAC = MHU[rMAC + 8];
+8420185e:	70 04       	Null = r4 - rMAC;
+84201860:	02 f0 ad e0 	if C jump (m) Lc_aud_cur_mic_data_transfer_11;
+
+84201864 <Lc_aud_cur_mic_data_transfer_7>:
+    {
+        if(!(AUD_CUR_GET_TERMINAL_POS(i) & terminal_skip_mask))
+84201864:	31 00       	rMAC = r4 + Null;
+84201866:	00 f1 92 de 	r0 = 0x1 LSHIFT rMAC;
+8420186a:	41 d8       	rMAC = M[FP + 32];
+8420186c:	89 10       	rMAC = rMAC AND r0;
+8420186e:	f3 63       	if NE jump (m) Lc_aud_cur_mic_data_transfer_5;
+
+84201870 <Lc_aud_cur_mic_data_transfer_8>:
+        {
+            /* Perform copy/advance if terminal number (i) is not in
+             * terminal_skip_mask
+             */
+            temp_amt = amount;
+84201870:	51 09       	r7 = r8 + Null;
+            if (ip_buffers[i] != NULL)
+84201872:	82 f0 00 e8 	r0 = M[r6 + Null];
+84201876:	ef 61       	if EQ jump (m) Lc_aud_cur_mic_data_transfer_5;
+
+84201878 <Lc_aud_cur_mic_data_transfer_9>:
+            {
+                if (op_buffers[i] != NULL)
+84201878:	39 e8       	rMAC = M[r5 + Null];
+8420187a:	e4 61       	if EQ jump (m) Lc_aud_cur_mic_data_transfer_2;
+
+8420187c <Lc_aud_cur_mic_data_transfer_10>:
+                {
+                    temp_amt = cbuffer_copy(op_buffers[i],
+                                            ip_buffers[i],
+                                            amount);
+8420187c:	54 08       	r2 = r8 + Null;
+8420187e:	13 00       	r1 = r0 + Null;
+84201880:	0a 00       	r0 = rMAC + Null;
+84201882:	ff fd 62 f2 	call (m) 0x4dda4;
+84201886:	23 e9 
+84201888:	11 09       	r7 = r0 + Null;
+8420188a:	e0 6f       	jump (m) Lc_aud_cur_mic_data_transfer_3;
+
+8420188c <Lc_aud_cur_mic_data_transfer_11>:
+                }
+            }
+        }
+    }
+
+    return mic_amt;
+8420188c:	5a 08       	r0 = r9 + Null;
+
+8420188e <Lc_aud_cur_mic_data_transfer_12>:
+
+}
+8420188e:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84201890:	d8 4c       	rts;
+
+84201892 <$_aud_cur_mic_metadata_transfer>:
+
+unsigned aud_cur_mic_metadata_transfer(OPERATOR_DATA *op_data, unsigned amount)
+{
+84201892:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84201894:	1e 00       	r4 = r1 + Null;
+84201896:	ef fd f8 ff 	call (m) 0x934;
+8420189a:	3f e4 
+8420189c:	11 00       	rMAC = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    tCbuffer *p_metadata_ip, *p_metadata_op;
+    /* Only copy metadata if samples were transferred */
+    if (amount > 0)
+8420189e:	30 04       	Null = r4 - Null;
+842018a0:	07 60       	if EQ jump (m) Lc_aud_cur_mic_metadata_transfer_3;
+
+842018a2 <Lc_aud_cur_mic_metadata_transfer_2>:
+    {
+        p_metadata_ip = p_class_data->metadata_ip[AUD_CUR_METADATA_MIC];
+842018a2:	8a a9       	r0 = M[rMAC + 88];
+        p_metadata_op = p_class_data->metadata_op[AUD_CUR_METADATA_MIC];
+842018a4:	0b b8       	r1 = M[rMAC + 96];
+
+        metadata_strict_transport(p_metadata_ip,
+                                  p_metadata_op,
+                                  amount * OCTETS_PER_SAMPLE);
+842018a6:	74 54       	r2 = r4 LSHIFT 2;
+842018a8:	ff fd 99 f0 	call (m) 0x14af0;
+842018ac:	29 e2 
+
+842018ae <Lc_aud_cur_mic_metadata_transfer_3>:
+    }
+    return amount;
+842018ae:	32 00       	r0 = r4 + Null;
+
+842018b0 <Lc_aud_cur_mic_metadata_transfer_4>:
+}
+842018b0:	f1 48       	popm <FP, r4, rLink>;
+842018b2:	d8 4c       	rts;
+
+842018b4 <$_aud_cur_release_shared_gain_cback>:
+bool aud_cur_release_shared_gain_cback(CONNECTION_LINK con_id,
+                                       STATUS_KYMERA status,
+                                       EXT_OP_ID op_id,
+                                       unsigned num_resp_params,
+                                       unsigned *resp_params)
+{
+842018b4:	c8 1c       	pushm <FP(=SP), rLink>;
+    if (status != ACCMD_STATUS_OK)
+842018b6:	18 04       	Null = r1 - Null;
+842018b8:	09 60       	if EQ jump (m) Lc_aud_cur_release_shared_gain_cback_3;
+
+842018ba <Lc_aud_cur_release_shared_gain_cback_2>:
+    {
+        L0_DBG_MSG2("aud_cur unlink response failed: status=%d, op_id=%d",
+                    status,
+                    op_id);
+842018ba:	55 f1 02 f0 	r0 = Null + 357566038;
+842018be:	56 4a 
+842018c0:	ef fd fc ff 	call (m) 0x10d6;
+842018c4:	37 e0 
+        return FALSE;
+842018c6:	02 00       	r0 = Null + Null;
+842018c8:	02 6e       	jump (m) Lc_aud_cur_release_shared_gain_cback_4;
+
+842018ca <Lc_aud_cur_release_shared_gain_cback_3>:
+    }
+    return TRUE;
+842018ca:	42 20       	r0 = Null + 1;
+
+842018cc <Lc_aud_cur_release_shared_gain_cback_4>:
+}
+842018cc:	c8 48       	popm <FP, rLink>;
+842018ce:	d8 4c       	rts;
+
+842018d0 <$_aud_cur_release_shared_fine_gain>:
+                                      AHM_ANC_FILTER filter,
+                                      AHM_GAIN_CONTROL_TYPE gain_type,
+                                      uint16 ahm_op_id,
+                                      AHM_ANC_INSTANCE anc_instance
+                                      )
+{
+842018d0:	c8 1e       	pushm <FP(=SP), rLink>, SP = SP + 0x20;
+842018d2:	29 00       	rMAC = r3 + Null;
+    unsigned msg[OPMSG_FREE_AHM_SHARED_GAIN_PTR_WORD_SIZE];
+    OPMSG_CREATION_FIELD_SET(msg,
+                             OPMSG_FREE_AHM_SHARED_GAIN_PTR,
+                             MESSAGE_ID,
+                             OPMSG_AHM_ID_FREE_AHM_SHARED_GAIN_PTR);
+842018d4:	05 28       	r3 = Null + 16;
+842018d6:	15 de       	M[FP + 8] = r3;
+    OPMSG_CREATION_FIELD_SET32(msg,
+                               OPMSG_FREE_AHM_SHARED_GAIN_PTR,
+                               SHARED_GAIN_PTR,
+                               (unsigned)p_gain);
+842018d8:	95 c6       	r3 = r0 AND 0xffff;
+842018da:	1d de       	M[FP + 12] = r3;
+842018dc:	92 52       	r0 = r0 LSHIFT -16;
+842018de:	22 de       	M[FP + 16] = r0;
+    OPMSG_CREATION_FIELD_SET(msg,
+                             OPMSG_FREE_AHM_SHARED_GAIN_PTR,
+                             FILTER,
+                             filter);
+842018e0:	2b de       	M[FP + 20] = r1;
+    OPMSG_CREATION_FIELD_SET(msg,
+                             OPMSG_FREE_AHM_SHARED_GAIN_PTR,
+                             CHANNEL,
+                             anc_instance);
+842018e2:	e2 d1       	r0 = MBS[FP + -4];
+842018e4:	42 de       	M[FP + 32] = r0;
+    OPMSG_CREATION_FIELD_SET(msg,
+                             OPMSG_FREE_AHM_SHARED_GAIN_PTR,
+                             COARSE,
+                             FALSE);
+842018e6:	30 de       	M[FP + 24] = Null;
+    OPMSG_CREATION_FIELD_SET(msg,
+                             OPMSG_FREE_AHM_SHARED_GAIN_PTR,
+                             CONTROL_TYPE,
+                             gain_type);
+842018e8:	3c de       	M[FP + 28] = r2;
+
+    opmgr_operator_message(ADAPTOR_INTERNAL,
+                           ahm_op_id,
+                           OPMSG_FREE_AHM_SHARED_GAIN_PTR_WORD_SIZE,
+                           (unsigned*)&msg,
+                           aud_cur_release_shared_gain_cback);
+842018ea:	42 f0 18 f0 	push Null + 69212341;
+842018ee:	55 eb 
+842018f0:	85 10       	r3 = FP + 8;
+842018f2:	c4 21       	r2 = Null + 7;
+842018f4:	82 2b       	r0 = Null + 30;
+842018f6:	0b 00       	r1 = rMAC + Null;
+842018f8:	ff fd 18 f0 	call (m) 0x4aa0;
+842018fc:	29 ed 
+842018fe:	7f 4c       	SP = SP + -4;
+
+84201900 <Lc_aud_cur_release_shared_fine_gain_2>:
+}
+84201900:	c8 4a       	SP = SP - 0x20, popm <FP, rLink>;
+84201902:	d8 4c       	rts;
+
+84201904 <$_aud_cur_get_shared_fine_gain>:
+                                  AHM_ANC_FILTER filter,
+                                  unsigned op_id,
+                                  AHM_GAIN_CONTROL_TYPE gain_type,
+                                  AHM_ANC_INSTANCE anc_instance,
+                                  OP_MSG_CBACK callback)
+{
+84201904:	c8 1e       	pushm <FP(=SP), rLink>, SP = SP + 0x20;
+84201906:	21 00       	rMAC = r2 + Null;
+    unsigned msg[OPMSG_COMMON_MSG_GET_SHARED_GAIN_WORD_SIZE];
+    OPMSG_CREATION_FIELD_SET(msg,
+                             OPMSG_COMMON_MSG_GET_SHARED_GAIN,
+                             MESSAGE_ID,
+                             OPMSG_COMMON_ID_GET_SHARED_GAIN);
+84201908:	14 f0 26 40 	r2 = Null + 8230;
+8420190c:	14 de       	M[FP + 8] = r2;
+    OPMSG_CREATION_FIELD_SET32(msg,
+                               OPMSG_COMMON_MSG_GET_SHARED_GAIN,
+                               P_EXT_DATA,
+                               (unsigned)p_ext_data);
+8420190e:	94 c6       	r2 = r0 AND 0xffff;
+84201910:	1c de       	M[FP + 12] = r2;
+84201912:	92 52       	r0 = r0 LSHIFT -16;
+84201914:	22 de       	M[FP + 16] = r0;
+    OPMSG_CREATION_FIELD_SET(msg,
+                             OPMSG_COMMON_MSG_GET_SHARED_GAIN,
+                             FILTER,
+                             filter);
+84201916:	2b de       	M[FP + 20] = r1;
+    OPMSG_CREATION_FIELD_SET(msg,
+                             OPMSG_COMMON_MSG_GET_SHARED_GAIN,
+                             CHANNEL,
+                             anc_instance);
+84201918:	e2 d1       	r0 = MBS[FP + -4];
+8420191a:	42 de       	M[FP + 32] = r0;
+    OPMSG_CREATION_FIELD_SET(msg,
+                             OPMSG_COMMON_MSG_GET_SHARED_GAIN,
+                             COARSE,
+                             FALSE);
+8420191c:	30 de       	M[FP + 24] = Null;
+    OPMSG_CREATION_FIELD_SET(msg,
+                             OPMSG_COMMON_MSG_GET_SHARED_GAIN,
+                             CONTROL_TYPE,
+                             gain_type);
+8420191e:	3d de       	M[FP + 28] = r3;
+    opmgr_operator_message(ADAPTOR_INTERNAL,
+                           op_id,
+                           OPMSG_COMMON_MSG_GET_SHARED_GAIN_WORD_SIZE,
+                           (unsigned*)&msg,
+                           callback);
+84201920:	f2 d9       	r0 = M[FP + -8];
+84201922:	11 1c       	pushm <r0>;
+84201924:	85 10       	r3 = FP + 8;
+84201926:	c4 21       	r2 = Null + 7;
+84201928:	82 2b       	r0 = Null + 30;
+8420192a:	0b 00       	r1 = rMAC + Null;
+8420192c:	ff fd 18 f0 	call (m) 0x4aa0;
+84201930:	35 eb 
+84201932:	7f 4c       	SP = SP + -4;
+
+84201934 <Lc_aud_cur_get_shared_fine_gain_2>:
+}
+84201934:	c8 4a       	SP = SP - 0x20, popm <FP, rLink>;
+84201936:	d8 4c       	rts;
+
+84201938 <Lc_aud_cur_connect_terminal_1>:
+ */
+static void aud_cur_connect_terminal(AUD_CUR_TERMINAL *p_def,
+                                     uint16 num,
+                                     tCbuffer *p_buffer)
+{
+    p_def->p_buffer_list[num] = p_buffer;
+84201938:	91 88       	rMAC = M[r0 + 8];
+8420193a:	5d 54       	r3 = r1 LSHIFT 2;
+8420193c:	4c ef       	M[rMAC + r3] = r2;
+    p_def->connected |= (uint16)(1 << num);
+8420193e:	00 f3 93 de 	r1 = 0x1 LSHIFT r1;
+84201942:	d1 86       	rMAC = MHU[r0 + 6];
+84201944:	c9 12       	rMAC = rMAC OR r1;
+84201946:	d1 8c       	MH[r0 + 6] = rMAC;
+
+84201948 <Lc_aud_cur_connect_terminal_2>:
+    return;
+84201948:	d8 4c       	rts;
+
+8420194a <Lc_aud_cur_disconnect_terminal_1>:
+ * \return - NONE
+ */
+static void aud_cur_disconnect_terminal(AUD_CUR_TERMINAL *p_def,
+                                        uint16 num)
+{
+    p_def->p_buffer_list[num] = NULL;
+8420194a:	91 88       	rMAC = M[r0 + 8];
+8420194c:	5c 54       	r2 = r1 LSHIFT 2;
+8420194e:	08 ef       	M[rMAC + r2] = Null;
+    p_def->connected &= (uint16)(~(1 << num));
+84201950:	00 f3 93 de 	r1 = 0x1 LSHIFT r1;
+84201954:	ff f3 51 d6 	rMAC = -1 - r1;
+84201958:	d3 86       	r1 = MHU[r0 + 6];
+8420195a:	c9 10       	rMAC = rMAC AND r1;
+8420195c:	d1 8c       	MH[r0 + 6] = rMAC;
+
+8420195e <Lc_aud_cur_disconnect_terminal_2>:
+    return;
+8420195e:	d8 4c       	rts;
+
+84201960 <Lc_aud_cur_connect_metadata_1>:
+    unsigned idx;
+
+    /* Select the correct metadata buffer */
+    if (num == AUD_CUR_PLAYBACK_TERMINAL)
+    {
+        idx = AUD_CUR_METADATA_PLAYBACK;
+84201960:	05 00       	r3 = Null + Null;
+84201962:	18 04       	Null = r1 - Null;
+84201964:	21 f0 45 ce 	if NE r3 = Null + 1;
+    {
+        idx = AUD_CUR_METADATA_MIC;
+    }
+
+    /* Populate the metadata buffer */
+    if (p_metadata_list[idx] == NULL && buff_has_metadata(p_buffer))
+84201968:	6b 54       	r1 = r3 LSHIFT 2;
+8420196a:	9a 00       	r0 = r1 + r0;
+8420196c:	11 e8       	rMAC = M[r0 + Null];
+8420196e:	04 62       	if NE jump (m) Lc_aud_cur_connect_metadata_4;
+
+84201970 <Lc_aud_cur_connect_metadata_2>:
+ *
+ * \return TRUE if the buffer supports metadata. FALSE if it doesn't.
+ */
+static inline bool buff_has_metadata(const tCbuffer *buff)
+{
+    if (buff->metadata != NULL)
+84201970:	a1 89       	rMAC = M[r2 + 24];
+84201972:	02 60       	if EQ jump (m) Lc_aud_cur_connect_metadata_4;
+
+84201974 <Lc_aud_cur_connect_metadata_3>:
+    {
+            p_metadata_list[idx] = p_buffer;
+84201974:	14 ee       	M[r0 + Null] = r2;
+
+84201976 <Lc_aud_cur_connect_metadata_4>:
+84201976:	d8 4c       	rts;
+
+84201978 <Lc_aud_cur_disconnect_metadata_1>:
+ * \return - None
+ */
+static void aud_cur_disconnect_metadata(tCbuffer **p_metadata_list,
+                                        AUD_CUR_TERMINAL *p_def,
+                                        uint16 num)
+{
+84201978:	72 1c       	pushm <FP(=SP), r4, r5>;
+    int i;
+    tCbuffer *p_buffer;
+    tCbuffer **p_buffer_list;
+
+    /* Playback metadata only travels on a single terminal */
+    if (num == AUD_CUR_PLAYBACK_TERMINAL)
+8420197a:	20 04       	Null = r2 - Null;
+8420197c:	03 62       	if NE jump (m) Lc_aud_cur_disconnect_metadata_3;
+
+8420197e <Lc_aud_cur_disconnect_metadata_2>:
+    {
+        p_metadata_list[AUD_CUR_METADATA_PLAYBACK] = NULL;
+8420197e:	10 ee       	M[r0 + Null] = Null;
+84201980:	17 6e       	jump (m) Lc_aud_cur_disconnect_metadata_11;
+
+84201982 <Lc_aud_cur_disconnect_metadata_3>:
+    }
+
+    /* Look for metadata on another terminal if the terminal being used for
+     * metadata is being disconnected.
+     */
+    p_buffer_list = p_def->p_buffer_list;
+84201982:	99 88       	rMAC = M[r1 + 8];
+    if (p_metadata_list[AUD_CUR_METADATA_MIC] == p_buffer_list[num])
+84201984:	55 88       	r3 = M[r0 + 4];
+84201986:	66 54       	r4 = r2 LSHIFT 2;
+84201988:	8e e9       	r4 = M[rMAC + r4];
+8420198a:	a8 05       	Null = r3 - r4;
+8420198c:	11 62       	if NE jump (m) Lc_aud_cur_disconnect_metadata_11;
+
+8420198e <Lc_aud_cur_disconnect_metadata_4>:
+    {
+        /* Set the metadata buffer to NULL and populate if a replacement is
+         * available.
+         */
+        p_metadata_list[AUD_CUR_METADATA_MIC] = NULL;
+8420198e:	50 8e       	M[r0 + 4] = Null;
+84201990:	1b e6       	r1 = MHU[r1 + Null];
+
+        /* Iterate through microphone terminals */
+        for (i = (AUD_CUR_PLAYBACK_TERMINAL + 1); i < p_def->max; i++)
+84201992:	45 20       	r3 = Null + 1;
+84201994:	0e 21       	r4 = rMAC + 4;
+
+84201996 <Lc_aud_cur_disconnect_metadata_5>:
+84201996:	e8 04       	Null = r3 - r1;
+84201998:	0b 66       	if GE jump (m) Lc_aud_cur_disconnect_metadata_11;
+
+8420199a <Lc_aud_cur_disconnect_metadata_6>:
+        {
+            /* Don't look at the terminal that is being disconnected */
+            if (i == num)
+8420199a:	28 05       	Null = r3 - r2;
+8420199c:	05 60       	if EQ jump (m) Lc_aud_cur_disconnect_metadata_9;
+
+8420199e <Lc_aud_cur_disconnect_metadata_7>:
+            {
+                continue;
+            }
+            /* Update the metadata buffer with the new buffer information */
+            p_buffer = p_buffer_list[i];
+            if (p_buffer != NULL && buff_has_metadata(p_buffer))
+8420199e:	31 e8       	rMAC = M[r4 + Null];
+842019a0:	03 60       	if EQ jump (m) Lc_aud_cur_disconnect_metadata_9;
+
+842019a2 <Lc_aud_cur_disconnect_metadata_8>:
+842019a2:	8f 89       	r5 = M[rMAC + 24];
+842019a4:	04 62       	if NE jump (m) Lc_aud_cur_disconnect_metadata_10;
+
+842019a6 <Lc_aud_cur_disconnect_metadata_9>:
+         * available.
+         */
+        p_metadata_list[AUD_CUR_METADATA_MIC] = NULL;
+
+        /* Iterate through microphone terminals */
+        for (i = (AUD_CUR_PLAYBACK_TERMINAL + 1); i < p_def->max; i++)
+842019a6:	6d 20       	r3 = r3 + 1;
+842019a8:	36 21       	r4 = r4 + 4;
+842019aa:	f6 6f       	jump (m) Lc_aud_cur_disconnect_metadata_5;
+
+842019ac <Lc_aud_cur_disconnect_metadata_10>:
+            }
+            /* Update the metadata buffer with the new buffer information */
+            p_buffer = p_buffer_list[i];
+            if (p_buffer != NULL && buff_has_metadata(p_buffer))
+            {
+                p_metadata_list[AUD_CUR_METADATA_MIC] = p_buffer;
+842019ac:	51 8e       	M[r0 + 4] = rMAC;
+
+842019ae <Lc_aud_cur_disconnect_metadata_11>:
+                break;
+842019ae:	72 48       	popm <FP, r4, r5>;
+842019b0:	d8 4c       	rts;
+
+842019b2 <Lc_aud_cur_connect_common_1>:
+static bool aud_cur_connect_common(OPERATOR_DATA *op_data,
+                                   void *message_data,
+                                   unsigned *response_id,
+                                   void **response_data,
+                                   bool connect)
+{
+842019b2:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+842019b4:	42 de       	M[FP + 32] = r0;
+842019b6:	19 09       	r7 = r1 + Null;
+842019b8:	26 00       	r4 = r2 + Null;
+842019ba:	4d de       	M[FP + 36] = r3;
+842019bc:	f9 d9       	rMAC = M[FP + -4];
+842019be:	51 de       	M[FP + 40] = rMAC;
+842019c0:	ef fd f7 ff 	call (m) 0x934;
+842019c4:	35 eb 
+842019c6:	13 09       	r9 = r0 + Null;
+    tCbuffer **p_metadata_list;
+    AUD_CUR_TERMINAL *p_terminal;
+
+    /* Verify class data and create response */
+    if ((p_class_data == NULL) ||
+        (!base_op_connect(op_data, message_data, response_id, response_data)))
+842019c8:	0a 60       	if EQ jump (m) Lc_aud_cur_connect_common_3;
+
+842019ca <Lc_aud_cur_connect_common_2>:
+842019ca:	34 00       	r2 = r4 + Null;
+842019cc:	4b 08       	r1 = r7 + Null;
+842019ce:	4d d8       	r3 = M[FP + 36];
+842019d0:	42 d8       	r0 = M[FP + 32];
+842019d2:	ef fd f6 ff 	call (m) 0x7c8;
+842019d6:	37 ef 
+842019d8:	10 04       	Null = r0 - Null;
+842019da:	03 62       	if NE jump (m) Lc_aud_cur_connect_common_4;
+
+842019dc <Lc_aud_cur_connect_common_3>:
+    {
+        return FALSE;
+842019dc:	02 00       	r0 = Null + Null;
+842019de:	90 6e       	jump (m) Lc_aud_cur_connect_common_30;
+
+842019e0 <Lc_aud_cur_connect_common_4>:
+    }
+
+    /* Prevent runtime connection */
+    if (opmgr_op_is_running(op_data))
+842019e0:	42 d8       	r0 = M[FP + 32];
+842019e2:	ff fd 21 f0 	call (m) 0x5ca4;
+842019e6:	23 e6 
+842019e8:	10 04       	Null = r0 - Null;
+842019ea:	06 60       	if EQ jump (m) Lc_aud_cur_connect_common_7;
+
+842019ec <Lc_aud_cur_connect_common_5>:
+    {
+        /* Exception: allow runtime disconnection if the flag is set */
+        if (connect || !p_class_data->runtime_disconnect)
+842019ec:	51 d8       	rMAC = M[FP + 40];
+842019ee:	29 62       	if NE jump (m) Lc_aud_cur_connect_common_13;
+
+842019f0 <Lc_aud_cur_connect_common_6>:
+842019f0:	b1 f0 04 82 	rMAC = MBU[r9 + 4];
+842019f4:	26 60       	if EQ jump (m) Lc_aud_cur_connect_common_13;
+
+842019f6 <Lc_aud_cur_connect_common_7>:
+            return TRUE;
+        }
+    }
+
+    /* Get the terminal ID, number, and determine whether sink or source */
+    terminal_id = OPMGR_GET_OP_CONNECT_TERMINAL_ID(message_data);
+842019f6:	9a f0 00 e8 	r8 = M[r7 + Null];
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+842019fa:	a7 f0 3f 00 	r5 = r8 AND 0x3f;
+    terminal_pos = (uint16)AUD_CUR_GET_TERMINAL_POS(terminal_num);
+842019fe:	39 00       	rMAC = r5 + Null;
+84201a00:	00 f1 92 de 	r0 = 0x1 LSHIFT rMAC;
+84201a04:	91 c6       	rMAC = r0 AND 0xffff;
+    is_sink = terminal_id & TERMINAL_SINK_MASK;
+
+    /* Setup the selected terminal */
+    if (is_sink)
+84201a06:	40 f0 a3 f0 	r1 = r8 AND 0x800000;
+84201a0a:	00 00 
+84201a0c:	07 60       	if EQ jump (m) Lc_aud_cur_connect_common_9;
+
+84201a0e <Lc_aud_cur_connect_common_8>:
+    {
+        p_terminal = &p_class_data->sinks;
+84201a0e:	b3 f0 08 20 	r1 = r9 + 8;
+84201a12:	1e 00       	r4 = r1 + Null;
+        p_metadata_list = p_class_data->metadata_ip;
+84201a14:	38 f0 4c 20 	r6 = r1 + 76;
+84201a18:	06 6e       	jump (m) Lc_aud_cur_connect_common_10;
+
+84201a1a <Lc_aud_cur_connect_common_9>:
+    }
+    else
+    {
+        p_terminal = &p_class_data->sources;
+84201a1a:	b3 f0 14 20 	r1 = r9 + 20;
+84201a1e:	1e 00       	r4 = r1 + Null;
+        p_metadata_list = p_class_data->metadata_op;
+84201a20:	38 f0 48 20 	r6 = r1 + 72;
+
+84201a24 <Lc_aud_cur_connect_common_10>:
+    }
+
+    /* Make sure the terminal is valid */
+    if (terminal_num >= p_terminal->max)
+84201a24:	33 e6       	r1 = MHU[r4 + Null];
+84201a26:	f8 04       	Null = r5 - r1;
+84201a28:	12 68       	if LT jump (m) Lc_aud_cur_connect_common_14;
+
+84201a2a <Lc_aud_cur_connect_common_11>:
+    {
+        L4_DBG_MSG1("base aud cur connect: terminal num %d is out \
+                    of max range", terminal_num);
+84201a2a:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84201a2e:	08 25       	Null = rMAC - 4;
+84201a30:	08 68       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84201a32 <Lc_aud_cur_connect_common_12>:
+84201a32:	55 f1 02 f0 	r0 = Null + 357565674;
+84201a36:	ea 48 
+84201a38:	3b 00       	r1 = r5 + Null;
+84201a3a:	ef fd fb ff 	call (m) 0x10c2;
+84201a3e:	29 e4 
+
+84201a40 <Lc_aud_cur_connect_common_13>:
+84201a40:	01 f0 00 60 	rMAC = Null + 4096;
+84201a44:	4a d8       	r0 = M[FP + 36];
+84201a46:	12 e8       	r0 = M[r0 + Null];
+84201a48:	51 8e       	M[r0 + 4] = rMAC;
+84201a4a:	59 6e       	jump (m) Lc_aud_cur_connect_common_29;
+
+84201a4c <Lc_aud_cur_connect_common_14>:
+        return TRUE;
+    }
+
+    /* Make sure the terminal is not marked as invalid */
+    if (p_terminal->max_valid_mask &&
+       !(p_terminal->max_valid_mask & terminal_pos))
+84201a4c:	b3 86       	r1 = MHU[r4 + 4];
+84201a4e:	0f 60       	if EQ jump (m) Lc_aud_cur_connect_common_18;
+
+84201a50 <Lc_aud_cur_connect_common_15>:
+84201a50:	c9 10       	rMAC = rMAC AND r1;
+84201a52:	0d 62       	if NE jump (m) Lc_aud_cur_connect_common_18;
+
+84201a54 <Lc_aud_cur_connect_common_16>:
+    {
+        L4_DBG_MSG1("base aud cur connect: invalid terminal number %d",
+                    terminal_num);
+84201a54:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84201a58:	08 25       	Null = rMAC - 4;
+84201a5a:	f3 69       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84201a5c <Lc_aud_cur_connect_common_17>:
+84201a5c:	55 f1 02 f0 	r0 = Null + 357565752;
+84201a60:	38 49 
+84201a62:	3b 00       	r1 = r5 + Null;
+84201a64:	ef fd fb ff 	call (m) 0x10c2;
+84201a68:	3f e2 
+84201a6a:	eb 6f       	jump (m) Lc_aud_cur_connect_common_13;
+
+84201a6c <Lc_aud_cur_connect_common_18>:
+        base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+        return TRUE;
+    }
+
+    if (connect)
+84201a6c:	51 d8       	rMAC = M[FP + 40];
+84201a6e:	26 60       	if EQ jump (m) Lc_aud_cur_connect_common_24;
+
+84201a70 <Lc_aud_cur_connect_common_19>:
+ * \return - TRUE if the terminal is connected
+ */
+static inline bool aud_cur_is_terminal_connected(AUD_CUR_TERMINAL *p_def,
+                                                 uint16 num)
+{
+    return (p_def->connected & (1 << num)) > 0;
+84201a70:	f1 86       	rMAC = MHU[r4 + 6];
+84201a72:	52 10       	r0 = r0 AND rMAC;
+84201a74:	01 00       	rMAC = Null + Null;
+84201a76:	10 04       	Null = r0 - Null;
+84201a78:	2c f0 41 ce 	if GT rMAC = Null + 1;
+        return TRUE;
+    }
+
+    if (connect)
+    {
+        if (aud_cur_is_terminal_connected(p_terminal, terminal_num))
+84201a7c:	08 04       	Null = rMAC - Null;
+84201a7e:	0d 60       	if EQ jump (m) Lc_aud_cur_connect_common_22;
+
+84201a80 <Lc_aud_cur_connect_common_20>:
+        {
+            L4_DBG_MSG1("base aud cur connect: terminal %d already connected",
+                        terminal_num);
+84201a80:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84201a84:	08 25       	Null = rMAC - 4;
+84201a86:	dd 69       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84201a88 <Lc_aud_cur_connect_common_21>:
+84201a88:	55 f1 02 f0 	r0 = Null + 357565801;
+84201a8c:	69 49 
+84201a8e:	3b 00       	r1 = r5 + Null;
+84201a90:	ef fd fb ff 	call (m) 0x10c2;
+84201a94:	33 e1 
+84201a96:	d5 6f       	jump (m) Lc_aud_cur_connect_common_13;
+
+84201a98 <Lc_aud_cur_connect_common_22>:
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+        }
+
+        /* Connect the terminal */
+        tCbuffer *p_buffer = OPMGR_GET_OP_CONNECT_BUFFER(message_data);
+84201a98:	99 f0 01 88 	r7 = M[r7 + 4];
+        aud_cur_connect_terminal(p_terminal, terminal_num, p_buffer);
+84201a9c:	4c 08       	r2 = r7 + Null;
+84201a9e:	3b 00       	r1 = r5 + Null;
+84201aa0:	32 00       	r0 = r4 + Null;
+84201aa2:	4b 4f       	call (m) Lc_aud_cur_connect_terminal_1;
+        aud_cur_connect_metadata(p_metadata_list, terminal_num, p_buffer);
+84201aa4:	4c 08       	r2 = r7 + Null;
+84201aa6:	3b 00       	r1 = r5 + Null;
+84201aa8:	42 08       	r0 = r6 + Null;
+84201aaa:	5b 4f       	call (m) Lc_aud_cur_connect_metadata_1;
+
+        if (p_class_data->connect_fn != NULL)
+84201aac:	b1 f0 12 88 	rMAC = M[r9 + 72];
+84201ab0:	26 60       	if EQ jump (m) Lc_aud_cur_connect_common_29;
+
+84201ab2 <Lc_aud_cur_connect_common_23>:
+        {
+            p_class_data->connect_fn(op_data, terminal_id);
+84201ab2:	53 08       	r1 = r8 + Null;
+84201ab4:	42 d8       	r0 = M[FP + 32];
+84201ab6:	d1 4c       	call rMAC;
+84201ab8:	22 6e       	jump (m) Lc_aud_cur_connect_common_29;
+
+84201aba <Lc_aud_cur_connect_common_24>:
+ * \return - TRUE if the terminal is connected
+ */
+static inline bool aud_cur_is_terminal_connected(AUD_CUR_TERMINAL *p_def,
+                                                 uint16 num)
+{
+    return (p_def->connected & (1 << num)) > 0;
+84201aba:	f1 86       	rMAC = MHU[r4 + 6];
+84201abc:	52 10       	r0 = r0 AND rMAC;
+84201abe:	01 00       	rMAC = Null + Null;
+84201ac0:	10 04       	Null = r0 - Null;
+84201ac2:	2c f0 41 ce 	if GT rMAC = Null + 1;
+            p_class_data->connect_fn(op_data, terminal_id);
+        }
+    }
+    else
+    {
+        if (!aud_cur_is_terminal_connected(p_terminal, terminal_num))
+84201ac6:	08 04       	Null = rMAC - Null;
+84201ac8:	0d 62       	if NE jump (m) Lc_aud_cur_connect_common_27;
+
+84201aca <Lc_aud_cur_connect_common_25>:
+        {
+            L4_DBG_MSG1("base aud cur connect: terminal %d not connected",
+                        terminal_num);
+84201aca:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84201ace:	08 25       	Null = rMAC - 4;
+84201ad0:	b8 69       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84201ad2 <Lc_aud_cur_connect_common_26>:
+84201ad2:	55 f1 02 f0 	r0 = Null + 357565853;
+84201ad6:	9d 49 
+84201ad8:	3b 00       	r1 = r5 + Null;
+84201ada:	ef fd fa ff 	call (m) 0x10c2;
+84201ade:	29 ef 
+84201ae0:	b0 6f       	jump (m) Lc_aud_cur_connect_common_13;
+
+84201ae2 <Lc_aud_cur_connect_common_27>:
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+        }
+
+        aud_cur_disconnect_metadata(p_metadata_list, p_terminal, terminal_num);
+84201ae2:	3c 00       	r2 = r5 + Null;
+84201ae4:	33 00       	r1 = r4 + Null;
+84201ae6:	42 08       	r0 = r6 + Null;
+84201ae8:	48 4f       	call (m) Lc_aud_cur_disconnect_metadata_1;
+        aud_cur_disconnect_terminal(p_terminal, terminal_num);
+84201aea:	3b 00       	r1 = r5 + Null;
+84201aec:	32 00       	r0 = r4 + Null;
+84201aee:	2e 4f       	call (m) Lc_aud_cur_disconnect_terminal_1;
+
+        if (p_class_data->disconnect_fn != NULL)
+84201af0:	b1 f0 13 88 	rMAC = M[r9 + 76];
+84201af4:	04 60       	if EQ jump (m) Lc_aud_cur_connect_common_29;
+
+84201af6 <Lc_aud_cur_connect_common_28>:
+        {
+            p_class_data->disconnect_fn(op_data, terminal_id);
+84201af6:	53 08       	r1 = r8 + Null;
+84201af8:	42 d8       	r0 = M[FP + 32];
+84201afa:	d1 4c       	call rMAC;
+
+84201afc <Lc_aud_cur_connect_common_29>:
+    {
+        /* Exception: allow runtime disconnection if the flag is set */
+        if (connect || !p_class_data->runtime_disconnect)
+        {
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+84201afc:	42 20       	r0 = Null + 1;
+
+84201afe <Lc_aud_cur_connect_common_30>:
+        {
+            p_class_data->disconnect_fn(op_data, terminal_id);
+        }
+    }
+    return TRUE;
+}
+84201afe:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84201b00:	d8 4c       	rts;
+
+84201b02 <Lc_aud_cur_check_valid_terminals_1>:
+ * \param  p_term           Pointer to the terminal information
+ *
+ * \return - result TRUE if the terminals are valid
+ */
+static bool aud_cur_check_valid_terminals(AUD_CUR_TERMINAL *p_term)
+{
+84201b02:	c8 1c       	pushm <FP(=SP), rLink>;
+    /* No validity mask to test */
+    if (p_term->min_valid_mask == 0)
+84201b04:	51 86       	rMAC = MHU[r0 + 2];
+84201b06:	03 62       	if NE jump (m) Lc_aud_cur_check_valid_terminals_3;
+
+84201b08 <Lc_aud_cur_check_valid_terminals_2>:
+    {
+        return TRUE;
+84201b08:	42 20       	r0 = Null + 1;
+84201b0a:	10 6e       	jump (m) Lc_aud_cur_check_valid_terminals_7;
+
+84201b0c <Lc_aud_cur_check_valid_terminals_3>:
+    }
+
+    /* Connection mask doesn't have at least the valid mask bits */
+    if ((p_term->min_valid_mask & p_term->connected) != p_term->min_valid_mask)
+84201b0c:	d3 86       	r1 = MHU[r0 + 6];
+84201b0e:	5a 10       	r0 = r1 AND rMAC;
+84201b10:	50 04       	Null = r0 - rMAC;
+84201b12:	fb 61       	if EQ jump (m) Lc_aud_cur_check_valid_terminals_2;
+
+84201b14 <Lc_aud_cur_check_valid_terminals_4>:
+    {
+        L4_DBG_MSG1("base aud cur start: invalid terminals %hu",
+                    p_term->connected);
+84201b14:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84201b18:	08 25       	Null = rMAC - 4;
+84201b1a:	07 68       	if LT jump (m) Lc_aud_cur_check_valid_terminals_6;
+
+84201b1c <Lc_aud_cur_check_valid_terminals_5>:
+84201b1c:	55 f1 02 f0 	r0 = Null + 357565901;
+84201b20:	cd 49 
+84201b22:	ef fd fa ff 	call (m) 0x10c2;
+84201b26:	21 ed 
+
+84201b28 <Lc_aud_cur_check_valid_terminals_6>:
+        return FALSE;
+84201b28:	02 00       	r0 = Null + Null;
+
+84201b2a <Lc_aud_cur_check_valid_terminals_7>:
+    }
+
+    return TRUE;
+}
+84201b2a:	c8 48       	popm <FP, rLink>;
+84201b2c:	d8 4c       	rts;
+
+84201b2e <$kdc_start>:
+.MODULE $M.kdc_start;
+.CODESEGMENT PM;
+.DATASEGMENT DM;
+
+$kdc_start:
+r0 = $_hcgr_16k_cap_data;
+84201b2e:	01 f0 02 f3 	r0 = Null + 1441920;
+84201b32:	80 40 
+    /* Force this symbol to be exported in ELF */
+    Null = $___kymera_debug_map_addr;
+84201b34:	00 f0 4c 5a 	Null = Null + 3660;

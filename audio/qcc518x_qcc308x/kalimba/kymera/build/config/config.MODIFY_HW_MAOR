@@ -1,0 +1,29 @@
+############################################################################
+# Copyright (c) 2020 Qualcomm Technologies International, Ltd.
+############################################################################
+
+# Maor configuration specific and common to HW (ASIC/emulator, ie:not kalsim)
+
+# Install always on voice component
+%include config.MODIFY_AOV
+
+# Enable dual core support
+%include config.MODIFY_STRE_DUAL_CORE
+
+#install ANC tuning operator
+#%include config.MODIFY_ANC_TUNING
+
+#install efuse
+%include config.MODIFY_EFUSE_FLEXROM_FEATURES
+
+#install DACs' dc offset ramping
+%include config.MODIFY_DAC_DC_OFFSET_REGS_RAMP
+
+#Install ANC
+%include config.MODIFY_ANC
+
+%cpp
+
+# Install the ANC clip/threshold enhancements
+INSTALL_ANC_CLIP_THRESHOLD
+

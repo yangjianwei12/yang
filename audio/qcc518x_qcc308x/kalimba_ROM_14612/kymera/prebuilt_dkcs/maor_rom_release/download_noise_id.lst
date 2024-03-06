@@ -1,0 +1,3949 @@
+
+/home/svc-audio-dspsw/kymera_builds/builds/2023/kymera_2312060823/kalimba/kymera/tools/KCSMaker/out/14612/maor_rom_release/download/debugbin/download_noise_id_external.elf:     file format elf32-littlekalimba
+
+Disassembly of section .text_minim:
+
+84200000 <$_noise_id_create>:
+Capability API Handlers
+*/
+
+bool noise_id_create(OPERATOR_DATA *op_data, void *message_data,
+                    unsigned *response_id, void **resp_data)
+{
+84200000:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200002:	16 00       	r4 = r0 + Null;
+84200004:	2a 09       	r8 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data NOISE_ID_OP_DATA.
+ */
+static inline NOISE_ID_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (NOISE_ID_OP_DATA *) base_op_get_instance_data(op_data);
+84200006:	ff fd 04 f0 	call (m) 0x8ea;
+8420000a:	25 e7 
+8420000c:	11 09       	r7 = r0 + Null;
+
+    /* NB: create is passed a zero-initialized structure so any fields not
+     * explicitly initialized are 0.
+     */
+
+    if (!base_op_create_lite(op_data, resp_data))
+8420000e:	53 08       	r1 = r8 + Null;
+84200010:	32 00       	r0 = r4 + Null;
+84200012:	ff fd 04 f0 	call (m) 0x850;
+84200016:	3f e1 
+84200018:	10 04       	Null = r0 - Null;
+8420001a:	03 62       	if NE jump (m) Lc_noise_id_create_3;
+
+8420001c <Lc_noise_id_create_2>:
+    {
+        return FALSE;
+8420001c:	02 00       	r0 = Null + Null;
+8420001e:	65 6e       	jump (m) Lc_noise_id_create_8;
+
+84200020 <Lc_noise_id_create_3>:
+ * \param  response_data Pointer to the pointer to message that is allocated in the function.
+ * \param  new_status  A status ID that is to be sent in the message.
+ */
+inline static void base_op_change_response_status(void **response_data, STATUS_KYMERA new_status)
+{
+    (((OP_STD_RSP *)(*response_data))->status = new_status);
+84200020:	01 f0 00 60 	rMAC = Null + 4096;
+84200024:	a2 f0 00 e8 	r0 = M[r8 + Null];
+84200028:	51 8e       	M[r0 + 4] = rMAC;
+     * termination point in create then change it to STATUS_OK.
+     */
+    base_op_change_response_status(resp_data, STATUS_CMD_FAILED);
+
+    /* Multi-channel create */
+    aud_cur_create(op_data, NOISE_ID_MAX_TERMINALS, NOISE_ID_MAX_TERMINALS);
+8420002a:	c4 20       	r2 = Null + 3;
+8420002c:	23 00       	r1 = r2 + Null;
+8420002e:	32 00       	r0 = r4 + Null;
+84200030:	04 f0 37 e1 	call (m) $_aud_cur_create;
+    aud_cur_set_callbacks(op_data,
+                          NULL,
+                          NULL,
+                          noise_id_connect_hook,
+                          noise_id_disconnect_hook,
+                          NULL);
+84200034:	00 f0 30 cf 	push Null;
+84200038:	42 f0 05 f0 	r3 = Null + 69207207;
+8420003c:	a7 48 
+8420003e:	04 00       	r2 = Null + Null;
+84200040:	03 00       	r1 = Null + Null;
+84200042:	42 f0 04 f0 	push Null + 69207285;
+84200046:	55 ef 
+84200048:	32 00       	r0 = r4 + Null;
+8420004a:	05 f0 23 e4 	call (m) $_aud_cur_set_callbacks;
+8420004e:	7e 4c       	SP = SP + -8;
+    aud_cur_set_flags(op_data,
+                      NOISE_ID_SUPPORTS_IN_PLACE,
+                      NOISE_ID_SUPPORTS_METADATA,
+                      NOISE_ID_DYNAMIC_BUFFERS);
+84200050:	44 20       	r2 = Null + 1;
+84200052:	05 00       	r3 = Null + Null;
+84200054:	23 00       	r1 = r2 + Null;
+84200056:	32 00       	r0 = r4 + Null;
+84200058:	05 f0 37 e4 	call (m) $_aud_cur_set_flags;
+    aud_cur_set_min_terminal_masks(op_data,
+                                   NOISE_ID_MIN_VALID_SOURCES,
+                                   NOISE_ID_MIN_VALID_SINKS);
+8420005c:	84 20       	r2 = Null + 2;
+8420005e:	03 00       	r1 = Null + Null;
+84200060:	32 00       	r0 = r4 + Null;
+84200062:	05 f0 37 e5 	call (m) $_aud_cur_set_min_terminal_masks;
+
+    /* Initialize capid and sample rate fields */
+    p_ext_data->cap_id = NOISE_ID_CAP_ID;
+84200066:	21 f0 d1 40 	rMAC = Null + 16593;
+8420006a:	91 f0 01 8e 	M[r7 + 4] = rMAC;
+    p_ext_data->sample_rate = NOISE_ID_DEFAULT_SAMPLE_RATE;
+8420006e:	11 f0 80 7a 	rMAC = Null + 16000;
+84200072:	91 f0 00 ee 	M[r7 + Null] = rMAC;
+
+    aud_cur_set_buffer_size(op_data, NOISE_ID_DEFAULT_BUFFER_SIZE);
+84200076:	03 f0 80 40 	r1 = Null + 128;
+8420007a:	32 00       	r0 = r4 + Null;
+8420007c:	05 f0 3f e5 	call (m) $_aud_cur_set_buffer_size;
+    aud_cur_set_block_size(op_data, NOISE_ID_DEFAULT_BLOCK_SIZE);
+84200080:	03 30       	r1 = Null + 32;
+84200082:	32 00       	r0 = r4 + Null;
+84200084:	05 f0 27 e6 	call (m) $_aud_cur_set_block_size;
+    aud_cur_set_runtime_disconnect(op_data, TRUE);
+84200088:	43 20       	r1 = Null + 1;
+8420008a:	32 00       	r0 = r4 + Null;
+8420008c:	05 f0 3d e3 	call (m) $_aud_cur_set_runtime_disconnect;
+
+    /* Initialize parameters */
+    p_default_params = (unsigned*) NOISE_ID_GetDefaults(p_ext_data->cap_id);
+84200090:	92 f0 01 88 	r0 = M[r7 + 4];
+84200094:	03 f0 39 ed 	call (m) $_NOISE_ID_GetDefaults;
+84200098:	17 00       	r5 = r0 + Null;
+    p_cap_params = (unsigned*) &p_ext_data->noise_id_params;
+8420009a:	98 f0 08 20 	r6 = r7 + 8;
+    p_param_def = aud_cur_get_cps(op_data);
+8420009e:	32 00       	r0 = r4 + Null;
+842000a0:	05 f0 2d e4 	call (m) $_aud_cur_get_cps;
+    if (!cpsInitParameters(p_param_def,
+                           p_default_params,
+                           p_cap_params,
+                           sizeof(NOISE_ID_PARAMETERS)))
+842000a4:	05 3b       	r3 = Null + 60;
+842000a6:	44 08       	r2 = r6 + Null;
+842000a8:	3b 00       	r1 = r5 + Null;
+842000aa:	ff fd 05 f0 	call (m) 0xb2a;
+842000ae:	21 e4 
+842000b0:	10 04       	Null = r0 - Null;
+842000b2:	1a 60       	if EQ jump (m) Lc_noise_id_create_7;
+
+842000b4 <Lc_noise_id_create_4>:
+    {
+       return TRUE;
+    }
+
+    /* Initialize system mode */
+    p_ext_data->cur_mode = NOISE_ID_SYSMODE_FULL;
+842000b4:	81 20       	rMAC = Null + 2;
+842000b6:	91 f0 11 8e 	M[r7 + 68] = rMAC;
+    p_ext_data->host_mode = NOISE_ID_SYSMODE_FULL;
+842000ba:	91 f0 13 8e 	M[r7 + 76] = rMAC;
+    p_ext_data->qact_mode = NOISE_ID_SYSMODE_FULL;
+842000be:	91 f0 14 8e 	M[r7 + 80] = rMAC;
+
+    if(!noise_id_proc_create(p_ext_data))
+842000c2:	4a 08       	r0 = r7 + Null;
+842000c4:	02 f0 3f e6 	call (m) Lc_noise_id_proc_create_1;
+842000c8:	10 04       	Null = r0 - Null;
+842000ca:	0e 60       	if EQ jump (m) Lc_noise_id_create_7;
+
+842000cc <Lc_noise_id_create_5>:
+842000cc:	a1 f0 00 e8 	rMAC = M[r8 + Null];
+842000d0:	48 8e       	M[rMAC + 4] = Null;
+    }
+
+    /* Operator creation was succesful, change respone to STATUS_OK*/
+    base_op_change_response_status(resp_data, STATUS_OK);
+
+    L4_DBG_MSG("NOISE_ID: Created");
+842000d2:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842000d6:	08 25       	Null = rMAC - 4;
+842000d8:	07 68       	if LT jump (m) Lc_noise_id_create_7;
+
+842000da <Lc_noise_id_create_6>:
+842000da:	55 f1 02 f0 	r0 = Null + 357564861;
+842000de:	bd 41 
+842000e0:	ff fd 07 f0 	call (m) 0x10b0;
+842000e4:	31 ee 
+
+842000e6 <Lc_noise_id_create_7>:
+    if (!cpsInitParameters(p_param_def,
+                           p_default_params,
+                           p_cap_params,
+                           sizeof(NOISE_ID_PARAMETERS)))
+    {
+       return TRUE;
+842000e6:	42 20       	r0 = Null + 1;
+
+842000e8 <Lc_noise_id_create_8>:
+    /* Operator creation was succesful, change respone to STATUS_OK*/
+    base_op_change_response_status(resp_data, STATUS_OK);
+
+    L4_DBG_MSG("NOISE_ID: Created");
+    return TRUE;
+}
+842000e8:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+842000ea:	d8 4c       	rts;
+
+842000ec <$_noise_id_destroy>:
+
+bool noise_id_destroy(OPERATOR_DATA *op_data, void *message_data,
+                      unsigned *response_id, void **resp_data)
+{
+842000ec:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842000ee:	16 00       	r4 = r0 + Null;
+842000f0:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data NOISE_ID_OP_DATA.
+ */
+static inline NOISE_ID_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (NOISE_ID_OP_DATA *) base_op_get_instance_data(op_data);
+842000f2:	ff fd 03 f0 	call (m) 0x8ea;
+842000f6:	39 ef 
+842000f8:	17 00       	r5 = r0 + Null;
+                      unsigned *response_id, void **resp_data)
+{
+    NOISE_ID_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* call base_op destroy that creates and fills response message, too */
+    if (!base_op_destroy_lite(op_data, resp_data))
+842000fa:	43 08       	r1 = r6 + Null;
+842000fc:	32 00       	r0 = r4 + Null;
+842000fe:	ff fd 03 f0 	call (m) 0x834;
+84200102:	37 e9 
+84200104:	10 04       	Null = r0 - Null;
+84200106:	03 62       	if NE jump (m) Lc_noise_id_destroy_3;
+
+84200108 <Lc_noise_id_destroy_2>:
+    {
+        return FALSE;
+84200108:	02 00       	r0 = Null + Null;
+8420010a:	12 6e       	jump (m) Lc_noise_id_destroy_6;
+
+8420010c <Lc_noise_id_destroy_3>:
+    }
+
+    noise_id_proc_destroy(p_ext_data);
+8420010c:	3a 00       	r0 = r5 + Null;
+8420010e:	02 f0 25 e1 	call (m) Lc_noise_id_proc_destroy_1;
+
+    /* Release class data */
+    aud_cur_destroy(op_data);
+84200112:	32 00       	r0 = r4 + Null;
+84200114:	03 f0 31 ee 	call (m) $_aud_cur_destroy;
+
+    L4_DBG_MSG("NOISE_ID: Destroyed");
+84200118:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420011c:	08 25       	Null = rMAC - 4;
+8420011e:	07 68       	if LT jump (m) Lc_noise_id_destroy_5;
+
+84200120 <Lc_noise_id_destroy_4>:
+84200120:	55 f1 02 f0 	r0 = Null + 357564879;
+84200124:	cf 41 
+84200126:	ff fd 07 f0 	call (m) 0x10b0;
+8420012a:	2b ec 
+
+8420012c <Lc_noise_id_destroy_5>:
+    return TRUE;
+8420012c:	42 20       	r0 = Null + 1;
+
+8420012e <Lc_noise_id_destroy_6>:
+}
+8420012e:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200130:	d8 4c       	rts;
+
+84200132 <$_noise_id_opmsg_set_control>:
+}
+bool noise_id_opmsg_set_control(OPERATOR_DATA *op_data,
+                                void *message_data,
+                                unsigned *resp_length,
+                                OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200132:	f5 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>, SP = SP + 0x10;
+84200134:	18 09       	r6 = r1 + Null;
+84200136:	27 00       	r5 = r2 + Null;
+84200138:	2a 09       	r8 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data NOISE_ID_OP_DATA.
+ */
+static inline NOISE_ID_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (NOISE_ID_OP_DATA *) base_op_get_instance_data(op_data);
+8420013a:	ff fd 03 f0 	call (m) 0x8ea;
+8420013e:	31 ed 
+84200140:	16 00       	r4 = r0 + Null;
+    NOISE_ID_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    unsigned i;
+    unsigned num_controls;
+
+    OPMSG_RESULT_STATES result = OPMSG_RESULT_STATES_NORMAL_STATE;
+84200142:	01 09       	r7 = Null + Null;
+
+    if (!cps_control_setup(message_data, resp_length, resp_data, &num_controls))
+84200144:	c5 11       	r3 = FP + 28;
+84200146:	54 08       	r2 = r8 + Null;
+84200148:	3b 00       	r1 = r5 + Null;
+8420014a:	42 08       	r0 = r6 + Null;
+8420014c:	ff fd 06 f0 	call (m) 0xe9e;
+84200150:	33 ea 
+84200152:	10 04       	Null = r0 - Null;
+84200154:	03 62       	if NE jump (m) Lc_noise_id_opmsg_set_control_3;
+
+84200156 <Lc_noise_id_opmsg_set_control_2>:
+    {
+       return FALSE;
+84200156:	02 00       	r0 = Null + Null;
+84200158:	3a 6e       	jump (m) Lc_noise_id_opmsg_set_control_19;
+
+8420015a <Lc_noise_id_opmsg_set_control_3>:
+    }
+
+    /* Iterate through control messages looking for mode override messages */
+    for (i = 0; i < num_controls; i++)
+8420015a:	07 00       	r5 = Null + Null;
+8420015c:	06 6e       	jump (m) Lc_noise_id_opmsg_set_control_6;
+
+8420015e <Lc_noise_id_opmsg_set_control_4>:
+                {
+                    p_ext_data->ovr_control |= NOISE_ID_CONTROL_MODE_OVERRIDE;
+                }
+                else
+                {
+                    p_ext_data->ovr_control &= NOISE_ID_OVERRIDE_MODE_MASK;
+8420015e:	b1 a8       	rMAC = M[r4 + 72];
+84200160:	11 f6 ff 1f 	rMAC = rMAC AND 0xdfff;
+84200164:	b1 ae       	M[r4 + 72] = rMAC;
+
+84200166 <Lc_noise_id_opmsg_set_control_5>:
+    {
+       return FALSE;
+    }
+
+    /* Iterate through control messages looking for mode override messages */
+    for (i = 0; i < num_controls; i++)
+84200166:	7f 20       	r5 = r5 + 1;
+
+84200168 <Lc_noise_id_opmsg_set_control_6>:
+84200168:	39 d8       	rMAC = M[FP + 28];
+8420016a:	78 04       	Null = r5 - rMAC;
+8420016c:	02 f0 c3 e0 	if C jump (m) Lc_noise_id_opmsg_set_control_15;
+
+84200170 <Lc_noise_id_opmsg_set_control_7>:
+    {
+        unsigned ctrl_value, ctrl_id;
+        CPS_CONTROL_SOURCE  ctrl_src;
+
+        ctrl_id = cps_control_get(message_data, i, &ctrl_value, &ctrl_src);
+84200170:	45 12       	r3 = FP + 36;
+84200172:	04 12       	r2 = FP + 32;
+84200174:	3b 00       	r1 = r5 + Null;
+84200176:	42 08       	r0 = r6 + Null;
+84200178:	ff fd 06 f0 	call (m) 0xee2;
+8420017c:	2b eb 
+
+        /* Mode override */
+        if (ctrl_id == OPMSG_CONTROL_MODE_ID)
+8420017e:	50 24       	Null = r0 - 1;
+84200180:	16 62       	if NE jump (m) Lc_noise_id_opmsg_set_control_14;
+
+84200182 <Lc_noise_id_opmsg_set_control_8>:
+        {
+            /* Check for valid mode */
+            ctrl_value &= NOISE_ID_SYSMODE_MASK;
+84200182:	41 d8       	rMAC = M[FP + 32];
+84200184:	09 c1       	rMAC = rMAC AND 0x7;
+84200186:	41 de       	M[FP + 32] = rMAC;
+            if (ctrl_value >= NOISE_ID_SYSMODE_MAX_MODES)
+84200188:	c8 24       	Null = rMAC - 3;
+8420018a:	03 64       	if NC jump (m) Lc_noise_id_opmsg_set_control_10;
+
+8420018c <Lc_noise_id_opmsg_set_control_9>:
+            {
+                result = OPMSG_RESULT_STATES_INVALID_CONTROL_VALUE;
+8420018c:	29 71       	r7 = Null + 5;
+                break;
+8420018e:	10 6e       	jump (m) Lc_noise_id_opmsg_set_control_15;
+
+84200190 <Lc_noise_id_opmsg_set_control_10>:
+            }
+
+            if (ctrl_src == CPS_SOURCE_HOST)
+84200190:	22 d1       	r0 = MBS[FP + 36];
+84200192:	03 62       	if NE jump (m) Lc_noise_id_opmsg_set_control_12;
+
+84200194 <Lc_noise_id_opmsg_set_control_11>:
+            {
+                p_ext_data->host_mode = ctrl_value;
+84200194:	f1 ae       	M[r4 + 76] = rMAC;
+84200196:	e8 6f       	jump (m) Lc_noise_id_opmsg_set_control_5;
+
+84200198 <Lc_noise_id_opmsg_set_control_12>:
+            }
+            else
+            {
+                p_ext_data->qact_mode = ctrl_value;
+84200198:	31 af       	M[r4 + 80] = rMAC;
+                /* Set or clear the QACT override flag.
+                * &= is used to preserve the state of the
+                * override word.
+                */
+                if (ctrl_src == CPS_SOURCE_OBPM_ENABLE)
+8420019a:	21 d1       	rMAC = MBS[FP + 36];
+8420019c:	88 24       	Null = rMAC - 2;
+8420019e:	e0 63       	if NE jump (m) Lc_noise_id_opmsg_set_control_4;
+
+842001a0 <Lc_noise_id_opmsg_set_control_13>:
+                {
+                    p_ext_data->ovr_control |= NOISE_ID_CONTROL_MODE_OVERRIDE;
+842001a0:	b1 a8       	rMAC = M[r4 + 72];
+842001a2:	20 f0 00 f1 	rMAC = rMAC OR 0x2000;
+842001a6:	51 d8 
+842001a8:	b1 ae       	M[r4 + 72] = rMAC;
+842001aa:	de 6f       	jump (m) Lc_noise_id_opmsg_set_control_5;
+
+842001ac <Lc_noise_id_opmsg_set_control_14>:
+            }
+
+        }
+        else
+        {
+            result = OPMSG_RESULT_STATES_UNSUPPORTED_CONTROL;
+842001ac:	21 71       	r7 = Null + 4;
+
+842001ae <Lc_noise_id_opmsg_set_control_15>:
+            break;
+        }
+    }
+
+    /* Set current operating mode based on override */
+    if ((p_ext_data->ovr_control & NOISE_ID_CONTROL_MODE_OVERRIDE) != 0)
+842001ae:	b1 a8       	rMAC = M[r4 + 72];
+842001b0:	11 f1 00 00 	rMAC = rMAC AND 0x2000;
+842001b4:	04 60       	if EQ jump (m) Lc_noise_id_opmsg_set_control_17;
+
+842001b6 <Lc_noise_id_opmsg_set_control_16>:
+    {
+        p_ext_data->cur_mode = p_ext_data->qact_mode;
+842001b6:	31 a9       	rMAC = M[r4 + 80];
+842001b8:	71 ae       	M[r4 + 68] = rMAC;
+842001ba:	03 6e       	jump (m) Lc_noise_id_opmsg_set_control_18;
+
+842001bc <Lc_noise_id_opmsg_set_control_17>:
+    }
+    else
+    {
+        p_ext_data->cur_mode = p_ext_data->host_mode;
+842001bc:	f1 a8       	rMAC = M[r4 + 76];
+842001be:	71 ae       	M[r4 + 68] = rMAC;
+
+842001c0 <Lc_noise_id_opmsg_set_control_18>:
+    }
+
+    cps_response_set_result(resp_data, result);
+842001c0:	4b 08       	r1 = r7 + Null;
+842001c2:	52 08       	r0 = r8 + Null;
+842001c4:	ff fd 06 f0 	call (m) 0xf30;
+842001c8:	2d eb 
+
+    return TRUE;
+842001ca:	42 20       	r0 = Null + 1;
+
+842001cc <Lc_noise_id_opmsg_set_control_19>:
+}
+842001cc:	f5 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, rLink>;
+842001ce:	d8 4c       	rts;
+
+842001d0 <$_noise_id_opmsg_get_status>:
+
+bool noise_id_opmsg_get_status(OPERATOR_DATA *op_data,
+                               void *message_data,
+                               unsigned *resp_length,
+                               OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+842001d0:	f5 1e       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>, SP = SP + 0x20;
+842001d2:	1a 09       	r8 = r1 + Null;
+842001d4:	21 09       	r7 = r2 + Null;
+842001d6:	28 09       	r6 = r3 + Null;
+ *
+ * \return  Pointer to extra operator data NOISE_ID_OP_DATA.
+ */
+static inline NOISE_ID_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (NOISE_ID_OP_DATA *) base_op_get_instance_data(op_data);
+842001d8:	ff fd 03 f0 	call (m) 0x8ea;
+842001dc:	33 e8 
+842001de:	16 00       	r4 = r0 + Null;
+                               OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    NOISE_ID_OP_DATA *p_ext_data = get_instance_data(op_data);
+    int i;
+    NOISEID100_DMX *p_nid;
+    p_nid = p_ext_data->p_noise_id100;
+842001e0:	37 b8       	r5 = M[r4 + 96];
+
+    /* Build the response */
+    unsigned *resp = NULL;
+842001e2:	38 de       	M[FP + 28] = Null;
+    if (!common_obpm_status_helper(message_data, resp_length, resp_data,
+                                   sizeof(NOISE_ID_STATISTICS), &resp))
+842001e4:	c1 11       	rMAC = FP + 28;
+842001e6:	09 1c       	pushm <rMAC>;
+842001e8:	05 29       	r3 = Null + 20;
+842001ea:	44 08       	r2 = r6 + Null;
+842001ec:	4b 08       	r1 = r7 + Null;
+842001ee:	52 08       	r0 = r8 + Null;
+842001f0:	ff fd 06 f0 	call (m) 0xf46;
+842001f4:	37 ea 
+842001f6:	7f 4c       	SP = SP + -4;
+842001f8:	10 04       	Null = r0 - Null;
+842001fa:	03 62       	if NE jump (m) Lc_noise_id_opmsg_get_status_3;
+
+842001fc <Lc_noise_id_opmsg_get_status_2>:
+    {
+         return FALSE;
+842001fc:	02 00       	r0 = Null + Null;
+842001fe:	20 6e       	jump (m) Lc_noise_id_opmsg_get_status_8;
+
+84200200 <Lc_noise_id_opmsg_get_status_3>:
+    }
+
+    if (resp)
+84200200:	39 d8       	rMAC = M[FP + 28];
+84200202:	1d 60       	if EQ jump (m) Lc_noise_id_opmsg_get_status_7;
+
+84200204 <Lc_noise_id_opmsg_get_status_4>:
+    {
+        NOISE_ID_STATISTICS stats;
+        NOISE_ID_STATISTICS *pstats = &stats;
+        ParamType *pparam = (ParamType*)pstats;
+
+        pstats->OFFSET_CUR_MODE             = p_ext_data->cur_mode;
+84200204:	71 a8       	rMAC = M[r4 + 68];
+84200206:	41 de       	M[FP + 32] = rMAC;
+        pstats->OFFSET_OVR_CONTROL          = p_ext_data->ovr_control;
+84200208:	b1 a8       	rMAC = M[r4 + 72];
+8420020a:	49 de       	M[FP + 36] = rMAC;
+        pstats->OFFSET_NOISE_ID             = p_nid->noiseID;
+8420020c:	39 98       	rMAC = M[r5 + 32];
+8420020e:	51 de       	M[FP + 40] = rMAC;
+        pstats->OFFSET_LOW_TO_MID_RATIO     = p_nid->low_to_mid_ratio;
+84200210:	79 98       	rMAC = M[r5 + 36];
+84200212:	59 de       	M[FP + 44] = rMAC;
+        pstats->OFFSET_FLAGS                = p_ext_data->flags;
+84200214:	f1 b9       	rMAC = M[r4 + 124];
+84200216:	61 de       	M[FP + 48] = rMAC;
+
+        for (i = 0; i < NOISE_ID_N_STAT/2; i++)
+84200218:	06 00       	r4 = Null + Null;
+8420021a:	07 12       	r5 = FP + 32;
+
+8420021c <Lc_noise_id_opmsg_get_status_5>:
+        {
+            resp = cpsPack2Words(pparam[2*i], pparam[2*i+1], resp);
+8420021c:	3c d8       	r2 = M[FP + 28];
+8420021e:	7b 88       	r1 = M[r5 + 4];
+84200220:	3a e8       	r0 = M[r5 + Null];
+84200222:	ff fd 6c f2 	call (m) 0x4da2c;
+84200226:	2b e0 
+84200228:	3a de       	M[FP + 28] = r0;
+        pstats->OFFSET_OVR_CONTROL          = p_ext_data->ovr_control;
+        pstats->OFFSET_NOISE_ID             = p_nid->noiseID;
+        pstats->OFFSET_LOW_TO_MID_RATIO     = p_nid->low_to_mid_ratio;
+        pstats->OFFSET_FLAGS                = p_ext_data->flags;
+
+        for (i = 0; i < NOISE_ID_N_STAT/2; i++)
+8420022a:	76 20       	r4 = r4 + 1;
+8420022c:	3f 22       	r5 = r5 + 8;
+8420022e:	b0 24       	Null = r4 - 2;
+84200230:	f6 69       	if LT jump (m) Lc_noise_id_opmsg_get_status_5;
+
+84200232 <Lc_noise_id_opmsg_get_status_6>:
+        {
+            resp = cpsPack2Words(pparam[2*i], pparam[2*i+1], resp);
+        }
+        if ((NOISE_ID_N_STAT % 2) == 1) // last one
+        {
+            cpsPack1Word(pparam[NOISE_ID_N_STAT-1], resp);
+84200232:	3b d8       	r1 = M[FP + 28];
+84200234:	62 d8       	r0 = M[FP + 48];
+84200236:	ff fd 6c f2 	call (m) 0x4da5e;
+8420023a:	29 e1 
+
+8420023c <Lc_noise_id_opmsg_get_status_7>:
+        }
+    }
+    return TRUE;
+8420023c:	42 20       	r0 = Null + 1;
+
+8420023e <Lc_noise_id_opmsg_get_status_8>:
+}
+8420023e:	f5 4a       	SP = SP - 0x20, popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200240:	d8 4c       	rts;
+
+84200242 <$_noise_id_opmsg_set_current_noise_id>:
+*/
+bool noise_id_opmsg_set_current_noise_id(OPERATOR_DATA *op_data,
+                                         void *message_data,
+                                         unsigned *resp_length,
+                                         OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+84200242:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200244:	1e 00       	r4 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data NOISE_ID_OP_DATA.
+ */
+static inline NOISE_ID_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (NOISE_ID_OP_DATA *) base_op_get_instance_data(op_data);
+84200246:	ff fd 03 f0 	call (m) 0x8ea;
+8420024a:	25 e5 
+8420024c:	17 00       	r5 = r0 + Null;
+                                         OP_OPMSG_RSP_PAYLOAD **resp_data)
+{
+    NOISE_ID_OP_DATA *p_ext_data = get_instance_data(op_data);
+    uint16  noise_id = OPMSG_FIELD_GET(message_data,
+                                       OPMSG_NOISE_ID_SET_CURRENT_NOISE_ID,
+                                       NOISE_ID);
+8420024e:	f1 88       	rMAC = M[r4 + 12];
+84200250:	8e c6       	r4 = rMAC AND 0xffff;
+    msg.type = noise_id;
+    noise_id_send_event_message(op_data, &msg);
+#endif
+
+    /* Set current noise id and reset the counter */
+    aanc_noiseID100_set_current_noise_id(p_ext_data->p_noise_id100, noise_id);
+84200252:	3a b8       	r0 = M[r5 + 96];
+84200254:	33 00       	r1 = r4 + Null;
+84200256:	07 f0 2d ef 	call (m) $_aanc_noiseID100_set_current_noise_id;
+    p_ext_data->previous_nid = noise_id;
+8420025a:	be bf       	M[r5 + 120] = r4;
+    L4_DBG_MSG1("NOISE_ID: set current noise id : %d",noise_id);
+8420025c:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200260:	08 25       	Null = rMAC - 4;
+84200262:	08 68       	if LT jump (m) Lc_noise_id_opmsg_set_current_noise_id_3;
+
+84200264 <Lc_noise_id_opmsg_set_current_noise_id_2>:
+84200264:	55 f1 02 f0 	r0 = Null + 357565032;
+84200268:	68 42 
+8420026a:	33 00       	r1 = r4 + Null;
+8420026c:	ff fd 07 f0 	call (m) 0x10c2;
+84200270:	37 e2 
+
+84200272 <Lc_noise_id_opmsg_set_current_noise_id_3>:
+    return TRUE;
+84200272:	42 20       	r0 = Null + 1;
+
+84200274 <Lc_noise_id_opmsg_set_current_noise_id_4>:
+}
+84200274:	f2 48       	popm <FP, r4, r5, rLink>;
+84200276:	d8 4c       	rts;
+
+84200278 <$_noise_id_process_data>:
+
+/****************************************************************************
+Data processing function
+*/
+void noise_id_process_data(OPERATOR_DATA *op_data, TOUCHED_TERMINALS *touched)
+{
+84200278:	f6 1e       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x20;
+8420027a:	12 09       	r8 = r0 + Null;
+8420027c:	43 de       	M[FP + 32] = r1;
+ *
+ * \return  Pointer to extra operator data NOISE_ID_OP_DATA.
+ */
+static inline NOISE_ID_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (NOISE_ID_OP_DATA *) base_op_get_instance_data(op_data);
+8420027e:	ff fd 03 f0 	call (m) 0x8ea;
+84200282:	2d e3 
+84200284:	17 00       	r5 = r0 + Null;
+    bool bypass_noiseid;
+    /*********************
+     * Early exit testing
+     *********************/
+
+    samples_to_process = aud_cur_calc_samples(op_data, touched);
+84200286:	52 08       	r0 = r8 + Null;
+84200288:	43 d8       	r1 = M[FP + 32];
+8420028a:	04 f0 35 ef 	call (m) $_aud_cur_calc_samples;
+8420028e:	16 00       	r4 = r0 + Null;
+
+    /* Return early if not enough data to process */
+    if (samples_to_process < NOISE_ID_DEFAULT_FRAME_SIZE)
+84200290:	60 f0 40 24 	Null = r4 - 64;
+84200294:	0b f0 8f e4 	if LT jump (m) Lc_noise_id_process_data_21;
+
+84200298 <Lc_noise_id_process_data_2>:
+    {
+        return;
+    }
+
+    /* Don't do any processing in standby */
+    if (p_ext_data->cur_mode == NOISE_ID_SYSMODE_STANDBY)
+84200298:	78 a8       	Null = M[r5 + 68];
+8420029a:	0b 62       	if NE jump (m) Lc_noise_id_process_data_4;
+
+8420029c <Lc_noise_id_process_data_3>:
+    {
+        /* Copy or discard data on all terminals */
+        aud_cur_mic_data_transfer(op_data,
+                                  samples_to_process,
+                                  NOISE_ID_TERMINAL_SKIP_MASK);
+8420029c:	04 00       	r2 = Null + Null;
+8420029e:	33 00       	r1 = r4 + Null;
+842002a0:	52 08       	r0 = r8 + Null;
+842002a2:	05 f0 29 e4 	call (m) $_aud_cur_mic_data_transfer;
+        /*  Metadata transfer */
+        aud_cur_mic_metadata_transfer(op_data, samples_to_process);
+842002a6:	33 00       	r1 = r4 + Null;
+842002a8:	52 08       	r0 = r8 + Null;
+842002aa:	05 f0 31 e7 	call (m) $_aud_cur_mic_metadata_transfer;
+842002ae:	fa 6e       	jump (m) Lc_noise_id_process_data_21;
+
+842002b0 <Lc_noise_id_process_data_4>:
+
+        /* Exit early */
+        return;
+    }
+    p_nid = p_ext_data->p_noise_id100;
+842002b0:	79 f0 18 88 	r7 = M[r5 + 96];
+    p_ed = p_ext_data->p_ed;
+842002b4:	78 f0 1b 88 	r6 = M[r5 + 108];
+ * \return - Pointer to the class data
+ */
+
+static inline AUDIO_CURATION_DEF *get_class_data(OPERATOR_DATA *op_data)
+{
+    return (AUDIO_CURATION_DEF *) base_op_get_class_ext(op_data);
+842002b8:	52 08       	r0 = r8 + Null;
+842002ba:	ff fd 03 f0 	call (m) 0x934;
+842002be:	3b e3 
+
+    if (aud_cur_get_reinit(op_data))
+842002c0:	11 e2       	rMAC = MBU[r0 + Null];
+842002c2:	6b 60       	if EQ jump (m) Lc_noise_id_process_data_6;
+
+842002c4 <Lc_noise_id_process_data_5>:
+842002c4:	52 08       	r0 = r8 + Null;
+842002c6:	ff fd 03 f0 	call (m) 0x934;
+842002ca:	2f e3 
+}
+
+inline void aud_cur_set_reinit(OPERATOR_DATA *op_data, bool state)
+{
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    p_class_data->re_init_flag = state;
+842002cc:	10 ea       	MB[r0 + Null] = Null;
+        if (p_nid->licensed == TRUE)
+#endif
+        {
+            aud_cur_set_reinit(op_data, FALSE);
+        }
+        p_params = &p_ext_data->noise_id_params;
+842002ce:	3e 22       	r4 = r5 + 8;
+
+        /* Initialize afb */
+        aanc_afb_initialize(p_ext_data->f_handle, p_ext_data->p_afb);
+842002d0:	bb b8       	r1 = M[r5 + 104];
+842002d2:	7a a9       	r0 = M[r5 + 84];
+842002d4:	07 f0 3d e5 	call (m) $_aanc_afb_initialize;
+
+        p_nid->sample_rate = NOISE_ID_DEFAULT_SAMPLE_RATE;
+842002d8:	11 f0 80 7a 	rMAC = Null + 16000;
+842002dc:	91 f0 00 ee 	M[r7 + Null] = rMAC;
+        p_nid->frame_size = NOISE_ID_DEFAULT_FRAME_SIZE;
+842002e0:	01 f0 40 40 	rMAC = Null + 64;
+842002e4:	91 f0 01 8e 	M[r7 + 4] = rMAC;
+        p_nid->filter_decay = \
+            p_params->OFFSET_FILTER_DECAY_TIME;
+842002e8:	f1 88       	rMAC = M[r4 + 12];
+842002ea:	91 f0 02 8e 	M[r7 + 8] = rMAC;
+        p_nid->filter_attack = \
+            p_params->OFFSET_FILTER_ATTACK_TIME;
+842002ee:	b1 88       	rMAC = M[r4 + 8];
+842002f0:	91 f0 03 8e 	M[r7 + 12] = rMAC;
+        p_nid->timer_in_sec = \
+            p_params->OFFSET_NID_HOLD_TIMER;
+842002f4:	31 89       	rMAC = M[r4 + 16];
+842002f6:	91 f0 04 8e 	M[r7 + 16] = rMAC;
+
+        p_nid->id_0_threshold = \
+            p_params->OFFSET_POWER_RATIO_ID0_THRESHOLD;
+842002fa:	71 99       	rMAC = M[r4 + 52];
+842002fc:	91 f0 06 8e 	M[r7 + 24] = rMAC;
+        p_nid->id_1_threshold = \
+            p_params->OFFSET_POWER_RATIO_ID1_THRESHOLD;
+84200300:	b1 99       	rMAC = M[r4 + 56];
+84200302:	91 f0 07 8e 	M[r7 + 28] = rMAC;
+
+        aanc_noiseID100_initialize(p_ext_data->f_handle,
+                                   p_ext_data->p_noise_id100,
+                                   p_ext_data->p_afb);
+84200306:	bc b8       	r2 = M[r5 + 104];
+84200308:	3b b8       	r1 = M[r5 + 96];
+8420030a:	7a a9       	r0 = M[r5 + 84];
+8420030c:	07 f0 35 e6 	call (m) $_aanc_noiseID100_initialize;
+
+        /* Initialize the ED */
+        config = p_params->OFFSET_NOISE_ID_CONFIG;
+84200310:	31 e8       	rMAC = M[r4 + Null];
+
+        p_ed->p_input = p_ext_data->p_ff_mic;
+84200312:	fa a9       	r0 = M[r5 + 92];
+84200314:	82 f0 00 ee 	M[r6 + Null] = r0;
+        p_ed->p_tmp = p_ext_data->p_tmp_ed;
+84200318:	7a b9       	r0 = M[r5 + 116];
+8420031a:	82 f0 01 8e 	M[r6 + 4] = r0;
+        p_ed->disabled = (config & \
+            NOISE_ID_CONFIG_NOISE_ID_CONFIG_DISABLE_ED) > 0;
+8420031e:	02 00       	r0 = Null + Null;
+84200320:	4b c0       	r1 = rMAC AND 0x2;
+84200322:	21 f0 42 ce 	if NE r0 = Null + 1;
+84200326:	82 f0 02 8e 	M[r6 + 8] = r0;
+        p_ed->frame_size = NOISE_ID_DEFAULT_FRAME_SIZE;
+8420032a:	02 f0 40 40 	r0 = Null + 64;
+8420032e:	82 f0 03 8e 	M[r6 + 12] = r0;
+        p_ed->attack_time = NOISE_ID_ED_ATTACK;
+84200332:	7f f0 72 f7 	r0 = Null + 134150619;
+84200336:	db 71 
+84200338:	82 f0 04 8e 	M[r6 + 16] = r0;
+        p_ed->decay_time = NOISE_ID_ED_DECAY;
+8420033c:	82 f0 05 8e 	M[r6 + 20] = r0;
+        p_ed->envelope_time = p_params->OFFSET_ED_ENVELOPE;
+84200340:	72 89       	r0 = M[r4 + 20];
+84200342:	82 f0 06 8e 	M[r6 + 24] = r0;
+        p_ed->init_frame_time = NOISE_ID_ED_INIT_FRAME;
+84200346:	02 f1 4a 58 	r0 = Null + 134218;
+8420034a:	82 f0 07 8e 	M[r6 + 28] = r0;
+        p_ed->ratio = p_params->OFFSET_ED_RATIO;
+8420034e:	b2 89       	r0 = M[r4 + 24];
+84200350:	82 f0 08 8e 	M[r6 + 32] = r0;
+        p_ed->min_signal = p_params->OFFSET_ED_MIN_SIGNAL;
+84200354:	f2 89       	r0 = M[r4 + 28];
+84200356:	82 f0 09 8e 	M[r6 + 36] = r0;
+        p_ed->min_max_envelope = \
+            p_params->OFFSET_ED_MIN_MAX_ENVELOPE;
+8420035a:	32 98       	r0 = M[r4 + 32];
+8420035c:	82 f0 0a 8e 	M[r6 + 40] = r0;
+        p_ed->delta_th = p_params->OFFSET_ED_DELTA_TH;
+84200360:	72 98       	r0 = M[r4 + 36];
+84200362:	82 f0 0b 8e 	M[r6 + 44] = r0;
+        p_ed->count_th = NOISE_ID_ED_COUNT_TH;
+84200366:	10 f0 12 f5 	r0 = Null + 17448305;
+8420036a:	71 79 
+8420036c:	82 f0 0c 8e 	M[r6 + 48] = r0;
+        p_ed->hold_frames = p_params->OFFSET_ED_HOLD_FRAMES;
+84200370:	b2 98       	r0 = M[r4 + 40];
+84200372:	82 f0 0d 8e 	M[r6 + 52] = r0;
+        p_ed->e_min_threshold = \
+            p_params->OFFSET_ED_E_FILTER_MIN_THRESHOLD;
+84200376:	f2 98       	r0 = M[r4 + 44];
+84200378:	82 f0 0e 8e 	M[r6 + 56] = r0;
+        p_ed->e_min_counter_threshold = \
+            p_params->OFFSET_ED_E_FILTER_MIN_COUNTER_THRESHOLD;
+8420037c:	32 99       	r0 = M[r4 + 48];
+8420037e:	82 f0 0f 8e 	M[r6 + 60] = r0;
+        disable_filter_check = (config & \
+            NOISE_ID_CONFIG_NOISE_ID_CONFIG_DISABLE_ED_E_FILTER_CHECK) > 0;
+84200382:	ca c0       	r0 = rMAC AND 0x4;
+84200384:	01 00       	rMAC = Null + Null;
+84200386:	10 04       	Null = r0 - Null;
+84200388:	21 f0 41 ce 	if NE rMAC = Null + 1;
+        p_ed->e_min_check_disabled = disable_filter_check;
+8420038c:	81 f0 10 8e 	M[r6 + 64] = rMAC;
+
+        aanc_ed100_initialize(p_ext_data->f_handle, p_ext_data->p_ed);
+84200390:	fb b8       	r1 = M[r5 + 108];
+84200392:	7a a9       	r0 = M[r5 + 84];
+84200394:	06 f0 3b e4 	call (m) $_aanc_ed100_initialize;
+
+84200398 <Lc_noise_id_process_data_6>:
+    }
+
+    bypass_noiseid = (p_ext_data->noise_id_params.OFFSET_NOISE_ID_CONFIG &
+                      NOISE_ID_CONFIG_NOISE_ID_CONFIG_BYPASS) > 0;
+84200398:	b9 88       	rMAC = M[r5 + 8];
+8420039a:	09 c0       	rMAC = rMAC AND 0x1;
+8420039c:	49 de       	M[FP + 36] = rMAC;
+8420039e:	01 22       	rMAC = Null + 8;
+842003a0:	51 de       	M[FP + 40] = rMAC;
+
+    sample_count = 0;
+842003a2:	03 09       	r9 = Null + Null;
+
+842003a4 <Lc_noise_id_process_data_7>:
+    while (samples_to_process >= NOISE_ID_DEFAULT_FRAME_SIZE)
+    {
+        switch (p_ext_data->cur_mode)
+842003a4:	7b a8       	r1 = M[r5 + 68];
+842003a6:	98 24       	Null = r1 - 2;
+842003a8:	5c 62       	if NE jump (m) Lc_noise_id_process_data_17;
+
+842003aa <Lc_noise_id_process_data_8>:
+        {
+            case NOISE_ID_SYSMODE_FULL:
+                if (p_ext_data->p_ff_mic == NULL)
+842003aa:	f9 a9       	rMAC = M[r5 + 92];
+842003ac:	08 62       	if NE jump (m) Lc_noise_id_process_data_10;
+
+842003ae <Lc_noise_id_process_data_9>:
+                {
+                    L0_DBG_MSG("NOISE ID: Full mode no ff mic");
+842003ae:	55 f1 02 f0 	r0 = Null + 357565068;
+842003b2:	8c 42 
+842003b4:	ff fd 06 f0 	call (m) 0x10b0;
+842003b8:	3d e7 
+842003ba:	5d 6e       	jump (m) Lc_noise_id_process_data_19;
+
+842003bc <Lc_noise_id_process_data_10>:
+                    break;
+                }
+                if (!bypass_noiseid)
+842003bc:	49 d8       	rMAC = M[FP + 36];
+842003be:	5b 62       	if NE jump (m) Lc_noise_id_process_data_19;
+
+842003c0 <Lc_noise_id_process_data_11>:
+                {
+                    /* ED process */
+                    /* Clear the ED detection in case there was a config update to
+                    disable ED while ED was detected. */
+                    p_ed->detection = FALSE;
+842003c0:	80 f0 14 8e 	M[r6 + 80] = Null;
+                    if (!p_ed->disabled)
+842003c4:	80 f0 02 88 	Null = M[r6 + 8];
+842003c8:	05 62       	if NE jump (m) Lc_noise_id_process_data_13;
+
+842003ca <Lc_noise_id_process_data_12>:
+                    {
+                        aanc_ed100_process_data(p_ext_data->f_handle, p_ed);
+842003ca:	7a a9       	r0 = M[r5 + 84];
+842003cc:	43 08       	r1 = r6 + Null;
+842003ce:	06 f0 37 e3 	call (m) $_aanc_ed100_process_data;
+
+842003d2 <Lc_noise_id_process_data_13>:
+                    }
+
+                    if (!p_ed->detection)
+842003d2:	80 f0 14 88 	Null = M[r6 + 80];
+842003d6:	4f 62       	if NE jump (m) Lc_noise_id_process_data_19;
+
+842003d8 <Lc_noise_id_process_data_14>:
+                    {
+                        t_fft_object *p_fft = p_ext_data->p_afb->afb.fft_object_ptr;
+842003d8:	b9 b8       	rMAC = M[r5 + 104];
+842003da:	0e 89       	r4 = M[rMAC + 16];
+                        p_fft->real_scratch_ptr = scratch_commit(
+                            AANC_FILTER_BANK_NUM_BINS*sizeof(int), MALLOC_PREFERENCE_DM1);
+842003dc:	43 20       	r1 = Null + 1;
+842003de:	02 f0 04 41 	r0 = Null + 260;
+842003e2:	ff fd 0e f0 	call (m) 0x215c;
+842003e6:	3b eb 
+842003e8:	72 8e       	M[r4 + 4] = r0;
+                        p_fft->imag_scratch_ptr = scratch_commit(
+                            AANC_FILTER_BANK_NUM_BINS*sizeof(int), MALLOC_PREFERENCE_DM2);
+842003ea:	83 20       	r1 = Null + 2;
+842003ec:	02 f0 04 41 	r0 = Null + 260;
+842003f0:	ff fd 0e f0 	call (m) 0x215c;
+842003f4:	2d eb 
+842003f6:	b2 8e       	M[r4 + 8] = r0;
+                        p_fft->fft_scratch_ptr = scratch_commit(
+                            AANC_FILTER_BANK_NUM_BINS*sizeof(int), MALLOC_PREFERENCE_DM2);
+842003f8:	83 20       	r1 = Null + 2;
+842003fa:	02 f0 04 41 	r0 = Null + 260;
+842003fe:	ff fd 0e f0 	call (m) 0x215c;
+84200402:	3f ea 
+84200404:	f2 8e       	M[r4 + 12] = r0;
+
+                        /* AFB process */
+                        aanc_afb_process_data(p_ext_data->f_handle,
+                                              p_ext_data->p_afb,
+                                              p_ext_data->p_ff_mic);
+84200406:	fc a9       	r2 = M[r5 + 92];
+84200408:	bb b8       	r1 = M[r5 + 104];
+8420040a:	7a a9       	r0 = M[r5 + 84];
+8420040c:	06 f0 33 ec 	call (m) $_aanc_afb_process_data;
+
+                        /* Set scratch pointers to NULL before freeing scratch */
+                        p_fft->real_scratch_ptr = NULL;
+84200410:	70 8e       	M[r4 + 4] = Null;
+                        p_fft->imag_scratch_ptr = NULL;
+84200412:	b0 8e       	M[r4 + 8] = Null;
+                        p_fft->fft_scratch_ptr = NULL;
+84200414:	f0 8e       	M[r4 + 12] = Null;
+
+                        scratch_free();
+84200416:	ff fd 0e f0 	call (m) 0x21aa;
+8420041a:	35 ec 
+
+                        /* Call noise id process function */
+                        aanc_noiseID100_process_data(p_ext_data->f_handle,
+                                                     p_ext_data->p_noise_id100);
+8420041c:	3b b8       	r1 = M[r5 + 96];
+8420041e:	7a a9       	r0 = M[r5 + 84];
+84200420:	06 f0 39 ee 	call (m) $_aanc_noiseID100_process_data;
+                        if (p_ext_data->previous_nid != p_nid->noiseID)
+84200424:	b9 b9       	rMAC = M[r5 + 120];
+84200426:	92 f0 08 88 	r0 = M[r7 + 32];
+8420042a:	88 04       	Null = rMAC - r0;
+8420042c:	24 60       	if EQ jump (m) Lc_noise_id_process_data_19;
+
+8420042e <Lc_noise_id_process_data_15>:
+                        {
+                            msg.id = AHM_EVENT_ID_NOISE_ID;
+8420042e:	51 d8       	rMAC = M[FP + 40];
+84200430:	b1 dc       	MH[FP + 44] = rMAC;
+                            msg.type = (uint16)p_nid->noiseID;
+84200432:	91 f0 08 88 	rMAC = M[r7 + 32];
+84200436:	b9 dc       	MH[FP + 46] = rMAC;
+                            noise_id_send_event_message(op_data, &msg);
+84200438:	c3 12       	r1 = FP + 44;
+8420043a:	52 08       	r0 = r8 + Null;
+8420043c:	01 f0 31 ec 	call (m) Lc_noise_id_send_event_message_1;
+                            p_ext_data->previous_nid = p_nid->noiseID;
+84200440:	91 f0 08 88 	rMAC = M[r7 + 32];
+84200444:	b9 bf       	M[r5 + 120] = rMAC;
+                            L4_DBG_MSG1("NOISE_ID: noise id changed : %d",p_nid->noiseID);
+84200446:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420044a:	08 25       	Null = rMAC - 4;
+8420044c:	14 68       	if LT jump (m) Lc_noise_id_process_data_19;
+
+8420044e <Lc_noise_id_process_data_16>:
+8420044e:	93 f0 08 88 	r1 = M[r7 + 32];
+84200452:	55 f1 02 f0 	r0 = Null + 357565098;
+84200456:	aa 42 
+84200458:	ff fd 06 f0 	call (m) 0x10c2;
+8420045c:	2b e3 
+8420045e:	0b 6e       	jump (m) Lc_noise_id_process_data_19;
+
+84200460 <Lc_noise_id_process_data_17>:
+                    }
+                }
+                break;
+            default:
+                L2_DBG_MSG1("NOISE_ID: Unsupported sysmode %d",
+                            p_ext_data->cur_mode);
+84200460:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200464:	88 24       	Null = rMAC - 2;
+84200466:	07 68       	if LT jump (m) Lc_noise_id_process_data_19;
+
+84200468 <Lc_noise_id_process_data_18>:
+84200468:	55 f1 02 f0 	r0 = Null + 357565130;
+8420046c:	ca 42 
+8420046e:	ff fd 06 f0 	call (m) 0x10c2;
+84200472:	35 e2 
+
+84200474 <Lc_noise_id_process_data_19>:
+        }
+        noise_id_update_flags(p_ext_data);
+84200474:	3a 00       	r0 = r5 + Null;
+84200476:	01 f0 3f e9 	call (m) Lc_noise_id_update_flags_1;
+
+        /* Copy or discard data on all terminals */
+        aud_cur_mic_data_transfer(op_data,
+                                  NOISE_ID_DEFAULT_FRAME_SIZE,
+                                  NOISE_ID_TERMINAL_SKIP_MASK);
+8420047a:	03 f0 40 40 	r1 = Null + 64;
+8420047e:	04 00       	r2 = Null + Null;
+84200480:	52 08       	r0 = r8 + Null;
+84200482:	04 f0 29 e5 	call (m) $_aud_cur_mic_data_transfer;
+
+        samples_to_process = aud_cur_calc_samples(op_data, touched);
+84200486:	52 08       	r0 = r8 + Null;
+84200488:	43 d8       	r1 = M[FP + 32];
+8420048a:	03 f0 35 ef 	call (m) $_aud_cur_calc_samples;
+8420048e:	16 00       	r4 = r0 + Null;
+        sample_count += NOISE_ID_DEFAULT_FRAME_SIZE;
+84200490:	0b f0 40 44 	r9 = r9 + 64;
+
+    bypass_noiseid = (p_ext_data->noise_id_params.OFFSET_NOISE_ID_CONFIG &
+                      NOISE_ID_CONFIG_NOISE_ID_CONFIG_BYPASS) > 0;
+
+    sample_count = 0;
+    while (samples_to_process >= NOISE_ID_DEFAULT_FRAME_SIZE)
+84200494:	60 f0 40 24 	Null = r4 - 64;
+84200498:	86 67       	if GE jump (m) Lc_noise_id_process_data_7;
+
+8420049a <Lc_noise_id_process_data_20>:
+        samples_to_process = aud_cur_calc_samples(op_data, touched);
+        sample_count += NOISE_ID_DEFAULT_FRAME_SIZE;
+    }
+
+    /* Metadata transfer */
+    aud_cur_mic_metadata_transfer(op_data, sample_count);
+8420049a:	5b 08       	r1 = r9 + Null;
+8420049c:	52 08       	r0 = r8 + Null;
+8420049e:	04 f0 3d e7 	call (m) $_aud_cur_mic_metadata_transfer;
+
+842004a2 <Lc_noise_id_process_data_21>:
+    return;
+}
+842004a2:	f6 4a       	SP = SP - 0x20, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+842004a4:	d8 4c       	rts;
+
+842004a6 <$_noise_id_connect_hook>:
+}
+/****************************************************************************
+Hook functions
+*/
+bool noise_id_connect_hook(OPERATOR_DATA *op_data, unsigned terminal_id)
+{
+842004a6:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842004a8:	16 00       	r4 = r0 + Null;
+842004aa:	1f 00       	r5 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data NOISE_ID_OP_DATA.
+ */
+static inline NOISE_ID_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (NOISE_ID_OP_DATA *) base_op_get_instance_data(op_data);
+842004ac:	ff fd 02 f0 	call (m) 0x8ea;
+842004b0:	3f e1 
+842004b2:	10 09       	r6 = r0 + Null;
+    uint16 terminal_num;
+    tCbuffer * p_buffer;
+    NOISE_ID_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* No caching of terminal pointers if it isn't an input terminal */
+    if ((terminal_id & TERMINAL_SINK_MASK) == 0)
+842004b4:	40 f0 71 f0 	rMAC = r5 AND 0x800000;
+842004b8:	00 00 
+842004ba:	1a 60       	if EQ jump (m) Lc_noise_id_connect_hook_8;
+
+842004bc <Lc_noise_id_connect_hook_2>:
+    {
+        return TRUE;
+    }
+
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+842004bc:	bf c2       	r5 = r5 AND 0x3f;
+    p_buffer = aud_cur_get_sink_terminal(op_data, terminal_num);
+842004be:	3b 00       	r1 = r5 + Null;
+842004c0:	32 00       	r0 = r4 + Null;
+842004c2:	03 f0 39 e4 	call (m) $_aud_cur_get_sink_terminal;
+    switch (terminal_num)
+842004c6:	39 00       	rMAC = r5 + Null;
+842004c8:	48 24       	Null = rMAC - 1;
+842004ca:	10 60       	if EQ jump (m) Lc_noise_id_connect_hook_7;
+
+842004cc <Lc_noise_id_connect_hook_3>:
+842004cc:	88 24       	Null = rMAC - 2;
+842004ce:	10 60       	if EQ jump (m) Lc_noise_id_connect_hook_8;
+
+842004d0 <Lc_noise_id_connect_hook_4>:
+            break;
+        case NOISE_ID_PASSTHROUGH_TERMINAL:
+            break;
+        default:
+            L2_DBG_MSG1("NOISE_ID: unhandled terminal at connect: %d",
+                        terminal_num);
+842004d0:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842004d4:	88 24       	Null = rMAC - 2;
+842004d6:	08 68       	if LT jump (m) Lc_noise_id_connect_hook_6;
+
+842004d8 <Lc_noise_id_connect_hook_5>:
+842004d8:	55 f1 02 f0 	r0 = Null + 357564941;
+842004dc:	0d 42 
+842004de:	3b 00       	r1 = r5 + Null;
+842004e0:	ff fd 05 f0 	call (m) 0x10c2;
+842004e4:	23 ef 
+
+842004e6 <Lc_noise_id_connect_hook_6>:
+            return FALSE;
+842004e6:	02 00       	r0 = Null + Null;
+842004e8:	04 6e       	jump (m) Lc_noise_id_connect_hook_9;
+
+842004ea <Lc_noise_id_connect_hook_7>:
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+    p_buffer = aud_cur_get_sink_terminal(op_data, terminal_num);
+    switch (terminal_num)
+    {
+        case NOISE_ID_FF_TERMINAL:
+            p_ext_data->p_ff_mic = p_buffer;
+842004ea:	82 f0 17 8e 	M[r6 + 92] = r0;
+
+842004ee <Lc_noise_id_connect_hook_8>:
+    NOISE_ID_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* No caching of terminal pointers if it isn't an input terminal */
+    if ((terminal_id & TERMINAL_SINK_MASK) == 0)
+    {
+        return TRUE;
+842004ee:	42 20       	r0 = Null + 1;
+
+842004f0 <Lc_noise_id_connect_hook_9>:
+                        terminal_num);
+            return FALSE;
+    }
+
+    return TRUE;
+}
+842004f0:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842004f2:	d8 4c       	rts;
+
+842004f4 <$_noise_id_disconnect_hook>:
+
+bool noise_id_disconnect_hook(OPERATOR_DATA *op_data, unsigned terminal_id)
+{
+842004f4:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+842004f6:	1e 00       	r4 = r1 + Null;
+ *
+ * \return  Pointer to extra operator data NOISE_ID_OP_DATA.
+ */
+static inline NOISE_ID_OP_DATA *get_instance_data(OPERATOR_DATA *op_data)
+{
+    return (NOISE_ID_OP_DATA *) base_op_get_instance_data(op_data);
+842004f8:	ff fd 01 f0 	call (m) 0x8ea;
+842004fc:	33 ef 
+{
+    uint16 terminal_num;
+    NOISE_ID_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* No caching of terminal pointers if it isn't an input terminal */
+    if ((terminal_id & TERMINAL_SINK_MASK) == 0)
+842004fe:	40 f0 61 f0 	rMAC = r4 AND 0x800000;
+84200502:	00 00 
+84200504:	14 60       	if EQ jump (m) Lc_noise_id_disconnect_hook_8;
+
+84200506 <Lc_noise_id_disconnect_hook_2>:
+    {
+        return TRUE;
+    }
+
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+84200506:	b3 c2       	r1 = r4 AND 0x3f;
+    switch (terminal_num)
+84200508:	19 00       	rMAC = r1 + Null;
+8420050a:	48 24       	Null = rMAC - 1;
+8420050c:	0f 60       	if EQ jump (m) Lc_noise_id_disconnect_hook_7;
+
+8420050e <Lc_noise_id_disconnect_hook_3>:
+8420050e:	88 24       	Null = rMAC - 2;
+84200510:	0e 60       	if EQ jump (m) Lc_noise_id_disconnect_hook_8;
+
+84200512 <Lc_noise_id_disconnect_hook_4>:
+            break;
+        case NOISE_ID_PASSTHROUGH_TERMINAL:
+            break;
+        default:
+            L2_DBG_MSG1("NOISE_ID: unhandled terminal at disconnect: %d",
+                        terminal_num);
+84200512:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200516:	88 24       	Null = rMAC - 2;
+84200518:	07 68       	if LT jump (m) Lc_noise_id_disconnect_hook_6;
+
+8420051a <Lc_noise_id_disconnect_hook_5>:
+8420051a:	55 f1 02 f0 	r0 = Null + 357564985;
+8420051e:	39 42 
+84200520:	ff fd 05 f0 	call (m) 0x10c2;
+84200524:	23 ed 
+
+84200526 <Lc_noise_id_disconnect_hook_6>:
+            return FALSE;
+84200526:	02 00       	r0 = Null + Null;
+84200528:	03 6e       	jump (m) Lc_noise_id_disconnect_hook_9;
+
+8420052a <Lc_noise_id_disconnect_hook_7>:
+
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+    switch (terminal_num)
+    {
+        case NOISE_ID_FF_TERMINAL:
+            p_ext_data->p_ff_mic = NULL;
+8420052a:	d0 af       	M[r0 + 92] = Null;
+
+8420052c <Lc_noise_id_disconnect_hook_8>:
+    NOISE_ID_OP_DATA *p_ext_data = get_instance_data(op_data);
+
+    /* No caching of terminal pointers if it isn't an input terminal */
+    if ((terminal_id & TERMINAL_SINK_MASK) == 0)
+    {
+        return TRUE;
+8420052c:	42 20       	r0 = Null + 1;
+
+8420052e <Lc_noise_id_disconnect_hook_9>:
+                        terminal_num);
+            return FALSE;
+    }
+
+    return TRUE;
+}
+8420052e:	f1 48       	popm <FP, r4, rLink>;
+84200530:	d8 4c       	rts;
+
+84200532 <Lc_noise_id_proc_destroy_1>:
+ * \param  p_ext_data  Address of the NOISE_ID extra_op_data.
+ *
+ * \return  boolean indicating success or failure.
+ */
+static bool noise_id_proc_destroy(NOISE_ID_OP_DATA *p_ext_data)
+{
+84200532:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200534:	16 00       	r4 = r0 + Null;
+    /* Unregister FFT twiddle */
+    if (p_ext_data->twiddle_registered)
+84200536:	61 f0 59 82 	rMAC = MBU[r4 + 89];
+8420053a:	08 60       	if EQ jump (m) Lc_noise_id_proc_destroy_3;
+
+8420053c <Lc_noise_id_proc_destroy_2>:
+    {
+        math_fft_twiddle_release(AANC_FILTER_BANK_WINDOW_SIZE);
+8420053c:	02 f0 80 40 	r0 = Null + 128;
+84200540:	ff fd 85 f4 	call 0x9112c;
+84200544:	2c ef 
+        p_ext_data->twiddle_registered = FALSE;
+84200546:	60 f0 59 8a 	MB[r4 + 89] = Null;
+
+8420054a <Lc_noise_id_proc_destroy_3>:
+    }
+    /* De-register scratch & free AFB */
+    if (p_ext_data->scratch_registered)
+8420054a:	61 f0 58 82 	rMAC = MBU[r4 + 88];
+8420054e:	06 60       	if EQ jump (m) Lc_noise_id_proc_destroy_5;
+
+84200550 <Lc_noise_id_proc_destroy_4>:
+    {
+        scratch_deregister();
+84200550:	ff fd 0d f0 	call (m) 0x1fc6;
+84200554:	37 e3 
+        p_ext_data->scratch_registered = FALSE;
+84200556:	60 f0 58 8a 	MB[r4 + 88] = Null;
+
+8420055a <Lc_noise_id_proc_destroy_5>:
+    }
+    aanc_afb_destroy(p_ext_data->p_afb);
+8420055a:	b2 b8       	r0 = M[r4 + 104];
+8420055c:	06 f0 3b e2 	call (m) $_aanc_afb_destroy;
+    pfree(p_ext_data->p_afb);
+84200560:	b2 b8       	r0 = M[r4 + 104];
+84200562:	ff fd 35 f0 	call (m) 0x6fbe;
+84200566:	3d e2 
+    pdelete(p_ext_data->p_noise_id100);
+84200568:	32 b8       	r0 = M[r4 + 96];
+8420056a:	ff fd 35 f0 	call (m) 0x6fbe;
+8420056e:	35 e2 
+    pdelete(p_ext_data->p_noise_id100_dm1);
+84200570:	72 b8       	r0 = M[r4 + 100];
+84200572:	ff fd 35 f0 	call (m) 0x6fbe;
+84200576:	2d e2 
+
+    /* Destroy and free ED memory */
+    aanc_ed100_destroy(p_ext_data->p_ed);
+84200578:	f2 b8       	r0 = M[r4 + 108];
+8420057a:	05 f0 2d e9 	call (m) $_aanc_ed100_destroy;
+    pdelete(p_ext_data->p_ed);
+8420057e:	f2 b8       	r0 = M[r4 + 108];
+84200580:	ff fd 35 f0 	call (m) 0x6fbe;
+84200584:	3f e1 
+    pdelete(p_ext_data->p_ed_dm1);
+84200586:	32 b9       	r0 = M[r4 + 112];
+84200588:	ff fd 35 f0 	call (m) 0x6fbe;
+8420058c:	37 e1 
+    cbuffer_destroy(p_ext_data->p_tmp_ed);
+8420058e:	72 b9       	r0 = M[r4 + 116];
+84200590:	ff fd 9e f0 	call (m) 0x14302;
+84200594:	33 eb 
+
+    unload_aanc_handle(p_ext_data->f_handle);
+84200596:	72 a9       	r0 = M[r4 + 84];
+84200598:	05 f0 27 e9 	call (m) $_unload_aanc_handle;
+    return TRUE;
+8420059c:	42 20       	r0 = Null + 1;
+
+8420059e <Lc_noise_id_proc_destroy_6>:
+}
+8420059e:	f1 48       	popm <FP, r4, rLink>;
+842005a0:	d8 4c       	rts;
+
+842005a2 <Lc_noise_id_proc_create_1>:
+ * \param   p_ext_data  Address of the NOISE_ID extra_op_data.
+ *
+ * \return  boolean indicating success or failure.
+ */
+static bool noise_id_proc_create(NOISE_ID_OP_DATA *p_ext_data)
+{
+842005a2:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842005a4:	16 00       	r4 = r0 + Null;
+    uint16 noise_id_bytes;              /* Number of bytes to allocate */
+    uint16 ed_dmx_bytes, ed_dm1_bytes;  /* Memory required by EDs */
+
+    /* Allocate twiddle factor for AFB */
+    if (!math_fft_twiddle_alloc(AANC_FILTER_BANK_WINDOW_SIZE))
+842005a6:	02 f0 80 40 	r0 = Null + 128;
+842005aa:	ff fd 85 f4 	call 0x91054;
+842005ae:	2a e5 
+842005b0:	10 04       	Null = r0 - Null;
+842005b2:	0f 62       	if NE jump (m) Lc_noise_id_proc_create_5;
+
+842005b4 <Lc_noise_id_proc_create_2>:
+    {
+        noise_id_proc_destroy(p_ext_data);
+842005b4:	32 00       	r0 = r4 + Null;
+842005b6:	be 4f       	call (m) Lc_noise_id_proc_destroy_1;
+        L2_DBG_MSG("NOISE_ID failed to allocate twiddle factors");
+842005b8:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842005bc:	88 24       	Null = rMAC - 2;
+842005be:	07 68       	if LT jump (m) Lc_noise_id_proc_create_4;
+
+842005c0 <Lc_noise_id_proc_create_3>:
+842005c0:	55 f1 02 f0 	r0 = Null + 357564416;
+842005c4:	00 40 
+842005c6:	ff fd 05 f0 	call (m) 0x10b0;
+842005ca:	2b e7 
+
+842005cc <Lc_noise_id_proc_create_4>:
+        return FALSE;
+842005cc:	02 00       	r0 = Null + Null;
+842005ce:	f1 6e       	jump (m) Lc_noise_id_proc_create_39;
+
+842005d0 <Lc_noise_id_proc_create_5>:
+    }
+    p_ext_data->twiddle_registered = TRUE;
+842005d0:	47 20       	r5 = Null + 1;
+842005d2:	67 f0 59 8a 	MB[r4 + 89] = r5;
+
+    /* Register scratch memory for AFB & allocate object */
+    if (!scratch_register())
+842005d6:	ff fd 0c f0 	call (m) 0x1f5a;
+842005da:	25 ec 
+842005dc:	10 04       	Null = r0 - Null;
+842005de:	0e 62       	if NE jump (m) Lc_noise_id_proc_create_8;
+
+842005e0 <Lc_noise_id_proc_create_6>:
+    {
+        noise_id_proc_destroy(p_ext_data);
+842005e0:	32 00       	r0 = r4 + Null;
+842005e2:	a8 4f       	call (m) Lc_noise_id_proc_destroy_1;
+        L2_DBG_MSG("NOISE_ID failed to register scratch memory");
+842005e4:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842005e8:	88 24       	Null = rMAC - 2;
+842005ea:	f1 69       	if LT jump (m) Lc_noise_id_proc_create_4;
+
+842005ec <Lc_noise_id_proc_create_7>:
+842005ec:	55 f1 02 f0 	r0 = Null + 357564460;
+842005f0:	2c 40 
+842005f2:	ff fd 05 f0 	call (m) 0x10b0;
+842005f6:	3f e5 
+842005f8:	ea 6f       	jump (m) Lc_noise_id_proc_create_4;
+
+842005fa <Lc_noise_id_proc_create_8>:
+        return FALSE;
+    }
+
+    p_ext_data->scratch_registered = TRUE;
+842005fa:	67 f0 58 8a 	MB[r4 + 88] = r5;
+
+    if (!scratch_reserve(AANC_AFB_SCRATCH_MEMORY, MALLOC_PREFERENCE_DM1) ||
+        !scratch_reserve(AANC_AFB_SCRATCH_MEMORY, MALLOC_PREFERENCE_DM2) ||
+        !scratch_reserve(AANC_AFB_SCRATCH_MEMORY, MALLOC_PREFERENCE_DM2))
+842005fe:	3b 00       	r1 = r5 + Null;
+84200600:	02 f0 00 42 	r0 = Null + 512;
+84200604:	ff fd 0d f0 	call (m) 0x204c;
+84200608:	29 e2 
+8420060a:	10 04       	Null = r0 - Null;
+8420060c:	11 60       	if EQ jump (m) Lc_noise_id_proc_create_11;
+
+8420060e <Lc_noise_id_proc_create_9>:
+8420060e:	83 20       	r1 = Null + 2;
+84200610:	02 f0 00 42 	r0 = Null + 512;
+84200614:	ff fd 0d f0 	call (m) 0x204c;
+84200618:	39 e1 
+8420061a:	10 04       	Null = r0 - Null;
+8420061c:	09 60       	if EQ jump (m) Lc_noise_id_proc_create_11;
+
+8420061e <Lc_noise_id_proc_create_10>:
+8420061e:	83 20       	r1 = Null + 2;
+84200620:	02 f0 00 42 	r0 = Null + 512;
+84200624:	ff fd 0d f0 	call (m) 0x204c;
+84200628:	29 e1 
+8420062a:	10 04       	Null = r0 - Null;
+8420062c:	0e 62       	if NE jump (m) Lc_noise_id_proc_create_13;
+
+8420062e <Lc_noise_id_proc_create_11>:
+    {
+        noise_id_proc_destroy(p_ext_data);
+8420062e:	32 00       	r0 = r4 + Null;
+84200630:	81 4f       	call (m) Lc_noise_id_proc_destroy_1;
+        L2_DBG_MSG("NOISE_ID failed to reserve scratch memory");
+84200632:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200636:	88 24       	Null = rMAC - 2;
+84200638:	ca 69       	if LT jump (m) Lc_noise_id_proc_create_4;
+
+8420063a <Lc_noise_id_proc_create_12>:
+8420063a:	55 f1 02 f0 	r0 = Null + 357564503;
+8420063e:	57 40 
+84200640:	ff fd 05 f0 	call (m) 0x10b0;
+84200644:	31 e3 
+84200646:	c3 6f       	jump (m) Lc_noise_id_proc_create_4;
+
+84200648 <Lc_noise_id_proc_create_13>:
+        return FALSE;
+    }
+
+    /* Allocate AFB */
+    p_ext_data->p_afb = xzpmalloc(aanc_afb_bytes());
+84200648:	05 f0 39 e3 	call (m) $_aanc_afb_bytes;
+8420064c:	c3 20       	r1 = Null + 3;
+8420064e:	ff fd 34 f0 	call (m) 0x6f8e;
+84200652:	21 ea 
+    if (p_ext_data->p_afb == NULL)
+84200654:	b2 be       	M[r4 + 104] = r0;
+84200656:	0e 62       	if NE jump (m) Lc_noise_id_proc_create_17;
+
+84200658 <Lc_noise_id_proc_create_14>:
+    {
+        L2_DBG_MSG("NOISE_ID failed to allocate AFB");
+84200658:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420065c:	88 24       	Null = rMAC - 2;
+8420065e:	07 68       	if LT jump (m) Lc_noise_id_proc_create_16;
+
+84200660 <Lc_noise_id_proc_create_15>:
+84200660:	55 f1 02 f0 	r0 = Null + 357564545;
+84200664:	81 40 
+84200666:	ff fd 05 f0 	call (m) 0x10b0;
+8420066a:	2b e2 
+
+8420066c <Lc_noise_id_proc_create_16>:
+        noise_id_proc_destroy(p_ext_data);
+8420066c:	32 00       	r0 = r4 + Null;
+8420066e:	62 4f       	call (m) Lc_noise_id_proc_destroy_1;
+84200670:	ae 6f       	jump (m) Lc_noise_id_proc_create_4;
+
+84200672 <Lc_noise_id_proc_create_17>:
+        return FALSE;
+    }
+    aanc_afb_create(p_ext_data->p_afb);
+84200672:	05 f0 35 e2 	call (m) $_aanc_afb_create;
+
+    /* Allocate Memory */
+    noise_id_bytes = aanc_noiseID100_dmx_bytes();
+84200676:	05 f0 3b ea 	call (m) $_aanc_noiseID100_dmx_bytes;
+    p_ext_data->p_noise_id100 = \
+        (NOISEID100_DMX*) xzppmalloc(noise_id_bytes, MALLOC_PREFERENCE_NONE);
+8420067a:	c3 20       	r1 = Null + 3;
+8420067c:	ff fd 34 f0 	call (m) 0x6f8e;
+84200680:	33 e8 
+    if (p_ext_data->p_noise_id100 == NULL)
+84200682:	32 be       	M[r4 + 96] = r0;
+84200684:	0e 62       	if NE jump (m) Lc_noise_id_proc_create_20;
+
+84200686 <Lc_noise_id_proc_create_18>:
+    {
+        noise_id_proc_destroy(p_ext_data);
+84200686:	32 00       	r0 = r4 + Null;
+84200688:	55 4f       	call (m) Lc_noise_id_proc_destroy_1;
+        L2_DBG_MSG("NOISE_ID failed to allocate noise_id100 dmx");
+8420068a:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420068e:	88 24       	Null = rMAC - 2;
+84200690:	9e 69       	if LT jump (m) Lc_noise_id_proc_create_4;
+
+84200692 <Lc_noise_id_proc_create_19>:
+84200692:	55 f1 02 f0 	r0 = Null + 357564577;
+84200696:	a1 40 
+84200698:	ff fd 05 f0 	call (m) 0x10b0;
+8420069c:	39 e0 
+8420069e:	97 6f       	jump (m) Lc_noise_id_proc_create_4;
+
+842006a0 <Lc_noise_id_proc_create_20>:
+        return FALSE;
+    }
+    p_ext_data->p_noise_id100_dm1 = \
+        (uint8*) xzppmalloc(aanc_noiseID100_dm1_bytes(),
+                            MALLOC_PREFERENCE_DM1);
+842006a0:	05 f0 37 e9 	call (m) $_aanc_noiseID100_dm1_bytes;
+842006a4:	3b 00       	r1 = r5 + Null;
+842006a6:	ff fd 34 f0 	call (m) 0x6f8e;
+842006aa:	29 e7 
+842006ac:	13 00       	r1 = r0 + Null;
+    if (p_ext_data->p_noise_id100_dm1 == NULL)
+842006ae:	73 be       	M[r4 + 100] = r1;
+842006b0:	0e 62       	if NE jump (m) Lc_noise_id_proc_create_23;
+
+842006b2 <Lc_noise_id_proc_create_21>:
+    {
+        noise_id_proc_destroy(p_ext_data);
+842006b2:	32 00       	r0 = r4 + Null;
+842006b4:	3f 4f       	call (m) Lc_noise_id_proc_destroy_1;
+        L2_DBG_MSG("NOISE_ID failed to allocate noise_id100 dm1");
+842006b6:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842006ba:	88 24       	Null = rMAC - 2;
+842006bc:	88 69       	if LT jump (m) Lc_noise_id_proc_create_4;
+
+842006be <Lc_noise_id_proc_create_22>:
+842006be:	55 f1 02 f0 	r0 = Null + 357564621;
+842006c2:	cd 40 
+842006c4:	ff fd 04 f0 	call (m) 0x10b0;
+842006c8:	2d ef 
+842006ca:	81 6f       	jump (m) Lc_noise_id_proc_create_4;
+
+842006cc <Lc_noise_id_proc_create_23>:
+        return FALSE;
+    }
+
+    /* Create NoiseID100 data structure */
+    if (!aanc_noiseID100_create(p_ext_data->p_noise_id100,
+                                p_ext_data->p_noise_id100_dm1))
+842006cc:	32 b8       	r0 = M[r4 + 96];
+842006ce:	05 f0 2d e8 	call (m) $_aanc_noiseID100_create;
+842006d2:	10 04       	Null = r0 - Null;
+842006d4:	0e 62       	if NE jump (m) Lc_noise_id_proc_create_26;
+
+842006d6 <Lc_noise_id_proc_create_24>:
+    {
+        noise_id_proc_destroy(p_ext_data);
+842006d6:	32 00       	r0 = r4 + Null;
+842006d8:	2d 4f       	call (m) Lc_noise_id_proc_destroy_1;
+        L2_DBG_MSG("NOISE_ID failed to create noise_id100");
+842006da:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842006de:	88 24       	Null = rMAC - 2;
+842006e0:	76 69       	if LT jump (m) Lc_noise_id_proc_create_4;
+
+842006e2 <Lc_noise_id_proc_create_25>:
+842006e2:	55 f1 02 f0 	r0 = Null + 357564665;
+842006e6:	f9 40 
+842006e8:	ff fd 04 f0 	call (m) 0x10b0;
+842006ec:	29 ee 
+842006ee:	6f 6f       	jump (m) Lc_noise_id_proc_create_4;
+
+842006f0 <Lc_noise_id_proc_create_26>:
+        return FALSE;
+    }
+
+    /* Create energy detector */
+    ed_dmx_bytes = aanc_ed100_dmx_bytes();
+842006f0:	04 f0 2d e6 	call (m) .L0;
+842006f4:	10 09       	r6 = r0 + Null;
+    ed_dm1_bytes = aanc_ed100_dm1_bytes();
+842006f6:	04 f0 2d e6 	call (m) $_aanc_ed100_dm1_bytes;
+842006fa:	17 00       	r5 = r0 + Null;
+
+    p_ext_data->p_ed = \
+        (ED100_DMX*) xzppmalloc(ed_dmx_bytes, MALLOC_PREFERENCE_NONE);
+842006fc:	c3 20       	r1 = Null + 3;
+842006fe:	42 08       	r0 = r6 + Null;
+84200700:	ff fd 34 f0 	call (m) 0x6f8e;
+84200704:	2f e4 
+    if (p_ext_data->p_ed == NULL)
+84200706:	f2 be       	M[r4 + 108] = r0;
+84200708:	0e 62       	if NE jump (m) Lc_noise_id_proc_create_29;
+
+8420070a <Lc_noise_id_proc_create_27>:
+    {
+        noise_id_proc_destroy(p_ext_data);
+8420070a:	32 00       	r0 = r4 + Null;
+8420070c:	13 4f       	call (m) Lc_noise_id_proc_destroy_1;
+        L2_DBG_MSG("NOISE_ID failed to allocate ED100_DMX dmx");
+8420070e:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200712:	88 24       	Null = rMAC - 2;
+84200714:	5c 69       	if LT jump (m) Lc_noise_id_proc_create_4;
+
+84200716 <Lc_noise_id_proc_create_28>:
+84200716:	55 f1 02 f0 	r0 = Null + 357564703;
+8420071a:	1f 41 
+8420071c:	ff fd 04 f0 	call (m) 0x10b0;
+84200720:	35 ec 
+84200722:	55 6f       	jump (m) Lc_noise_id_proc_create_4;
+
+84200724 <Lc_noise_id_proc_create_29>:
+        return FALSE;
+    }
+    p_ext_data->p_ed_dm1 = \
+        (uint8*) xzppmalloc(ed_dm1_bytes,
+                            MALLOC_PREFERENCE_DM1);
+84200724:	43 20       	r1 = Null + 1;
+84200726:	3a 00       	r0 = r5 + Null;
+84200728:	ff fd 34 f0 	call (m) 0x6f8e;
+8420072c:	27 e3 
+    if (p_ext_data->p_ed_dm1 == NULL)
+8420072e:	32 bf       	M[r4 + 112] = r0;
+84200730:	0f 62       	if NE jump (m) Lc_noise_id_proc_create_32;
+
+84200732 <Lc_noise_id_proc_create_30>:
+    {
+        noise_id_proc_destroy(p_ext_data);
+84200732:	32 00       	r0 = r4 + Null;
+84200734:	fe ff 3f ef 	call (m) Lc_noise_id_proc_destroy_1;
+        L2_DBG_MSG("NOISE_ID failed to allocate ED100 dm1");
+84200738:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420073c:	88 24       	Null = rMAC - 2;
+8420073e:	47 69       	if LT jump (m) Lc_noise_id_proc_create_4;
+
+84200740 <Lc_noise_id_proc_create_31>:
+84200740:	55 f1 02 f0 	r0 = Null + 357564745;
+84200744:	49 41 
+84200746:	ff fd 04 f0 	call (m) 0x10b0;
+8420074a:	2b eb 
+8420074c:	40 6f       	jump (m) Lc_noise_id_proc_create_4;
+
+8420074e <Lc_noise_id_proc_create_32>:
+        return FALSE;
+    }
+
+    /* Create shared ED cbuffer without specific bank allocation */
+    p_ext_data->p_tmp_ed = cbuffer_create_with_malloc(ED100_DEFAULT_BUFFER_SIZE,
+                                                      BUF_DESC_SW_BUFFER);
+8420074e:	02 f0 41 40 	r0 = Null + 65;
+84200752:	03 00       	r1 = Null + Null;
+84200754:	ff fd 9d f0 	call (m) 0x1421e;
+84200758:	2b e6 
+8420075a:	72 bf       	M[r4 + 116] = r0;
+    if (p_ext_data->p_tmp_ed == NULL)
+8420075c:	71 b9       	rMAC = M[r4 + 116];
+8420075e:	0f 62       	if NE jump (m) Lc_noise_id_proc_create_35;
+
+84200760 <Lc_noise_id_proc_create_33>:
+    {
+        noise_id_proc_destroy(p_ext_data);
+84200760:	32 00       	r0 = r4 + Null;
+84200762:	fe ff 31 ee 	call (m) Lc_noise_id_proc_destroy_1;
+        L2_DBG_MSG("NOISE_ID failed to allocate ED cbuffer");
+84200766:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420076a:	88 24       	Null = rMAC - 2;
+8420076c:	30 69       	if LT jump (m) Lc_noise_id_proc_create_4;
+
+8420076e <Lc_noise_id_proc_create_34>:
+8420076e:	55 f1 02 f0 	r0 = Null + 357564783;
+84200772:	6f 41 
+84200774:	ff fd 04 f0 	call (m) 0x10b0;
+84200778:	3d e9 
+8420077a:	29 6f       	jump (m) Lc_noise_id_proc_create_4;
+
+8420077c <Lc_noise_id_proc_create_35>:
+        return FALSE;
+    }
+    aanc_ed100_create(p_ext_data->p_ed,
+                      p_ext_data->p_ed_dm1,
+                      p_ext_data->sample_rate);
+8420077c:	34 e8       	r2 = M[r4 + Null];
+8420077e:	33 b9       	r1 = M[r4 + 112];
+84200780:	f2 b8       	r0 = M[r4 + 108];
+84200782:	04 f0 27 e2 	call (m) $_aanc_ed100_create;
+
+    /* Load feature handle for licensing */
+    if (!load_aanc_handle(&p_ext_data->f_handle))
+84200786:	62 f0 54 20 	r0 = r4 + 84;
+8420078a:	04 f0 31 e9 	call (m) $_load_aanc_handle;
+8420078e:	10 04       	Null = r0 - Null;
+84200790:	0f 62       	if NE jump (m) Lc_noise_id_proc_create_38;
+
+84200792 <Lc_noise_id_proc_create_36>:
+    {
+        noise_id_proc_destroy(p_ext_data);
+84200792:	32 00       	r0 = r4 + Null;
+84200794:	fe ff 3f ec 	call (m) Lc_noise_id_proc_destroy_1;
+        L2_DBG_MSG("NOISE_ID failed to load feature handle");
+84200798:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420079c:	88 24       	Null = rMAC - 2;
+8420079e:	17 69       	if LT jump (m) Lc_noise_id_proc_create_4;
+
+842007a0 <Lc_noise_id_proc_create_37>:
+842007a0:	55 f1 02 f0 	r0 = Null + 357564822;
+842007a4:	96 41 
+842007a6:	ff fd 04 f0 	call (m) 0x10b0;
+842007aa:	2b e8 
+842007ac:	10 6f       	jump (m) Lc_noise_id_proc_create_4;
+
+842007ae <Lc_noise_id_proc_create_38>:
+        return FALSE;
+    }
+
+    return TRUE;
+842007ae:	42 20       	r0 = Null + 1;
+
+842007b0 <Lc_noise_id_proc_create_39>:
+}
+842007b0:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+842007b2:	d8 4c       	rts;
+
+842007b4 <Lc_noise_id_update_flags_1>:
+ * \return void
+ */
+static void noise_id_update_flags(NOISE_ID_OP_DATA *p_ext_data)
+{
+    /* ED detected flag */
+    if (p_ext_data->p_ed->detection)
+842007b4:	d1 b8       	rMAC = M[r0 + 108];
+842007b6:	08 a9       	Null = M[rMAC + 80];
+842007b8:	05 60       	if EQ jump (m) Lc_noise_id_update_flags_3;
+
+842007ba <Lc_noise_id_update_flags_2>:
+    {
+        p_ext_data->flags |= NOISE_ID_FLAGS_ED;
+842007ba:	d1 b9       	rMAC = M[r0 + 124];
+842007bc:	09 c8       	rMAC = rMAC OR 0x1;
+842007be:	d1 bf       	M[r0 + 124] = rMAC;
+842007c0:	05 6e       	jump (m) Lc_noise_id_update_flags_4;
+
+842007c2 <Lc_noise_id_update_flags_3>:
+    }
+    else
+    {
+        p_ext_data->flags &= ~NOISE_ID_FLAGS_ED;
+842007c2:	d1 b9       	rMAC = M[r0 + 124];
+842007c4:	11 ff fe 1f 	rMAC = rMAC AND 0xfffffffe;
+842007c8:	d1 bf       	M[r0 + 124] = rMAC;
+
+842007ca <Lc_noise_id_update_flags_4>:
+842007ca:	d8 4c       	rts;
+
+842007cc <Lc_noise_id_send_event_message_1>:
+ *
+ * \return - TRUE if successful
+ **/
+static bool noise_id_send_event_message(OPERATOR_DATA *op_data,
+                                        AHM_EVENT_MSG *p_evt_msg)
+{
+842007cc:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+842007ce:	16 00       	r4 = r0 + Null;
+842007d0:	18 09       	r6 = r1 + Null;
+    OPMSG_REPLY_ID msg_id;
+
+    msg_id = OPMSG_REPLY_ID_AHM_EVENT_TRIGGER;
+    msg_size = OPMSG_UNSOLICITED_AHM_EVENT_TRIGGER_WORD_SIZE;
+
+    p_msg = xzpnewn(msg_size, unsigned);
+842007d2:	c3 20       	r1 = Null + 3;
+842007d4:	02 2a       	r0 = Null + 24;
+842007d6:	ff fd 33 f0 	call (m) 0x6f8e;
+842007da:	39 ed 
+842007dc:	17 00       	r5 = r0 + Null;
+    if (p_msg == NULL)
+842007de:	0d 62       	if NE jump (m) Lc_noise_id_send_event_message_5;
+
+842007e0 <Lc_noise_id_send_event_message_2>:
+    {
+        L2_DBG_MSG("Failed to create NOISE ID message payload");
+842007e0:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+842007e4:	88 24       	Null = rMAC - 2;
+842007e6:	07 68       	if LT jump (m) Lc_noise_id_send_event_message_4;
+
+842007e8 <Lc_noise_id_send_event_message_3>:
+842007e8:	55 f1 02 f0 	r0 = Null + 357564899;
+842007ec:	e3 41 
+842007ee:	ff fd 04 f0 	call (m) 0x10b0;
+842007f2:	23 e6 
+
+842007f4 <Lc_noise_id_send_event_message_4>:
+        return FALSE;
+842007f4:	02 00       	r0 = Null + Null;
+842007f6:	29 6e       	jump (m) Lc_noise_id_send_event_message_6;
+
+842007f8 <Lc_noise_id_send_event_message_5>:
+    }
+
+    OPMSG_CREATION_FIELD_SET(p_msg,
+                             OPMSG_UNSOLICITED_AHM_EVENT_TRIGGER,
+                             ID,
+                             p_evt_msg->id);
+842007f8:	81 f0 00 e6 	rMAC = MHU[r6 + Null];
+842007fc:	39 ee       	M[r5 + Null] = rMAC;
+    OPMSG_CREATION_FIELD_SET(p_msg,
+                             OPMSG_UNSOLICITED_AHM_EVENT_TRIGGER,
+                             TYPE,
+                             p_evt_msg->type);
+842007fe:	81 f0 01 86 	rMAC = MHU[r6 + 2];
+84200802:	79 8e       	M[r5 + 4] = rMAC;
+    OPMSG_CREATION_FIELD_SET32(p_msg,
+                               OPMSG_UNSOLICITED_AHM_EVENT_TRIGGER,
+                               PAYLOAD,
+                               p_evt_msg->payload);
+84200804:	81 f0 01 88 	rMAC = M[r6 + 4];
+84200808:	89 c6       	rMAC = rMAC AND 0xffff;
+8420080a:	b9 8e       	M[r5 + 8] = rMAC;
+8420080c:	82 f0 01 88 	r0 = M[r6 + 4];
+84200810:	92 52       	r0 = r0 LSHIFT -16;
+84200812:	fa 8e       	M[r5 + 12] = r0;
+    OPMSG_CREATION_FIELD_SET32(p_msg,
+                               OPMSG_UNSOLICITED_AHM_EVENT_TRIGGER,
+                               OPID,
+                               INT_TO_EXT_OPID(op_data->id));
+84200814:	72 88       	r0 = M[r4 + 4];
+84200816:	52 55       	r0 = r0 LSHIFT 6;
+84200818:	40 f0 00 f2 	rMAC = r0 OR 0x4000;
+8420081c:	51 d8 
+8420081e:	89 c6       	rMAC = rMAC AND 0xffff;
+84200820:	39 8f       	M[r5 + 16] = rMAC;
+84200822:	72 88       	r0 = M[r4 + 4];
+84200824:	52 55       	r0 = r0 LSHIFT 6;
+84200826:	40 f0 00 f2 	r0 = r0 OR 0x4000;
+8420082a:	52 d8 
+8420082c:	92 52       	r0 = r0 LSHIFT -16;
+8420082e:	7a 8f       	M[r5 + 20] = r0;
+    common_send_unsolicited_message(op_data, (unsigned)msg_id, msg_size, p_msg);
+84200830:	84 21       	r2 = Null + 6;
+84200832:	43 23       	r1 = Null + 13;
+84200834:	3d 00       	r3 = r5 + Null;
+84200836:	32 00       	r0 = r4 + Null;
+84200838:	ff fd 00 f0 	call (m) 0x970;
+8420083c:	39 e9 
+
+    pdelete(p_msg);
+8420083e:	3a 00       	r0 = r5 + Null;
+84200840:	ff fd 33 f0 	call (m) 0x6fbe;
+84200844:	3f eb 
+    return TRUE;
+84200846:	42 20       	r0 = Null + 1;
+
+84200848 <Lc_noise_id_send_event_message_6>:
+}
+84200848:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+8420084a:	d8 4c       	rts;
+
+8420084c <$_NOISE_ID_GetDefaults>:
+8420084c:	20 f0 eb 24 	Null = r0 - 235;
+   0x47333333u,			// POWER_RATIO_ID0_THRESHOLD
+   0x40CCCCCDu			// POWER_RATIO_ID1_THRESHOLD
+};
+
+unsigned *NOISE_ID_GetDefaults(unsigned capid){
+	switch(capid){
+84200850:	05 60       	if EQ jump (m) Lc_NOISE_ID_GetDefaults_3;
+
+84200852 <Lc_NOISE_ID_GetDefaults_2>:
+84200852:	01 f0 20 f0 	Null = r0 - 16593;
+84200856:	d1 24 
+84200858:	05 62       	if NE jump (m) Lc_NOISE_ID_GetDefaults_4;
+
+8420085a <Lc_NOISE_ID_GetDefaults_3>:
+		case 0x00EB: return defaults_noise_idNOISE_ID;
+8420085a:	f1 ff 02 f3 	r0 = Null + -15335424;
+8420085e:	00 40 
+84200860:	02 6e       	jump (m) Lc_NOISE_ID_GetDefaults_5;
+
+84200862 <Lc_NOISE_ID_GetDefaults_4>:
+		case 0x40D1: return defaults_noise_idNOISE_ID;
+	}
+	return((unsigned *)0);
+84200862:	02 00       	r0 = Null + Null;
+
+84200864 <Lc_NOISE_ID_GetDefaults_5>:
+84200864:	d8 4c       	rts;
+
+84200866 <$_aud_cur_create>:
+84200866:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+}
+
+bool aud_cur_create(OPERATOR_DATA *op_data,
+                    unsigned max_sources,
+                    unsigned max_sinks)
+{
+84200868:	16 00       	r4 = r0 + Null;
+8420086a:	1f 00       	r5 = r1 + Null;
+8420086c:	20 09       	r6 = r2 + Null;
+
+    unsigned input_size, output_size;
+    AUDIO_CURATION_DEF *ptr;
+
+    /* Allocate class data including space for linked lists */
+    output_size = max_sources * sizeof(tCbuffer);
+8420086e:	3a 47       	r0 = r5 * 28 (int);
+    input_size = max_sinks * sizeof(tCbuffer);
+84200870:	0e f8 91 c9 	rMAC = r6 * 28 (int);
+
+    ptr = (AUDIO_CURATION_DEF*)xzpmalloc(sizeof(AUDIO_CURATION_DEF) + \
+        input_size + output_size);
+84200874:	c3 20       	r1 = Null + 3;
+84200876:	51 00       	rMAC = r0 + rMAC;
+84200878:	12 f0 64 20 	r0 = rMAC + 100;
+8420087c:	ff fd 33 f0 	call (m) 0x6f8e;
+84200880:	33 e8 
+84200882:	11 09       	r7 = r0 + Null;
+
+    if (ptr == NULL)
+84200884:	0d 62       	if NE jump (m) Lc_aud_cur_create_5;
+
+84200886 <Lc_aud_cur_create_2>:
+    {
+          L4_DBG_MSG("base aud cur create: class allocation failed.");
+84200886:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+8420088a:	08 25       	Null = rMAC - 4;
+8420088c:	07 68       	if LT jump (m) Lc_aud_cur_create_4;
+
+8420088e <Lc_aud_cur_create_3>:
+8420088e:	55 f1 02 f0 	r0 = Null + 357565608;
+84200892:	a8 48 
+84200894:	ff fd 04 f0 	call (m) 0x10b0;
+84200898:	3d e0 
+
+8420089a <Lc_aud_cur_create_4>:
+          return FALSE;
+8420089a:	02 00       	r0 = Null + Null;
+8420089c:	22 6e       	jump (m) Lc_aud_cur_create_6;
+
+8420089e <Lc_aud_cur_create_5>:
+    }
+
+    ptr->sources.max = (uint16)max_sources;
+8420089e:	97 f0 0a 8c 	MH[r7 + 20] = r5;
+    ptr->sinks.max = (uint16)max_sinks;
+842008a2:	98 f0 04 8c 	MH[r7 + 8] = r6;
+
+    ptr->sinks.p_buffer_list = (tCbuffer**)&ptr->buffer_data;
+842008a6:	91 f0 64 20 	rMAC = r7 + 100;
+842008aa:	91 f0 04 8e 	M[r7 + 16] = rMAC;
+    ptr->sources.p_buffer_list = ptr->sinks.p_buffer_list + max_sources;
+842008ae:	7a 54       	r0 = r5 LSHIFT 2;
+842008b0:	51 00       	rMAC = r0 + rMAC;
+842008b2:	91 f0 07 8e 	M[r7 + 28] = rMAC;
+
+    ptr->buffer_size = 2 * AUD_CUR_DEFAULT_BLOCK_SIZE;
+842008b6:	81 20       	rMAC = Null + 2;
+842008b8:	91 f0 08 8e 	M[r7 + 32] = rMAC;
+    ptr->block_size  = AUD_CUR_DEFAULT_BLOCK_SIZE;
+842008bc:	41 20       	rMAC = Null + 1;
+842008be:	91 f0 09 8e 	M[r7 + 36] = rMAC;
+
+    ptr->cap_id = base_op_get_cap_id(op_data);
+842008c2:	32 00       	r0 = r4 + Null;
+842008c4:	ff fd 00 f0 	call (m) 0x8ee;
+842008c8:	2b e1 
+842008ca:	92 f0 0f 8e 	M[r7 + 60] = r0;
+
+    ptr->re_init_flag = TRUE;
+842008ce:	41 20       	rMAC = Null + 1;
+842008d0:	91 f0 00 ea 	MB[r7 + Null] = rMAC;
+ * \return - NONE
+ */
+static inline void set_class_data(OPERATOR_DATA *op_data,
+                                  AUDIO_CURATION_DEF *class_data)
+{
+    base_op_set_class_ext(op_data, class_data);
+842008d4:	4b 08       	r1 = r7 + Null;
+842008d6:	32 00       	r0 = r4 + Null;
+842008d8:	ff fd 00 f0 	call (m) 0x938;
+842008dc:	21 e3 
+    ptr->re_init_flag = TRUE;
+
+    /* Save Pointer to channel definition in operator data */
+    set_class_data(op_data, ptr);
+
+    return TRUE;
+842008de:	42 20       	r0 = Null + 1;
+
+842008e0 <Lc_aud_cur_create_6>:
+}
+842008e0:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+842008e2:	d8 4c       	rts;
+
+842008e4 <$_aud_cur_destroy>:
+
+void aud_cur_destroy(OPERATOR_DATA *op_data)
+{
+842008e4:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+842008e6:	16 00       	r4 = r0 + Null;
+ * \return - Pointer to the class data
+ */
+
+static inline AUDIO_CURATION_DEF *get_class_data(OPERATOR_DATA *op_data)
+{
+    return (AUDIO_CURATION_DEF *) base_op_get_class_ext(op_data);
+842008e8:	ff fd 00 f0 	call (m) 0x934;
+842008ec:	2d e2 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    if (p_class_data == NULL)
+842008ee:	10 04       	Null = r0 - Null;
+842008f0:	09 60       	if EQ jump (m) Lc_aud_cur_destroy_3;
+
+842008f2 <Lc_aud_cur_destroy_2>:
+    {
+        return;
+    }
+
+    pfree(p_class_data);
+842008f2:	ff fd 33 f0 	call (m) 0x6fbe;
+842008f6:	2d e6 
+    set_class_data(op_data, NULL);
+842008f8:	03 00       	r1 = Null + Null;
+ * \return - NONE
+ */
+static inline void set_class_data(OPERATOR_DATA *op_data,
+                                  AUDIO_CURATION_DEF *class_data)
+{
+    base_op_set_class_ext(op_data, class_data);
+842008fa:	32 00       	r0 = r4 + Null;
+842008fc:	ff fd 00 f0 	call (m) 0x938;
+84200900:	3d e1 
+
+84200902 <Lc_aud_cur_destroy_3>:
+    }
+
+    pfree(p_class_data);
+    set_class_data(op_data, NULL);
+    return;
+}
+84200902:	f1 48       	popm <FP, r4, rLink>;
+84200904:	d8 4c       	rts;
+
+84200906 <$_aud_cur_connect>:
+
+bool aud_cur_connect(OPERATOR_DATA *op_data,
+                     void *message_data,
+                     unsigned *response_id,
+                     void **response_data)
+{
+84200906:	c8 1c       	pushm <FP(=SP), rLink>;
+    return aud_cur_connect_common(op_data,
+                                  message_data,
+                                  response_id,
+                                  response_data,
+                                  TRUE);
+84200908:	00 f0 51 e0 	push Null + 1;
+8420090c:	02 f0 2b e9 	call (m) Lc_aud_cur_connect_common_1;
+84200910:	7f 4c       	SP = SP + -4;
+
+84200912 <Lc_aud_cur_connect_2>:
+}
+84200912:	c8 48       	popm <FP, rLink>;
+84200914:	d8 4c       	rts;
+
+84200916 <$_aud_cur_disconnect>:
+
+bool aud_cur_disconnect(OPERATOR_DATA *op_data,
+                        void *message_data,
+                        unsigned *response_id,
+                        void **response_data)
+{
+84200916:	c8 1c       	pushm <FP(=SP), rLink>;
+    return aud_cur_connect_common(op_data,
+                                  message_data,
+                                  response_id,
+                                  response_data,
+                                  FALSE);
+84200918:	00 f0 30 cf 	push Null;
+8420091c:	02 f0 3b e8 	call (m) Lc_aud_cur_connect_common_1;
+84200920:	7f 4c       	SP = SP + -4;
+
+84200922 <Lc_aud_cur_disconnect_2>:
+}
+84200922:	c8 48       	popm <FP, rLink>;
+84200924:	d8 4c       	rts;
+
+84200926 <$_aud_cur_buffer_details>:
+
+bool aud_cur_buffer_details(OPERATOR_DATA *op_data,
+                            void *message_data,
+                            unsigned *response_id,
+                            void **response_data)
+{
+84200926:	f4 1c       	pushm <FP(=SP), r4, r5, r6, r7, rLink>;
+84200928:	17 00       	r5 = r0 + Null;
+8420092a:	19 09       	r7 = r1 + Null;
+8420092c:	2e 00       	r4 = r3 + Null;
+8420092e:	ff fd 00 f0 	call (m) 0x934;
+84200932:	27 e0 
+84200934:	10 09       	r6 = r0 + Null;
+    tCbuffer **p_metadata;
+    unsigned terminal_id, buffer_size;
+    uint16 terminal_num;
+    bool is_sink;
+
+    if (!base_op_buffer_details_lite(op_data, response_data))
+84200936:	33 00       	r1 = r4 + Null;
+84200938:	3a 00       	r0 = r5 + Null;
+8420093a:	ef fd ff ff 	call (m) 0x842;
+8420093e:	29 e8 
+84200940:	10 04       	Null = r0 - Null;
+84200942:	03 62       	if NE jump (m) Lc_aud_cur_buffer_details_3;
+
+84200944 <Lc_aud_cur_buffer_details_2>:
+    {
+        return FALSE;
+84200944:	02 00       	r0 = Null + Null;
+84200946:	4f 6e       	jump (m) Lc_aud_cur_buffer_details_20;
+
+84200948 <Lc_aud_cur_buffer_details_3>:
+    }
+
+    p_resp = (OP_BUF_DETAILS_RSP*) *response_data;
+84200948:	31 e8       	rMAC = M[r4 + Null];
+
+    /* Make sure the buffer size is at least adequate for the capability */
+    buffer_size = p_resp->b.buffer_size;
+8420094a:	4f 89       	r5 = M[rMAC + 20];
+    if (buffer_size < p_class_data->buffer_size)
+8420094c:	82 f0 08 88 	r0 = M[r6 + 32];
+84200950:	b8 04       	Null = r5 - r0;
+84200952:	02 f0 87 e0 	if C jump (m) Lc_aud_cur_buffer_details_5;
+
+84200956 <Lc_aud_cur_buffer_details_4>:
+    {
+        buffer_size = p_class_data->buffer_size;
+84200956:	17 00       	r5 = r0 + Null;
+
+84200958 <Lc_aud_cur_buffer_details_5>:
+    }
+
+    terminal_id = OPMGR_GET_OP_CONNECT_TERMINAL_ID(message_data);
+84200958:	95 f0 00 e8 	r3 = M[r7 + Null];
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+8420095c:	ab c2       	r1 = r3 AND 0x3f;
+    is_sink = terminal_id & TERMINAL_SINK_MASK;
+
+    /* Setup the selected terminal */
+    if (is_sink)
+8420095e:	40 f0 52 f0 	r0 = r3 AND 0x800000;
+84200962:	00 00 
+84200964:	07 60       	if EQ jump (m) Lc_aud_cur_buffer_details_7;
+
+84200966 <Lc_aud_cur_buffer_details_6>:
+    {
+        /* Select source (opposite to the given buffer) */
+        p_opposite_terminal = &p_class_data->sources;
+84200966:	84 f0 14 20 	r2 = r6 + 20;
+8420096a:	22 00       	r0 = r2 + Null;
+        p_metadata = p_class_data->metadata_ip;
+8420096c:	04 f0 40 44 	r2 = r2 + 64;
+84200970:	06 6e       	jump (m) Lc_aud_cur_buffer_details_8;
+
+84200972 <Lc_aud_cur_buffer_details_7>:
+    }
+    else
+    {
+        /* Select sink (opposite to the given buffer) */
+        p_opposite_terminal = &p_class_data->sinks;
+84200972:	84 f0 08 20 	r2 = r6 + 8;
+84200976:	22 00       	r0 = r2 + Null;
+        p_metadata = p_class_data->metadata_op;
+84200978:	04 f0 54 44 	r2 = r2 + 84;
+
+8420097c <Lc_aud_cur_buffer_details_8>:
+    }
+
+    if (p_class_data->in_place_flag)
+8420097c:	89 f0 01 82 	r7 = MBU[r6 + 1];
+84200980:	22 60       	if EQ jump (m) Lc_aud_cur_buffer_details_14;
+
+84200982 <Lc_aud_cur_buffer_details_9>:
+    {
+        /* Make sure the terminal is valid */
+        if (terminal_num >= p_opposite_terminal->max)
+84200982:	29 f0 00 e6 	r7 = MHU[r0 + Null];
+84200986:	9f f3 00 c2 	Null = r1 - r7;
+8420098a:	10 68       	if LT jump (m) Lc_aud_cur_buffer_details_13;
+
+8420098c <Lc_aud_cur_buffer_details_10>:
+        {
+            L4_DBG_MSG1("base aud cur details: invalid terminal number %d",
+                        terminal_num);
+8420098c:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200990:	08 25       	Null = rMAC - 4;
+84200992:	07 68       	if LT jump (m) Lc_aud_cur_buffer_details_12;
+
+84200994 <Lc_aud_cur_buffer_details_11>:
+84200994:	55 f1 02 f0 	r0 = Null + 357565654;
+84200998:	d6 48 
+8420099a:	ff fd 03 f0 	call (m) 0x10c2;
+8420099e:	29 e9 
+
+842009a0 <Lc_aud_cur_buffer_details_12>:
+842009a0:	01 f0 00 60 	rMAC = Null + 4096;
+842009a4:	32 e8       	r0 = M[r4 + Null];
+842009a6:	51 8e       	M[r0 + 4] = rMAC;
+842009a8:	1d 6e       	jump (m) Lc_aud_cur_buffer_details_19;
+
+842009aa <Lc_aud_cur_buffer_details_13>:
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+        }
+
+        /* Setup in-place payload */
+        p_resp->runs_in_place = TRUE;
+842009aa:	46 20       	r4 = Null + 1;
+842009ac:	ce 9a       	MB[rMAC + 11] = r4;
+        p_resp->b.in_place_buff_params.in_place_terminal = \
+            SWAP_TERMINAL_DIRECTION(terminal_id);
+842009ae:	08 f0 00 f0 	r3 = r3 XOR 0x800000;
+842009b2:	00 f5 95 c8 
+842009b6:	4d 8f       	M[rMAC + 20] = r3;
+        p_resp->b.in_place_buff_params.size = buffer_size;
+842009b8:	8f 8f       	M[rMAC + 24] = r5;
+ * \return - pointer to the terminal cbuffer
+ */
+static inline tCbuffer *aud_cur_get_terminal(AUD_CUR_TERMINAL *p_def,
+                                             uint16 num)
+{
+    return p_def->p_buffer_list[num];
+842009ba:	92 88       	r0 = M[r0 + 8];
+842009bc:	5d 54       	r3 = r1 LSHIFT 2;
+842009be:	52 e9       	r0 = M[r0 + r3];
+}
+842009c0:	ca 8f       	M[rMAC + 28] = r0;
+842009c2:	03 6e       	jump (m) Lc_aud_cur_buffer_details_15;
+
+842009c4 <Lc_aud_cur_buffer_details_14>:
+        p_resp->b.in_place_buff_params.buffer = \
+            aud_cur_get_terminal(p_opposite_terminal, terminal_num);
+    }
+    else
+    {
+        p_resp->runs_in_place = FALSE;
+842009c4:	c8 9a       	MB[rMAC + 11] = Null;
+        p_resp->b.buffer_size = buffer_size;
+842009c6:	4f 8f       	M[rMAC + 20] = r5;
+
+842009c8 <Lc_aud_cur_buffer_details_15>:
+    }
+
+    /* Populate metadata response */
+    p_resp->supports_metadata = p_class_data->supports_metadata_flag;
+842009c8:	82 f0 02 82 	r0 = MBU[r6 + 2];
+842009cc:	0a 9b       	MB[rMAC + 12] = r0;
+    if (p_class_data->supports_metadata_flag)
+842009ce:	82 f0 02 82 	r0 = MBU[r6 + 2];
+842009d2:	08 60       	if EQ jump (m) Lc_aud_cur_buffer_details_19;
+
+842009d4 <Lc_aud_cur_buffer_details_16>:
+    {
+        if (terminal_num == AUD_CUR_PLAYBACK_TERMINAL)
+842009d4:	18 04       	Null = r1 - Null;
+842009d6:	04 62       	if NE jump (m) Lc_aud_cur_buffer_details_18;
+
+842009d8 <Lc_aud_cur_buffer_details_17>:
+        {
+            p_resp->metadata_buffer = p_metadata[AUD_CUR_METADATA_PLAYBACK];
+842009d8:	22 e8       	r0 = M[r2 + Null];
+842009da:	0a 8f       	M[rMAC + 16] = r0;
+842009dc:	03 6e       	jump (m) Lc_aud_cur_buffer_details_19;
+
+842009de <Lc_aud_cur_buffer_details_18>:
+        }
+        else
+        {
+            p_resp->metadata_buffer = p_metadata[AUD_CUR_METADATA_MIC];
+842009de:	62 88       	r0 = M[r2 + 4];
+842009e0:	0a 8f       	M[rMAC + 16] = r0;
+
+842009e2 <Lc_aud_cur_buffer_details_19>:
+        }
+    }
+
+    return TRUE;
+842009e2:	42 20       	r0 = Null + 1;
+
+842009e4 <Lc_aud_cur_buffer_details_20>:
+}
+842009e4:	f4 48       	popm <FP, r4, r5, r6, r7, rLink>;
+842009e6:	d8 4c       	rts;
+
+842009e8 <$_aud_cur_start>:
+
+bool aud_cur_start(OPERATOR_DATA *op_data,
+                   void *message_data,
+                   unsigned *response_id,
+                   void **response_data)
+{
+842009e8:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+842009ea:	16 00       	r4 = r0 + Null;
+842009ec:	19 09       	r7 = r1 + Null;
+842009ee:	27 00       	r5 = r2 + Null;
+842009f0:	2a 09       	r8 = r3 + Null;
+842009f2:	ef fd ff ff 	call (m) 0x934;
+842009f6:	23 ea 
+842009f8:	10 09       	r6 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    /* Create the response. If there aren't sufficient resources for this fail
+     * early.
+     */
+    if (!base_op_start(op_data, message_data, response_id, response_data))
+842009fa:	55 08       	r3 = r8 + Null;
+842009fc:	3c 00       	r2 = r5 + Null;
+842009fe:	4b 08       	r1 = r7 + Null;
+84200a00:	32 00       	r0 = r4 + Null;
+84200a02:	ef fd fe ff 	call (m) 0x730;
+84200a06:	2f e9 
+84200a08:	10 04       	Null = r0 - Null;
+84200a0a:	03 62       	if NE jump (m) Lc_aud_cur_start_3;
+
+84200a0c <Lc_aud_cur_start_2>:
+    {
+        return FALSE;
+84200a0c:	02 00       	r0 = Null + Null;
+84200a0e:	23 6e       	jump (m) Lc_aud_cur_start_11;
+
+84200a10 <Lc_aud_cur_start_3>:
+    }
+
+    /* If already running just ack */
+    if (opmgr_op_is_running(op_data))
+84200a10:	32 00       	r0 = r4 + Null;
+84200a12:	ff fd 29 f0 	call (m) 0x5ca4;
+84200a16:	33 e4 
+84200a18:	10 04       	Null = r0 - Null;
+84200a1a:	12 62       	if NE jump (m) Lc_aud_cur_start_7;
+
+84200a1c <Lc_aud_cur_start_4>:
+       return TRUE;
+    }
+
+    /* Make sure we have valid terminal connections */
+    if (!aud_cur_check_valid_terminals(&p_class_data->sinks) ||
+        !aud_cur_check_valid_terminals(&p_class_data->sources))
+84200a1c:	82 f0 08 20 	r0 = r6 + 8;
+84200a20:	02 f0 27 eb 	call (m) Lc_aud_cur_check_valid_terminals_1;
+84200a24:	10 04       	Null = r0 - Null;
+84200a26:	07 60       	if EQ jump (m) Lc_aud_cur_start_6;
+
+84200a28 <Lc_aud_cur_start_5>:
+84200a28:	82 f0 14 20 	r0 = r6 + 20;
+84200a2c:	02 f0 3b ea 	call (m) Lc_aud_cur_check_valid_terminals_1;
+84200a30:	10 04       	Null = r0 - Null;
+84200a32:	08 62       	if NE jump (m) Lc_aud_cur_start_8;
+
+84200a34 <Lc_aud_cur_start_6>:
+84200a34:	01 f0 00 60 	rMAC = Null + 4096;
+84200a38:	a2 f0 00 e8 	r0 = M[r8 + Null];
+84200a3c:	51 8e       	M[r0 + 4] = rMAC;
+
+84200a3e <Lc_aud_cur_start_7>:
+    }
+
+    /* If already running just ack */
+    if (opmgr_op_is_running(op_data))
+    {
+       return TRUE;
+84200a3e:	42 20       	r0 = Null + 1;
+84200a40:	0a 6e       	jump (m) Lc_aud_cur_start_11;
+
+84200a42 <Lc_aud_cur_start_8>:
+    {
+        base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+        return TRUE;
+    }
+
+    if (p_class_data->start_fn != NULL)
+84200a42:	81 f0 10 88 	rMAC = M[r6 + 64];
+84200a46:	03 60       	if EQ jump (m) Lc_aud_cur_start_10;
+
+84200a48 <Lc_aud_cur_start_9>:
+    {
+        p_class_data->start_fn(op_data);
+84200a48:	32 00       	r0 = r4 + Null;
+84200a4a:	d1 4c       	call rMAC;
+
+84200a4c <Lc_aud_cur_start_10>:
+    }
+
+    /* Reinitialize the operator */
+    p_class_data->re_init_flag = TRUE;
+84200a4c:	41 20       	rMAC = Null + 1;
+84200a4e:	81 f0 00 ea 	MB[r6 + Null] = rMAC;
+84200a52:	f6 6f       	jump (m) Lc_aud_cur_start_7;
+
+84200a54 <Lc_aud_cur_start_11>:
+
+    return TRUE;
+}
+84200a54:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200a56:	d8 4c       	rts;
+
+84200a58 <$_aud_cur_reset>:
+
+bool aud_cur_reset(OPERATOR_DATA *op_data,
+                   void *message_data,
+                   unsigned *response_id,
+                   void **response_data)
+{
+84200a58:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200a5a:	16 00       	r4 = r0 + Null;
+84200a5c:	1a 09       	r8 = r1 + Null;
+84200a5e:	27 00       	r5 = r2 + Null;
+84200a60:	29 09       	r7 = r3 + Null;
+84200a62:	ef fd ff ff 	call (m) 0x934;
+84200a66:	33 e6 
+84200a68:	10 09       	r6 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    /* Create the response. If there aren't sufficient resources for this fail
+     * early. */
+    if (!base_op_reset(op_data, message_data, response_id, response_data))
+84200a6a:	4d 08       	r3 = r7 + Null;
+84200a6c:	3c 00       	r2 = r5 + Null;
+84200a6e:	53 08       	r1 = r8 + Null;
+84200a70:	32 00       	r0 = r4 + Null;
+84200a72:	ef fd fe ff 	call (m) 0x724;
+84200a76:	33 e5 
+84200a78:	10 04       	Null = r0 - Null;
+84200a7a:	03 62       	if NE jump (m) Lc_aud_cur_reset_3;
+
+84200a7c <Lc_aud_cur_reset_2>:
+    {
+        return FALSE;
+84200a7c:	02 00       	r0 = Null + Null;
+84200a7e:	05 6e       	jump (m) Lc_aud_cur_reset_4;
+
+84200a80 <Lc_aud_cur_reset_3>:
+    }
+
+    p_class_data->re_init_flag = TRUE;
+84200a80:	41 20       	rMAC = Null + 1;
+84200a82:	81 f0 00 ea 	MB[r6 + Null] = rMAC;
+
+    return TRUE;
+84200a86:	0a 00       	r0 = rMAC + Null;
+
+84200a88 <Lc_aud_cur_reset_4>:
+}
+84200a88:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200a8a:	d8 4c       	rts;
+
+84200a8c <$_aud_cur_get_sched_info>:
+
+bool aud_cur_get_sched_info(OPERATOR_DATA *op_data,
+                            void *message_data,
+                            unsigned *response_id,
+                            void **response_data)
+{
+84200a8c:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200a8e:	16 00       	r4 = r0 + Null;
+84200a90:	1a 09       	r8 = r1 + Null;
+84200a92:	20 09       	r6 = r2 + Null;
+84200a94:	2f 00       	r5 = r3 + Null;
+84200a96:	ef fd ff ff 	call (m) 0x934;
+84200a9a:	3f e4 
+84200a9c:	11 09       	r7 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    OP_SCHED_INFO_RSP* resp;
+
+    resp = base_op_get_sched_info_ex(op_data, message_data, response_id);
+84200a9e:	44 08       	r2 = r6 + Null;
+84200aa0:	53 08       	r1 = r8 + Null;
+84200aa2:	32 00       	r0 = r4 + Null;
+84200aa4:	ef fd fe ff 	call (m) 0x7f6;
+84200aa8:	33 ea 
+    if (resp == NULL)
+84200aaa:	10 04       	Null = r0 - Null;
+84200aac:	09 62       	if NE jump (m) Lc_aud_cur_get_sched_info_3;
+
+84200aae <Lc_aud_cur_get_sched_info_2>:
+    {
+        return base_op_build_std_response_ex(op_data, STATUS_CMD_FAILED,
+                                             response_data);
+84200aae:	03 f0 00 60 	r1 = Null + 4096;
+84200ab2:	3c 00       	r2 = r5 + Null;
+84200ab4:	32 00       	r0 = r4 + Null;
+84200ab6:	ef fd ff ff 	call (m) 0x8c0;
+84200aba:	2b e0 
+84200abc:	06 6e       	jump (m) Lc_aud_cur_get_sched_info_4;
+
+84200abe <Lc_aud_cur_get_sched_info_3>:
+    }
+
+    *response_data = resp;
+84200abe:	3a ee       	M[r5 + Null] = r0;
+    resp->block_size = p_class_data->block_size;
+84200ac0:	91 f0 09 88 	rMAC = M[r7 + 36];
+84200ac4:	91 8e       	M[r0 + 8] = rMAC;
+
+    return TRUE;
+84200ac6:	42 20       	r0 = Null + 1;
+
+84200ac8 <Lc_aud_cur_get_sched_info_4>:
+}
+84200ac8:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200aca:	d8 4c       	rts;
+
+84200acc <$_aud_cur_set_callbacks>:
+                           AUD_CUR_START_FN start_fn,
+                           AUD_CUR_STOP_FN stop_fn,
+                           AUD_CUR_CONNECT_FN connect_fn,
+                           AUD_CUR_DISCONNECT_FN disconnect_fn,
+                           AUD_CUR_PARAM_UPDATE_FN param_update_fn)
+{
+84200acc:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200ace:	1e 00       	r4 = r1 + Null;
+84200ad0:	27 00       	r5 = r2 + Null;
+84200ad2:	28 09       	r6 = r3 + Null;
+84200ad4:	ef fd ff ff 	call (m) 0x934;
+84200ad8:	21 e3 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    p_class_data->start_fn = start_fn;
+84200ada:	16 ae       	M[r0 + 64] = r4;
+    p_class_data->stop_fn = stop_fn;
+84200adc:	57 ae       	M[r0 + 68] = r5;
+    p_class_data->connect_fn = connect_fn;
+84200ade:	28 f0 12 8e 	M[r0 + 72] = r6;
+    p_class_data->disconnect_fn = disconnect_fn;
+84200ae2:	f9 d9       	rMAC = M[FP + -4];
+84200ae4:	d1 ae       	M[r0 + 76] = rMAC;
+    p_class_data->param_update_fn = param_update_fn;
+84200ae6:	f1 d9       	rMAC = M[FP + -8];
+84200ae8:	11 af       	M[r0 + 80] = rMAC;
+
+84200aea <Lc_aud_cur_set_callbacks_2>:
+
+    return;
+84200aea:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200aec:	d8 4c       	rts;
+
+84200aee <$_aud_cur_set_flags>:
+
+void aud_cur_set_flags(OPERATOR_DATA *op_data,
+                       bool in_place,
+                       bool supports_metadata,
+                       bool dynamic_buffer_size)
+{
+84200aee:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200af0:	1e 00       	r4 = r1 + Null;
+84200af2:	27 00       	r5 = r2 + Null;
+84200af4:	28 09       	r6 = r3 + Null;
+84200af6:	ef fd ff ff 	call (m) 0x934;
+84200afa:	3f e1 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    p_class_data->in_place_flag = in_place;
+84200afc:	56 8a       	MB[r0 + 1] = r4;
+    p_class_data->supports_metadata_flag = supports_metadata;
+84200afe:	97 8a       	MB[r0 + 2] = r5;
+    p_class_data->dynamic_buffer_size_flag = dynamic_buffer_size;
+84200b00:	28 f0 03 8a 	MB[r0 + 3] = r6;
+
+84200b04 <Lc_aud_cur_set_flags_2>:
+
+    return;
+84200b04:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200b06:	d8 4c       	rts;
+
+84200b08 <$_aud_cur_set_runtime_disconnect>:
+}
+
+void aud_cur_set_runtime_disconnect(OPERATOR_DATA *op_data,
+                                    bool allowed)
+{
+84200b08:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200b0a:	1e 00       	r4 = r1 + Null;
+84200b0c:	ef fd ff ff 	call (m) 0x934;
+84200b10:	29 e1 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    p_class_data->runtime_disconnect = allowed;
+84200b12:	16 8b       	MB[r0 + 4] = r4;
+
+84200b14 <Lc_aud_cur_set_runtime_disconnect_2>:
+}
+84200b14:	f1 48       	popm <FP, r4, rLink>;
+84200b16:	d8 4c       	rts;
+
+84200b18 <$_aud_cur_set_min_terminal_masks>:
+
+
+void aud_cur_set_min_terminal_masks(OPERATOR_DATA *op_data,
+                                    uint16 source_mask,
+                                    uint16 sink_mask)
+{
+84200b18:	f2 1c       	pushm <FP(=SP), r4, r5, rLink>;
+84200b1a:	1e 00       	r4 = r1 + Null;
+84200b1c:	27 00       	r5 = r2 + Null;
+84200b1e:	ef fd ff ff 	call (m) 0x934;
+84200b22:	37 e0 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    p_class_data->sources.min_valid_mask = source_mask;
+84200b24:	d6 9c       	MH[r0 + 22] = r4;
+    p_class_data->sinks.min_valid_mask = sink_mask;
+84200b26:	57 8d       	MH[r0 + 10] = r5;
+
+84200b28 <Lc_aud_cur_set_min_terminal_masks_2>:
+
+    return;
+84200b28:	f2 48       	popm <FP, r4, r5, rLink>;
+84200b2a:	d8 4c       	rts;
+
+84200b2c <$_aud_cur_get_cps>:
+
+    return;
+}
+
+CPS_PARAM_DEF *aud_cur_get_cps(OPERATOR_DATA *op_data)
+{
+84200b2c:	c8 1c       	pushm <FP(=SP), rLink>;
+84200b2e:	ef fd ff ff 	call (m) 0x934;
+84200b32:	27 e0 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return &p_class_data->param_def;
+84200b34:	12 32       	r0 = r0 + 40;
+
+84200b36 <Lc_aud_cur_get_cps_2>:
+}
+84200b36:	c8 48       	popm <FP, rLink>;
+84200b38:	d8 4c       	rts;
+
+84200b3a <$_aud_cur_set_buffer_size>:
+
+    return;
+}
+
+void aud_cur_set_buffer_size(OPERATOR_DATA *op_data, unsigned buffer_size)
+{
+84200b3a:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200b3c:	1e 00       	r4 = r1 + Null;
+84200b3e:	ef fd fe ff 	call (m) 0x934;
+84200b42:	37 ef 
+   AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+   p_class_data->buffer_size  = buffer_size;
+84200b44:	16 9e       	M[r0 + 32] = r4;
+
+84200b46 <Lc_aud_cur_set_buffer_size_2>:
+}
+84200b46:	f1 48       	popm <FP, r4, rLink>;
+84200b48:	d8 4c       	rts;
+
+84200b4a <$_aud_cur_set_block_size>:
+
+void aud_cur_set_block_size(OPERATOR_DATA *op_data, unsigned block_size)
+{
+84200b4a:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200b4c:	1e 00       	r4 = r1 + Null;
+84200b4e:	ef fd fe ff 	call (m) 0x934;
+84200b52:	27 ef 
+   AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+   p_class_data->block_size  = block_size;
+84200b54:	56 9e       	M[r0 + 36] = r4;
+
+84200b56 <Lc_aud_cur_set_block_size_2>:
+}
+84200b56:	f1 48       	popm <FP, r4, rLink>;
+84200b58:	d8 4c       	rts;
+
+84200b5a <$_aud_cur_get_sink_terminal>:
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return aud_cur_get_terminal(&p_class_data->sources, id);
+}
+
+tCbuffer *aud_cur_get_sink_terminal(OPERATOR_DATA *op_data, uint16 id)
+{
+84200b5a:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200b5c:	1e 00       	r4 = r1 + Null;
+84200b5e:	ef fd fe ff 	call (m) 0x934;
+84200b62:	37 ee 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return aud_cur_get_terminal(&p_class_data->sinks, id);
+84200b64:	11 22       	rMAC = r0 + 8;
+ * \return - pointer to the terminal cbuffer
+ */
+static inline tCbuffer *aud_cur_get_terminal(AUD_CUR_TERMINAL *p_def,
+                                             uint16 num)
+{
+    return p_def->p_buffer_list[num];
+84200b66:	89 88       	rMAC = M[rMAC + 8];
+84200b68:	72 54       	r0 = r4 LSHIFT 2;
+84200b6a:	8a e8       	r0 = M[rMAC + r0];
+
+84200b6c <Lc_aud_cur_get_sink_terminal_2>:
+}
+
+tCbuffer *aud_cur_get_sink_terminal(OPERATOR_DATA *op_data, uint16 id)
+{
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return aud_cur_get_terminal(&p_class_data->sinks, id);
+84200b6c:	f1 48       	popm <FP, r4, rLink>;
+84200b6e:	d8 4c       	rts;
+
+84200b70 <$_aud_cur_opmsg_get_params>:
+
+bool aud_cur_opmsg_get_params(OPERATOR_DATA *op_data,
+                              void *message_data,
+                              unsigned *resp_length,
+                              OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84200b70:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200b72:	1f 00       	r5 = r1 + Null;
+84200b74:	26 00       	r4 = r2 + Null;
+84200b76:	28 09       	r6 = r3 + Null;
+84200b78:	ef fd fe ff 	call (m) 0x934;
+84200b7c:	3d ed 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return cpsGetParameterMsgHandler(&p_class_data->param_def, message_data,
+                                     resp_length, response_data);
+84200b7e:	12 32       	r0 = r0 + 40;
+84200b80:	45 08       	r3 = r6 + Null;
+84200b82:	34 00       	r2 = r4 + Null;
+84200b84:	3b 00       	r1 = r5 + Null;
+84200b86:	ef fd ff ff 	call (m) 0xb7c;
+84200b8a:	37 ef 
+
+84200b8c <Lc_aud_cur_opmsg_get_params_2>:
+}
+84200b8c:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200b8e:	d8 4c       	rts;
+
+84200b90 <$_aud_cur_opmsg_get_defaults>:
+
+bool aud_cur_opmsg_get_defaults(OPERATOR_DATA *op_data,
+                                void *message_data,
+                                unsigned *resp_length,
+                                OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84200b90:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200b92:	1f 00       	r5 = r1 + Null;
+84200b94:	26 00       	r4 = r2 + Null;
+84200b96:	28 09       	r6 = r3 + Null;
+84200b98:	ef fd fe ff 	call (m) 0x934;
+84200b9c:	3d ec 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return cpsGetDefaultsMsgHandler(&p_class_data->param_def, message_data,
+                                    resp_length, response_data);
+84200b9e:	12 32       	r0 = r0 + 40;
+84200ba0:	45 08       	r3 = r6 + Null;
+84200ba2:	34 00       	r2 = r4 + Null;
+84200ba4:	3b 00       	r1 = r5 + Null;
+84200ba6:	ff fd 00 f0 	call (m) 0xc2c;
+84200baa:	27 e4 
+
+84200bac <Lc_aud_cur_opmsg_get_defaults_2>:
+}
+84200bac:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200bae:	d8 4c       	rts;
+
+84200bb0 <$_aud_cur_opmsg_set_params>:
+
+bool aud_cur_opmsg_set_params(OPERATOR_DATA *op_data,
+                              void *message_data,
+                              unsigned *resp_length,
+                              OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84200bb0:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200bb2:	11 09       	r7 = r0 + Null;
+84200bb4:	1a 09       	r8 = r1 + Null;
+84200bb6:	27 00       	r5 = r2 + Null;
+84200bb8:	28 09       	r6 = r3 + Null;
+84200bba:	ef fd fe ff 	call (m) 0x934;
+84200bbe:	3b eb 
+84200bc0:	16 00       	r4 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    bool success;
+
+    success = cpsSetParameterMsgHandler(&p_class_data->param_def, message_data,
+                                        resp_length, response_data);
+84200bc2:	32 32       	r0 = r4 + 40;
+84200bc4:	45 08       	r3 = r6 + Null;
+84200bc6:	3c 00       	r2 = r5 + Null;
+84200bc8:	53 08       	r1 = r8 + Null;
+84200bca:	ff fd 00 f0 	call (m) 0xd00;
+84200bce:	37 e9 
+84200bd0:	17 00       	r5 = r0 + Null;
+
+    if (success)
+84200bd2:	07 60       	if EQ jump (m) Lc_aud_cur_opmsg_set_params_5;
+
+84200bd4 <Lc_aud_cur_opmsg_set_params_2>:
+    {
+        if (p_class_data->param_update_fn != NULL)
+84200bd4:	31 a9       	rMAC = M[r4 + 80];
+84200bd6:	03 60       	if EQ jump (m) Lc_aud_cur_opmsg_set_params_4;
+
+84200bd8 <Lc_aud_cur_opmsg_set_params_3>:
+        {
+            p_class_data->param_update_fn(op_data);
+84200bd8:	4a 08       	r0 = r7 + Null;
+84200bda:	d1 4c       	call rMAC;
+
+84200bdc <Lc_aud_cur_opmsg_set_params_4>:
+        }
+        /* Set re-initialization flag */
+        p_class_data->re_init_flag = TRUE;
+84200bdc:	41 20       	rMAC = Null + 1;
+84200bde:	31 ea       	MB[r4 + Null] = rMAC;
+
+84200be0 <Lc_aud_cur_opmsg_set_params_5>:
+    }
+
+    return success;
+84200be0:	3a 00       	r0 = r5 + Null;
+
+84200be2 <Lc_aud_cur_opmsg_set_params_6>:
+}
+84200be2:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200be4:	d8 4c       	rts;
+
+84200be6 <$_aud_cur_ups_params>:
+                        PERSISTENCE_RANK rank,
+                        uint16 length,
+                        unsigned* data,
+                        STATUS_KYMERA status,
+                        uint16 extra_status_info)
+{
+84200be6:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200be8:	10 09       	r6 = r0 + Null;
+84200bea:	2f 00       	r5 = r3 + Null;
+84200bec:	ef fd fe ff 	call (m) 0x934;
+84200bf0:	29 ea 
+84200bf2:	16 00       	r4 = r0 + Null;
+    OPERATOR_DATA *op_data = (OPERATOR_DATA*)instance_data;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+
+    cpsSetParameterFromPsStore(&p_class_data->param_def, length, data, status);
+84200bf4:	e5 d5       	r3 = MHS[FP + -8];
+84200bf6:	fc d9       	r2 = M[FP + -4];
+84200bf8:	32 32       	r0 = r4 + 40;
+84200bfa:	3b 00       	r1 = r5 + Null;
+84200bfc:	ff fd 00 f0 	call (m) 0xdf6;
+84200c00:	3b ef 
+
+    if (p_class_data->param_update_fn != NULL)
+84200c02:	31 a9       	rMAC = M[r4 + 80];
+84200c04:	03 60       	if EQ jump (m) Lc_aud_cur_ups_params_3;
+
+84200c06 <Lc_aud_cur_ups_params_2>:
+    {
+        p_class_data->param_update_fn(op_data);
+84200c06:	42 08       	r0 = r6 + Null;
+84200c08:	d1 4c       	call rMAC;
+
+84200c0a <Lc_aud_cur_ups_params_3>:
+    }
+
+    /* Set the re-init flag after the parameters are updated. */
+    p_class_data->re_init_flag = TRUE;
+84200c0a:	41 20       	rMAC = Null + 1;
+84200c0c:	31 ea       	MB[r4 + Null] = rMAC;
+
+    return TRUE;
+84200c0e:	0a 00       	r0 = rMAC + Null;
+
+84200c10 <Lc_aud_cur_ups_params_4>:
+}
+84200c10:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200c12:	d8 4c       	rts;
+
+84200c14 <$_aud_cur_opmsg_set_ucid>:
+
+bool aud_cur_opmsg_set_ucid(OPERATOR_DATA *op_data,
+                            void *message_data,
+                            unsigned *resp_length,
+                            OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84200c14:	f5 1c       	pushm <FP(=SP), r4, r5, r6, r7, r8, rLink>;
+84200c16:	12 09       	r8 = r0 + Null;
+84200c18:	19 09       	r7 = r1 + Null;
+84200c1a:	27 00       	r5 = r2 + Null;
+84200c1c:	28 09       	r6 = r3 + Null;
+84200c1e:	ef fd fe ff 	call (m) 0x934;
+84200c22:	37 e8 
+84200c24:	16 00       	r4 = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    PS_KEY_TYPE key;
+    bool success;
+
+    success = cpsSetUcidMsgHandler(&p_class_data->param_def, message_data,
+                                  resp_length, response_data);
+84200c26:	32 32       	r0 = r4 + 40;
+84200c28:	45 08       	r3 = r6 + Null;
+84200c2a:	3c 00       	r2 = r5 + Null;
+84200c2c:	4b 08       	r1 = r7 + Null;
+84200c2e:	ff fd 00 f0 	call (m) 0xd92;
+84200c32:	25 eb 
+84200c34:	17 00       	r5 = r0 + Null;
+    key = MAP_CAPID_UCID_SBID_TO_PSKEYID(p_class_data->cap_id,
+                                         p_class_data->param_def.ucid,
+                                         OPMSG_P_STORE_PARAMETER_SUB_ID);
+84200c36:	f1 99       	rMAC = M[r4 + 60];
+84200c38:	8a c6       	r0 = rMAC AND 0xffff;
+84200c3a:	92 55       	r0 = r0 LSHIFT 7;
+84200c3c:	b1 99       	rMAC = M[r4 + 56];
+84200c3e:	8b c2       	r1 = rMAC AND 0x3f;
+84200c40:	1b 54       	r1 = r1 LSHIFT 1;
+84200c42:	9b 12       	r1 = r1 OR r0;
+
+    ps_entry_read((void*)op_data, key, PERSIST_ANY, aud_cur_ups_params);
+84200c44:	42 f0 05 f0 	r3 = Null + 69209063;
+84200c48:	e7 53 
+84200c4a:	04 00       	r2 = Null + Null;
+84200c4c:	52 08       	r0 = r8 + Null;
+84200c4e:	ff fd 3b f0 	call (m) 0x8370;
+84200c52:	23 e9 
+
+    return success;
+84200c54:	3a 00       	r0 = r5 + Null;
+
+84200c56 <Lc_aud_cur_opmsg_set_ucid_2>:
+}
+84200c56:	f5 48       	popm <FP, r4, r5, r6, r7, r8, rLink>;
+84200c58:	d8 4c       	rts;
+
+84200c5a <$_aud_cur_opmsg_get_ps_id>:
+
+bool aud_cur_opmsg_get_ps_id(OPERATOR_DATA *op_data,
+                             void *message_data,
+                             unsigned *resp_length,
+                             OP_OPMSG_RSP_PAYLOAD **response_data)
+{
+84200c5a:	f3 1c       	pushm <FP(=SP), r4, r5, r6, rLink>;
+84200c5c:	1f 00       	r5 = r1 + Null;
+84200c5e:	26 00       	r4 = r2 + Null;
+84200c60:	28 09       	r6 = r3 + Null;
+84200c62:	ef fd fe ff 	call (m) 0x934;
+84200c66:	33 e6 
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    return cpsGetUcidMsgHandler(&p_class_data->param_def, p_class_data->cap_id,
+                                message_data, resp_length, response_data);
+84200c68:	10 1c       	pushm <r6>;
+84200c6a:	d3 99       	r1 = M[r0 + 60];
+84200c6c:	35 00       	r3 = r4 + Null;
+84200c6e:	12 32       	r0 = r0 + 40;
+84200c70:	3c 00       	r2 = r5 + Null;
+84200c72:	ff fd 00 f0 	call (m) 0xdb4;
+84200c76:	23 ea 
+84200c78:	7f 4c       	SP = SP + -4;
+
+84200c7a <Lc_aud_cur_opmsg_get_ps_id_2>:
+}
+84200c7a:	f3 48       	popm <FP, r4, r5, r6, rLink>;
+84200c7c:	d8 4c       	rts;
+
+84200c7e <$_aud_cur_calc_samples>:
+/****************************************************************************
+Process Data
+*/
+
+unsigned aud_cur_calc_samples(OPERATOR_DATA *op_data, TOUCHED_TERMINALS *touched)
+{
+84200c7e:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84200c80:	43 de       	M[FP + 32] = r1;
+84200c82:	ef fd fe ff 	call (m) 0x934;
+84200c86:	33 e5 
+84200c88:	16 00       	r4 = r0 + Null;
+
+    unsigned min_data, min_space, block_size, amount, i, samples;
+    tCbuffer **p_inputs, **p_outputs;
+
+    /* If no input terminal connections then do nothing */
+    if (p_class_data->sinks.connected == 0)
+84200c8a:	f1 87       	rMAC = MHU[r4 + 14];
+84200c8c:	03 62       	if NE jump (m) Lc_aud_cur_calc_samples_3;
+
+84200c8e <Lc_aud_cur_calc_samples_2>:
+    {
+        return 0;
+84200c8e:	02 00       	r0 = Null + Null;
+84200c90:	4b 6e       	jump (m) Lc_aud_cur_calc_samples_23;
+
+84200c92 <Lc_aud_cur_calc_samples_3>:
+    }
+
+    /* Initialize data */
+    block_size = p_class_data->block_size;
+84200c92:	6b f0 09 88 	r9 = M[r4 + 36];
+
+    /* Find the minimum amount of data available in the input buffers */
+    min_data = UINT_MAX;
+84200c96:	0a f0 01 24 	r8 = Null - 1;
+    p_inputs = p_class_data->sinks.p_buffer_list;
+84200c9a:	68 f0 04 88 	r6 = M[r4 + 16];
+
+    for (i = 0; i < p_class_data->sinks.max; i++)
+84200c9e:	07 00       	r5 = Null + Null;
+
+84200ca0 <Lc_aud_cur_calc_samples_4>:
+84200ca0:	31 87       	rMAC = MHU[r4 + 8];
+84200ca2:	78 04       	Null = r5 - rMAC;
+84200ca4:	02 f0 a7 e0 	if C jump (m) Lc_aud_cur_calc_samples_10;
+
+84200ca8 <Lc_aud_cur_calc_samples_5>:
+    {
+        if (p_inputs[i] != NULL)
+84200ca8:	82 f0 00 e8 	r0 = M[r6 + Null];
+84200cac:	0c 60       	if EQ jump (m) Lc_aud_cur_calc_samples_9;
+
+84200cae <Lc_aud_cur_calc_samples_6>:
+        {
+            amount = cbuffer_calc_amount_data_in_words(p_inputs[i]);
+84200cae:	ff fd 67 f2 	call (m) 0x4db5a;
+84200cb2:	2d e5 
+            if (amount < min_data)
+84200cb4:	af f2 00 c2 	Null = r0 - r8;
+84200cb8:	02 f0 8d e0 	if C jump (m) Lc_aud_cur_calc_samples_9;
+
+84200cbc <Lc_aud_cur_calc_samples_7>:
+            {
+                /* Need at least one block of data available */
+                if (amount < block_size)
+84200cbc:	bf f2 00 c2 	Null = r0 - r9;
+84200cc0:	e7 65       	if NC jump (m) Lc_aud_cur_calc_samples_2;
+
+84200cc2 <Lc_aud_cur_calc_samples_8>:
+                {
+                    return 0;
+                }
+                min_data = amount;
+84200cc2:	12 09       	r8 = r0 + Null;
+
+84200cc4 <Lc_aud_cur_calc_samples_9>:
+
+    /* Find the minimum amount of data available in the input buffers */
+    min_data = UINT_MAX;
+    p_inputs = p_class_data->sinks.p_buffer_list;
+
+    for (i = 0; i < p_class_data->sinks.max; i++)
+84200cc4:	7f 20       	r5 = r5 + 1;
+84200cc6:	20 75       	r6 = r6 + 4;
+84200cc8:	ec 6f       	jump (m) Lc_aud_cur_calc_samples_4;
+
+84200cca <Lc_aud_cur_calc_samples_10>:
+            }
+        }
+    }
+
+    /* Find the minimum amount of space available at the output buffers */
+    min_space = UINT_MAX;
+84200cca:	47 24       	r5 = Null - 1;
+    p_outputs = p_class_data->sources.p_buffer_list;
+84200ccc:	69 f0 07 88 	r7 = M[r4 + 28];
+
+    if (p_class_data->sources.connected > 0)
+84200cd0:	71 97       	rMAC = MHU[r4 + 26];
+84200cd2:	17 60       	if EQ jump (m) Lc_aud_cur_calc_samples_18;
+
+84200cd4 <Lc_aud_cur_calc_samples_11>:
+    {
+        for (i = 0; i < p_class_data->sources.max; i++)
+84200cd4:	00 09       	r6 = Null + Null;
+
+84200cd6 <Lc_aud_cur_calc_samples_12>:
+84200cd6:	b1 96       	rMAC = MHU[r4 + 20];
+84200cd8:	1f f8 00 c2 	Null = r6 - rMAC;
+84200cdc:	02 f0 a5 e0 	if C jump (m) Lc_aud_cur_calc_samples_18;
+
+84200ce0 <Lc_aud_cur_calc_samples_13>:
+        {
+            if (p_outputs[i] != NULL)
+84200ce0:	92 f0 00 e8 	r0 = M[r7 + Null];
+84200ce4:	0b 60       	if EQ jump (m) Lc_aud_cur_calc_samples_17;
+
+84200ce6 <Lc_aud_cur_calc_samples_14>:
+            {
+                amount = cbuffer_calc_amount_space_in_words(p_outputs[i]);
+84200ce6:	ff fd 67 f2 	call (m) 0x4db14;
+84200cea:	2f e1 
+                if (amount < min_space)
+84200cec:	d0 05       	Null = r0 - r5;
+84200cee:	02 f0 8d e0 	if C jump (m) Lc_aud_cur_calc_samples_17;
+
+84200cf2 <Lc_aud_cur_calc_samples_15>:
+                {
+                    /* Need at least one block of space available */
+                    if (amount < block_size)
+84200cf2:	bf f2 00 c2 	Null = r0 - r9;
+84200cf6:	cc 65       	if NC jump (m) Lc_aud_cur_calc_samples_2;
+
+84200cf8 <Lc_aud_cur_calc_samples_16>:
+                    {
+                        return 0;
+                    }
+                    min_space = amount;
+84200cf8:	17 00       	r5 = r0 + Null;
+
+84200cfa <Lc_aud_cur_calc_samples_17>:
+    min_space = UINT_MAX;
+    p_outputs = p_class_data->sources.p_buffer_list;
+
+    if (p_class_data->sources.connected > 0)
+    {
+        for (i = 0; i < p_class_data->sources.max; i++)
+84200cfa:	08 75       	r6 = r6 + 1;
+84200cfc:	21 75       	r7 = r7 + 4;
+84200cfe:	ec 6f       	jump (m) Lc_aud_cur_calc_samples_12;
+
+84200d00 <Lc_aud_cur_calc_samples_18>:
+            }
+        }
+    }
+
+    /* Update kick flags */
+    touched->sources = p_class_data->sources.connected;
+84200d00:	71 97       	rMAC = MHU[r4 + 26];
+84200d02:	42 d8       	r0 = M[FP + 32];
+84200d04:	11 ee       	M[r0 + Null] = rMAC;
+
+    /* Samples to process is the smaller of data or space available */
+    if (min_data < min_space)
+84200d06:	7f fa 00 c2 	Null = r8 - r5;
+84200d0a:	02 f0 89 e0 	if C jump (m) Lc_aud_cur_calc_samples_20;
+
+84200d0e <Lc_aud_cur_calc_samples_19>:
+    {
+        samples = min_data;
+84200d0e:	52 08       	r0 = r8 + Null;
+84200d10:	02 6e       	jump (m) Lc_aud_cur_calc_samples_21;
+
+84200d12 <Lc_aud_cur_calc_samples_20>:
+    }
+    else
+    {
+        samples = min_space;
+84200d12:	3a 00       	r0 = r5 + Null;
+
+84200d14 <Lc_aud_cur_calc_samples_21>:
+    }
+
+    /* If there is less than a block left then kick backwards */
+    if (min_data - samples < block_size)
+84200d14:	2f fa 01 c2 	rMAC = r8 - r0;
+84200d18:	bf f1 00 c2 	Null = rMAC - r9;
+84200d1c:	02 f0 8b e0 	if C jump (m) Lc_aud_cur_calc_samples_23;
+
+84200d20 <Lc_aud_cur_calc_samples_22>:
+    {
+        touched->sinks = p_class_data->sinks.connected;
+84200d20:	f1 87       	rMAC = MHU[r4 + 14];
+84200d22:	43 d8       	r1 = M[FP + 32];
+84200d24:	59 8e       	M[r1 + 4] = rMAC;
+
+84200d26 <Lc_aud_cur_calc_samples_23>:
+    }
+
+    return samples;
+84200d26:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200d28:	d8 4c       	rts;
+
+84200d2a <$_aud_cur_mic_data_transfer>:
+}
+
+unsigned aud_cur_mic_data_transfer(OPERATOR_DATA *op_data,
+                                   unsigned amount,
+                                   unsigned terminal_skip_mask)
+{
+84200d2a:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84200d2c:	1a 09       	r8 = r1 + Null;
+84200d2e:	44 de       	M[FP + 32] = r2;
+84200d30:	ef fd fe ff 	call (m) 0x934;
+84200d34:	25 e0 
+84200d36:	4a de       	M[FP + 36] = r0;
+84200d38:	11 00       	rMAC = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    unsigned i, mic_amt, temp_amt;
+    tCbuffer **ip_buffers, **op_buffers;
+
+    ip_buffers = p_class_data->sinks.p_buffer_list;
+84200d3a:	09 89       	rMAC = M[rMAC + 16];
+    op_buffers = p_class_data->sources.p_buffer_list;
+84200d3c:	d2 89       	r0 = M[r0 + 28];
+
+    /* Copy mic stream data */
+    mic_amt = amount;
+84200d3e:	53 09       	r9 = r8 + Null;
+
+    for (i = 1; i < p_class_data->sinks.max; i++)
+84200d40:	46 20       	r4 = Null + 1;
+84200d42:	18 f0 04 20 	r6 = rMAC + 4;
+84200d46:	17 21       	r5 = r0 + 4;
+84200d48:	0d 6e       	jump (m) Lc_aud_cur_mic_data_transfer_6;
+
+84200d4a <Lc_aud_cur_mic_data_transfer_2>:
+                                            ip_buffers[i],
+                                            amount);
+                }
+                else
+                {
+                    cbuffer_advance_read_ptr(ip_buffers[i], amount);
+84200d4a:	53 08       	r1 = r8 + Null;
+84200d4c:	ff fd 67 f2 	call (m) 0x4db68;
+84200d50:	3d e0 
+
+84200d52 <Lc_aud_cur_mic_data_transfer_3>:
+                }
+                if (temp_amt < mic_amt)
+84200d52:	bf f9 00 c2 	Null = r7 - r9;
+84200d56:	02 f0 87 e0 	if C jump (m) Lc_aud_cur_mic_data_transfer_5;
+
+84200d5a <Lc_aud_cur_mic_data_transfer_4>:
+                {
+                    mic_amt = temp_amt;
+84200d5a:	4b 09       	r9 = r7 + Null;
+
+84200d5c <Lc_aud_cur_mic_data_transfer_5>:
+    op_buffers = p_class_data->sources.p_buffer_list;
+
+    /* Copy mic stream data */
+    mic_amt = amount;
+
+    for (i = 1; i < p_class_data->sinks.max; i++)
+84200d5c:	76 20       	r4 = r4 + 1;
+84200d5e:	20 75       	r6 = r6 + 4;
+84200d60:	3f 21       	r5 = r5 + 4;
+
+84200d62 <Lc_aud_cur_mic_data_transfer_6>:
+84200d62:	49 d8       	rMAC = M[FP + 36];
+84200d64:	09 87       	rMAC = MHU[rMAC + 8];
+84200d66:	70 04       	Null = r4 - rMAC;
+84200d68:	02 f0 ad e0 	if C jump (m) Lc_aud_cur_mic_data_transfer_11;
+
+84200d6c <Lc_aud_cur_mic_data_transfer_7>:
+    {
+        if(!(AUD_CUR_GET_TERMINAL_POS(i) & terminal_skip_mask))
+84200d6c:	31 00       	rMAC = r4 + Null;
+84200d6e:	00 f1 92 de 	r0 = 0x1 LSHIFT rMAC;
+84200d72:	41 d8       	rMAC = M[FP + 32];
+84200d74:	89 10       	rMAC = rMAC AND r0;
+84200d76:	f3 63       	if NE jump (m) Lc_aud_cur_mic_data_transfer_5;
+
+84200d78 <Lc_aud_cur_mic_data_transfer_8>:
+        {
+            /* Perform copy/advance if terminal number (i) is not in
+             * terminal_skip_mask
+             */
+            temp_amt = amount;
+84200d78:	51 09       	r7 = r8 + Null;
+            if (ip_buffers[i] != NULL)
+84200d7a:	82 f0 00 e8 	r0 = M[r6 + Null];
+84200d7e:	ef 61       	if EQ jump (m) Lc_aud_cur_mic_data_transfer_5;
+
+84200d80 <Lc_aud_cur_mic_data_transfer_9>:
+            {
+                if (op_buffers[i] != NULL)
+84200d80:	39 e8       	rMAC = M[r5 + Null];
+84200d82:	e4 61       	if EQ jump (m) Lc_aud_cur_mic_data_transfer_2;
+
+84200d84 <Lc_aud_cur_mic_data_transfer_10>:
+                {
+                    temp_amt = cbuffer_copy(op_buffers[i],
+                                            ip_buffers[i],
+                                            amount);
+84200d84:	54 08       	r2 = r8 + Null;
+84200d86:	13 00       	r1 = r0 + Null;
+84200d88:	0a 00       	r0 = rMAC + Null;
+84200d8a:	ff fd 68 f2 	call (m) 0x4dda4;
+84200d8e:	3b e0 
+84200d90:	11 09       	r7 = r0 + Null;
+84200d92:	e0 6f       	jump (m) Lc_aud_cur_mic_data_transfer_3;
+
+84200d94 <Lc_aud_cur_mic_data_transfer_11>:
+                }
+            }
+        }
+    }
+
+    return mic_amt;
+84200d94:	5a 08       	r0 = r9 + Null;
+
+84200d96 <Lc_aud_cur_mic_data_transfer_12>:
+
+}
+84200d96:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200d98:	d8 4c       	rts;
+
+84200d9a <$_aud_cur_mic_metadata_transfer>:
+
+unsigned aud_cur_mic_metadata_transfer(OPERATOR_DATA *op_data, unsigned amount)
+{
+84200d9a:	f1 1c       	pushm <FP(=SP), r4, rLink>;
+84200d9c:	1e 00       	r4 = r1 + Null;
+84200d9e:	ef fd fd ff 	call (m) 0x934;
+84200da2:	37 ec 
+84200da4:	11 00       	rMAC = r0 + Null;
+    AUDIO_CURATION_DEF *p_class_data = get_class_data(op_data);
+    tCbuffer *p_metadata_ip, *p_metadata_op;
+    /* Only copy metadata if samples were transferred */
+    if (amount > 0)
+84200da6:	30 04       	Null = r4 - Null;
+84200da8:	07 60       	if EQ jump (m) Lc_aud_cur_mic_metadata_transfer_3;
+
+84200daa <Lc_aud_cur_mic_metadata_transfer_2>:
+    {
+        p_metadata_ip = p_class_data->metadata_ip[AUD_CUR_METADATA_MIC];
+84200daa:	8a a9       	r0 = M[rMAC + 88];
+        p_metadata_op = p_class_data->metadata_op[AUD_CUR_METADATA_MIC];
+84200dac:	0b b8       	r1 = M[rMAC + 96];
+
+        metadata_strict_transport(p_metadata_ip,
+                                  p_metadata_op,
+                                  amount * OCTETS_PER_SAMPLE);
+84200dae:	74 54       	r2 = r4 LSHIFT 2;
+84200db0:	ff fd 9e f0 	call (m) 0x14af0;
+84200db4:	21 ea 
+
+84200db6 <Lc_aud_cur_mic_metadata_transfer_3>:
+    }
+    return amount;
+84200db6:	32 00       	r0 = r4 + Null;
+
+84200db8 <Lc_aud_cur_mic_metadata_transfer_4>:
+}
+84200db8:	f1 48       	popm <FP, r4, rLink>;
+84200dba:	d8 4c       	rts;
+
+84200dbc <Lc_aud_cur_connect_terminal_1>:
+ */
+static void aud_cur_connect_terminal(AUD_CUR_TERMINAL *p_def,
+                                     uint16 num,
+                                     tCbuffer *p_buffer)
+{
+    p_def->p_buffer_list[num] = p_buffer;
+84200dbc:	91 88       	rMAC = M[r0 + 8];
+84200dbe:	5d 54       	r3 = r1 LSHIFT 2;
+84200dc0:	4c ef       	M[rMAC + r3] = r2;
+    p_def->connected |= (uint16)(1 << num);
+84200dc2:	00 f3 93 de 	r1 = 0x1 LSHIFT r1;
+84200dc6:	d1 86       	rMAC = MHU[r0 + 6];
+84200dc8:	c9 12       	rMAC = rMAC OR r1;
+84200dca:	d1 8c       	MH[r0 + 6] = rMAC;
+
+84200dcc <Lc_aud_cur_connect_terminal_2>:
+    return;
+84200dcc:	d8 4c       	rts;
+
+84200dce <Lc_aud_cur_disconnect_terminal_1>:
+ * \return - NONE
+ */
+static void aud_cur_disconnect_terminal(AUD_CUR_TERMINAL *p_def,
+                                        uint16 num)
+{
+    p_def->p_buffer_list[num] = NULL;
+84200dce:	91 88       	rMAC = M[r0 + 8];
+84200dd0:	5c 54       	r2 = r1 LSHIFT 2;
+84200dd2:	08 ef       	M[rMAC + r2] = Null;
+    p_def->connected &= (uint16)(~(1 << num));
+84200dd4:	00 f3 93 de 	r1 = 0x1 LSHIFT r1;
+84200dd8:	ff f3 51 d6 	rMAC = -1 - r1;
+84200ddc:	d3 86       	r1 = MHU[r0 + 6];
+84200dde:	c9 10       	rMAC = rMAC AND r1;
+84200de0:	d1 8c       	MH[r0 + 6] = rMAC;
+
+84200de2 <Lc_aud_cur_disconnect_terminal_2>:
+    return;
+84200de2:	d8 4c       	rts;
+
+84200de4 <Lc_aud_cur_connect_metadata_1>:
+    unsigned idx;
+
+    /* Select the correct metadata buffer */
+    if (num == AUD_CUR_PLAYBACK_TERMINAL)
+    {
+        idx = AUD_CUR_METADATA_PLAYBACK;
+84200de4:	05 00       	r3 = Null + Null;
+84200de6:	18 04       	Null = r1 - Null;
+84200de8:	21 f0 45 ce 	if NE r3 = Null + 1;
+    {
+        idx = AUD_CUR_METADATA_MIC;
+    }
+
+    /* Populate the metadata buffer */
+    if (p_metadata_list[idx] == NULL && buff_has_metadata(p_buffer))
+84200dec:	6b 54       	r1 = r3 LSHIFT 2;
+84200dee:	9a 00       	r0 = r1 + r0;
+84200df0:	11 e8       	rMAC = M[r0 + Null];
+84200df2:	04 62       	if NE jump (m) Lc_aud_cur_connect_metadata_4;
+
+84200df4 <Lc_aud_cur_connect_metadata_2>:
+ *
+ * \return TRUE if the buffer supports metadata. FALSE if it doesn't.
+ */
+static inline bool buff_has_metadata(const tCbuffer *buff)
+{
+    if (buff->metadata != NULL)
+84200df4:	a1 89       	rMAC = M[r2 + 24];
+84200df6:	02 60       	if EQ jump (m) Lc_aud_cur_connect_metadata_4;
+
+84200df8 <Lc_aud_cur_connect_metadata_3>:
+    {
+            p_metadata_list[idx] = p_buffer;
+84200df8:	14 ee       	M[r0 + Null] = r2;
+
+84200dfa <Lc_aud_cur_connect_metadata_4>:
+84200dfa:	d8 4c       	rts;
+
+84200dfc <Lc_aud_cur_disconnect_metadata_1>:
+ * \return - None
+ */
+static void aud_cur_disconnect_metadata(tCbuffer **p_metadata_list,
+                                        AUD_CUR_TERMINAL *p_def,
+                                        uint16 num)
+{
+84200dfc:	72 1c       	pushm <FP(=SP), r4, r5>;
+    int i;
+    tCbuffer *p_buffer;
+    tCbuffer **p_buffer_list;
+
+    /* Playback metadata only travels on a single terminal */
+    if (num == AUD_CUR_PLAYBACK_TERMINAL)
+84200dfe:	20 04       	Null = r2 - Null;
+84200e00:	03 62       	if NE jump (m) Lc_aud_cur_disconnect_metadata_3;
+
+84200e02 <Lc_aud_cur_disconnect_metadata_2>:
+    {
+        p_metadata_list[AUD_CUR_METADATA_PLAYBACK] = NULL;
+84200e02:	10 ee       	M[r0 + Null] = Null;
+84200e04:	17 6e       	jump (m) Lc_aud_cur_disconnect_metadata_11;
+
+84200e06 <Lc_aud_cur_disconnect_metadata_3>:
+    }
+
+    /* Look for metadata on another terminal if the terminal being used for
+     * metadata is being disconnected.
+     */
+    p_buffer_list = p_def->p_buffer_list;
+84200e06:	99 88       	rMAC = M[r1 + 8];
+    if (p_metadata_list[AUD_CUR_METADATA_MIC] == p_buffer_list[num])
+84200e08:	55 88       	r3 = M[r0 + 4];
+84200e0a:	66 54       	r4 = r2 LSHIFT 2;
+84200e0c:	8e e9       	r4 = M[rMAC + r4];
+84200e0e:	a8 05       	Null = r3 - r4;
+84200e10:	11 62       	if NE jump (m) Lc_aud_cur_disconnect_metadata_11;
+
+84200e12 <Lc_aud_cur_disconnect_metadata_4>:
+    {
+        /* Set the metadata buffer to NULL and populate if a replacement is
+         * available.
+         */
+        p_metadata_list[AUD_CUR_METADATA_MIC] = NULL;
+84200e12:	50 8e       	M[r0 + 4] = Null;
+84200e14:	1b e6       	r1 = MHU[r1 + Null];
+
+        /* Iterate through microphone terminals */
+        for (i = (AUD_CUR_PLAYBACK_TERMINAL + 1); i < p_def->max; i++)
+84200e16:	45 20       	r3 = Null + 1;
+84200e18:	0e 21       	r4 = rMAC + 4;
+
+84200e1a <Lc_aud_cur_disconnect_metadata_5>:
+84200e1a:	e8 04       	Null = r3 - r1;
+84200e1c:	0b 66       	if GE jump (m) Lc_aud_cur_disconnect_metadata_11;
+
+84200e1e <Lc_aud_cur_disconnect_metadata_6>:
+        {
+            /* Don't look at the terminal that is being disconnected */
+            if (i == num)
+84200e1e:	28 05       	Null = r3 - r2;
+84200e20:	05 60       	if EQ jump (m) Lc_aud_cur_disconnect_metadata_9;
+
+84200e22 <Lc_aud_cur_disconnect_metadata_7>:
+            {
+                continue;
+            }
+            /* Update the metadata buffer with the new buffer information */
+            p_buffer = p_buffer_list[i];
+            if (p_buffer != NULL && buff_has_metadata(p_buffer))
+84200e22:	31 e8       	rMAC = M[r4 + Null];
+84200e24:	03 60       	if EQ jump (m) Lc_aud_cur_disconnect_metadata_9;
+
+84200e26 <Lc_aud_cur_disconnect_metadata_8>:
+84200e26:	8f 89       	r5 = M[rMAC + 24];
+84200e28:	04 62       	if NE jump (m) Lc_aud_cur_disconnect_metadata_10;
+
+84200e2a <Lc_aud_cur_disconnect_metadata_9>:
+         * available.
+         */
+        p_metadata_list[AUD_CUR_METADATA_MIC] = NULL;
+
+        /* Iterate through microphone terminals */
+        for (i = (AUD_CUR_PLAYBACK_TERMINAL + 1); i < p_def->max; i++)
+84200e2a:	6d 20       	r3 = r3 + 1;
+84200e2c:	36 21       	r4 = r4 + 4;
+84200e2e:	f6 6f       	jump (m) Lc_aud_cur_disconnect_metadata_5;
+
+84200e30 <Lc_aud_cur_disconnect_metadata_10>:
+            }
+            /* Update the metadata buffer with the new buffer information */
+            p_buffer = p_buffer_list[i];
+            if (p_buffer != NULL && buff_has_metadata(p_buffer))
+            {
+                p_metadata_list[AUD_CUR_METADATA_MIC] = p_buffer;
+84200e30:	51 8e       	M[r0 + 4] = rMAC;
+
+84200e32 <Lc_aud_cur_disconnect_metadata_11>:
+                break;
+84200e32:	72 48       	popm <FP, r4, r5>;
+84200e34:	d8 4c       	rts;
+
+84200e36 <Lc_aud_cur_connect_common_1>:
+static bool aud_cur_connect_common(OPERATOR_DATA *op_data,
+                                   void *message_data,
+                                   unsigned *response_id,
+                                   void **response_data,
+                                   bool connect)
+{
+84200e36:	f6 1d       	pushm <FP(=SP), r4, r5, r6, r7, r8, r9, rLink>, SP = SP + 0x10;
+84200e38:	42 de       	M[FP + 32] = r0;
+84200e3a:	19 09       	r7 = r1 + Null;
+84200e3c:	26 00       	r4 = r2 + Null;
+84200e3e:	4d de       	M[FP + 36] = r3;
+84200e40:	f9 d9       	rMAC = M[FP + -4];
+84200e42:	51 de       	M[FP + 40] = rMAC;
+84200e44:	ef fd fd ff 	call (m) 0x934;
+84200e48:	31 e7 
+84200e4a:	13 09       	r9 = r0 + Null;
+    tCbuffer **p_metadata_list;
+    AUD_CUR_TERMINAL *p_terminal;
+
+    /* Verify class data and create response */
+    if ((p_class_data == NULL) ||
+        (!base_op_connect(op_data, message_data, response_id, response_data)))
+84200e4c:	0a 60       	if EQ jump (m) Lc_aud_cur_connect_common_3;
+
+84200e4e <Lc_aud_cur_connect_common_2>:
+84200e4e:	34 00       	r2 = r4 + Null;
+84200e50:	4b 08       	r1 = r7 + Null;
+84200e52:	4d d8       	r3 = M[FP + 36];
+84200e54:	42 d8       	r0 = M[FP + 32];
+84200e56:	ef fd fc ff 	call (m) 0x7c8;
+84200e5a:	33 eb 
+84200e5c:	10 04       	Null = r0 - Null;
+84200e5e:	03 62       	if NE jump (m) Lc_aud_cur_connect_common_4;
+
+84200e60 <Lc_aud_cur_connect_common_3>:
+    {
+        return FALSE;
+84200e60:	02 00       	r0 = Null + Null;
+84200e62:	90 6e       	jump (m) Lc_aud_cur_connect_common_30;
+
+84200e64 <Lc_aud_cur_connect_common_4>:
+    }
+
+    /* Prevent runtime connection */
+    if (opmgr_op_is_running(op_data))
+84200e64:	42 d8       	r0 = M[FP + 32];
+84200e66:	ff fd 27 f0 	call (m) 0x5ca4;
+84200e6a:	3f e1 
+84200e6c:	10 04       	Null = r0 - Null;
+84200e6e:	06 60       	if EQ jump (m) Lc_aud_cur_connect_common_7;
+
+84200e70 <Lc_aud_cur_connect_common_5>:
+    {
+        /* Exception: allow runtime disconnection if the flag is set */
+        if (connect || !p_class_data->runtime_disconnect)
+84200e70:	51 d8       	rMAC = M[FP + 40];
+84200e72:	29 62       	if NE jump (m) Lc_aud_cur_connect_common_13;
+
+84200e74 <Lc_aud_cur_connect_common_6>:
+84200e74:	b1 f0 04 82 	rMAC = MBU[r9 + 4];
+84200e78:	26 60       	if EQ jump (m) Lc_aud_cur_connect_common_13;
+
+84200e7a <Lc_aud_cur_connect_common_7>:
+            return TRUE;
+        }
+    }
+
+    /* Get the terminal ID, number, and determine whether sink or source */
+    terminal_id = OPMGR_GET_OP_CONNECT_TERMINAL_ID(message_data);
+84200e7a:	9a f0 00 e8 	r8 = M[r7 + Null];
+    terminal_num = (uint16)(terminal_id & TERMINAL_NUM_MASK);
+84200e7e:	a7 f0 3f 00 	r5 = r8 AND 0x3f;
+    terminal_pos = (uint16)AUD_CUR_GET_TERMINAL_POS(terminal_num);
+84200e82:	39 00       	rMAC = r5 + Null;
+84200e84:	00 f1 92 de 	r0 = 0x1 LSHIFT rMAC;
+84200e88:	91 c6       	rMAC = r0 AND 0xffff;
+    is_sink = terminal_id & TERMINAL_SINK_MASK;
+
+    /* Setup the selected terminal */
+    if (is_sink)
+84200e8a:	40 f0 a3 f0 	r1 = r8 AND 0x800000;
+84200e8e:	00 00 
+84200e90:	07 60       	if EQ jump (m) Lc_aud_cur_connect_common_9;
+
+84200e92 <Lc_aud_cur_connect_common_8>:
+    {
+        p_terminal = &p_class_data->sinks;
+84200e92:	b3 f0 08 20 	r1 = r9 + 8;
+84200e96:	1e 00       	r4 = r1 + Null;
+        p_metadata_list = p_class_data->metadata_ip;
+84200e98:	38 f0 4c 20 	r6 = r1 + 76;
+84200e9c:	06 6e       	jump (m) Lc_aud_cur_connect_common_10;
+
+84200e9e <Lc_aud_cur_connect_common_9>:
+    }
+    else
+    {
+        p_terminal = &p_class_data->sources;
+84200e9e:	b3 f0 14 20 	r1 = r9 + 20;
+84200ea2:	1e 00       	r4 = r1 + Null;
+        p_metadata_list = p_class_data->metadata_op;
+84200ea4:	38 f0 48 20 	r6 = r1 + 72;
+
+84200ea8 <Lc_aud_cur_connect_common_10>:
+    }
+
+    /* Make sure the terminal is valid */
+    if (terminal_num >= p_terminal->max)
+84200ea8:	33 e6       	r1 = MHU[r4 + Null];
+84200eaa:	f8 04       	Null = r5 - r1;
+84200eac:	12 68       	if LT jump (m) Lc_aud_cur_connect_common_14;
+
+84200eae <Lc_aud_cur_connect_common_11>:
+    {
+        L4_DBG_MSG1("base aud cur connect: terminal num %d is out \
+                    of max range", terminal_num);
+84200eae:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200eb2:	08 25       	Null = rMAC - 4;
+84200eb4:	08 68       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84200eb6 <Lc_aud_cur_connect_common_12>:
+84200eb6:	55 f1 02 f0 	r0 = Null + 357565339;
+84200eba:	9b 43 
+84200ebc:	3b 00       	r1 = r5 + Null;
+84200ebe:	ff fd 01 f0 	call (m) 0x10c2;
+84200ec2:	25 e0 
+
+84200ec4 <Lc_aud_cur_connect_common_13>:
+84200ec4:	01 f0 00 60 	rMAC = Null + 4096;
+84200ec8:	4a d8       	r0 = M[FP + 36];
+84200eca:	12 e8       	r0 = M[r0 + Null];
+84200ecc:	51 8e       	M[r0 + 4] = rMAC;
+84200ece:	59 6e       	jump (m) Lc_aud_cur_connect_common_29;
+
+84200ed0 <Lc_aud_cur_connect_common_14>:
+        return TRUE;
+    }
+
+    /* Make sure the terminal is not marked as invalid */
+    if (p_terminal->max_valid_mask &&
+       !(p_terminal->max_valid_mask & terminal_pos))
+84200ed0:	b3 86       	r1 = MHU[r4 + 4];
+84200ed2:	0f 60       	if EQ jump (m) Lc_aud_cur_connect_common_18;
+
+84200ed4 <Lc_aud_cur_connect_common_15>:
+84200ed4:	c9 10       	rMAC = rMAC AND r1;
+84200ed6:	0d 62       	if NE jump (m) Lc_aud_cur_connect_common_18;
+
+84200ed8 <Lc_aud_cur_connect_common_16>:
+    {
+        L4_DBG_MSG1("base aud cur connect: invalid terminal number %d",
+                    terminal_num);
+84200ed8:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200edc:	08 25       	Null = rMAC - 4;
+84200ede:	f3 69       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84200ee0 <Lc_aud_cur_connect_common_17>:
+84200ee0:	55 f1 02 f0 	r0 = Null + 357565417;
+84200ee4:	e9 43 
+84200ee6:	3b 00       	r1 = r5 + Null;
+84200ee8:	ff fd 00 f0 	call (m) 0x10c2;
+84200eec:	3b ee 
+84200eee:	eb 6f       	jump (m) Lc_aud_cur_connect_common_13;
+
+84200ef0 <Lc_aud_cur_connect_common_18>:
+        base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+        return TRUE;
+    }
+
+    if (connect)
+84200ef0:	51 d8       	rMAC = M[FP + 40];
+84200ef2:	26 60       	if EQ jump (m) Lc_aud_cur_connect_common_24;
+
+84200ef4 <Lc_aud_cur_connect_common_19>:
+ * \return - TRUE if the terminal is connected
+ */
+static inline bool aud_cur_is_terminal_connected(AUD_CUR_TERMINAL *p_def,
+                                                 uint16 num)
+{
+    return (p_def->connected & (1 << num)) > 0;
+84200ef4:	f1 86       	rMAC = MHU[r4 + 6];
+84200ef6:	52 10       	r0 = r0 AND rMAC;
+84200ef8:	01 00       	rMAC = Null + Null;
+84200efa:	10 04       	Null = r0 - Null;
+84200efc:	2c f0 41 ce 	if GT rMAC = Null + 1;
+        return TRUE;
+    }
+
+    if (connect)
+    {
+        if (aud_cur_is_terminal_connected(p_terminal, terminal_num))
+84200f00:	08 04       	Null = rMAC - Null;
+84200f02:	0d 60       	if EQ jump (m) Lc_aud_cur_connect_common_22;
+
+84200f04 <Lc_aud_cur_connect_common_20>:
+        {
+            L4_DBG_MSG1("base aud cur connect: terminal %d already connected",
+                        terminal_num);
+84200f04:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200f08:	08 25       	Null = rMAC - 4;
+84200f0a:	dd 69       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84200f0c <Lc_aud_cur_connect_common_21>:
+84200f0c:	55 f1 02 f0 	r0 = Null + 357565466;
+84200f10:	1a 48 
+84200f12:	3b 00       	r1 = r5 + Null;
+84200f14:	ff fd 00 f0 	call (m) 0x10c2;
+84200f18:	2f ed 
+84200f1a:	d5 6f       	jump (m) Lc_aud_cur_connect_common_13;
+
+84200f1c <Lc_aud_cur_connect_common_22>:
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+        }
+
+        /* Connect the terminal */
+        tCbuffer *p_buffer = OPMGR_GET_OP_CONNECT_BUFFER(message_data);
+84200f1c:	99 f0 01 88 	r7 = M[r7 + 4];
+        aud_cur_connect_terminal(p_terminal, terminal_num, p_buffer);
+84200f20:	4c 08       	r2 = r7 + Null;
+84200f22:	3b 00       	r1 = r5 + Null;
+84200f24:	32 00       	r0 = r4 + Null;
+84200f26:	4b 4f       	call (m) Lc_aud_cur_connect_terminal_1;
+        aud_cur_connect_metadata(p_metadata_list, terminal_num, p_buffer);
+84200f28:	4c 08       	r2 = r7 + Null;
+84200f2a:	3b 00       	r1 = r5 + Null;
+84200f2c:	42 08       	r0 = r6 + Null;
+84200f2e:	5b 4f       	call (m) Lc_aud_cur_connect_metadata_1;
+
+        if (p_class_data->connect_fn != NULL)
+84200f30:	b1 f0 12 88 	rMAC = M[r9 + 72];
+84200f34:	26 60       	if EQ jump (m) Lc_aud_cur_connect_common_29;
+
+84200f36 <Lc_aud_cur_connect_common_23>:
+        {
+            p_class_data->connect_fn(op_data, terminal_id);
+84200f36:	53 08       	r1 = r8 + Null;
+84200f38:	42 d8       	r0 = M[FP + 32];
+84200f3a:	d1 4c       	call rMAC;
+84200f3c:	22 6e       	jump (m) Lc_aud_cur_connect_common_29;
+
+84200f3e <Lc_aud_cur_connect_common_24>:
+ * \return - TRUE if the terminal is connected
+ */
+static inline bool aud_cur_is_terminal_connected(AUD_CUR_TERMINAL *p_def,
+                                                 uint16 num)
+{
+    return (p_def->connected & (1 << num)) > 0;
+84200f3e:	f1 86       	rMAC = MHU[r4 + 6];
+84200f40:	52 10       	r0 = r0 AND rMAC;
+84200f42:	01 00       	rMAC = Null + Null;
+84200f44:	10 04       	Null = r0 - Null;
+84200f46:	2c f0 41 ce 	if GT rMAC = Null + 1;
+            p_class_data->connect_fn(op_data, terminal_id);
+        }
+    }
+    else
+    {
+        if (!aud_cur_is_terminal_connected(p_terminal, terminal_num))
+84200f4a:	08 04       	Null = rMAC - Null;
+84200f4c:	0d 62       	if NE jump (m) Lc_aud_cur_connect_common_27;
+
+84200f4e <Lc_aud_cur_connect_common_25>:
+        {
+            L4_DBG_MSG1("base aud cur connect: terminal %d not connected",
+                        terminal_num);
+84200f4e:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200f52:	08 25       	Null = rMAC - 4;
+84200f54:	b8 69       	if LT jump (m) Lc_aud_cur_connect_common_13;
+
+84200f56 <Lc_aud_cur_connect_common_26>:
+84200f56:	55 f1 02 f0 	r0 = Null + 357565518;
+84200f5a:	4e 48 
+84200f5c:	3b 00       	r1 = r5 + Null;
+84200f5e:	ff fd 00 f0 	call (m) 0x10c2;
+84200f62:	25 eb 
+84200f64:	b0 6f       	jump (m) Lc_aud_cur_connect_common_13;
+
+84200f66 <Lc_aud_cur_connect_common_27>:
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+        }
+
+        aud_cur_disconnect_metadata(p_metadata_list, p_terminal, terminal_num);
+84200f66:	3c 00       	r2 = r5 + Null;
+84200f68:	33 00       	r1 = r4 + Null;
+84200f6a:	42 08       	r0 = r6 + Null;
+84200f6c:	48 4f       	call (m) Lc_aud_cur_disconnect_metadata_1;
+        aud_cur_disconnect_terminal(p_terminal, terminal_num);
+84200f6e:	3b 00       	r1 = r5 + Null;
+84200f70:	32 00       	r0 = r4 + Null;
+84200f72:	2e 4f       	call (m) Lc_aud_cur_disconnect_terminal_1;
+
+        if (p_class_data->disconnect_fn != NULL)
+84200f74:	b1 f0 13 88 	rMAC = M[r9 + 76];
+84200f78:	04 60       	if EQ jump (m) Lc_aud_cur_connect_common_29;
+
+84200f7a <Lc_aud_cur_connect_common_28>:
+        {
+            p_class_data->disconnect_fn(op_data, terminal_id);
+84200f7a:	53 08       	r1 = r8 + Null;
+84200f7c:	42 d8       	r0 = M[FP + 32];
+84200f7e:	d1 4c       	call rMAC;
+
+84200f80 <Lc_aud_cur_connect_common_29>:
+    {
+        /* Exception: allow runtime disconnection if the flag is set */
+        if (connect || !p_class_data->runtime_disconnect)
+        {
+            base_op_change_response_status(response_data, STATUS_CMD_FAILED);
+            return TRUE;
+84200f80:	42 20       	r0 = Null + 1;
+
+84200f82 <Lc_aud_cur_connect_common_30>:
+        {
+            p_class_data->disconnect_fn(op_data, terminal_id);
+        }
+    }
+    return TRUE;
+}
+84200f82:	f6 49       	SP = SP - 0x10, popm <FP, r4, r5, r6, r7, r8, r9, rLink>;
+84200f84:	d8 4c       	rts;
+
+84200f86 <Lc_aud_cur_check_valid_terminals_1>:
+ * \param  p_term           Pointer to the terminal information
+ *
+ * \return - result TRUE if the terminals are valid
+ */
+static bool aud_cur_check_valid_terminals(AUD_CUR_TERMINAL *p_term)
+{
+84200f86:	c8 1c       	pushm <FP(=SP), rLink>;
+    /* No validity mask to test */
+    if (p_term->min_valid_mask == 0)
+84200f88:	51 86       	rMAC = MHU[r0 + 2];
+84200f8a:	03 62       	if NE jump (m) Lc_aud_cur_check_valid_terminals_3;
+
+84200f8c <Lc_aud_cur_check_valid_terminals_2>:
+    {
+        return TRUE;
+84200f8c:	42 20       	r0 = Null + 1;
+84200f8e:	10 6e       	jump (m) Lc_aud_cur_check_valid_terminals_7;
+
+84200f90 <Lc_aud_cur_check_valid_terminals_3>:
+    }
+
+    /* Connection mask doesn't have at least the valid mask bits */
+    if ((p_term->min_valid_mask & p_term->connected) != p_term->min_valid_mask)
+84200f90:	d3 86       	r1 = MHU[r0 + 6];
+84200f92:	5a 10       	r0 = r1 AND rMAC;
+84200f94:	50 04       	Null = r0 - rMAC;
+84200f96:	fb 61       	if EQ jump (m) Lc_aud_cur_check_valid_terminals_2;
+
+84200f98 <Lc_aud_cur_check_valid_terminals_4>:
+    {
+        L4_DBG_MSG1("base aud cur start: invalid terminals %hu",
+                    p_term->connected);
+84200f98:	01 f0 34 91 	rMAC = MBS[Null + 0x334];
+84200f9c:	08 25       	Null = rMAC - 4;
+84200f9e:	07 68       	if LT jump (m) Lc_aud_cur_check_valid_terminals_6;
+
+84200fa0 <Lc_aud_cur_check_valid_terminals_5>:
+84200fa0:	55 f1 02 f0 	r0 = Null + 357565566;
+84200fa4:	7e 48 
+84200fa6:	ff fd 00 f0 	call (m) 0x10c2;
+84200faa:	3d e8 
+
+84200fac <Lc_aud_cur_check_valid_terminals_6>:
+        return FALSE;
+84200fac:	02 00       	r0 = Null + Null;
+
+84200fae <Lc_aud_cur_check_valid_terminals_7>:
+    }
+
+    return TRUE;
+}
+84200fae:	c8 48       	popm <FP, rLink>;
+84200fb0:	d8 4c       	rts;
+
+84200fb2 <$kdc_start>:
+.MODULE $M.kdc_start;
+.CODESEGMENT PM;
+.DATASEGMENT DM;
+
+$kdc_start:
+r0 = $_noise_id_cap_data;
+84200fb2:	01 f0 02 f3 	r0 = Null + 1441792;
+84200fb6:	00 40 
+    /* Force this symbol to be exported in ELF */
+    Null = $___kymera_debug_map_addr;
+84200fb8:	00 f0 4c 5a 	Null = Null + 3660;

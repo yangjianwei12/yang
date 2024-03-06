@@ -1,0 +1,156 @@
+var group__sink__service =
+[
+    [ "sink_service.c", "sink__service_8c.html", null ],
+    [ "sink_service_le_sm.c", "sink__service__le__sm_8c.html", null ],
+    [ "sink_service_pairing.c", "sink__service__pairing_8c.html", null ],
+    [ "sink_service_sm.c", "sink__service__sm_8c.html", null ],
+    [ "sink_service_util.c", "sink__service__util_8c.html", null ],
+    [ "sink_service_config_t", "structsink__service__config__t.html", [
+      [ "max_bredr_connections", "structsink__service__config__t.html#aaa5f51e4901b0af564551a7d5229c00d", null ],
+      [ "max_le_connections", "structsink__service__config__t.html#afdb96c9012b370bca12e4ad5e40a6260", null ],
+      [ "page_timeout", "structsink__service__config__t.html#a32b5e13bb40f9a1364e2a41a971ae0af", null ],
+      [ "profile_list", "structsink__service__config__t.html#acce756d725a8c7c6a2ac7badf6db4734", null ],
+      [ "profile_list_length", "structsink__service__config__t.html#a0ffbab0ce47cb96eedda928f777a9a81", null ],
+      [ "rssi_pairing_params", "structsink__service__config__t.html#aedf45d547fc2fca1e3b5a08ea7565c6b", null ],
+      [ "supported_profile_mask", "structsink__service__config__t.html#a474baab4de4c516679832443ec5f04c8", null ]
+    ] ],
+    [ "SINK_SERVICE_CONNECTED_CFM_T", "struct_s_i_n_k___s_e_r_v_i_c_e___c_o_n_n_e_c_t_e_d___c_f_m___t.html", [
+      [ "device", "struct_s_i_n_k___s_e_r_v_i_c_e___c_o_n_n_e_c_t_e_d___c_f_m___t.html#abfd409de79429d75fcadfe71a5b1afb8", null ],
+      [ "status", "struct_s_i_n_k___s_e_r_v_i_c_e___c_o_n_n_e_c_t_e_d___c_f_m___t.html#a17d2b76ff20c4fece2aa753ab50caa66", null ],
+      [ "transport", "struct_s_i_n_k___s_e_r_v_i_c_e___c_o_n_n_e_c_t_e_d___c_f_m___t.html#ac7eb6272da6804d61d3b03cafa1160f7", null ]
+    ] ],
+    [ "sink_service_data_t", "structsink__service__data__t.html", [
+      [ "TASK_LIST_WITH_INITIAL_CAPACITY", "structsink__service__data__t.html#a00a88bc4adcff87576ce383bca671e49", null ],
+      [ "disable_request_pending", "structsink__service__data__t.html#aee3fd72c0191776f083434bdea340880", null ],
+      [ "filter_data", "structsink__service__data__t.html#a6372d7d81b0cc156bb63b06fa0863461", null ],
+      [ "mode", "structsink__service__data__t.html#a81edc7fb39ee4e5a8e47b250320a3338", null ],
+      [ "pairing_enabled", "structsink__service__data__t.html#a4c340046b795ac5c71ea3719173d8f07", null ],
+      [ "pairing_request_pending", "structsink__service__data__t.html#aa659ddf268eea802577d194025669fdf", null ],
+      [ "state_machines", "structsink__service__data__t.html#ae80c954954a5676670a0bd3e68b92856", null ],
+      [ "task", "structsink__service__data__t.html#aba8d7e5c1906844fdb6e47953d3518fc", null ]
+    ] ],
+    [ "SINK_SERVICE_DISCONNECTED_CFM_T", "struct_s_i_n_k___s_e_r_v_i_c_e___d_i_s_c_o_n_n_e_c_t_e_d___c_f_m___t.html", [
+      [ "device", "struct_s_i_n_k___s_e_r_v_i_c_e___d_i_s_c_o_n_n_e_c_t_e_d___c_f_m___t.html#abfd409de79429d75fcadfe71a5b1afb8", null ]
+    ] ],
+    [ "SINK_SERVICE_FIRST_PROFILE_CONNECTED_IND_T", "struct_s_i_n_k___s_e_r_v_i_c_e___f_i_r_s_t___p_r_o_f_i_l_e___c_o_n_n_e_c_t_e_d___i_n_d___t.html", [
+      [ "device", "struct_s_i_n_k___s_e_r_v_i_c_e___f_i_r_s_t___p_r_o_f_i_l_e___c_o_n_n_e_c_t_e_d___i_n_d___t.html#abfd409de79429d75fcadfe71a5b1afb8", null ]
+    ] ],
+    [ "SINK_SERVICE_INTERNAL_CONNECT_ACL_COMPLETE_T", "struct_s_i_n_k___s_e_r_v_i_c_e___i_n_t_e_r_n_a_l___c_o_n_n_e_c_t___a_c_l___c_o_m_p_l_e_t_e___t.html", [
+      [ "tpaddr", "struct_s_i_n_k___s_e_r_v_i_c_e___i_n_t_e_r_n_a_l___c_o_n_n_e_c_t___a_c_l___c_o_m_p_l_e_t_e___t.html#ace03b1a8ebc6175757dce86ff87dec7a", null ]
+    ] ],
+    [ "sink_service_lea_uuid_filter_t", "structsink__service__lea__uuid__filter__t.html", [
+      [ "num_of_uuids", "structsink__service__lea__uuid__filter__t.html#a3424377035d17f5c1c120fbe4288dff3", null ],
+      [ "uuid_list", "structsink__service__lea__uuid__filter__t.html#a52a5801f5c81502c0de481d6f63e3c64", null ]
+    ] ],
+    [ "sink_service_state_machine_t", "structsink__service__state__machine__t.html", [
+      [ "acl_hold_addr", "structsink__service__state__machine__t.html#a686c91f352bd94e48ed4a25c3a7a2864", null ],
+      [ "lea_device", "structsink__service__state__machine__t.html#aecac30b1562f013922e04e2277a69b9b", null ],
+      [ "local_initiated_disconnect", "structsink__service__state__machine__t.html#a6086da77f467f1f8a6c82723ee87d23e", null ],
+      [ "profiles_requested", "structsink__service__state__machine__t.html#a379c7f14c54c1e88e3fe25798580ba76", null ],
+      [ "sink_device", "structsink__service__state__machine__t.html#ad6ab731760ccbdb837e5fda48e0141b2", null ],
+      [ "state", "structsink__service__state__machine__t.html#a867272ac69863e1a5318259440687efc", null ],
+      [ "task_data", "structsink__service__state__machine__t.html#adbf37f6bbf729413e642093fd8fb8127", null ]
+    ] ],
+    [ "sink_service_context_t", "group__sink__service.html#gae4d58bd72ffad2fd8513daf88080faa4", null ],
+    [ "sink_service_device_type_t", "group__sink__service.html#gae715044de212f25eebd863512ec746ef", [
+      [ "SINK_SERVICE_DEVICE_UNKNOWN", "group__sink__service.html#ggae715044de212f25eebd863512ec746efa2c815f4438cb695e6fdfcfcd7adfb19e", null ],
+      [ "SINK_SERVICE_DEVICE_BREDR", "group__sink__service.html#ggae715044de212f25eebd863512ec746efafa473bb2db5adeb0377063d80a56361b", null ],
+      [ "SINK_SERVICE_DEVICE_LE", "group__sink__service.html#ggae715044de212f25eebd863512ec746efa2174227bf961799403d54869974a18a3", null ],
+      [ "SINK_SERVICE_DEVICE_DUAL", "group__sink__service.html#ggae715044de212f25eebd863512ec746efa94c23e8997d5dc559d85faa1bedddb3a", null ]
+    ] ],
+    [ "sink_service_internal_msg_t", "group__sink__service.html#gad457a41f2337ad72283c64c19c10913d", [
+      [ "SINK_SERVICE_INTERNAL_CONNECT_REQ", "group__sink__service.html#ggad457a41f2337ad72283c64c19c10913da7c7ef0561be5de9b317308a682a9a560", null ],
+      [ "SINK_SERVICE_INTERNAL_DISCONNECT_REQ", "group__sink__service.html#ggad457a41f2337ad72283c64c19c10913dab8992f3c4213395ee33611625995dd22", null ],
+      [ "SINK_SERVICE_INTERNAL_CONNECT_ACL_COMPLETE", "group__sink__service.html#ggad457a41f2337ad72283c64c19c10913dac743fbe7e9a174523260b46b66007d61", null ],
+      [ "SINK_SERVICE_INTERNAL_CONNECT_STOP_REQ", "group__sink__service.html#ggad457a41f2337ad72283c64c19c10913da75a20bf0edcaedcca3bcfe4569313504", null ],
+      [ "SINK_SERVICE_INTERNAL_CONNECT_ACL_RETRY_REQ", "group__sink__service.html#ggad457a41f2337ad72283c64c19c10913dab55d786be2bf0924141db87071e54694", null ],
+      [ "SINK_SERVICE_INTERNAL_POSSIBLE_PAIRING_TIMEOUT", "group__sink__service.html#ggad457a41f2337ad72283c64c19c10913dac68ef55f44f58b9a808e84e532efb276", null ],
+      [ "SINK_SERVICE_INTERNAL_CONNECT_PROFILES_REQ", "group__sink__service.html#ggad457a41f2337ad72283c64c19c10913da5b2ea90db1c77e22e41310ad3e22c4d7", null ],
+      [ "SINK_SERVICE_INTERNAL_LEA_DISCOVERY_TIMEOUT", "group__sink__service.html#ggad457a41f2337ad72283c64c19c10913dabb276aa55041b768d6a8196eb54a70c9", null ],
+      [ "SINK_SERVICE_INTERNAL_MESSAGE_END", "group__sink__service.html#ggad457a41f2337ad72283c64c19c10913da6a9ea3dd60c07101ac0e0a48ce647cdd", null ]
+    ] ],
+    [ "sink_service_mode_t", "group__sink__service.html#ga5867f36e4a913e010ebaa72e0a727f2f", [
+      [ "SINK_SERVICE_MODE_BREDR", "group__sink__service.html#gga5867f36e4a913e010ebaa72e0a727f2fa4d3d7d8290c4153069eee5d22c036f18", null ],
+      [ "SINK_SERVICE_MODE_LE", "group__sink__service.html#gga5867f36e4a913e010ebaa72e0a727f2fa701ae3e18f621c047808c7d69123381f", null ],
+      [ "SINK_SERVICE_MODE_DUAL_PREF_LE", "group__sink__service.html#gga5867f36e4a913e010ebaa72e0a727f2faf80a08fcdebb3439b3741757f7ed5ce6", null ],
+      [ "SINK_SERVICE_MODE_DUAL_PREF_BREDR", "group__sink__service.html#gga5867f36e4a913e010ebaa72e0a727f2fa5cb0abb65240580e3da6a4493233a6ad", null ]
+    ] ],
+    [ "sink_service_msg_t", "group__sink__service.html#ga773435178e5f2aaab76a3bb220d2339f", [
+      [ "SINK_INIT_CFM", "group__sink__service.html#gga773435178e5f2aaab76a3bb220d2339fa168a664af0b415a938ab28ddf51523b1", null ],
+      [ "SINK_SERVICE_FIRST_PROFILE_CONNECTED_IND", "group__sink__service.html#gga773435178e5f2aaab76a3bb220d2339fabac714c08a415dbdc142f6230e8b3dbf", null ],
+      [ "SINK_SERVICE_MESSAGE_END", "group__sink__service.html#gga773435178e5f2aaab76a3bb220d2339faa3b2842771868777074e2dc781eb26de", null ]
+    ] ],
+    [ "sink_service_status_t", "group__sink__service.html#ga9002750be1ed11ccc5d02d34a60e4d9e", null ],
+    [ "sink_service_transport_t", "group__sink__service.html#ga5962566bab71d459676a4f51adac8d80", [
+      [ "SINK_SERVICE_TRANSPORT_UNKNOWN", "group__sink__service.html#gga5962566bab71d459676a4f51adac8d80ac20a3d8bd6a3da749dc4d6e24a1702c9", null ],
+      [ "SINK_SERVICE_TRANSPORT_BREDR", "group__sink__service.html#gga5962566bab71d459676a4f51adac8d80a1d3901c1440508625ec9f934f24c8039", null ],
+      [ "SINK_SERVICE_TRANSPORT_LE", "group__sink__service.html#gga5962566bab71d459676a4f51adac8d80a7554cb29f051eccb86c0601dfefc4143", null ]
+    ] ],
+    [ "ASSERT_INTERNAL_MESSAGES_NOT_OVERFLOWED", "group__sink__service.html#gaa8a09025316b49b9496acdc75cd05a7a", null ],
+    [ "SinkService_ClientRegister", "group__sink__service.html#gaa9c0fcce908551d6e823ea60fa07c8f8", null ],
+    [ "SinkService_ClientUnregister", "group__sink__service.html#gae59cbce232ba6440df7f884afc74a978", null ],
+    [ "SinkService_Connect", "group__sink__service.html#ga76aae57490e1b5678e3bcfe238d22dbd", null ],
+    [ "SinkService_ConnectableEnableBredr", "group__sink__service.html#ga44778d6bf0a79e2121480a4c0b04e1bd", null ],
+    [ "SinkService_Disable", "group__sink__service.html#gaaadff72435bfc3fc0d53d0120bf76283", null ],
+    [ "sinkService_DisableAllSmForDualMode", "group__sink__service.html#ga56f8d8b14d78a081734500c59fd16901", null ],
+    [ "SinkService_DisconnectAll", "group__sink__service.html#ga235b0e754570cbfc86d6c8efb13fc60c", null ],
+    [ "SinkService_Enable", "group__sink__service.html#ga0027230d867190bf7e97f7e8327a4d10", null ],
+    [ "sinkService_EnableAllSmForDualMode", "group__sink__service.html#ga67c6d046b6dde388caab398d3e7d00f9", null ],
+    [ "SinkService_EnablePairing", "group__sink__service.html#ga5c826c2e222baa7d601251796992cb7d", null ],
+    [ "SinkService_Init", "group__sink__service.html#ga86025bc6c257c9cd128a16e5d660b808", null ],
+    [ "SinkService_IsConnected", "group__sink__service.html#ga91d00872ab2bd737d6c90ec36a49d536", null ],
+    [ "SinkService_IsEnabled", "group__sink__service.html#ga410d4f8efc41df7eecb582176e0170b9", null ],
+    [ "SinkService_IsInPairingState", "group__sink__service.html#ga4076965b4d2c2e2ff70706c638799d2d", null ],
+    [ "SinkService_IsPairingEnabled", "group__sink__service.html#ga328b5923810c3f704760cff2cc5b46be", null ],
+    [ "sinkService_MainMessageHandler", "group__sink__service.html#gafdb9b0e34e08ca64da608269019fb6e3", null ],
+    [ "SinkService_PairRequest", "group__sink__service.html#ga56a309765f9feb8300ce845539d27993", null ],
+    [ "SinkService_SendConnectedCfm", "group__sink__service.html#ga5cb1bd2419a50dccfc4c1ba376c4634b", null ],
+    [ "SinkService_SendDisconnectedCfm", "group__sink__service.html#ga88f7b6ee05be84f5dcccdc4436857ec1", null ],
+    [ "SinkService_SendFirstProfileConnectedIndNotification", "group__sink__service.html#ga3fe6b055d28e64494edf664cd108362e", null ],
+    [ "SinkService_SetMode", "group__sink__service.html#gaf26cabaaac0f10e7ecace6c7ef086c72", null ],
+    [ "SinkService_SetUuidAdvFilter", "group__sink__service.html#gaac5d29e92e64ff05fc9f10fa7cea15b6", null ],
+    [ "SinkService_UpdateUi", "group__sink__service.html#gabcea914e59023f218fc7100864a4fd34", null ],
+    [ "SinkServiceBredrSm_HandleMessage", "group__sink__service.html#ga401f2123936cc576c936c0495f344f94", null ],
+    [ "sinkServiceLeSm_AddLeDeviceInfo", "group__sink__service.html#ga3e730b53994cadf66410f07f2ca1317e", null ],
+    [ "SinkServiceLeSm_ClearInstance", "group__sink__service.html#gaab8bde4103d364e1a89149af60a81c41", null ],
+    [ "sinkServiceLeSm_ClearLeDeviceInfoByAddr", "group__sink__service.html#gab6d3ee1d6327f07d62afa7adbd6167b4", null ],
+    [ "SinkServiceLeSm_ConnectRequest", "group__sink__service.html#ga4967dcc611eb84bb4cd20c24a19d837c", null ],
+    [ "SinkServiceLeSm_CreateSm", "group__sink__service.html#ga73b817afff24334f52cb11b429384adf", null ],
+    [ "sinkServiceLeSm_DeleteDeviceIfNotPaired", "group__sink__service.html#ga98742a561cc37acea6d4b60c7701c797", null ],
+    [ "sinkServiceLeSm_DeviceIsPaired", "group__sink__service.html#ga2c6092b0489ac7198defdb1f36f59995", null ],
+    [ "SinkServiceLeSm_DisableAll", "group__sink__service.html#ga2252d696340d355ac5c8a4b764ee9e0e", null ],
+    [ "SinkServiceLeSm_DisconnectRequest", "group__sink__service.html#gafe2fcad76ee5242fe35332471c55190b", null ],
+    [ "SinkServiceLeSm_EnableAll", "group__sink__service.html#gabe39dd7beb4c236c227337cff72ba8fe", null ],
+    [ "SinkServiceLeSm_GetLeAclConnectionCount", "group__sink__service.html#ga88955f09ec9ca01b34899ce2441998d8", null ],
+    [ "sinkServiceLeSm_GetLeDeviceInfoByAddr", "group__sink__service.html#gae9b89a7ab6aaa47e3c71c8a1614baf13", null ],
+    [ "SinkServiceLeSm_GetSmForDevice", "group__sink__service.html#ga1b3c51f4d04836f832f1d82fce35032b", null ],
+    [ "SinkServiceLeSm_GetSmFromTpaddr", "group__sink__service.html#ga7b63c81ecdb4d150be4fbe47807290c3", null ],
+    [ "SinkServiceLeSm_HandleMessage", "group__sink__service.html#gae567ca6833f5e7c6081dee063d9eae87", null ],
+    [ "sinkServiceLeSm_HandleServiceDiscoveryComplete", "group__sink__service.html#gab898d4f36e7e4a7d76aa4795ab178d89", null ],
+    [ "sinkServiceLeSm_IsAnyLeDeviceConnected", "group__sink__service.html#gad422346b79c2adefbd34a97c1c8c6b59", null ],
+    [ "SinkServiceLeSm_MaxLeAclConnectionsReached", "group__sink__service.html#ga9d32cfbe8c8c8fd4b7a325c47170d58f", null ],
+    [ "SinkServiceLeSm_RegisterForGattNotifications", "group__sink__service.html#gab8db90c8f2034e09b7e8b23bba835c4e", null ],
+    [ "SinkServiceLeSm_RemoveAllDevicesFromWhitelist", "group__sink__service.html#ga4603da874cf3b992325ee8799f279bc6", null ],
+    [ "sinkServiceLeSm_SetState", "group__sink__service.html#gaf389b12e6d8744150cab44c78badaa53", null ],
+    [ "SinkServicePairing_HandleMessage", "group__sink__service.html#gad0ed5df342d79d0b901d4a67a86e6fd9", null ],
+    [ "SinkServicePairing_PairingRequest", "group__sink__service.html#ga31e36264f82d6adba6b5c98a19f91950", null ],
+    [ "SinkServiceSm_ClearInstance", "group__sink__service.html#ga8a9d22b1e04faf7e160304c4c57281fc", null ],
+    [ "SinkServiceSm_ConnectRequest", "group__sink__service.html#ga51f36ffa108e3ccd479e4fc66722fa20", null ],
+    [ "sinkServiceSm_CreateSm", "group__sink__service.html#ga44964d07c1d422998ae68ae2559c9588", null ],
+    [ "SinkServiceSm_DisableAll", "group__sink__service.html#gaf7ad3443569b2b5f10cb805cb3509655", null ],
+    [ "SinkServiceSm_DisconnectRequest", "group__sink__service.html#ga443c561e7232603ad90487c4a974fa09", null ],
+    [ "SinkServiceSm_EnableAll", "group__sink__service.html#ga0570b7a0461507680446dfc266a2b6e9", null ],
+    [ "sinkServiceSm_FindOrCreateSm", "group__sink__service.html#gac554b3e6b3d2f85325dde34d6ba5aad4", null ],
+    [ "SinkServiceSm_GetBredrAclConnectionCount", "group__sink__service.html#gafaac5a7bb6bacfd088604a74e32d3e53", null ],
+    [ "sinkServiceSm_GetSmForBredrAddr", "group__sink__service.html#gadbf0dbcde5b2a5979c83c0121f629759", null ],
+    [ "sinkServiceSm_GetSmForDevice", "group__sink__service.html#gabfca0fbdc62132af62ba4f21b4fb7402", null ],
+    [ "SinkServiceSm_HandleConManagerBredrTpConnectInd", "group__sink__service.html#gae8df05d060e6caa40ddac508abdcace6", null ],
+    [ "SinkServiceSm_MaxBredrAclConnectionsReached", "group__sink__service.html#gaa35dd4fe8ecb9e65f930359a18fa1861", null ],
+    [ "SinkServiceSm_SetDevice", "group__sink__service.html#ga906d52bbb07000c2ee68cf7e58ad638d", null ],
+    [ "sinkServiceSm_SetState", "group__sink__service.html#ga0fbe678a4f266dab067c1202b5370597", null ],
+    [ "sinkServiceUtil_DetermineSinkDevice", "group__sink__service.html#ga9a5a92b5a4f7001465183266456d77dc", null ],
+    [ "sinkServiceUtil_GetConnectedTransport", "group__sink__service.html#gafafb21262d6aac22c10880cedd151f88", null ],
+    [ "sinkServiceUtil_GetTargetTransportBasedOnModeForDevice", "group__sink__service.html#gaf4a8fab70c3daac633a2db9b56330fe7", null ],
+    [ "sinkServiceUtil_IsTransportDisconnectNeeded", "group__sink__service.html#gab8df4ffe9162dfd69e4f369d6a0e4023", null ],
+    [ "sink_service_config", "group__sink__service.html#ga774899676556c6ca7575a9272c521739", null ]
+];
